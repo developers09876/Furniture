@@ -9,7 +9,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
-
+import NavBar1 from "./NavBar1";
 // styles for links
 const StyledLink = styled(NavLink)`
   border-bottom: transparent solid 3px;
@@ -41,10 +41,10 @@ const NavBar = () => {
   const { totalItems } = useContext(CartContext);
   const { total } = useContext(WishlistContext);
 
-  console.log("isAdmin",isAdmin);
 
   return (
-    <nav className="navbar navbar-expand-lg ">
+    <>
+    <nav className="navbar navbar-expand-lg p-0">
       <div className="container lg-d-flex justify-content-center">
         {/* <Link className="navbar-brand me-auto" to="/">
           <Logo fontSize={40} width={150} />
@@ -111,6 +111,8 @@ Furniture
         </div>
       </div>
     </nav>
+    <NavBar1/>
+    </>
   );
 };
 
