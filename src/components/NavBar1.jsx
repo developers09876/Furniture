@@ -1,100 +1,17 @@
-// // import Logo from "./Logo";
-// import { styled } from "styled-components";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faCartShopping, faRightFromBracket, faUserPlus } from "@fortawesome/free-solid-svg-icons";
-// import { faHeart } from "@fortawesome/free-regular-svg-icons";
-// import { Link, NavLink, useNavigate } from "react-router-dom";
-// import Button from "./Button";
-// import { useContext } from "react";
-// import { AuthContext } from "../context/AuthContext";
-// import { CartContext } from "../context/CartContext";
-// import { WishlistContext } from "../context/WishlistContext";
-
-// // styles for links
-// const StyledLink = styled(NavLink)`
-//   border-bottom: transparent solid 3px;
-//   transition: ${(props) => props.theme.transition};
-
-//   &:hover {
-//       border-bottom-color: var(--button-hover);
-//   }
-//   &.active {
-//     border-bottom-color: var(--button-hover);
-
-//   }
-
-//   @media (max-width: 991.98px) {  /* Medium screens and below */
-//     border-bottom: none;
-
-//     &:hover {
-//       padding-left: 10px;
-//     }
-//   }
-// `;
-
-// const NavBar = () => {
-
-//   const navigate = useNavigate()
-//   const { isAdmin, isAuthenticated, logout } = useContext(AuthContext);
-//   const { totalItems } = useContext(CartContext);
-//   const { total } = useContext(WishlistContext);
-
-//   return (
-//     <nav className="navbar navbar-expand-lg ">
-//       <div className="container lg-d-flex ">
-
-//         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-//           <ul className="navbar-nav mb-lg-0">
-//             <li className="nav-item me-2">
-//               <StyledLink className="nav-link" to='/matteress'>
-//                 Matterees
-//               </StyledLink>
-//             </li>
-//             <li className="nav-item me-2">
-//               <StyledLink className="nav-link" to='/'>
-//               {/* /about */}
-//                 BedRoom
-//               </StyledLink>
-//             </li>
-//             <li className="nav-item me-2">
-//               <StyledLink className="nav-link" to='# '>
-//               {/* /products */}
-//                 Zense
-//               </StyledLink>
-//             </li>
-//             <li className="nav-item me-2">
-//               <StyledLink className="nav-link" to='#'>
-//               {/* /contact */}
-//                 Contact
-//               </StyledLink>
-//             </li>
-
-//           </ul>
-
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default NavBar;
-
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCartShopping,
-  faRightFromBracket,
-  faUserPlus,
-} from "@fortawesome/free-solid-svg-icons";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
+
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
+import { Row , Col  } from "react-bootstrap";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import "./../Css-Pages/Navbr.css";
 // styles for links
+
 const StyledLink = styled(NavLink)`
   border-bottom: transparent solid 3px;
   transition: ${(props) => props.theme.transition};
@@ -115,16 +32,48 @@ const StyledLink = styled(NavLink)`
     }
   }
 `;
+const SearchContainer = styled.div`
+  width: 270px;
+  margin: 0 auto;
+  position: relative;
+  text-align: center;
+`;
+
+const StyledInput = styled.input`
+  padding: 0.5rem 1rem 0.5rem 3rem;
+  // outline: 1px solid transparent;
+  outline: 1px solid var(--button-hover);
+  // border: 1px solid ${(props) => props.theme.borderColor};
+  border: 1px solid var(--button-hover);
+  border-radius: ${(props) => props.theme.radius};
+  margin-right: 10px;
+  width: 100%;
+
+  &:focus {
+    outline: 1px solid ${(props) => props.theme.borderColor};
+    border-radius: ${(props) => props.theme.radius};
+  }
+`;
+
+const SearchIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  left: 20px;
+  top: 13px;
+  color: ${(props) => props.theme.mutedTextColor};
+`;
 
 const NavBar1 = () => {
+  const [query, setQuery] = useState("");
   const navigate = useNavigate();
   const { isAdmin, isAuthenticated, logout } = useContext(AuthContext);
   const { totalItems } = useContext(CartContext);
   const { total } = useContext(WishlistContext);
 
   return (
-    <nav className="navbar navbar-expand-lg">
+    <nav className="navbar navbar-expand-lg p-0"> 
       <div className="container lg-d-flex">
+        {/* <Row>
+      <Col md={8} sm={12}> */}
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mb-lg-0">
             {/* Mattress Dropdown */}
@@ -147,7 +96,7 @@ const NavBar1 = () => {
                   </Link>
                   <ul className="dropdown-menu">
                     <li>
-                      <Link className="dropdown-item" to="#">
+                      <Link className="dropdown-item" to="/products/3">
                         Ortho premium Mattress
                       </Link>
                     </li>
@@ -381,15 +330,11 @@ const NavBar1 = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Sofa & Recliners
+               Beds & Head Boards
               </StyledLink>
               <ul className="dropdown-menu" aria-labelledby="SofaDropdown">
                 {/* Submenu Items */}
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Beds & Head Boards
-                  </Link>
-                </li>
+             
 
                 <li className="dropdown-submenu">
                   <Link className="dropdown-item" to="#">
@@ -414,18 +359,175 @@ const NavBar1 = () => {
                 </li>
               </ul>
             </li>
-            <li className="nav-item me-3">
-              <StyledLink className="nav-link" to="#">
+            <li className="nav-item dropdown me-3">
+              <StyledLink
+                className="nav-link dropdown-toggle"
+                to="#"
+                id="SofaDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 Beddings
               </StyledLink>
+              <ul className="dropdown-menu" aria-labelledby="SofaDropdown">
+                {/* Submenu Items */}
+                <li>
+                  <Link className="dropdown-item" to="#">
+                    Mattress Protectors
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="#">
+                    Pillow Protectors
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="#">
+                    Comforters
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="#">
+                    Dohar
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="#">
+                    Duvet
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="#">
+                    Duvet Covers
+                  </Link>
+                </li>
+
+                <li className="dropdown-submenu">
+                  <Link className="dropdown-item" to="#">
+                    Fitted Bedsheets
+                  </Link>
+                </li>
+                <li className="dropdown-submenu">
+                  <Link className="dropdown-item" to="#">
+                    Flat Bedsheets
+                  </Link>
+                </li>
+
+                <li>
+                  <Link className="dropdown-item" to="#">
+                    Pillow Cover
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="#">
+                    Kids Bedsheets
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="#">
+                    Blankets
+                  </Link>
+                </li>
+              </ul>
             </li>
-            <li className="nav-item me-3">
-              <StyledLink className="nav-link" to="#">
-                Pillows & Cushions
+            <li className="nav-item dropdown me-3">
+              <StyledLink
+                className="nav-link dropdown-toggle"
+                to="#"
+                id="SofaDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+               Pillow & Cushions
               </StyledLink>
+              <ul className="dropdown-menu" aria-labelledby="SofaDropdown">
+                {/* Submenu Items */}
+                <li className="dropdown-submenu">
+                  <Link className="dropdown-item dropdown-toggle" to="#">
+                  Sleeping Pillows
+                  </Link>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link className="dropdown-item" to="#">
+                      Fiber Pillows
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="#">
+                      Memory foam Pillows
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="#">
+                      Memory foam contour pillows
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="#">
+                      Latex Pillows
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="#">
+                      Latex contour pillows
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="#">
+                      Cool Gel Memory foam Pillow
+                      </Link>
+                    </li>
+                    
+                  </ul>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="#">
+                  Support Pillows
+                  </Link>
+                </li>
+                
+               
+
+                <li>
+                  <Link className="dropdown-item" to="#">
+                  Medicinal Pillows
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="#">
+                  Maternity and Baby Pillows
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="#">
+                  Cushions and Bolsters
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="#">
+                  Car Cushions
+                  </Link>
+                </li>
+              </ul>
             </li>
           </ul>
+          {/* <SearchContainer className="my-4">
+            <StyledInput
+              type="text"
+              placeholder="Search products"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <SearchIcon icon={faSearch} className="text-muted" />
+          </SearchContainer> */}
         </div>
+        {/* </Col>
+        <Col md={4} sm={12}> */}
+         
+        {/* </Col>
+        </Row> */}
       </div>
     </nav>
   );
