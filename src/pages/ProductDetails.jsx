@@ -18,84 +18,70 @@ import { Col, Row } from "react-bootstrap";
 import { Tabs } from "antd";
 import { Card } from "antd";
 import { height } from "@fortawesome/free-brands-svg-icons/fa42Group";
-import { Modal } from 'antd';
+import { Modal } from "antd";
 
 const card_help = {
   width: "100%",
   backgroundColor: "var(--bgColor)",
 };
 
-
 const SingleProductPage = () => {
   const { productID } = useParams();
   console.log("productID", productID);
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [products, setProducts] = useState([
-    {
-      images: [img1, img2, img3],
-      title: "SOFA",
-      id: "1",
-      price: "5000",
-      discountPrice: "4000",
-      description: "Comfortable Sofa",
-      LongDesc:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-      offer: "50",
-      quantity_stock: "5",
-    },
-    {
-      images: [img1, img2, img3],
-      title: "chair",
-      id: "3",
-      price: "5000",
-      discountPrice: "4000",
-      description: "Comfortable Chair",
-      LongDesc:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-      offer: "50",
-      quantity_stock: "5",
-    },
-    {
-      images: [img1, img2, img3],
-      title: "Bed",
-      id: "4",
-      price: "5000",
-      discountPrice: "4000",
-      description: "Comfortable Sofa",
-      LongDesc:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-      offer: "80",
-      quantity_stock: "5",
-    },
-    {
-      images: [img1, img2, img3],
-      title: "Bed4",
-      id: "2",
-      price: "5000",
-      discountPrice: "4000",
-      LongDesc:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-      description: "Comfortable Sofa",
-      offer: "20",
-      quantity_stock: "5",
-    },
-    {
-      images: [img1, img2, img3],
-      title: "5Bed",
-      id: "5",
-      price: "55000",
-      discountPrice: "54000",
-      description: "Comfortable Sofa",
-      LongDesc:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-      offer: "520",
-      quantity_stock: "5",
-    },
-  ]);
+  const[images ,setimages]=useState([img1, img2, img3])
+  // const [products, setProducts] = useState([
+  //   {
+  //     images: [img1, img2, img3],
+  //     title: "chair",
+  //     id: "3",
+  //     price: "5000",
+  //     discountPrice: "4000",
+  //     description: "Comfortable Chair",
+  //     LongDesc:
+  //       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
+  //     offer: "50",
+  //     quantity_stock: "5",
+  //   },
+  //   {
+  //     images: [img1, img2, img3],
+  //     title: "Bed",
+  //     id: "4",
+  //     price: "5000",
+  //     discountPrice: "4000",
+  //     description: "Comfortable Sofa",
+  //     LongDesc:
+  //       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
+  //     offer: "80",
+  //     quantity_stock: "5",
+  //   },
+  //   {
+  //     images: [img1, img2, img3],
+  //     title: "Bed4",
+  //     id: "2",
+  //     price: "5000",
+  //     discountPrice: "4000",
+  //     LongDesc:
+  //       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
+  //     description: "Comfortable Sofa",
+  //     offer: "20",
+  //     quantity_stock: "5",
+  //   },
+  //   {
+  //     images: [img1, img2, img3],
+  //     title: "5Bed",
+  //     id: "5",
+  //     price: "55000",
+  //     discountPrice: "54000",
+  //     description: "Comfortable Sofa",
+  //     LongDesc:
+  //       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
+  //     offer: "520",
+  //     quantity_stock: "5",
+  //   },
+  // ]);
 
-
-  console.log("product", product);
   const [quantity, setQuantity] = useState(1);
   const [subTotal, setSubTotal] = useState(0);
   const { addToCart } = useContext(CartContext);
@@ -103,7 +89,6 @@ const SingleProductPage = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
-    alert("trifgger")
     setIsModalOpen(true);
   };
   const handleOk = () => {
@@ -113,37 +98,24 @@ const SingleProductPage = () => {
     setIsModalOpen(false);
   };
   const navigate = useNavigate();
-
-
-  useEffect(() => {
-    // alert("triggered");
-    const filteredData = products.filter((e) => {
-      return e.id === productID; // Make sure to return the comparison result
-    });
-    console.log("filteredData", filteredData);
-    setProduct(filteredData[0]);
-    if (filteredData.length > 0) {
-      setSelectedImage(filteredData[0].images[0]); // Set the first image as the default
-    }
-  }, [productID, products]);
   const handleImageClick = (image) => {
     setSelectedImage(image);
   };
 
-  console.log("initalprodiict", products);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/products/${productID}`
+        );
+        setProduct(response.data);
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      }
+    };
 
-  // useEffect(() => {
-  //   const fetchProduct = async () => {
-  //     try {
-  //       const response = await axios.get(`http://localhost:3000/products/${productID}`);
-  //       setProduct(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching product details:', error);
-  //     }
-  //   };
-
-  //   fetchProduct();
-  // }, [productID]);
+    fetchProduct();
+  }, [productID]);
   useEffect(() => {
     setSubTotal(quantity * product?.price);
   }, [quantity, product]);
@@ -152,15 +124,13 @@ const SingleProductPage = () => {
     setQuantity(newQuantity);
   };
 
-  console.log(productID);
-
   if (!product) {
     return <Spinner />;
   }
 
   const {
     id,
-    images,
+    // images,
     title,
     price,
     discountPrice,
@@ -204,7 +174,9 @@ const SingleProductPage = () => {
         <div className="col-md-5 col-sm-12 content">
           <h1>{title}</h1>
           <h5 className="price me-2 d-inline">₹{price}</h5>
-          {discountPrice && <h6 className="old-price d-inline">₹{discountPrice} </h6>}
+          {discountPrice && (
+            <h6 className="old-price d-inline">₹{discountPrice} </h6>
+          )}
           <p className="desc my-3">{description}</p>
           <div className="info">
             <p>
@@ -615,72 +587,79 @@ const SingleProductPage = () => {
           <h3>Need Help In Buying?</h3>
         </center>
         <div>
-        <Row className="need-help-card mb-5">
-  <Col sm={12} md={4}>
-    <Card style={card_help} className="d-flex align-items-center justify-content-center">
-      <Row className="w-100">
-        <Col md={9} style={{marginTop: "3%"}}>
-          <b>Search Another Product</b>
-        </Col>
-        <Col md={3}>
-          <img
-            src="https://wakefitdev.gumlet.io/consumer-react/pdp/help-in-buy/help-mattress-logo.svg"
-            alt=""
-          />
-        </Col>
-      </Row>
-    </Card>
-  </Col>
-  <Col  md={4}>
-    <Card style={card_help} className="d-flex align-items-center justify-content-center">
-      <Row className="w-100">
-        <Col md={9} style={{marginTop: "9%"}}>
-          <b>
-            <p>Contact Us</p>
-          </b>
-        </Col>
-        <Col md={3}>
-          <img
-            src="https://wakefitdev.gumlet.io/consumer-react/pdp/help-in-buy/help-live-shop-logo.svg"
-            alt="contact-us"
-          />
-        </Col>
-      </Row>
-    </Card>
-  </Col>
-  <Col  md={4}>
-    <Card style={card_help} className="d-flex align-items-center justify-content-center">
-      <Row className="w-100">
-        <Col md={9} style={{marginTop: "9%"}}>
-          <b>
-            <p>Chat With Us</p>
-          </b>
-        </Col>
-        <Col md={3}>
-          <img
-            src="https://wakefitdev.gumlet.io/consumer-react/pdp/help-in-buy/help-chat-logo.svg"
-            alt="Chat-with-us"
-          />
-        </Col>
-      </Row>
-    </Card>
-  </Col>
-</Row>
-
+          <Row className="need-help-card mb-5">
+            <Col sm={12} md={4}>
+              <Card
+                style={card_help}
+                className="d-flex align-items-center justify-content-center"
+              >
+                <Row className="w-100">
+                  <Col md={9} style={{ marginTop: "3%" }}>
+                    <b>Search Another Product</b>
+                  </Col>
+                  <Col md={3}>
+                    <img
+                      src="https://wakefitdev.gumlet.io/consumer-react/pdp/help-in-buy/help-mattress-logo.svg"
+                      alt=""
+                    />
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card
+                style={card_help}
+                className="d-flex align-items-center justify-content-center"
+              >
+                <Row className="w-100">
+                  <Col md={9} style={{ marginTop: "9%" }}>
+                    <b>
+                      <p>Contact Us</p>
+                    </b>
+                  </Col>
+                  <Col md={3}>
+                    <img
+                      src="https://wakefitdev.gumlet.io/consumer-react/pdp/help-in-buy/help-live-shop-logo.svg"
+                      alt="contact-us"
+                    />
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card
+                style={card_help}
+                className="d-flex align-items-center justify-content-center"
+              >
+                <Row className="w-100">
+                  <Col md={9} style={{ marginTop: "9%" }}>
+                    <b>
+                      <p>Chat With Us</p>
+                    </b>
+                  </Col>
+                  <Col md={3}>
+                    <img
+                      src="https://wakefitdev.gumlet.io/consumer-react/pdp/help-in-buy/help-chat-logo.svg"
+                      alt="Chat-with-us"
+                    />
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+          </Row>
         </div>
-        <div >
-      
-     
-      
-     
-        </div>
+        <div></div>
       </div>
-      <button type="primary" onClick={()=>showModal()}>
-        Open Modal 
+      <button type="primary" onClick={() => showModal()}>
+        Open Modal
       </button>
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
         <p>Some contents...</p>
-       
       </Modal>
     </Wrapper>
   );
