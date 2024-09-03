@@ -18,7 +18,6 @@ import img3 from "../assets/bed.jpg";
 import { Col, Row } from "react-bootstrap";
 import { Tabs } from "antd";
 import { Card } from "antd";
-import { height } from "@fortawesome/free-brands-svg-icons/fa42Group";
 import { Modal } from "react-bootstrap";
 import { useState } from "react";
 import { Radio } from "antd";
@@ -36,83 +35,58 @@ const SingleProductPage = () => {
   console.log("productID", productID);
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [products, setProducts] = useState([
-    {
-      images: [img1, img2, img3],
-      title: "chair",
-      id: "3",
-      price: "5000",
-      discountPrice: "4000",
-      description: "Comfortable Chair",
-      LongDesc:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-      offer: "50",
-      quantity_stock: "5",
-      specification: [
-        {
-          product_Details: {
-            feel: "Medium Firm",
-            cover_Type: "AeroTex Knit Fabric (Space Grey)",
-            cover_Material: "Removable zippered external cover",
-            matress_Type:
-              "ShapeSense™ Ortho Memory Foam Responsive Support Foam High Density Foam Base Wakefit’s TruDensity™ technology ensures that every layer has 100% Pure Foam which won’t sag or lose its shape over time",
-            Usability:
-              "Recommended to use with the memory foam side facing up, but can be used on either side.",
-          },
-          product_Dimension: {
-            thickness:
-              "If even one of the sleepers weighs over 80kg, then you require a mattress thickness of 8 inches (20.32 cm) If both sleepers weigh less than 80 kg and one of the sleepers weighs between 60-80 kg, then you require a mattress thickness of 6 inches (15.24 cm) If both sleepers weigh less than 60 kg, then you require a mattress thickness of 5 inches (12.7 cm)",
-            dimensions:
-              "72x36x6 inch | 1.83m x 91cm x 15cm (Single) All roll packed mattresses may take upto 72 hours to regain their original size with +/- 15mm deviation in length, width & height",
-          },
-          product_Policies: {
-            Warranty: "10 years manufacturer warranty",
-            Shipping: "Direct from Factory/Warehouse",
-            available_Offers: "0% (No Cost) EMI",
-            trial: "Risk free returns.",
-          },
-        },
-      ],
-    },
-    {
-      images: [img1, img2, img3],
-      title: "Bed",
-      id: "4",
-      price: "5000",
-      discountPrice: "4000",
-      description: "Comfortable Sofa",
-      LongDesc:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-      offer: "80",
-      quantity_stock: "5",
-    },
-    {
-      images: [img1, img2, img3],
-      title: "Bed4",
-      id: "2",
-      price: "5000",
-      discountPrice: "4000",
-      LongDesc:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-      description: "Comfortable Sofa",
-      offer: "20",
-      quantity_stock: "5",
-    },
-    {
-      images: [img1, img2, img3],
-      title: "5Bed",
-      id: "5",
-      price: "55000",
-      discountPrice: "54000",
-      description: "Comfortable Sofa",
-      LongDesc:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-      offer: "520",
-      quantity_stock: "5",
-    },
-  ]);
+  const[images ,setimages]=useState([img1, img2, img3])
+  // const [products, setProducts] = useState([
+  //   {
+  //     images: [img1, img2, img3],
+  //     title: "chair",
+  //     id: "3",
+  //     price: "5000",
+  //     discountPrice: "4000",
+  //     description: "Comfortable Chair",
+  //     LongDesc:
+  //       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
+  //     offer: "50",
+  //     quantity_stock: "5",
+  //   },
+  //   {
+  //     images: [img1, img2, img3],
+  //     title: "Bed",
+  //     id: "4",
+  //     price: "5000",
+  //     discountPrice: "4000",
+  //     description: "Comfortable Sofa",
+  //     LongDesc:
+  //       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
+  //     offer: "80",
+  //     quantity_stock: "5",
+  //   },
+  //   {
+  //     images: [img1, img2, img3],
+  //     title: "Bed4",
+  //     id: "2",
+  //     price: "5000",
+  //     discountPrice: "4000",
+  //     LongDesc:
+  //       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
+  //     description: "Comfortable Sofa",
+  //     offer: "20",
+  //     quantity_stock: "5",
+  //   },
+  //   {
+  //     images: [img1, img2, img3],
+  //     title: "5Bed",
+  //     id: "5",
+  //     price: "55000",
+  //     discountPrice: "54000",
+  //     description: "Comfortable Sofa",
+  //     LongDesc:
+  //       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
+  //     offer: "520",
+  //     quantity_stock: "5",
+  //   },
+  // ]);
   const [show, setShow] = useState(false);
-  const [showVideo, setShowVideo] = useState(false);
   const [unit, setUnit] = useState("in");
   const [category, setCategory] = useState("Single");
   const [selectedDimension, setSelectedDimension] = useState("");
@@ -240,42 +214,28 @@ const SingleProductPage = () => {
     border: " 1px solid #7fafcb",
   };
 
-  console.log("step1", products);
   const [quantity, setQuantity] = useState(1);
   const [subTotal, setSubTotal] = useState(0);
   const { addToCart } = useContext(CartContext);
   const { addToWishlist } = useContext(WishlistContext);
   const { isAuthenticated } = useContext(AuthContext);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  // const showModal = () => {
-  //   alert("trifgger");
-  //   setIsModalOpen(true);
-  // };
-  // const handleOk = () => {
-  //   setIsModalOpen(false);
-  // };
-  // const handleCancel = () => {
-  //   setIsModalOpen(false);
-  // };
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    // alert("triggered");
-    const filteredData = products.filter((e) => {
-      return e.id; // Make sure to return the comparison result
-      // console.log('step2', e.id)
-    });
-    console.log("filteredData", filteredData);
-    setProduct(filteredData[0]);
-    if (filteredData.length > 0) {
-      setSelectedImage(filteredData[0].images[0]); // Set the first image as the default
-    }
-  }, [productID, products]);
+  const navigate = useNavigate();
   const handleImageClick = (image) => {
     setSelectedImage(image);
   };
 
-  console.log("initalprodiict", products);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/products/${productID}`
+        );
+        setProduct(response.data);
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      }
+    };
 
   // useEffect(() => {
   //   const fetchProduct = async () => {
@@ -298,8 +258,8 @@ const SingleProductPage = () => {
   // }
   //   };
 
-  //   fetchProduct();
-  // }, [productID]);
+    fetchProduct();
+  }, [productID]);
   useEffect(() => {
     setSubTotal(quantity * product?.price);
   }, [quantity, product]);
@@ -308,15 +268,13 @@ const SingleProductPage = () => {
     setQuantity(newQuantity);
   };
 
-  console.log(productID);
-
   if (!product) {
     return <Spinner />;
   }
 
   const {
     id,
-    images,
+    // images,
     title,
     price,
     discountPrice,
@@ -525,7 +483,7 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {
-                                products[0].specification[0].product_Details
+                                product[0].specification[0].product_Details
                                   .feel
                               }
                             </p>
@@ -549,7 +507,7 @@ const SingleProductPage = () => {
                             <p>
                               <p>
                                 {
-                                  products[0].specification[0].product_Details
+                                  product[0].specification[0].product_Details
                                     .cover_Type
                                 }{" "}
                               </p>
@@ -575,7 +533,7 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {
-                                products[0].specification[0].product_Details
+                                product[0].specification[0].product_Details
                                   .cover_Material
                               }{" "}
                             </p>
@@ -598,7 +556,7 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {
-                                products[0].specification[0].product_Details
+                                product[0].specification[0].product_Details
                                   .Usability
                               }{" "}
                             </p>
@@ -623,7 +581,7 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {
-                                products[0].specification[0].product_Details
+                                product[0].specification[0].product_Details
                                   .cover_Type
                               }{" "}
                             </p>
@@ -679,7 +637,7 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {
-                                products[0].specification[0].product_Dimension
+                                product[0].specification[0].product_Dimension
                                   .thickness
                               }{" "}
                             </p>
@@ -705,7 +663,7 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {
-                                products[0].specification[0].product_Dimension
+                                product[0].specification[0].product_Dimension
                                   .dimensions
                               }{" "}
                             </p>
@@ -740,7 +698,7 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {
-                                products[0].specification[0].product_Policies
+                                product[0].specification[0].product_Policies
                                   .Warranty
                               }{" "}
                             </p>
@@ -763,7 +721,7 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {
-                                products[0].specification[0].product_Policies
+                                product[0].specification[0].product_Policies
                                   .trial
                               }{" "}
                             </p>
@@ -788,7 +746,7 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {
-                                products[0].specification[0].product_Policies
+                                product[0].specification[0].product_Policies
                                   .Shipping
                               }{" "}
                             </p>
@@ -834,7 +792,7 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {
-                                products[0].specification[0].product_Policies
+                                product[0].specification[0].product_Policies
                                   .available_Offers
                               }{" "}
                             </p>
@@ -936,6 +894,7 @@ const SingleProductPage = () => {
             </Col>
           </Row>
         </div>
+        <div></div>
       </div>
 
       <Modal show={show} onHide={handleClose} size="lg" centered>
@@ -990,7 +949,7 @@ const SingleProductPage = () => {
                     <button
                       key={cat}
                       id={category - `${cat}`}
-                      variant="outline-primary"
+                     
                       onClick={() => handleCategoryChange(cat)}
                       className="me-2 mb-2"
                       style={category === cat ? selectedStyle : unselectedStyle}
