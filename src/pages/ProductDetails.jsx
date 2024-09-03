@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -6,6 +6,7 @@ import Spinner from "../components/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { IoMdClose } from "react-icons/io";
 import Button from "../components/Button";
 import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
@@ -18,13 +19,17 @@ import { Col, Row } from "react-bootstrap";
 import { Tabs } from "antd";
 import { Card } from "antd";
 import { height } from "@fortawesome/free-brands-svg-icons/fa42Group";
-import { Modal } from 'antd';
+import { Modal } from "react-bootstrap";
+import { useState } from "react";
+import { Radio } from "antd";
+import { ImYoutube } from "react-icons/im";
+import { IoIosArrowForward } from "react-icons/io";
+const { Group: RadioGroup, Button: RadioButton } = Radio;
 
 const card_help = {
   width: "100%",
   backgroundColor: "var(--bgColor)",
 };
-
 
 const SingleProductPage = () => {
   const { productID } = useParams();
@@ -32,18 +37,6 @@ const SingleProductPage = () => {
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [products, setProducts] = useState([
-    {
-      images: [img1, img2, img3],
-      title: "SOFA",
-      id: "1",
-      price: "5000",
-      discountPrice: "4000",
-      description: "Comfortable Sofa",
-      LongDesc:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-      offer: "50",
-      quantity_stock: "5",
-    },
     {
       images: [img1, img2, img3],
       title: "chair",
@@ -55,6 +48,31 @@ const SingleProductPage = () => {
         "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
       offer: "50",
       quantity_stock: "5",
+      specification: [
+        {
+          product_Details: {
+            feel: "Medium Firm",
+            cover_Type: "AeroTex Knit Fabric (Space Grey)",
+            cover_Material: "Removable zippered external cover",
+            matress_Type:
+              "ShapeSense™ Ortho Memory Foam Responsive Support Foam High Density Foam Base Wakefit’s TruDensity™ technology ensures that every layer has 100% Pure Foam which won’t sag or lose its shape over time",
+            Usability:
+              "Recommended to use with the memory foam side facing up, but can be used on either side.",
+          },
+          product_Dimension: {
+            thickness:
+              "If even one of the sleepers weighs over 80kg, then you require a mattress thickness of 8 inches (20.32 cm) If both sleepers weigh less than 80 kg and one of the sleepers weighs between 60-80 kg, then you require a mattress thickness of 6 inches (15.24 cm) If both sleepers weigh less than 60 kg, then you require a mattress thickness of 5 inches (12.7 cm)",
+            dimensions:
+              "72x36x6 inch | 1.83m x 91cm x 15cm (Single) All roll packed mattresses may take upto 72 hours to regain their original size with +/- 15mm deviation in length, width & height",
+          },
+          product_Policies: {
+            Warranty: "10 years manufacturer warranty",
+            Shipping: "Direct from Factory/Warehouse",
+            available_Offers: "0% (No Cost) EMI",
+            trial: "Risk free returns.",
+          },
+        },
+      ],
     },
     {
       images: [img1, img2, img3],
@@ -93,32 +111,159 @@ const SingleProductPage = () => {
       quantity_stock: "5",
     },
   ]);
+  const [show, setShow] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
+  const [unit, setUnit] = useState("in");
+  const [category, setCategory] = useState("Single");
+  const [selectedDimension, setSelectedDimension] = useState("");
+  const [thickness, setThickness] = useState("6");
+  const [customLength, setCustomLength] = useState("");
+  const [customBreadth, setCustomBreadth] = useState("");
+  const [hover, setHover] = useState(false);
+  const [videoVisible, setVideoVisible] = useState(false);
+  console.log("show", show);
+  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setShow(false);
+    resetFilters();
+  };
 
+  const handleShowVideo = () => setVideoVisible(true);
+  const handleCloseVideo = () => setVideoVisible(false); // Hide video
+  const resetFilters = () => {
+    // setCategory("");
+    setSelectedDimension("");
+    setCustomLength("");
+    setCustomBreadth("");
+    setThickness("");
+  };
 
-  console.log("product", product);
+  const handleUnitChange = (e) => {
+    setUnit(e.target.value);
+    setSelectedDimension(""); // Reset dimension on unit change
+  };
+
+  const handleCategoryChange = (value) => {
+    setCategory(value);
+    setSelectedDimension(""); // Reset dimension on category change
+  };
+
+  const handleDimensionChange = (value) => {
+    setSelectedDimension(value);
+  };
+
+  const handleThicknessChange = (value) => {
+    setThickness(value);
+  };
+
+  const handleCustomSizeChange = (e, type) => {
+    if (type === "length") {
+      setCustomLength(e.target.value);
+    } else {
+      setCustomBreadth(e.target.value);
+    }
+  };
+
+  const handleConfirmVariant = () => {
+    console.log(
+      "choose1",
+      category,
+      selectedDimension,
+      thickness,
+      customLength,
+      customBreadth
+    );
+
+    const selectedSize =
+      category === "Custom Size"
+        ? `${customLength} x ${customBreadth}`
+        : selectedDimension;
+    console.log("Selected Size:", selectedSize);
+    // handleClose();
+  };
+
+  const dimensions = {
+    Single: {
+      in: ['72" x 36"', '75" x 42"', '78" x 30"', '80" x 35"', '84" x 36"'],
+      ft: ["6' x 3'", "6.5' x 3.5'", "7' x 2.5'", "8' x 3'", "8.5' x 3.5'"],
+      cm: [
+        "183 x 91 cm",
+        "190 x 107 cm",
+        "198 x 76 cm",
+        "203 x 89 cm",
+        "213 x 91 cm",
+      ],
+    },
+    Diwan: {
+      in: ['70" x 34"', '72" x 30"', '75" x 35"', '78" x 36"'],
+      ft: ["5.8' x 2.8'", "6' x 2.5'", "6.2' x 2.9'", "6.5' x 3'"],
+      cm: ["178 x 86 cm", "183 x 76 cm", "190 x 89 cm", "198 x 91 cm"],
+    },
+    Queen: {
+      in: ['75" x 60"', '78" x 60"', '80" x 62"', '84" x 64"'],
+      ft: ["6.5' x 5'", "6.8' x 5'", "7' x 5.2'", "7.2' x 5.4'"],
+      cm: ["190 x 152 cm", "198 x 152 cm", "203 x 157 cm", "213 x 162 cm"],
+    },
+    King: {
+      in: ['80" x 76"', '84" x 72"', '88" x 80"', '90" x 82"'],
+      ft: ["6.8' x 6.3'", "7' x 6'", "7.4' x 6.5'", "7.5' x 6.8'"],
+      cm: ["203 x 193 cm", "213 x 183 cm", "224 x 203 cm", "229 x 208 cm"],
+    },
+    "Custom Size": {
+      in: [],
+      ft: [],
+      cm: [],
+    },
+  };
+
+  const thicknessOptions = {
+    in: ['5"', '6"', '8"', '10"'],
+    ft: ["0.5'", "0.6'", "0.8'", "0.10'"],
+    cm: ["12.7 cm", "15.2 cm", "20.3 cm", "25.4 cm"],
+  };
+
+  const selectedStyle = {
+    color: "white",
+    backgroundColor: "#7fafcb",
+    border: "none",
+  };
+
+  const unselectedStyle = {
+    color: "#7fafcb",
+    backgroundColor: "transparent",
+    border: "1px solid #7fafcb",
+  };
+
+  const buttonStyle = {
+    backgroundColor: hover ? "#7fafcb" : "white",
+    color: hover ? "white" : "#7fafcb",
+    border: " 1px solid #7fafcb",
+  };
+
+  console.log("step1", products);
   const [quantity, setQuantity] = useState(1);
   const [subTotal, setSubTotal] = useState(0);
   const { addToCart } = useContext(CartContext);
   const { addToWishlist } = useContext(WishlistContext);
   const { isAuthenticated } = useContext(AuthContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    alert("trifgger")
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const showModal = () => {
+  //   alert("trifgger");
+  //   setIsModalOpen(true);
+  // };
+  // const handleOk = () => {
+  //   setIsModalOpen(false);
+  // };
+  // const handleCancel = () => {
+  //   setIsModalOpen(false);
+  // };
   const navigate = useNavigate();
-
 
   useEffect(() => {
     // alert("triggered");
     const filteredData = products.filter((e) => {
-      return e.id === productID; // Make sure to return the comparison result
+      return e.id; // Make sure to return the comparison result
+      // console.log('step2', e.id)
     });
     console.log("filteredData", filteredData);
     setProduct(filteredData[0]);
@@ -135,11 +280,22 @@ const SingleProductPage = () => {
   // useEffect(() => {
   //   const fetchProduct = async () => {
   //     try {
-  //       const response = await axios.get(`http://localhost:3000/products/${productID}`);
-  //       setProduct(response.data);
+  //       const response = await axios.get(http:/localhost:5000/products/);
+  //       setProducts(response.data);
   //     } catch (error) {
   //       console.error('Error fetching product details:', error);
   //     }
+
+  //   try {
+  //     const response = await axios.get('http://localhost:5000/products/');
+  //     if (response && response.data) {
+  //         setProducts(response.data);
+  //     } else {
+  //         console.error('No data received:', response);
+  //     }
+  // } catch (error) {
+  //     console.error('Error fetching product details:', error);
+  // }
   //   };
 
   //   fetchProduct();
@@ -165,7 +321,7 @@ const SingleProductPage = () => {
     price,
     discountPrice,
     description,
-    category,
+    sofa_Category,
     LongDesc,
     quantity_stock,
   } = product;
@@ -179,7 +335,7 @@ const SingleProductPage = () => {
       <div className="product-center row">
         <div className="col-md-2">
           <div className="image-album mb-2">
-            {images.map((img, index) => (
+            {images?.map((img, index) => (
               <img
                 style={{ cursor: "pointer" }}
                 key={index}
@@ -204,13 +360,16 @@ const SingleProductPage = () => {
         <div className="col-md-5 col-sm-12 content">
           <h1>{title}</h1>
           <h5 className="price me-2 d-inline">₹{price}</h5>
-          {discountPrice && <h6 className="old-price d-inline">₹{discountPrice} </h6>}
+          {discountPrice && (
+            <h6 className="old-price d-inline">₹{discountPrice} </h6>
+          )}
           <p className="desc my-3">{description}</p>
           <div className="info">
             <p>
               <span>Category : </span>
-              {category}
+              {sofa_Category}
             </p>
+
             <p>
               <span>Descrpition : </span>
               {LongDesc}
@@ -219,6 +378,72 @@ const SingleProductPage = () => {
               <span>Available : </span>
               {quantity_stock > 0 ? "In Stock" : "Out of Stock"}
             </p>
+          </div>
+          <button
+            className="chooseVarientButton mb-2"
+            onClick={() => handleShow()}
+            style={{
+              backgroundColor: "white",
+              color: "var(--button-hover)",
+              border: "2px solid #7fafcb",
+              padding: "8px 16px",
+              transition: "0.3s ease-in-out",
+              borderRadius: "0.375rem ",
+            }}
+          >
+            Choose Varity
+          </button>
+          <div className="chooseVarientButton">
+            {/* Choose Varient  Modal */}
+
+            {/* Centered Video Display */}
+            {videoVisible && (
+              <div
+                style={{
+                  position: "fixed",
+                  top: "55%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  zIndex: 1150,
+                  background: "white",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  borderRadius: "20px",
+                  boxShadow: "0 0 15px rgba(0,0,0,0.3)",
+                  width: "50%",
+                }}
+              >
+                {/* Close Button */}
+                <button
+                  onClick={handleCloseVideo}
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    background: "transparent",
+                    border: "none",
+                    fontSize: "40px",
+                    cursor: "pointer",
+                    color: "white",
+                  }}
+                >
+                  <IoMdClose />
+                </button>
+                <div className="embed-responsive embed-responsive-16by9">
+                  <iframe
+                    className="embed-responsive-item"
+                    src="https://www.youtube.com/embed/your_video_id"
+                    allowFullScreen
+                    title="How to Measure Video"
+                    style={{
+                      width: "100%",
+                      height: "450px",
+                      borderRadius: "20px",
+                    }}
+                  ></iframe>
+                </div>
+              </div>
+            )}
           </div>
           <div className="quantity-toggle">
             <button
@@ -298,7 +523,12 @@ const SingleProductPage = () => {
                             <p>Mattress Feel: </p>{" "}
                           </div>
                           <div>
-                            <p>Medium Firm</p>
+                            <p>
+                              {
+                                products[0].specification[0].product_Details
+                                  .feel
+                              }
+                            </p>
                           </div>
                         </Col>
                       </Row>
@@ -317,10 +547,12 @@ const SingleProductPage = () => {
                           </div>
                           <div>
                             <p>
-                              ShapeSense™ Ortho Memory Foam Responsive Support
-                              Foam High Density Foam Base Wakefit’s TruDensity™
-                              technology ensures that every layer has 100% Pure
-                              Foam which won’t sag or lose its shape over time
+                              <p>
+                                {
+                                  products[0].specification[0].product_Details
+                                    .cover_Type
+                                }{" "}
+                              </p>
                             </p>
                           </div>
                         </Col>
@@ -341,7 +573,12 @@ const SingleProductPage = () => {
                             <p>Cover Material:</p>{" "}
                           </div>
                           <div>
-                            <p>AeroTex Knit Fabric (Space Grey)</p>
+                            <p>
+                              {
+                                products[0].specification[0].product_Details
+                                  .cover_Material
+                              }{" "}
+                            </p>
                           </div>
                         </Col>
                       </Row>
@@ -360,8 +597,10 @@ const SingleProductPage = () => {
                           </div>
                           <div>
                             <p>
-                              Recommended to use with the memory foam side
-                              facing up, but can be used on either side.
+                              {
+                                products[0].specification[0].product_Details
+                                  .Usability
+                              }{" "}
                             </p>
                           </div>
                         </Col>
@@ -382,7 +621,12 @@ const SingleProductPage = () => {
                             <p>Cover Type: </p>{" "}
                           </div>
                           <div>
-                            <p>Removable zippered external cover</p>
+                            <p>
+                              {
+                                products[0].specification[0].product_Details
+                                  .cover_Type
+                              }{" "}
+                            </p>
                           </div>
                         </Col>
                       </Row>
@@ -434,14 +678,10 @@ const SingleProductPage = () => {
                           </div>
                           <div>
                             <p>
-                              If even one of the sleepers weighs over 80kg, then
-                              you require a mattress thickness of 8 inches
-                              (20.32 cm) If both sleepers weigh less than 80 kg
-                              and one of the sleepers weighs between 60-80 kg,
-                              then you require a mattress thickness of 6 inches
-                              (15.24 cm) If both sleepers weigh less than 60 kg,
-                              then you require a mattress thickness of 5 inches
-                              (12.7 cm)
+                              {
+                                products[0].specification[0].product_Dimension
+                                  .thickness
+                              }{" "}
                             </p>
                           </div>
                         </Col>
@@ -464,10 +704,10 @@ const SingleProductPage = () => {
                           </div>
                           <div>
                             <p>
-                              72x36x6 inch | 1.83m x 91cm x 15cm (Single) All
-                              roll packed mattresses may take upto 72 hours to
-                              regain their original size with +/- 15mm deviation
-                              in length, width & height
+                              {
+                                products[0].specification[0].product_Dimension
+                                  .dimensions
+                              }{" "}
                             </p>
                           </div>
                         </Col>
@@ -498,7 +738,12 @@ const SingleProductPage = () => {
                             <p>Warranty:</p>{" "}
                           </div>
                           <div>
-                            <p>10 years manufacturer warranty</p>
+                            <p>
+                              {
+                                products[0].specification[0].product_Policies
+                                  .Warranty
+                              }{" "}
+                            </p>
                           </div>
                         </Col>
                       </Row>
@@ -516,7 +761,12 @@ const SingleProductPage = () => {
                             <p>100 days trial</p>{" "}
                           </div>
                           <div>
-                            <p>Risk free returns.</p>
+                            <p>
+                              {
+                                products[0].specification[0].product_Policies
+                                  .trial
+                              }{" "}
+                            </p>
                           </div>
                         </Col>
                       </Row>
@@ -536,7 +786,12 @@ const SingleProductPage = () => {
                             <p>Shipping:</p>{" "}
                           </div>
                           <div>
-                            <p>Direct from Factory/Warehouse</p>
+                            <p>
+                              {
+                                products[0].specification[0].product_Policies
+                                  .Shipping
+                              }{" "}
+                            </p>
                           </div>
                         </Col>
                       </Row>
@@ -577,7 +832,12 @@ const SingleProductPage = () => {
                             <p>Available Offers: </p>{" "}
                           </div>
                           <div>
-                            <p>0% (No Cost) EMI</p>
+                            <p>
+                              {
+                                products[0].specification[0].product_Policies
+                                  .available_Offers
+                              }{" "}
+                            </p>
                           </div>
                         </Col>
                       </Row>
@@ -615,72 +875,205 @@ const SingleProductPage = () => {
           <h3>Need Help In Buying?</h3>
         </center>
         <div>
-        <Row className="need-help-card mb-5">
-  <Col sm={12} md={4}>
-    <Card style={card_help} className="d-flex align-items-center justify-content-center">
-      <Row className="w-100">
-        <Col md={9} style={{marginTop: "3%"}}>
-          <b>Search Another Product</b>
-        </Col>
-        <Col md={3}>
-          <img
-            src="https://wakefitdev.gumlet.io/consumer-react/pdp/help-in-buy/help-mattress-logo.svg"
-            alt=""
-          />
-        </Col>
-      </Row>
-    </Card>
-  </Col>
-  <Col  md={4}>
-    <Card style={card_help} className="d-flex align-items-center justify-content-center">
-      <Row className="w-100">
-        <Col md={9} style={{marginTop: "9%"}}>
-          <b>
-            <p>Contact Us</p>
-          </b>
-        </Col>
-        <Col md={3}>
-          <img
-            src="https://wakefitdev.gumlet.io/consumer-react/pdp/help-in-buy/help-live-shop-logo.svg"
-            alt="contact-us"
-          />
-        </Col>
-      </Row>
-    </Card>
-  </Col>
-  <Col  md={4}>
-    <Card style={card_help} className="d-flex align-items-center justify-content-center">
-      <Row className="w-100">
-        <Col md={9} style={{marginTop: "9%"}}>
-          <b>
-            <p>Chat With Us</p>
-          </b>
-        </Col>
-        <Col md={3}>
-          <img
-            src="https://wakefitdev.gumlet.io/consumer-react/pdp/help-in-buy/help-chat-logo.svg"
-            alt="Chat-with-us"
-          />
-        </Col>
-      </Row>
-    </Card>
-  </Col>
-</Row>
-
-        </div>
-        <div >
-      
-     
-      
-     
+          <Row className="need-help-card mb-5">
+            <Col sm={12} md={4}>
+              <Card
+                style={card_help}
+                className="d-flex align-items-center justify-content-center"
+              >
+                <Row className="w-100">
+                  <Col md={9} style={{ marginTop: "3%" }}>
+                    <b>Search Another Product</b>
+                  </Col>
+                  <Col md={3}>
+                    <img
+                      src="https://wakefitdev.gumlet.io/consumer-react/pdp/help-in-buy/help-mattress-logo.svg"
+                      alt=""
+                    />
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card
+                style={card_help}
+                className="d-flex align-items-center justify-content-center"
+              >
+                <Row className="w-100">
+                  <Col md={9} style={{ marginTop: "9%" }}>
+                    <b>
+                      <p>Contact Us</p>
+                    </b>
+                  </Col>
+                  <Col md={3}>
+                    <img
+                      src="https://wakefitdev.gumlet.io/consumer-react/pdp/help-in-buy/help-live-shop-logo.svg"
+                      alt="contact-us"
+                    />
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card
+                style={card_help}
+                className="d-flex align-items-center justify-content-center"
+              >
+                <Row className="w-100">
+                  <Col md={9} style={{ marginTop: "9%" }}>
+                    <b>
+                      <p>Chat With Us</p>
+                    </b>
+                  </Col>
+                  <Col md={3}>
+                    <img
+                      src="https://wakefitdev.gumlet.io/consumer-react/pdp/help-in-buy/help-chat-logo.svg"
+                      alt="Chat-with-us"
+                    />
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+          </Row>
         </div>
       </div>
-      <button type="primary" onClick={()=>showModal()}>
-        Open Modal 
-      </button>
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <p>Some contents...</p>
-       
+
+      <Modal show={show} onHide={handleClose} size="lg" centered>
+        <Modal.Header closeButton className="d-flex justify-content-center">
+          <Modal.Title className="w-100 text-center">
+            <b>Choose a variant</b>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* Video Button */}
+          <button
+            // variant="primary"
+            className="w-100 d-flex  align-items-center"
+            onClick={handleShowVideo}
+            style={{
+              textDecoration: "none",
+              color: "black",
+              backgroundColor: "#dee5ec",
+              border: "none",
+            }}
+          >
+            <ImYoutube color="red" />
+            <span style={{ margin: "0 10px" }}>
+              Learn how to measure the right mattress size
+            </span>
+            <IoIosArrowForward style={{ marginLeft: "auto" }} />
+          </button>
+
+          {/* Unit Selection */}
+          <div className="mb-3">
+            <p>
+              <b>Sizes in:</b>
+            </p>
+            <RadioGroup
+              // defaultValue={unit}
+              size="large"
+              onChange={handleUnitChange}
+            >
+              <RadioButton value="in">in</RadioButton>
+              <RadioButton value="ft">ft</RadioButton>
+              <RadioButton value="cm">cm</RadioButton>
+            </RadioGroup>
+
+            {/* Category Selection */}
+            <div className="mb-3">
+              <p>
+                <b>Select Category</b>
+              </p>
+              <div className="d-flex flex-wrap">
+                {["Single", "Diwan", "Queen", "King", "Custom Size"].map(
+                  (cat) => (
+                    <button
+                      key={cat}
+                      id={category - `${cat}`}
+                      variant="outline-primary"
+                      onClick={() => handleCategoryChange(cat)}
+                      className="me-2 mb-2"
+                      style={category === cat ? selectedStyle : unselectedStyle}
+                    >
+                      {cat}
+                    </button>
+                  )
+                )}
+              </div>
+            </div>
+
+            {/* Dimension Selection */}
+            <div className="mb-3">
+              <p>
+                <b>Dimensions (Length x Width):</b>
+              </p>
+              {category === "Custom Size" ? (
+                <div className="d-flex ">
+                  <input
+                    type="number"
+                    style={{ width: "auto", border: "1px solid #7facfb" }}
+                    placeholder="Enter Length"
+                    value={customLength}
+                    onChange={(e) => handleCustomSizeChange(e, "length")}
+                    className="form-control mb-2 me-5"
+                  />
+                  <input
+                    type="number"
+                    style={{ width: "auto", border: "1px solid #7facfb" }}
+                    placeholder="Enter Breadth"
+                    value={customBreadth}
+                    onChange={(e) => handleCustomSizeChange(e, "breadth")}
+                    className="form-control  mb-2"
+                  />
+                </div>
+              ) : (
+                dimensions[category][unit].map((dimension) => (
+                  <button
+                    key={dimension}
+                    className="m-1"
+                    onClick={() => handleDimensionChange(dimension)}
+                    style={
+                      selectedDimension === dimension
+                        ? selectedStyle
+                        : unselectedStyle
+                    }
+                  >
+                    {dimension}
+                  </button>
+                ))
+              )}
+            </div>
+
+            {/* Thickness (Height) Selection */}
+            <div className="mb-3">
+              <p>
+                <b>Thickness (Height):</b>
+              </p>
+              {thicknessOptions[unit].map((thick) => (
+                <button
+                  key={thick}
+                  className="m-1"
+                  onClick={() => handleThicknessChange(thick)}
+                  style={thickness === thick ? selectedStyle : unselectedStyle}
+                >
+                  {thick}
+                </button>
+              ))}
+            </div>
+
+            {/* Confirm button */}
+            <div style={{ justifyContent: "center", textAlign: "center" }}>
+              <button
+                onClick={handleConfirmVariant}
+                style={buttonStyle}
+                // onMouseEnter={() => setHover(true)}
+                // onMouseLeave={() => setHover(false)}
+              >
+                Confirm Variant
+              </button>
+            </div>
+          </div>
+        </Modal.Body>
       </Modal>
     </Wrapper>
   );
