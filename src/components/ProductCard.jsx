@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-
+import img1 from "../assets/sofa.jpg"
 import { Card } from "antd";
 const { Meta } = Card;
 const ProductCard = ({
@@ -25,7 +25,7 @@ const ProductCard = ({
         cover={
           <img
             alt="example"
-            src={image}
+            src={img1}
             style={{ height: "250px", padding: "10px" }}
           />
         }

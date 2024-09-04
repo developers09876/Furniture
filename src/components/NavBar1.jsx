@@ -7,7 +7,6 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
-import { Row , Col  } from "react-bootstrap";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import "./../Css-Pages/Navbr.css";
 // styles for links
@@ -15,7 +14,6 @@ import "./../Css-Pages/Navbr.css";
 const StyledLink = styled(NavLink)`
   border-bottom: transparent solid 3px;
   transition: ${(props) => props.theme.transition};
-
   &:hover {
     border-bottom-color: var(--button-hover);
   }

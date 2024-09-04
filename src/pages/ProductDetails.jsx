@@ -35,8 +35,18 @@ const SingleProductPage = () => {
   const { productID } = useParams();
   console.log("productID", productID);
   const [product, setProduct] = useState([]);
+  console.log("product", product);
+  if (
+    product &&
+    Array.isArray(product.specification) &&
+    product.specification.length > 0
+  ) {
+    console.log("meala", product.specification[0]);
+  } else {
+    console.log("Specification is not available");
+  }
   const [selectedImage, setSelectedImage] = useState(null);
-  const[images ,setimages]=useState([img1, img2, img3])
+  const [images, setimages] = useState([img1, img2, img3]);
   // const [products, setProducts] = useState([
   //   {
   //     images: [img1, img2, img3],
@@ -98,7 +108,21 @@ const SingleProductPage = () => {
   const [customBreadth, setCustomBreadth] = useState("");
   const [hover, setHover] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
-  console.log("show", show);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/products/${productID}`
+        );
+        setProduct(response.data);
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      }
+    };
+
+    fetchProduct();
+  }, [productID]);
   const handleShow = () => setShow(true);
   const handleClose = () => {
     setShow(false);
@@ -117,12 +141,12 @@ const SingleProductPage = () => {
 
   const handleUnitChange = (e) => {
     setUnit(e.target.value);
-    setSelectedDimension(""); // Reset dimension on unit change
+    setSelectedDimension(""); 
   };
 
   const handleCategoryChange = (value) => {
     setCategory(value);
-    setSelectedDimension(""); // Reset dimension on category change
+    setSelectedDimension(""); 
   };
 
   const handleDimensionChange = (value) => {
@@ -223,34 +247,12 @@ const SingleProductPage = () => {
   const { addToWishlist } = useContext(WishlistContext);
   const { isAuthenticated } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+
   const navigate = useNavigate();
   const handleImageClick = (image) => {
     setSelectedImage(image);
   };
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/products/${productID}`
-        );
-        setProduct(response.data);
-      } catch (error) {
-        console.error("Error fetching product details:", error);
-      }
-    };
-
-    fetchProduct();
-  }, [productID]);
   useEffect(() => {
     setSubTotal(quantity * product?.price);
   }, [quantity, product]);
@@ -442,7 +444,7 @@ const SingleProductPage = () => {
         </div>
       </div>
 
-      {/* <div style={{ padding: "20px" }}>
+      <div style={{ padding: "20px" }}>
         <center>
           <h2>Specifications</h2>
         </center>
@@ -471,14 +473,15 @@ const SingleProductPage = () => {
                             {" "}
                             <p>Mattress Feel: </p>{" "}
                           </div>
-                          <div>
-                            <p>
-                              {
-                                product[0].specification[0].product_Details
-                                  .feel
-                              }
-                            </p>
-                          </div>
+
+                          <p>
+                            {product &&
+                            Array.isArray(product.specification) &&
+                            product.specification.length > 0
+                              ? product.specification[0]?.product_Details
+                                  ?.feel || "N/A"
+                              : "Specification is not available"}
+                          </p>
                         </Col>
                       </Row>
                       <Row>
@@ -496,12 +499,12 @@ const SingleProductPage = () => {
                           </div>
                           <div>
                             <p>
-                              <p>
-                                {
-                                  product[0].specification[0].product_Details
-                                    .cover_Type
-                                }{" "}
-                              </p>
+                              {product &&
+                              Array.isArray(product.specification) &&
+                              product.specification.length > 0
+                                ? product.specification[0]?.product_Details
+                                    ?.cover_Type || "N/A"
+                                : "Specification is not available"}
                             </p>
                           </div>
                         </Col>
@@ -523,10 +526,12 @@ const SingleProductPage = () => {
                           </div>
                           <div>
                             <p>
-                              {
-                                product[0].specification[0].product_Details
-                                  .cover_Material
-                              }{" "}
+                              {product &&
+                              Array.isArray(product.specification) &&
+                              product.specification.length > 0
+                                ? product.specification[0]?.product_Details
+                                    ?.cover_Material || "N/A"
+                                : "Specification is not available"}
                             </p>
                           </div>
                         </Col>
@@ -546,10 +551,12 @@ const SingleProductPage = () => {
                           </div>
                           <div>
                             <p>
-                              {
-                                product[0].specification[0].product_Details
-                                  .Usability
-                              }{" "}
+                              {product &&
+                              Array.isArray(product.specification) &&
+                              product.specification.length > 0
+                                ? product.specification[0]?.product_Details
+                                    ?.Usability || "N/A"
+                                : "Specification is not available"}
                             </p>
                           </div>
                         </Col>
@@ -569,19 +576,18 @@ const SingleProductPage = () => {
                             {" "}
                             <p>Cover Type: </p>{" "}
                           </div>
-                          <div>
-                            <p>
-                              {
-                                product[0].specification[0].product_Details
-                                  .cover_Type
-                              }{" "}
-                            </p>
-                          </div>
+
+                          <p>
+                            {product &&
+                            Array.isArray(product.specification) &&
+                            product.specification.length > 0
+                              ? product.specification[0]?.product_Details
+                                  ?.cover_Type || "N/A"
+                              : "Specification is not available"}
+                          </p>
                         </Col>
                       </Row>
-                      <Row>
-                        
-                      </Row>
+                      <Row></Row>
                     </Col>
                   </Row>
                 </div>
@@ -607,14 +613,15 @@ const SingleProductPage = () => {
                             {" "}
                             <p>Mattress Thickness:</p>{" "}
                           </div>
-                          <div>
-                            <p>
-                              {
-                                product[0].specification[0].product_Dimension
-                                  .thickness
-                              }{" "}
-                            </p>
-                          </div>
+
+                          <p>
+                            {product &&
+                            Array.isArray(product.specification) &&
+                            product.specification.length > 0
+                              ? product.specification[0]?.product_Dimension
+                                  ?.thickness || "N/A"
+                              : "Specification is not available"}
+                          </p>
                         </Col>
                       </Row>
                       <Row></Row>
@@ -633,14 +640,14 @@ const SingleProductPage = () => {
                             {" "}
                             <p>Dimensions:</p>{" "}
                           </div>
-                          <div>
-                            <p>
-                              {
-                                product[0].specification[0].product_Dimension
-                                  .dimensions
-                              }{" "}
-                            </p>
-                          </div>
+                          <p>
+                            {product &&
+                            Array.isArray(product.specification) &&
+                            product.specification.length > 0
+                              ? product.specification[0]?.product_Dimension
+                                  ?.dimensions || "N/A"
+                              : "Specification is not available"}
+                          </p>
                         </Col>
                       </Row>
                     </Col>
@@ -668,14 +675,14 @@ const SingleProductPage = () => {
                             {" "}
                             <p>Warranty:</p>{" "}
                           </div>
-                          <div>
-                            <p>
-                              {
-                                product[0].specification[0].product_Policies
-                                  .Warranty
-                              }{" "}
-                            </p>
-                          </div>
+                          <p>
+                            {product &&
+                            Array.isArray(product.specification) &&
+                            product.specification.length > 0
+                              ? product.specification[0]?.product_Policies
+                                  ?.Warranty || "N/A"
+                              : "Specification is not available"}
+                          </p>
                         </Col>
                       </Row>
                       <Row>
@@ -691,14 +698,15 @@ const SingleProductPage = () => {
                             {" "}
                             <p>100 days trial</p>{" "}
                           </div>
-                          <div>
-                            <p>
-                              {
-                                product[0].specification[0].product_Policies
-                                  .trial
-                              }{" "}
-                            </p>
-                          </div>
+
+                          <p>
+                            {product &&
+                            Array.isArray(product.specification) &&
+                            product.specification.length > 0
+                              ? product.specification[0]?.product_Policies
+                                  ?.trial || "N/A"
+                              : "Specification is not available"}
+                          </p>
                         </Col>
                       </Row>
                     </Col>
@@ -716,20 +724,18 @@ const SingleProductPage = () => {
                             {" "}
                             <p>Shipping:</p>{" "}
                           </div>
-                          <div>
-                            <p>
-                              {
-                                product[0].specification[0].product_Policies
-                                  .Shipping
-                              }{" "}
-                            </p>
-                          </div>
+                          <p>
+                            {product &&
+                            Array.isArray(product.specification) &&
+                            product.specification.length > 0
+                              ? product.specification[0]?.product_Policies
+                                  ?.Shipping || "N/A"
+                              : "Specification is not available"}
+                          </p>
                         </Col>
                       </Row>
                       <Row>
-                        <Col sm={12} md={2}>
-                          
-                        </Col>
+                        <Col sm={12} md={2}></Col>
                       </Row>
                     </Col>
                     <Col sm={12} md={4}>
@@ -746,19 +752,17 @@ const SingleProductPage = () => {
                             {" "}
                             <p>Available Offers: </p>{" "}
                           </div>
-                          <div>
-                            <p>
-                              {
-                                product[0].specification[0].product_Policies
-                                  .available_Offers
-                              }{" "}
-                            </p>
-                          </div>
+                          <p>
+                            {product &&
+                            Array.isArray(product.specification) &&
+                            product.specification.length > 0
+                              ? product.specification[0]?.product_Policies
+                                  ?.available_Offers || "N/A"
+                              : "Specification is not available"}
+                          </p>
                         </Col>
                       </Row>
-                      <Row>
-                        
-                      </Row>
+                      <Row></Row>
                     </Col>
                   </Row>
                 </div>
@@ -766,7 +770,7 @@ const SingleProductPage = () => {
             },
           ]}
         />
-      </div> */}
+      </div>
       <div>
         <center>
           <h3>Need Help In Buying?</h3>
