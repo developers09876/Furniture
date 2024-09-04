@@ -31,6 +31,7 @@ import Contact from "./pages/Contact";
 
 // dashboard
 import Dashboard from "./dashboard/Dashboard";
+import UserDashboard from "./dashboard/Dashboard";
 import ProductsDashboard from "./dashboard/products/ProductsDashboard";
 import AddProduct from "./dashboard/products/AddProduct";
 import EditProduct from "./dashboard/products/EditProduct";
@@ -78,6 +79,19 @@ const router = createBrowserRouter(
         <Route path="/dashboard/categories/edit/:id" element={<EditCategory />} />
         <Route path="/dashboard/orders" element={<Orders />} />
         <Route path="/dashboard/orders/:id" element={<OrderDetails />} />
+      </Route>
+      <Route path="/user" element={<DashboardLayout />}>
+        <Route path="/userdashboard" element={<UserDashboard />} />
+        {/* <Route path="/dashboard/products" element={<ProductsDashboard />} />
+        <Route path="/dashboard/products/add" element={<AddProduct />} />
+        <Route path="/dashboard/products/edit/:id" element={<EditProduct />} />
+        <Route path="/dashboard/users" element={<Users />} />
+        <Route path="/dashboard/users/add" element={<AddUser />} />
+        <Route path="/dashboard/categories" element={<Categories />} />
+        <Route path="/dashboard/categories/add" element={<AddCategory />} />
+        <Route path="/dashboard/categories/edit/:id" element={<EditCategory />} />
+        <Route path="/dashboard/orders" element={<Orders />} />
+        <Route path="/dashboard/orders/:id" element={<OrderDetails />} /> */}
       </Route>
       <Route path="*" exact element={<NotFound />} />
     </Route>
