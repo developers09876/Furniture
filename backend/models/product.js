@@ -23,32 +23,27 @@ const productSchema = new Schema({
     offer: { type: String },
     quantity_stock: { type: String, required: true },
     productId: { type: Number, unique: true }, // Auto-incrementing field
-	specification:[
-	
-			{
-			  product_Details: {
-				feel:{ type: String },
-				cover_Type: { type: String },
-				cover_Material: { type: String },
-				matress_Type:
-				{ type: String },
-				Usability:
-				{ type: String },
-			  },
-			  product_Dimension: {
-				thickness:
-				{ type: String },
-				dimensions:
-				{ type: String },
-			  },
-			  product_Policies: {
-				Warranty: { type: String },
-				Shipping: { type: String },
-				available_Offers: { type: Number },
-				trial: { type: String },
-			  },
-			},
-		  ],
+	specification: [
+		{
+		  product_Details: {
+			feel: { type: String },
+			cover_Type: { type: String },
+			cover_Material: { type: String },
+			matress_Type: { type: String },
+			Usability: { type: String },
+		  },
+		  product_Dimension: {
+			thickness: { type: String },
+			dimensions: { type: String },
+		  },
+		  product_Policies: {
+			Warranty: { type: String },
+			Shipping: { type: String },
+			available_Offers: { type: Number },
+			trial: { type: String },
+		  },
+		},
+	  ],
 	
 });
 

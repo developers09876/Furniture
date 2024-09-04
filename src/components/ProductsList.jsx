@@ -16,8 +16,8 @@ const ProductsList = ({ products }) => {
         <div className='row'>
      
           {products.map((product) => (
-            <div key={product.id} className='col-12 col-md-3 col-lg-3 mb-4'>
-              <ProductCard image={product.image} title={product.title} price={product.price} id={product.id} discountPrice={product.discountPrice} description={product.description} LongDesc={product.LongDesc} />
+            <div key={product.productId} className='col-12 col-md-3 col-lg-3 mb-4'>
+              <ProductCard image={product.image} title={product.title} price={product.price} id={product.productId} discountPrice={product.discountPrice} description={product.description} LongDesc={product.LongDesc} />
             </div>
           ))}
          

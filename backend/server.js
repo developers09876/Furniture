@@ -25,7 +25,7 @@ app.use(cors());
 // app.use("/featuredItems", featuredItemsRouter);
 app.use("/products", productsRouter);
 // app.use("/basket", basketRouter);
-app.use('/uploads', express.static('uploads'));
+// app.use('/uploads', express.static('uploads'));
 
 
 // Connect to MongoDB Atlas database
