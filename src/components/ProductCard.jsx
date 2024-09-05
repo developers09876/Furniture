@@ -26,7 +26,7 @@ const ProductCard = ({
           <img
             alt="example"
             src={img1}
-            style={{ height: "250px", padding: "10px" }}
+            style={{ height: "250px", padding: "10px", borderRadius:"20px" }}
           />
         }
         onClick={() => {

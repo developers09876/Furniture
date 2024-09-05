@@ -13,23 +13,66 @@ const StyledProducts = styled.div`
 `;
 
 const AddProduct = () => {
-  const { categories, addProduct } = useContext(DashboardContext);
+  // const { categories, addProduct } = useContext(DashboardContext);
+  const categories =[
+{
+    id:"1",
+    cat_name:"Sofa",
+
+    
+  },
+  {
+    id:"2",
+    cat_name:"Chair",
+
+  },
+  {
+    id:"3",
+    cat_name:"Table",
+
+  },
+  {
+    id:"4",
+    cat_name:"Bench ",
+
+  },
+  ]
+
+  const [specifications , setspecifications ]= useState([ {
+    product_Details: {
+    feel: "",
+    cover_Type: "",
+    cover_Material: "",
+    matress_Type:
+        "",
+    Usability:
+        ""
+    },
+    product_Dimension: {
+      thickness:'',      dimensions:'',
+    },
+    product_Policies: {
+      Warranty: '',
+      Shipping: '',
+      available_Offers: '',
+      trial: ''
+    }
+  }])
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
-    id: generateUUID(8),
-    category: '',
     title: '',
-    image: '',
+    // image: '',
     description: '',
     price: '',
-    old_price: '',
+    discountPrice: '',
     quantity_stock: '',
-    featured: false,
-    created_at: currentDate(),
-    updated_at: null,
+    LongDesc: '',
+    offer:'',
+    specification:'',
+    category:''
   });
 
-  console.log(categories);
+  console.log("formData",formData);
 
   const handleFormChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -69,20 +112,18 @@ const AddProduct = () => {
     }
 
     console.log(formData);
-    addProduct(formData);
+    // addProduct(formData);
     navigate('/dashboard/products')
     setFormData({
-      id: '',
-      category: '',
-      title: '',
-      image: '',
-      description: '',
-      price: '',
-      old_price: '',
-      quantity_stock: '',
-      featured: false,
-      created_at: '',
-      updated_at: null,
+    title: '',
+    description: '',
+    price: '',
+    discountPrice: '',
+    quantity_stock: '',
+    LongDesc: '',
+    offer:'',
+    specification:[{}],
+    category:''
     });
   };
 
@@ -112,8 +153,8 @@ const AddProduct = () => {
           >
             <option value="">Select a category</option>
             {categories.map((category) => (
-              <option key={category.id} value={category.name}>
-                {category.name}
+              <option key={category.id} value={category.cat_name}>
+                {category.cat_name}
               </option>
             ))}
           </select>
@@ -131,12 +172,22 @@ const AddProduct = () => {
           {formData.image && <img className='my-1' src={formData.image} width='200' />}
         </div>
         <div className="form-group fw-bold my-2">
-          <label htmlFor="description">Description:</label>
+          <label htmlFor="description">Short Description:</label>
           <textarea
             className="form-control"
             id="description"
             name="description"
             value={formData.description}
+            onChange={handleFormChange}
+          ></textarea>
+        </div>
+        <div className="form-group fw-bold my-2">
+          <label htmlFor="description">Long Description:</label>
+          <textarea
+            className="form-control"
+            id="LongDesc"
+            name="LongDesc"
+            value={formData.LongDesc}
             onChange={handleFormChange}
           ></textarea>
         </div>
@@ -152,13 +203,13 @@ const AddProduct = () => {
           />
         </div>
         <div className="form-group fw-bold my-2">
-          <label htmlFor="old_price">Old Price:</label>
+          <label htmlFor="old_price">discount Price:</label>
           <input
             type="number"
             className="form-control"
-            id="old_price"
-            name="old_price"
-            value={formData.old_price}
+            id="discountPrice"
+            name="discountPrice"
+            value={formData.discountPrice}
             onChange={handleFormChange}
           />
         </div>
@@ -173,7 +224,18 @@ const AddProduct = () => {
             onChange={handleFormChange}
           />
         </div>
-        <div className="form-check fw-bold my-2">
+        <div className="form-group fw-bold my-2">
+          <label htmlFor="quantity_stock">specification:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="specification"
+            name="specification"
+            value={specifications}
+            onChange={handleFormChange}
+          />
+        </div>
+        {/* <div className="form-check fw-bold my-2">
           <input
             type="checkbox"
             className="form-check-input"
@@ -185,7 +247,7 @@ const AddProduct = () => {
           <label className="form-check-label fw-bold mx-2" htmlFor="featured">
             Featured
           </label>
-        </div>
+        </div> */}
         <div className="form-group mt-4">
           <Button type="submit" className="me-2">Add Product</Button>
           <Button type="reset">Cancel</Button>

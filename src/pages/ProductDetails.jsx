@@ -287,11 +287,11 @@ const SingleProductPage = () => {
         <FontAwesomeIcon icon={faArrowLeft} className="me-1" /> Back to products
       </Link>
       <div className="product-center row">
-        <div className="col-md-2">
+        <div className="col-md-1">
           <div className="image-album mb-2">
             {images?.map((img, index) => (
               <img
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", borderRadius: "5px" }}
                 key={index}
                 src={img}
                 alt={title}
@@ -304,7 +304,7 @@ const SingleProductPage = () => {
             ))}
           </div>
         </div>
-        <div className="col-md-5 col-sm-12 mb-1">
+        <div className="col-md-6 col-sm-12 mb-3">
           <img src={selectedImage} alt={title} className="product-image" />
         </div>
         {/* <div className="col-md-6 mb-3">
@@ -980,7 +980,7 @@ const Wrapper = styled.main`
     max-width: 100%;
     height: auto;
     border: 1px solid ${(props) => props.theme.borderColor};
-    border-radius: ${(props) => props.theme.radius};
+    border-radius: 15px;
   }
 
   .content {
