@@ -68,7 +68,7 @@ const NavBar1 = () => {
   const { total } = useContext(WishlistContext);
 
   return (
-    <nav className="navbar navbar-expand-lg p-0"> 
+    <nav className="navbar navbar-expand-lg p-0">
       <div className="container lg-d-flex">
         {/* <Row>
       <Col md={8} sm={12}> */}
@@ -94,27 +94,27 @@ const NavBar1 = () => {
                   </Link>
                   <ul className="dropdown-menu">
                     <li>
-                      <Link className="dropdown-item" to="/products/3">
+                      <Link className="dropdown-item" to="/products/4">
                         Ortho premium Mattress
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="#">
+                      <Link className="dropdown-item" to="/products/5">
                         Ortho premium ET Mattress
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="#">
+                      <Link className="dropdown-item" to="/products/6">
                         Ortho spine therapy Mattress
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="#">
+                      <Link className="dropdown-item" to="/products/7">
                         Ortho Latex o pedic ET Mattress
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="#">
+                      <Link className="dropdown-item" to="/products/8">
                         Ortho Organic posture pedic dual top Mattress
                       </Link>
                     </li>
@@ -328,11 +328,10 @@ const NavBar1 = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-               Beds & Head Boards
+                Beds & Head Boards
               </StyledLink>
               <ul className="dropdown-menu" aria-labelledby="SofaDropdown">
                 {/* Submenu Items */}
-             
 
                 <li className="dropdown-submenu">
                   <Link className="dropdown-item" to="#">
@@ -438,74 +437,71 @@ const NavBar1 = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-               Pillow & Cushions
+                Pillow & Cushions
               </StyledLink>
               <ul className="dropdown-menu" aria-labelledby="SofaDropdown">
                 {/* Submenu Items */}
                 <li className="dropdown-submenu">
                   <Link className="dropdown-item dropdown-toggle" to="#">
-                  Sleeping Pillows
+                    Sleeping Pillows
                   </Link>
                   <ul className="dropdown-menu">
                     <li>
                       <Link className="dropdown-item" to="#">
-                      Fiber Pillows
+                        Fiber Pillows
                       </Link>
                     </li>
                     <li>
                       <Link className="dropdown-item" to="#">
-                      Memory foam Pillows
+                        Memory foam Pillows
                       </Link>
                     </li>
                     <li>
                       <Link className="dropdown-item" to="#">
-                      Memory foam contour pillows
+                        Memory foam contour pillows
                       </Link>
                     </li>
                     <li>
                       <Link className="dropdown-item" to="#">
-                      Latex Pillows
+                        Latex Pillows
                       </Link>
                     </li>
                     <li>
                       <Link className="dropdown-item" to="#">
-                      Latex contour pillows
+                        Latex contour pillows
                       </Link>
                     </li>
                     <li>
                       <Link className="dropdown-item" to="#">
-                      Cool Gel Memory foam Pillow
+                        Cool Gel Memory foam Pillow
                       </Link>
                     </li>
-                    
                   </ul>
                 </li>
                 <li>
                   <Link className="dropdown-item" to="#">
-                  Support Pillows
+                    Support Pillows
                   </Link>
                 </li>
-                
-               
 
                 <li>
                   <Link className="dropdown-item" to="#">
-                  Medicinal Pillows
+                    Medicinal Pillows
                   </Link>
                 </li>
                 <li>
                   <Link className="dropdown-item" to="#">
-                  Maternity and Baby Pillows
+                    Maternity and Baby Pillows
                   </Link>
                 </li>
                 <li>
                   <Link className="dropdown-item" to="#">
-                  Cushions and Bolsters
+                    Cushions and Bolsters
                   </Link>
                 </li>
                 <li>
                   <Link className="dropdown-item" to="#">
-                  Car Cushions
+                    Car Cushions
                   </Link>
                 </li>
               </ul>
@@ -523,7 +519,7 @@ const NavBar1 = () => {
         </div>
         {/* </Col>
         <Col md={4} sm={12}> */}
-         
+
         {/* </Col>
         </Row> */}
       </div>
