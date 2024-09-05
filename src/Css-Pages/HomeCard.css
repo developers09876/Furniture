@@ -23,37 +23,125 @@
 }
 
 .chair-card-pic-2 {
-    background-image: url("../Picture/img-2.png");
-    height: 200px;
-    width: 400px;
-    background-size: cover;
-    margin-left: 26vh;
-    position: absolute;
-    margin-top: -5vh;
-  
-  }
+  background-image: url("../Picture/img-2.png");
+  height: 200px;
+  width: 400px;
+  background-size: cover;
+  margin-left: 26vh;
+  position: absolute;
+  margin-top: -5vh;
+}
 
-  .chair-card-content-2 {
-    width: 400px;
+.chair-card-content-2 {
+  width: 400px;
   position: relative;
   margin-left: 5vh;
   margin-top: 5vh;
   font-size: 2vh;
-  }
+}
 
-  .cnt-div {
-    display:flex ;
-    justify-content: center;
-  }
+.cnt-div {
+  display: flex;
+  justify-content: center;
+}
 
+.slick-prev:before,
+.slick-next:before {
+  font-family: "slick";
+  font-size: 20px;
+  line-height: 1;
+  opacity: 0.75;
+  color: var(--button-hover) !important;
+  -webkit-font-smoothing: antialiased;
 
-    .slick-prev:before, .slick-next:before {
-      font-family: 'slick';
-      font-size: 20px;
-      line-height: 1; 
-      opacity: .75;
-      color: var(--button-hover)!important;
-      -webkit-font-smoothing: antialiased;
-      
-    -moz-osx-font-smoothing: grayscale;
-  }
+  -moz-osx-font-smoothing: grayscale;
+}
+/* 
+  //////////////////                  */
+
+body {
+  position: relative;
+  background-color: #012f51;
+  padding: 20px;
+  color: #ffffff;
+  font-family: system-ui;
+}
+
+.quote-container {
+  position: relative;
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 10px;
+  max-width: 350px;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 40px;
+}
+
+.bottom {
+  position: absolute;
+  min-height: 200px;
+  bottom: 0;
+  left: 0;
+  line-height: 0;
+  transform: rotate(180deg);
+  width: 440px;
+}
+
+.bottom svg.curves {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 300px;
+  transform: rotateY(180deg);
+}
+
+.bottom .shape-fill {
+  fill: #00b7ff;
+}
+
+.star-rating {
+  color: #ff1133;
+  margin: 17px 0 10px;
+  font-size: 1.8em;
+  text-align: center;
+}
+
+p.quote {
+  margin: 15px 0;
+  font-size: 11px;
+  line-height: 1.3em;
+  text-align: center;
+}
+
+.reviewer-photo {
+  position: relative;
+  z-index: 9;
+  margin: 20px auto 10px;
+  text-align: center;
+}
+
+.reviewer-photo img {
+  border-radius: 50%;
+  border: 6px solid #ffffff;
+  filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.1));
+}
+
+.reviewer-details {
+  position: relative;
+  z-index: 9;
+  text-align: center;
+  color: #ffffff;
+}
+
+.reviewer-details .name {
+  font-size: 20px;
+  font-weight: 600;
+  display: block;
+  padding: 7px 0 10px 0;
+}
+
+.reviewer-details .title {
+  font-size: 17px;
+  font-weight: 400;
+}
