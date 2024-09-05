@@ -995,7 +995,7 @@ const Wrapper = styled.main`
     max-width: 100%;
     height: auto;
     border: 1px solid ${(props) => props.theme.borderColor};
-    border-radius: ${(props) => props.theme.radius};
+    border-radius: 15px;
   }
 
   .content {
