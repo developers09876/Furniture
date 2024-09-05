@@ -102,8 +102,10 @@ const SingleProductPage = () => {
   const [showVideo, setShowVideo] = useState(false);
   const [unit, setUnit] = useState("in");
   const [category, setCategory] = useState("Single");
-  const [selectedDimension, setSelectedDimension] = useState("");
-  const [thickness, setThickness] = useState("6");
+  console.log('category', category)
+  const [selectedDimension, setSelectedDimension] = useState('78" x 30"');
+  console.log('selectedDimension', selectedDimension)
+  const [thickness, setThickness] = useState('6"');
   const [customLength, setCustomLength] = useState("");
   const [customBreadth, setCustomBreadth] = useState("");
   const [hover, setHover] = useState(false);
@@ -141,12 +143,12 @@ const SingleProductPage = () => {
 
   const handleUnitChange = (e) => {
     setUnit(e.target.value);
-    setSelectedDimension(""); 
+    // setSelectedDimension(""); 
   };
 
   const handleCategoryChange = (value) => {
     setCategory(value);
-    setSelectedDimension(""); 
+    // setSelectedDimension(""); 
   };
 
   const handleDimensionChange = (value) => {
@@ -329,7 +331,8 @@ const SingleProductPage = () => {
               <span>Available : </span>
               {quantity_stock > 0 ? "In Stock" : "Out of Stock"}
             </p>
-          </div>
+         
+          <span>Choose Mattress Dimensions</span><br/>
           <button
             className="chooseVarientButton mb-2"
             onClick={() => handleShow()}
@@ -342,8 +345,10 @@ const SingleProductPage = () => {
               borderRadius: "0.375rem ",
             }}
           >
-            Choose Varity
+            {/* Choose Varity{`${category, selectedDimension , }`} */}
+            {category+","+selectedDimension+","+thickness}  
           </button>
+          </div>
           <div className="chooseVarientButton">
             {/* Choose Varient  Modal */}
 
