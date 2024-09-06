@@ -13,43 +13,38 @@ const StyledProducts = styled.div`
 `;
 
 const AddProduct = () => {
-  // const { categories, addProduct } = useContext(DashboardContext);
-  const categories =[
-{
-    id:"1",
-    cat_name:"Sofa",
+  const categories = [
+    { id: "1", cat_name: "Sofa" },
+    { id: "2", cat_name: "Chair" },
+    { id: "3", cat_name: "Table" },
+    { id: "4", cat_name: "Bench" },
+  ];
 
-    
-  },
-  {
-    id:"2",
-    cat_name:"Chair",
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    price: '',
+    discountPrice: '',
+    quantity_stock: '',
+    LongDesc: '',
+    offer: '',
+    specification: '',
+    category: '',
+    images: [] // Change from single image to array of images
+  });
 
-  },
-  {
-    id:"3",
-    cat_name:"Table",
-
-  },
-  {
-    id:"4",
-    cat_name:"Bench ",
-
-  },
-  ]
-
-  const [specifications , setspecifications ]= useState([ {
+  const [specifications, setSpecifications] = useState({
     product_Details: {
-    feel: "",
-    cover_Type: "",
-    cover_Material: "",
-    matress_Type:
-        "",
-    Usability:
-        ""
+      feel: "",
+      cover_Type: "",
+      cover_Material: "",
+      matress_Type: "",
+      Usability: ""
     },
     product_Dimension: {
-      thickness:'',      dimensions:'',
+      thickness: '',
+      dimensions: ''
     },
     product_Policies: {
       Warranty: '',
@@ -57,22 +52,10 @@ const AddProduct = () => {
       available_Offers: '',
       trial: ''
     }
-  }])
-  const navigate = useNavigate()
-  const [formData, setFormData] = useState({
-    title: '',
-    // image: '',
-    description: '',
-    price: '',
-    discountPrice: '',
-    quantity_stock: '',
-    LongDesc: '',
-    offer:'',
-    specification:'',
-    category:''
   });
 
-  console.log("formData",formData);
+  console.log("Form Data:", formData);
+  console.log("Specifications:", specifications);
 
   const handleFormChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -84,54 +67,119 @@ const AddProduct = () => {
     }));
   };
 
+  const handleSpecificationChange = (event, section, field) => {
+    const { value } = event.target;
+
+    setSpecifications((prevSpecs) => ({
+      ...prevSpecs,
+      [section]: {
+        ...prevSpecs[section],
+        [field]: value,
+      }
+    }));
+  };
+
+// const handleImageChange = (event) => {
+//     const file = event.target.files[0];
+//     const reader = new FileReader();
+//     reader.onloadend = () => {
+//       setFormData((prevForm) => ({
+//         ...prevForm,
+//         image: reader.result,
+//       }));
+//     };
+//     reader.readAsDataURL(file);
+//   };
+
   const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
+    const files = Array.from(event.target.files);
+    
+    // Check the total number of selected images
+    if (files.length + formData.images.length > 10) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'You can only select up to 10 images.',
+      });
+      return;
+    }
+
+    const newImages = files.map(file => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      return new Promise((resolve) => {
+        reader.onloadend = () => resolve(reader.result);
+      });
+    });
+
+    Promise.all(newImages).then((results) => {
       setFormData((prevForm) => ({
         ...prevForm,
-        image: reader.result,
+        images: [...prevForm.images, ...results],
       }));
-    };
-    reader.readAsDataURL(file);
+    });
   };
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
-    
-    const { title, description, image, price, old_price, category, quantity_stock } = formData
-    
+
+    const { title, description, images, price, discountPrice, category, quantity_stock } = formData;
+
     // Check if any field is empty
-    if (!title || !description || !image || !price || !old_price || !category || !quantity_stock) {
+    if (!title || !description || images.length === 0 || !price || !discountPrice || !category || !quantity_stock) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
         text: 'Please fill in all required fields.',
-      }); 
+      });
       return;
     }
 
-    console.log(formData);
-    // addProduct(formData);
-    navigate('/dashboard/products')
+    console.log("FormData", formData);
+    console.log("Specifications", specifications);
+
+    // addProduct(formData); // Uncomment when addProduct function is available
+    navigate('/dashboard/products');
     setFormData({
-    title: '',
-    description: '',
-    price: '',
-    discountPrice: '',
-    quantity_stock: '',
-    LongDesc: '',
-    offer:'',
-    specification:[{}],
-    category:''
+      title: '',
+      description: '',
+      price: '',
+      discountPrice: '',
+      quantity_stock: '',
+      LongDesc: '',
+      offer: '',
+      specification: '',
+      category: '',
+      images: []
+    });
+
+    setSpecifications({
+      product_Details: {
+        feel: "",
+        cover_Type: "",
+        cover_Material: "",
+        matress_Type: "",
+        Usability: ""
+      },
+      product_Dimension: {
+        thickness: '',
+        dimensions: ''
+      },
+      product_Policies: {
+        Warranty: '',
+        Shipping: '',
+        available_Offers: '',
+        trial: ''
+      }
     });
   };
 
   return (
-    <StyledProducts>
+    <StyledProducts style={{width:'100%'}}>
       <h2 className='mb-5'>Add Product</h2>
-      <form onSubmit={handleAddProduct}>
-        <div className="form-group fw-bold my-2">
+       <form onSubmit={handleAddProduct} style={{width:'100%'}}>
+        <div className='row' style={{width:'100%'}}>
+        <div className="form-group fw-bold my-2 col-lg-4">
           <label htmlFor="title">Title :</label>
           <input
             type="text"
@@ -142,7 +190,7 @@ const AddProduct = () => {
             onChange={handleFormChange}
           />
         </div>
-        <div className="form-group fw-bold my-2">
+        <div className="form-group fw-bold my-2 col-lg-4">
           <label htmlFor="category">Category :</label>
           <select
             className="form-control"
@@ -159,7 +207,8 @@ const AddProduct = () => {
             ))}
           </select>
         </div>
-        <div className="form-group">
+
+        {/* <div className="form-group">
           <label className="form-label me-3  my-2 fw-bold" htmlFor="customFile">Image :</label>
           <input
             type="file"
@@ -170,8 +219,23 @@ const AddProduct = () => {
             onChange={handleImageChange}
           />
           {formData.image && <img className='my-1' src={formData.image} width='200' />}
+        </div> */}
+
+        <div className="form-group col-lg-4">
+          <label className="form-label me-3 my-2 fw-bold" htmlFor="customFile">Images :</label>
+          <input
+            type="file"
+            className="form-control-file"
+            id="images"
+            name="images"
+            accept="image/*"
+            multiple
+            onChange={handleImageChange}
+          />
+        
+          <p className='my-2 fw-bold'>Total Images Selected: {formData.images.length}</p>
         </div>
-        <div className="form-group fw-bold my-2">
+        <div className="form-group fw-bold my-2 col-lg-4">
           <label htmlFor="description">Short Description:</label>
           <textarea
             className="form-control"
@@ -181,7 +245,7 @@ const AddProduct = () => {
             onChange={handleFormChange}
           ></textarea>
         </div>
-        <div className="form-group fw-bold my-2">
+        <div className="form-group fw-bold my-2 col-lg-4">
           <label htmlFor="description">Long Description:</label>
           <textarea
             className="form-control"
@@ -191,7 +255,7 @@ const AddProduct = () => {
             onChange={handleFormChange}
           ></textarea>
         </div>
-        <div className="form-group fw-bold my-2">
+        <div className="form-group fw-bold my-2 col-lg-4">
           <label htmlFor="price">Price:</label>
           <input
             type="number"
@@ -202,8 +266,8 @@ const AddProduct = () => {
             onChange={handleFormChange}
           />
         </div>
-        <div className="form-group fw-bold my-2">
-          <label htmlFor="old_price">discount Price:</label>
+        <div className="form-group fw-bold my-2 col-lg-4">
+          <label htmlFor="discountPrice">Discount Price:</label>
           <input
             type="number"
             className="form-control"
@@ -213,7 +277,7 @@ const AddProduct = () => {
             onChange={handleFormChange}
           />
         </div>
-        <div className="form-group fw-bold my-2">
+        <div className="form-group fw-bold my-2 col-lg-4">
           <label htmlFor="quantity_stock">Quantity in Stock:</label>
           <input
             type="number"
@@ -224,33 +288,145 @@ const AddProduct = () => {
             onChange={handleFormChange}
           />
         </div>
-        <div className="form-group fw-bold my-2">
-          <label htmlFor="quantity_stock">specification:</label>
-          <input
-            type="number"
-            className="form-control"
-            id="specification"
-            name="specification"
-            value={specifications}
-            onChange={handleFormChange}
-          />
-        </div>
-        {/* <div className="form-check fw-bold my-2">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id="featured"
-            name="featured"
-            checked={formData.featured}
-            onChange={handleFormChange}
-          />
-          <label className="form-check-label fw-bold mx-2" htmlFor="featured">
-            Featured
-          </label>
-        </div> */}
-        <div className="form-group mt-4">
-          <Button type="submit" className="me-2">Add Product</Button>
+
+        {/* Specifications Section */}
+       
+<div className="form-group fw-bold my-2 row">
+  <h5><b>Product Details</b></h5>
+  <div className="form-group fw-bold my-2 col-lg-4">
+    <label htmlFor="feel">Feel:</label>
+    <input
+      type="text"
+      className="form-control"
+      id="feel"
+      name="feel"
+      value={specifications.product_Details.feel}
+      onChange={(e) => handleSpecificationChange(e, 'product_Details', 'feel')}
+    />
+  </div>
+  <div className="form-group fw-bold my-2 col-lg-4">
+    <label htmlFor="cover_Type">Cover Type:</label>
+    <input
+      type="text"
+      className="form-control"
+      id="cover_Type"
+      name="cover_Type"
+      value={specifications.product_Details.cover_Type}
+      onChange={(e) => handleSpecificationChange(e, 'product_Details', 'cover_Type')}
+    />
+  </div>
+  <div className="form-group fw-bold my-2 col-lg-4">
+    <label htmlFor="cover_Material">Cover Material:</label>
+    <input
+      type="text"
+      className="form-control"
+      id="cover_Material"
+      name="cover_Material"
+      value={specifications.product_Details.cover_Material}
+      onChange={(e) => handleSpecificationChange(e, 'product_Details', 'cover_Material')}
+    />
+  </div>
+  <div className="form-group fw-bold my-2 col-lg-4">
+    <label htmlFor="matress_Type">Mattress Type:</label>
+    <input
+      type="text"
+      className="form-control"
+      id="matress_Type"
+      name="matress_Type"
+      value={specifications.product_Details.matress_Type}
+      onChange={(e) => handleSpecificationChange(e, 'product_Details', 'matress_Type')}
+    />
+  </div>
+  <div className="form-group fw-bold my-2 col-lg-4">
+    <label htmlFor="Usability">Usability:</label>
+    <input
+      type="text"
+      className="form-control"
+      id="Usability"
+      name="Usability"
+      value={specifications.product_Details.Usability}
+      onChange={(e) => handleSpecificationChange(e, 'product_Details', 'Usability')}
+    />
+  </div>
+</div>
+
+<div className="form-group fw-bold my-2 row">
+  <h5><b>Product Dimensions</b></h5>
+  <div className="form-group fw-bold my-2 col-lg-6">
+    <label htmlFor="thickness">Thickness:</label>
+    <input
+      type="text"
+      className="form-control"
+      id="thickness"
+      name="thickness"
+      value={specifications.product_Dimension.thickness}
+      onChange={(e) => handleSpecificationChange(e, 'product_Dimension', 'thickness')}
+    />
+  </div>
+  <div className="form-group fw-bold my-2 col-lg-6">
+    <label htmlFor="dimensions">Dimensions:</label>
+    <input
+      type="text"
+      className="form-control"
+      id="dimensions"
+      name="dimensions"
+      value={specifications.product_Dimension.dimensions}
+      onChange={(e) => handleSpecificationChange(e, 'product_Dimension', 'dimensions')}
+    />
+  </div>
+</div>
+
+<div className="form-group fw-bold my-2 row">
+  <h5><b>Product Policies</b></h5>
+  <div className="form-group fw-bold my-2 col-lg-4">
+    <label htmlFor="Warranty">Warranty:</label>
+    <input
+      type="text"
+      className="form-control"
+      id="Warranty"
+      name="Warranty"
+      value={specifications.product_Policies.Warranty}
+      onChange={(e) => handleSpecificationChange(e, 'product_Policies', 'Warranty')}
+    />
+  </div>
+  <div className="form-group fw-bold my-2 col-lg-4">
+    <label htmlFor="Shipping">Shipping:</label>
+    <input
+      type="text"
+      className="form-control"
+      id="Shipping"
+      name="Shipping"
+      value={specifications.product_Policies.Shipping}
+      onChange={(e) => handleSpecificationChange(e, 'product_Policies', 'Shipping')}
+    />
+  </div>
+  <div className="form-group fw-bold my-2 col-lg-4">
+    <label htmlFor="available_Offers">Available Offers:</label>
+    <input
+      type="text"
+      className="form-control"
+      id="available_Offers"
+      name="available_Offers"
+      value={specifications.product_Policies.available_Offers}
+      onChange={(e) => handleSpecificationChange(e, 'product_Policies', 'available_Offers')}
+    />
+  </div>
+  <div className="form-group fw-bold my-2 col-lg-4">
+    <label htmlFor="trial">Trial:</label>
+    <input
+      type="text"
+      className="form-control"
+      id="trial"
+      name="trial"
+      value={specifications.product_Policies.trial}
+      onChange={(e) => handleSpecificationChange(e, 'product_Policies', 'trial')}
+    />
+  </div>
+</div>
+        <div className="form-group mt-4 " style={{ textAlign:'end'}}>
+          <Button type="submit" className="me-2 ">Add Product</Button>
           <Button type="reset">Cancel</Button>
+        </div>
         </div>
       </form>
     </StyledProducts>
