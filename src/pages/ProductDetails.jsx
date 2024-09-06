@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { IoMdClose } from "react-icons/io";
+import { FaChevronDown } from "react-icons/fa";
 import Button from "../components/Button";
 import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
@@ -18,7 +19,6 @@ import img3 from "../assets/bed.jpg";
 import { Col, Row } from "react-bootstrap";
 import { Tabs } from "antd";
 import { Card } from "antd";
-import { height } from "@fortawesome/free-brands-svg-icons/fa42Group";
 import { Modal } from "react-bootstrap";
 import { useState } from "react";
 import { Radio } from "antd";
@@ -101,10 +101,10 @@ const SingleProductPage = () => {
   const [show, setShow] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [unit, setUnit] = useState("in");
-  const [category, setCategory] = useState("Single");
-  console.log('category', category)
+  const [categorz, setCategory] = useState("Single");
+  console.log("category", categorz);
   const [selectedDimension, setSelectedDimension] = useState('78" x 30"');
-  console.log('selectedDimension', selectedDimension)
+  console.log("selectedDimension", selectedDimension);
   const [thickness, setThickness] = useState('6"');
   const [customLength, setCustomLength] = useState("");
   const [customBreadth, setCustomBreadth] = useState("");
@@ -133,22 +133,23 @@ const SingleProductPage = () => {
 
   const handleShowVideo = () => setVideoVisible(true);
   const handleCloseVideo = () => setVideoVisible(false); // Hide video
-  const resetFilters = () => {
-    // setCategory("");
-    setSelectedDimension("");
-    setCustomLength("");
-    setCustomBreadth("");
-    setThickness("");
-  };
+  // const resetFilters = () => {
+  //   // setCategory("");
+  //   setUnit("in");
+  //   setSelectedDimension("");
+  //   setCustomLength("");
+  //   setCustomBreadth("");
+  //   setThickness("");
+  // };
 
   const handleUnitChange = (e) => {
     setUnit(e.target.value);
-    // setSelectedDimension(""); 
+    // setSelectedDimension("");
   };
 
   const handleCategoryChange = (value) => {
     setCategory(value);
-    // setSelectedDimension(""); 
+    // setSelectedDimension("");
   };
 
   const handleDimensionChange = (value) => {
@@ -170,7 +171,7 @@ const SingleProductPage = () => {
   const handleConfirmVariant = () => {
     console.log(
       "choose1",
-      category,
+      categorz,
       selectedDimension,
       thickness,
       customLength,
@@ -178,7 +179,7 @@ const SingleProductPage = () => {
     );
 
     const selectedSize =
-      category === "Custom Size"
+      categorz === "Custom Size"
         ? `${customLength} x ${customBreadth}`
         : selectedDimension;
     console.log("Selected Size:", selectedSize);
@@ -274,7 +275,7 @@ const SingleProductPage = () => {
     price,
     discountPrice,
     description,
-    sofa_Category,
+    category,
     LongDesc,
     quantity_stock,
   } = product;
@@ -286,11 +287,11 @@ const SingleProductPage = () => {
         <FontAwesomeIcon icon={faArrowLeft} className="me-1" /> Back to products
       </Link>
       <div className="product-center row">
-        <div className="col-md-2">
+        <div className="col-md-1">
           <div className="image-album mb-2">
             {images?.map((img, index) => (
               <img
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", borderRadius: "5px" }}
                 key={index}
                 src={img}
                 alt={title}
@@ -303,7 +304,7 @@ const SingleProductPage = () => {
             ))}
           </div>
         </div>
-        <div className="col-md-5 col-sm-12 mb-3">
+        <div className="col-md-6 col-sm-12 mb-3">
           <img src={selectedImage} alt={title} className="product-image" />
         </div>
         {/* <div className="col-md-6 mb-3">
@@ -311,18 +312,20 @@ const SingleProductPage = () => {
           <img src={image} alt={title} className='product-image' />
         </div> */}
         <div className="col-md-5 col-sm-12 content">
-          <h1>{title}</h1>
+          <p className="info">
+            <span>Category : </span>
+            {category}
+          </p>
+
+          <h4>{title}</h4>
+          {/* <div>{categorz + "," + selectedDimension + "," + thickness}</div> */}
+
           <h5 className="price me-2 d-inline">₹{price}</h5>
           {discountPrice && (
             <h6 className="old-price d-inline">₹{discountPrice} </h6>
           )}
-          <p className="desc my-3">{description}</p>
-          <div className="info">
-            <p>
-              <span>Category : </span>
-              {sofa_Category}
-            </p>
-
+          {/* <p className="desc my-1">{description}</p> */}
+          <div className="info ">
             <p>
               <span>Descrpition : </span>
               {LongDesc}
@@ -331,23 +334,26 @@ const SingleProductPage = () => {
               <span>Available : </span>
               {quantity_stock > 0 ? "In Stock" : "Out of Stock"}
             </p>
-         
-          <span>Choose Mattress Dimensions</span><br/>
-          <button
-            className="chooseVarientButton mb-2"
-            onClick={() => handleShow()}
-            style={{
-              backgroundColor: "white",
-              color: "var(--button-hover)",
-              border: "2px solid #7fafcb",
-              padding: "8px 16px",
-              transition: "0.3s ease-in-out",
-              borderRadius: "0.375rem ",
-            }}
-          >
-            {/* Choose Varity{`${category, selectedDimension , }`} */}
-            {category+","+selectedDimension+","+thickness}  
-          </button>
+
+            <span>Choose Mattress Dimensions</span>
+            <br />
+
+            <button
+              className="chooseVarientButton mb-3 mt-2"
+              onClick={() => handleShow()}
+              style={{
+                backgroundColor: "white",
+                color: "var(--button-hover)",
+                border: "2px solid #7fafcb",
+                padding: "8px 16px",
+                transition: "0.3s ease-in-out",
+                borderRadius: "0.375rem ",
+              }}
+            >
+              {/* Choose Varity{`${category, selectedDimension , }`} */}
+              {categorz + "," + selectedDimension + "," + thickness}
+              <FaChevronDown />
+            </button>
           </div>
           <div className="chooseVarientButton">
             {/* Choose Varient  Modal */}
@@ -442,7 +448,7 @@ const SingleProductPage = () => {
               </Button>
             </div>
           ) : (
-            <Button className="my-4" handleClick={() => navigate("/login")}>
+            <Button className="my-3" handleClick={() => navigate("/login")}>
               login
             </Button>
           )}
@@ -690,30 +696,6 @@ const SingleProductPage = () => {
                           </p>
                         </Col>
                       </Row>
-                      <Row>
-                        <Col sm={12} md={2}>
-                          <img
-                            src="https://wakefitdev.gumlet.io/img/latest/badges/100-percent-refund.svg"
-                            alt="touch"
-                            style={{ height: "50px", width: "50px" }}
-                          />
-                        </Col>
-                        <Col sm={12} md={10}>
-                          <div>
-                            {" "}
-                            <p>100 days trial</p>{" "}
-                          </div>
-
-                          <p>
-                            {product &&
-                            Array.isArray(product.specification) &&
-                            product.specification.length > 0
-                              ? product.specification[0]?.product_Policies
-                                  ?.trial || "N/A"
-                              : "Specification is not available"}
-                          </p>
-                        </Col>
-                      </Row>
                     </Col>
                     <Col sm={12} md={4}>
                       <Row>
@@ -747,7 +729,7 @@ const SingleProductPage = () => {
                       <Row>
                         <Col sm={12} md={2}>
                           <img
-                            src="https://wakefitdev.gumlet.io/img/latest/icons/08_offers.svg"
+                            src="https://wakefitdev.gumlet.io/img/latest/badges/100-percent-refund.svg"
                             alt="touch"
                             style={{ height: "50px", width: "50px" }}
                           />
@@ -755,14 +737,15 @@ const SingleProductPage = () => {
                         <Col sm={12} md={10}>
                           <div>
                             {" "}
-                            <p>Available Offers: </p>{" "}
+                            <p>100 days trial</p>{" "}
                           </div>
+
                           <p>
                             {product &&
                             Array.isArray(product.specification) &&
                             product.specification.length > 0
                               ? product.specification[0]?.product_Policies
-                                  ?.available_Offers || "N/A"
+                                  ?.trial || "N/A"
                               : "Specification is not available"}
                           </p>
                         </Col>
@@ -896,11 +879,10 @@ const SingleProductPage = () => {
                   (cat) => (
                     <button
                       key={cat}
-                      id={category - `${cat}`}
-                      variant="outline-primary"
+                      id={categorz - `${cat}`}
                       onClick={() => handleCategoryChange(cat)}
                       className="me-2 mb-2"
-                      style={category === cat ? selectedStyle : unselectedStyle}
+                      style={categorz === cat ? selectedStyle : unselectedStyle}
                     >
                       {cat}
                     </button>
@@ -914,7 +896,7 @@ const SingleProductPage = () => {
               <p>
                 <b>Dimensions (Length x Width):</b>
               </p>
-              {category === "Custom Size" ? (
+              {categorz === "Custom Size" ? (
                 <div className="d-flex ">
                   <input
                     type="number"
@@ -934,7 +916,7 @@ const SingleProductPage = () => {
                   />
                 </div>
               ) : (
-                dimensions[category][unit].map((dimension) => (
+                dimensions[categorz][unit].map((dimension) => (
                   <button
                     key={dimension}
                     className="m-1"
@@ -991,6 +973,9 @@ const Wrapper = styled.main`
     margin-top: 2rem;
   }
 
+  .p {
+    margin-bottom: 0rem !important;
+  }
   .product-image {
     max-width: 100%;
     height: auto;
