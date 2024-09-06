@@ -312,6 +312,11 @@ const SingleProductPage = () => {
           <img src={image} alt={title} className='product-image' />
         </div> */}
         <div className="col-md-5 col-sm-12 content">
+          <p className="info">
+            <span>Category : </span>
+            {category}
+          </p>
+
           <h4>{title}</h4>
           {/* <div>{categorz + "," + selectedDimension + "," + thickness}</div> */}
 
@@ -321,11 +326,6 @@ const SingleProductPage = () => {
           )}
           {/* <p className="desc my-1">{description}</p> */}
           <div className="info ">
-            <p>
-              <span>Category : </span>
-              {category}
-            </p>
-
             <p>
               <span>Descrpition : </span>
               {LongDesc}

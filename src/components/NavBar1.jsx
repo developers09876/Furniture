@@ -180,22 +180,22 @@ const NavBar1 = () => {
                   </Link>
                   <ul className="dropdown-menu">
                     <li>
-                      <Link className="dropdown-item" to="#">
+                      <Link className="dropdown-item" to="/products/9">
                         Amenity Mattress
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="#">
+                      <Link className="dropdown-item" to="/products/10">
                         Amenity ET Mattress
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="#">
+                      <Link className="dropdown-item" to="/products/11">
                         Posture Infinity Mattress
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="#">
+                      <Link className="dropdown-item" to="/products/12">
                         Leisure Sleep Mattress
                       </Link>
                     </li>
