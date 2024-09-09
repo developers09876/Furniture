@@ -16,6 +16,11 @@ import Breadcrumb from "../components/Breadcrumb";
 import img1 from "../assets/sofa.jpg";
 import img2 from "../assets/chair.jpg";
 import img3 from "../assets/bed.jpg";
+import Amenity from "../assets/Amenity.png"
+import Amenity_ET from "../assets/Amenity_ET.png"
+import Leisure from "../assets/Leisure.png"
+import Luxe from "../assets/Luxe.png"
+import Posture from "../assets/Posture.png"
 import { Col, Row } from "react-bootstrap";
 import { Tabs } from "antd";
 import { Card } from "antd";
@@ -46,7 +51,9 @@ const SingleProductPage = () => {
     console.log("Specification is not available");
   }
   const [selectedImage, setSelectedImage] = useState(null);
-  const [images, setimages] = useState([img1, img2, img3]);
+  const [images, setImages] = useState([img1, img2, img3,Amenity,Amenity_ET]);
+ 
+
   // const [products, setProducts] = useState([
   //   {
   //     images: [img1, img2, img3],
@@ -102,9 +109,7 @@ const SingleProductPage = () => {
   const [showVideo, setShowVideo] = useState(false);
   const [unit, setUnit] = useState("in");
   const [categorz, setCategory] = useState("Single");
-  console.log("category", categorz);
   const [selectedDimension, setSelectedDimension] = useState('78" x 30"');
-  console.log("selectedDimension", selectedDimension);
   const [thickness, setThickness] = useState('6"');
   const [customLength, setCustomLength] = useState("");
   const [customBreadth, setCustomBreadth] = useState("");
@@ -122,8 +127,9 @@ const SingleProductPage = () => {
         console.error("Error fetching product details:", error);
       }
     };
-
-    fetchProduct();
+      // Ensure productID is passed here
+      fetchProduct();
+    
   }, [productID]);
   const handleShow = () => setShow(true);
   const handleClose = () => {
@@ -185,7 +191,7 @@ const SingleProductPage = () => {
     console.log("Selected Size:", selectedSize);
     // handleClose();
   };
-
+ 
   const dimensions = {
     Single: {
       in: ['72" x 36"', '75" x 42"', '78" x 30"', '80" x 35"', '84" x 36"'],

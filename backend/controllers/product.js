@@ -61,30 +61,51 @@ export const getOneProduct = async (req, res) => {
     }
 }
 
-export const createProduct = async (req, res) => {
-    try {
-        const newProduct = new Product(req.body);
-        const savedProduct = await newProduct.save();
-        res.status(200).json(savedProduct);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
 // export const createProduct = async (req, res) => {
 //     try {
-//         // Save uploaded image paths to an array
-//         const imagePaths = req.files.map(file => file.path);
-
-//         // Create a new product with the image paths
-//         const newProduct = new Product({
-//             ...req.body,
-//             images: imagePaths
-//         });
-
-//         // Save the product to the database
+//         const newProduct = new Product(req.body);
 //         const savedProduct = await newProduct.save();
 //         res.status(200).json(savedProduct);
 //     } catch (error) {
 //         res.status(500).json({ message: error.message });
 //     }
-// };
+// }
+import { v2 as cloudinary } from 'cloudinary';
+import Product from './models/Product';  // Import your Product model
+
+// Configure Cloudinary
+cloudinary.config({
+    cloud_name: 'dk6vgylx3', 
+    api_key: '582556881638234', 
+    api_secret: '<your_api_secret>'
+});
+
+export const createProduct = async (req, res) => {
+    try {
+        const { name, price, description, image } = req.body;  // Assuming image is part of the request body
+
+        // Upload image to Cloudinary
+        const uploadResult = await cloudinary.uploader.upload(image, {
+            folder: 'products', // Optional: specify a folder
+            public_id: `${name.replace(/\s+/g, '_').toLowerCase()}`, // Use product name for the public ID
+            use_filename: true,
+            unique_filename: false,
+            overwrite: true,
+        });
+
+        // Create a new product with the Cloudinary URL
+        const newProduct = new Product({
+            name,
+            price,
+            description,
+            imageUrl: uploadResult.secure_url  // Store the Cloudinary URL
+        });
+
+        // Save the product in the database
+        const savedProduct = await newProduct.save();
+
+        res.status(200).json(savedProduct);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
