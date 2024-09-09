@@ -8,11 +8,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // styled components
-const StyledProducts = styled.div `
+const StyledProducts = styled.div`
   width: 450px;
-  margin: 10px 270px; 
+  margin: 10px 270px;
 `;
-
 
 const AddProduct = () => {
   const categories = [
@@ -108,48 +107,51 @@ const AddProduct = () => {
   const handleDynamicInputChange = (e, index) => {
     const { name, value } = e.target;
     const updatedSpecifications = [...formData.specifications];
-    const updatedDynamicFields = [...updatedSpecifications[0].product_Details.dynamicFields];
+    const updatedDynamicFields = [
+      ...updatedSpecifications[0].product_Details.dynamicFields,
+    ];
     updatedDynamicFields[index][name] = value;
-    updatedSpecifications[0].product_Details.dynamicFields = updatedDynamicFields;
+    updatedSpecifications[0].product_Details.dynamicFields =
+      updatedDynamicFields;
     setFormData({ ...formData, specifications: updatedSpecifications });
   };
 
   const handleDynamicRemoveClick = (index) => {
     const updatedSpecifications = [...formData.specifications];
-    const updatedDynamicFields = [...updatedSpecifications[0].product_Details.dynamicFields];
+    const updatedDynamicFields = [
+      ...updatedSpecifications[0].product_Details.dynamicFields,
+    ];
     updatedDynamicFields.splice(index, 1);
-    updatedSpecifications[0].product_Details.dynamicFields = updatedDynamicFields;
+    updatedSpecifications[0].product_Details.dynamicFields =
+      updatedDynamicFields;
     setFormData({ ...formData, specifications: updatedSpecifications });
   };
 
   const handleDynamicAddClick = () => {
     const updatedSpecifications = [...formData.specifications];
-    updatedSpecifications[0].product_Details.dynamicFields.push({ title: "", description: "" });
+    updatedSpecifications[0].product_Details.dynamicFields.push({
+      title: "",
+      description: "",
+    });
     setFormData({ ...formData, specifications: updatedSpecifications });
   };
 
-
   console.log("form data:", formData);
-
- 
 
   const addProduct = async () => {
     console.log("Form Data:", formData);
     try {
-      const response = await axios.post(
-        "http://localhost:3000/products/create",
-        formData
-      );
-      if (response.status === 200) {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Product added successfully!",
+      axios
+        .post("http://localhost:5000/products/create", formData)
+        .then((res) => {
+          if (res.status === 200) {
+            alert("inside");
+            // navigate('/dashboard/products');
+          } else {
+            throw new Error("Failed to add product");
+          }
         });
-        // navigate('/dashboard/products');
-      } else {
-        throw new Error("Failed to add product");
-      }
+      console.log("demo:", formData);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -371,158 +373,186 @@ const AddProduct = () => {
                   }
                 />
               </div>
-             <div>
-               {/* Dynamic Input Fields */}
-               {formData.specifications[0].product_Details.dynamicFields.map((x, i) => (
-                <div className="row mb-3" key={i}>
-                  <div className="form-group col-md-4">
-                    <label>Title</label>
-                    <input
-                      type="text"
-                      name="title"
-                      className="form-control"
-                      placeholder="Enter Title"
-                      value={x.title}
-                      onChange={(e) => handleDynamicInputChange(e, i)}
-                    />
-                  </div>
-                  <div className="form-group col-md-4">
-                    <label>Description</label>
-                    <textarea
-                      name="description"
-                      className="form-control"
-                      placeholder="Enter Description"
-                      value={x.description}
-                      onChange={(e) => handleDynamicInputChange(e, i)}
-                    />
-                  </div>
-                  <div className="form-group col-md-2 mt-4">
-                    {formData.specifications[0].product_Details.dynamicFields.length !== 1 && (
-                      <button
-                        className="btn btn-danger mx-1 my-1"
-                        onClick={() => handleDynamicRemoveClick(i)}
-                      >
-                        Remove
-                      </button>
-                    )}
-                    {formData.specifications[0].product_Details.dynamicFields.length - 1 === i && (
-                      <button className="btn btn-primary mx-1" onClick={handleDynamicAddClick}>
-                        Add
-                      </button>
-                    )}
-                  </div>
+              <div>
+                {/* Dynamic Input Fields */}
+                {formData.specifications[0].product_Details.dynamicFields.map(
+                  (x, i) => (
+                    <div className="row mb-3" key={i}>
+                      <div className="form-group col-md-4">
+                        <label>Title</label>
+                        <input
+                          type="text"
+                          name="title"
+                          className="form-control"
+                          placeholder="Enter Title"
+                          value={x.title}
+                          onChange={(e) => handleDynamicInputChange(e, i)}
+                        />
+                      </div>
+                      <div className="form-group col-md-4">
+                        <label>Description</label>
+                        <textarea
+                          name="description"
+                          className="form-control"
+                          placeholder="Enter Description"
+                          value={x.description}
+                          onChange={(e) => handleDynamicInputChange(e, i)}
+                        />
+                      </div>
+                      <div className="form-group col-md-2 mt-4">
+                        {formData.specifications[0].product_Details
+                          .dynamicFields.length !== 1 && (
+                          <button
+                            className="btn btn-danger mx-1 my-1"
+                            onClick={() => handleDynamicRemoveClick(i)}
+                          >
+                            Remove
+                          </button>
+                        )}
+                        {formData.specifications[0].product_Details
+                          .dynamicFields.length -
+                          1 ===
+                          i && (
+                          <button
+                            className="btn btn-primary mx-1"
+                            onClick={handleDynamicAddClick}
+                          >
+                            Add
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
+
+              <div className="form-group fw-bold my-2 row">
+                <h5>
+                  <b>Product Dimensions</b>
+                </h5>
+                <div className="form-group fw-bold my-2 col-lg-6 col-md-6">
+                  <label htmlFor="thickness">Thickness:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="thickness"
+                    name="thickness"
+                    value={
+                      formData.specifications[0].product_Dimension.thickness
+                    }
+                    onChange={(e) =>
+                      handleSpecificationChange(
+                        e,
+                        "product_Dimension",
+                        "thickness"
+                      )
+                    }
+                  />
                 </div>
-              ))}
-             </div>
-                     
-            <div className="form-group fw-bold my-2 row">
-              <h5>
-                <b>Product Dimensions</b>
-              </h5>
-              <div className="form-group fw-bold my-2 col-lg-6 col-md-6">
-                <label htmlFor="thickness">Thickness:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="thickness"
-                  name="thickness"
-                  value={formData.specifications[0].product_Dimension.thickness}
-                  onChange={(e) =>
-                    handleSpecificationChange(e,"product_Dimension","thickness")
-                  }
-                />
-              </div>
 
-              <div className="form-group fw-bold my-2 col-lg-6 col-md-6">
-                <label htmlFor="dimensions">Dimensions:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="dimensions"
-                  name="dimensions"
-                  value={
-                    formData.specifications[0].product_Dimension.dimensions
-                  }
-                  onChange={(e) =>
-                    handleSpecificationChange(e,"product_Dimension","dimensions")
-                  }
-                />
+                <div className="form-group fw-bold my-2 col-lg-6 col-md-6">
+                  <label htmlFor="dimensions">Dimensions:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="dimensions"
+                    name="dimensions"
+                    value={
+                      formData.specifications[0].product_Dimension.dimensions
+                    }
+                    onChange={(e) =>
+                      handleSpecificationChange(
+                        e,
+                        "product_Dimension",
+                        "dimensions"
+                      )
+                    }
+                  />
+                </div>
+              </div>
+              <div className="form-group fw-bold my-2 row">
+                <h5>
+                  <b>Product Policies</b>
+                </h5>
+                <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
+                  <label htmlFor="Warranty">Warranty:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="Warranty"
+                    name="Warranty"
+                    value={formData.specifications[0].product_Policies.Warranty}
+                    onChange={(e) =>
+                      handleSpecificationChange(
+                        e,
+                        "product_Policies",
+                        "Warranty"
+                      )
+                    }
+                  />
+                </div>
+
+                <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
+                  <label htmlFor="Shipping">Shipping:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="Shipping"
+                    name="Shipping"
+                    value={formData.specifications[0].product_Policies.Shipping}
+                    onChange={(e) =>
+                      handleSpecificationChange(
+                        e,
+                        "product_Policies",
+                        "Shipping"
+                      )
+                    }
+                  />
+                </div>
+
+                <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
+                  <label htmlFor="available_Offers">Available Offers:</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="available_Offers"
+                    name="available_Offers"
+                    value={
+                      formData.specifications[0].product_Policies
+                        .available_Offers
+                    }
+                    onChange={(e) =>
+                      handleSpecificationChange(
+                        e,
+                        "product_Policies",
+                        "available_Offers"
+                      )
+                    }
+                  />
+                </div>
+
+                <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
+                  <label htmlFor="trial">Trial:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="trial"
+                    name="trial"
+                    value={formData.specifications[0].product_Policies.trial}
+                    onChange={(e) =>
+                      handleSpecificationChange(e, "product_Policies", "trial")
+                    }
+                  />
+                </div>
               </div>
             </div>
-            <div className="form-group fw-bold my-2 row">
-              <h5>
-                <b>Product Policies</b>
-              </h5>
-              <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
-                <label htmlFor="Warranty">Warranty:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="Warranty"
-                  name="Warranty"
-                  value={formData.specifications[0].product_Policies.Warranty}
-                  onChange={(e) =>
-                    handleSpecificationChange(e, "product_Policies", "Warranty")
-                  }
-                />
-              </div>
-
-              <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
-                <label htmlFor="Shipping">Shipping:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="Shipping"
-                  name="Shipping"
-                  value={formData.specifications[0].product_Policies.Shipping}
-                  onChange={(e) =>
-                    handleSpecificationChange(e, "product_Policies", "Shipping")
-                  }
-                />
-              </div>
-
-              <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
-                <label htmlFor="available_Offers">Available Offers:</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="available_Offers"
-                  name="available_Offers"
-                  value={
-                    formData.specifications[0].product_Policies.available_Offers
-                  }
-                  onChange={(e) =>
-                    handleSpecificationChange(
-                      e,
-                      "product_Policies",
-                      "available_Offers"
-                    )
-                  }
-                />
-              </div>
-
-              <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
-                <label htmlFor="trial">Trial:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="trial"
-                  name="trial"
-                  value={formData.specifications[0].product_Policies.trial}
-                  onChange={(e) =>
-                    handleSpecificationChange(e, "product_Policies", "trial")
-                  }
-                />
-              </div>
+            <div className="form-group mt-4 " style={{ textAlign: "end" }}>
+              <Button type="submit" className="me-2">
+                Submit
+              </Button>
+              <Button type="reset">Cancel</Button>
             </div>
           </div>
-          <div className="form-group mt-4 " style={{ textAlign: "end" }}>
-            <Button type="submit" className="me-2">
-              Submit
-            </Button>
-            <Button type="reset">Cancel</Button>
-          </div>
-        </div>
         </div>
       </form>
     </StyledProducts>
