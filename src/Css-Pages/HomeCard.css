@@ -145,3 +145,26 @@ p.quote {
   font-size: 17px;
   font-weight: 400;
 }
+
+/* products details */
+/* Normal gallery images */
+.product-image img {
+  width: 50px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+/* Full-screen overlay */
+#fullpage {
+  display: block;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: black;
+}
