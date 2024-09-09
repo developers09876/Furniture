@@ -16,12 +16,17 @@ import Breadcrumb from "../components/Breadcrumb";
 import img1 from "../assets/sofa.jpg";
 import img2 from "../assets/chair.jpg";
 import img3 from "../assets/bed.jpg";
-import Amenity from "../assets/Amenity.png"
-import Amenity_ET from "../assets/Amenity_ET.png"
-import Leisure from "../assets/Leisure.png"
-import Luxe from "../assets/Luxe.png"
-import Posture from "../assets/Posture.png"
-import { Col, Row } from "react-bootstrap";
+import Amenity from "../assets/Amenity.png";
+import Amenity_ET from "../assets/Amenity_ET.png";
+import "../Css-Pages/HomeCard.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+import Leisure from "../assets/Leisure.png";
+import Luxe from "../assets/Luxe.png";
+import Posture from "../assets/Posture.png";
+import { Col, Container, Row } from "react-bootstrap";
 import { Tabs } from "antd";
 import { Card } from "antd";
 import { Modal } from "react-bootstrap";
@@ -29,7 +34,6 @@ import { useState } from "react";
 import { Radio } from "antd";
 import { ImYoutube } from "react-icons/im";
 import { IoIosArrowForward } from "react-icons/io";
-import { height, width } from "@fortawesome/free-brands-svg-icons/fa42Group";
 const { Group: RadioGroup, Button: RadioButton } = Radio;
 
 const card_help = {
@@ -38,6 +42,13 @@ const card_help = {
 };
 
 const SingleProductPage = () => {
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+  };
+
   const { productID } = useParams();
   console.log("productID", productID);
   const [product, setProduct] = useState([]);
@@ -52,8 +63,7 @@ const SingleProductPage = () => {
     console.log("Specification is not available");
   }
   const [selectedImage, setSelectedImage] = useState(null);
-  const [images, setImages] = useState([img1, img2, img3,Amenity,Amenity_ET]);
- 
+  const [images, setImages] = useState([img1, img2, img3, Amenity, Amenity_ET]);
 
   // const [products, setProducts] = useState([
   //   {
@@ -130,9 +140,8 @@ const SingleProductPage = () => {
         console.error("Error fetching product details:", error);
       }
     };
-      // Ensure productID is passed here
-      fetchProduct();
-    
+    // Ensure productID is passed here
+    fetchProduct();
   }, [productID]);
   const handleShow = () => setShow(true);
   const handleClose = () => {
@@ -199,7 +208,7 @@ const SingleProductPage = () => {
     console.log("Selected Size:", selectedSize);
     // handleClose();
   };
- 
+
   const dimensions = {
     Single: {
       in: ['72" x 36"', '75" x 42"', '78" x 30"', '80" x 35"', '84" x 36"'],
@@ -316,7 +325,11 @@ const SingleProductPage = () => {
           <div className="image-album mb-2">
             {images?.map((img, index) => (
               <img
-                style={{ cursor: "pointer", borderRadius: "5px" }}
+                style={{
+                  cursor: "pointer",
+                  borderRadius: "5px",
+                  height: "47px",
+                }}
                 key={index}
                 src={img}
                 alt={title}
@@ -916,41 +929,55 @@ const SingleProductPage = () => {
         </div>
         <div></div>
       </div>
-      <Modal show={showPic} onHide={handleClosePic} size="lg" centered>
-        <Modal.Header closeButton className="flex"></Modal.Header>
-        <Row>
-          {" "}
-          <Modal.Title className="w-100 text-center">
-            <img
-              src={selectedImage}
-              alt={title}
-              className="openMOdelPic"
-              style={openMOdelPic}
-            />
-          </Modal.Title>
-        </Row>
-        <Row>
-          {/* <div className="col-md-2">
-            <div className="image-album mb-2" style={{ display: "flex" }}> */}
-          {images?.map((img, index) => (
-            <>
-              <Col lg={3}>
-                <img
-                  style={{ cursor: "pointer", borderRadius: "5px" }}
-                  key={index}
-                  src={img}
-                  alt={title}
-                  width="100%"
-                  onClick={() => handleImageClick(img)}
-                  className={` ${img === selectedImage ? "active" : ""} mb-2`}
-                />
-              </Col>
-            </>
-          ))}
-          {/* </div>
-          </div> */}
-        </Row>
-      </Modal>
+      <Container className="mt-5">
+        <Modal
+          show={showPic}
+          onHide={handleClosePic}
+          // size="lg"
+          centered
+          dialogClassName="custom-modal"
+        >
+          {/* <Modal.Header closeButton className="flex"></Modal.Header> */}
+          <Row style={{ padding: "10px" }} className="mb-3">
+            <Modal.Title className="w-100 text-center">
+              <img
+                src={selectedImage}
+                alt={title}
+                className="openMOdelPic"
+                style={openMOdelPic}
+              />
+            </Modal.Title>
+          </Row>
+
+          <div className="slider-container container" style={{ width: "96%" }}>
+            <Slider {...settings}>
+              {images?.map((img, index) => (
+                <div key={index}>
+                  <>
+                    <Col lg={12} style={{ padding: "10px" }}>
+                      <img
+                        style={{
+                          cursor: "pointer",
+                          borderRadius: "5px",
+                          height: "120px",
+                        }}
+                        key={index}
+                        src={img}
+                        alt={title}
+                        width="100%"
+                        onClick={() => handleImageClick(img)}
+                        className={` ${
+                          img === selectedImage ? "active" : ""
+                        } mb-2`}
+                      />
+                    </Col>
+                  </>
+                </div>
+              ))}
+            </Slider>
+          </div>
+        </Modal>
+      </Container>
       <Modal show={show} onHide={handleClose} size="lg" centered>
         <Modal.Header closeButton className="d-flex justify-content-center">
           <Modal.Title className="w-100 text-center">

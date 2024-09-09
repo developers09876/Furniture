@@ -71,45 +71,45 @@ function ShopByCategory() {
 
   return (
     <Container className="mt-5">
-        <h2 style={{textAlign:"center"}}>Shop By Categories
-
+      <h2 style={{ textAlign: "center" }}>
+        Shop By Categories
         <center>
-           
-           <div
-             style={{
-               backgroundColor: `var(--button-hover)`,
-               padding: "1px 1px 3px 3px",
-               width: "25%",
-             }}
-           ></div>
-         </center>
-        </h2>
-        
-      <div className="slider-container">
+          <div
+            style={{
+              backgroundColor: `var(--button-hover)`,
+              padding: "1px 1px 3px 3px",
+              width: "25%",
+            }}
+          ></div>
+        </center>
+      </h2>
+
+      <div className="slider-container container">
         <Slider {...settings}>
           {datas.map((data, index) => (
             <div key={index}>
-                <Row className="mt-3">
-                    <Col sm={12} md={12}>
-              <Card
-                style={{
-              padding:"10px",
-              border:"none"
-                }}
-                cover={
-                  <img
-                    src={data.image}
-                    alt="chair"
-                    style={{ height: "31vh" , borderRadius:"10px"}}
-                  />
-                }
-              >
-                <h6 style={{textAlign:"center"}}>
-                  {data.title}
-                  {/* // description={data.price} */}
-                  </h6>
-              </Card>
-              </Col> </Row>
+              <Row className="mt-3">
+                <Col sm={12} md={12}>
+                  <Card
+                    style={{
+                      padding: "10px",
+                      border: "none",
+                    }}
+                    cover={
+                      <img
+                        src={data.image}
+                        alt="chair"
+                        style={{ height: "31vh", borderRadius: "10px" }}
+                      />
+                    }
+                  >
+                    <h6 style={{ textAlign: "center" }}>
+                      {data.title}
+                      {/* // description={data.price} */}
+                    </h6>
+                  </Card>
+                </Col>
+              </Row>
             </div>
           ))}
         </Slider>
