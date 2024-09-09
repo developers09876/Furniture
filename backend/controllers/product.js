@@ -77,7 +77,7 @@ import Product from './models/Product';  // Import your Product model
 cloudinary.config({
     cloud_name: 'dk6vgylx3', 
     api_key: '582556881638234', 
-    api_secret: '<your_api_secret>'
+    api_secret: 'y1eBLmQpt9DJEgGpMcz5FtgdjPE<your_api_secret>'
 });
 
 export const createProduct = async (req, res) => {
