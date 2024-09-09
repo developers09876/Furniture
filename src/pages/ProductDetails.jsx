@@ -16,6 +16,11 @@ import Breadcrumb from "../components/Breadcrumb";
 import img1 from "../assets/sofa.jpg";
 import img2 from "../assets/chair.jpg";
 import img3 from "../assets/bed.jpg";
+import Amenity from "../assets/Amenity.png"
+import Amenity_ET from "../assets/Amenity_ET.png"
+import Leisure from "../assets/Leisure.png"
+import Luxe from "../assets/Luxe.png"
+import Posture from "../assets/Posture.png"
 import { Col, Row } from "react-bootstrap";
 import { Tabs } from "antd";
 import { Card } from "antd";
@@ -24,6 +29,7 @@ import { useState } from "react";
 import { Radio } from "antd";
 import { ImYoutube } from "react-icons/im";
 import { IoIosArrowForward } from "react-icons/io";
+import { height, width } from "@fortawesome/free-brands-svg-icons/fa42Group";
 const { Group: RadioGroup, Button: RadioButton } = Radio;
 
 const card_help = {
@@ -46,7 +52,9 @@ const SingleProductPage = () => {
     console.log("Specification is not available");
   }
   const [selectedImage, setSelectedImage] = useState(null);
-  const [images, setimages] = useState([img1, img2, img3]);
+  const [images, setImages] = useState([img1, img2, img3,Amenity,Amenity_ET]);
+ 
+
   // const [products, setProducts] = useState([
   //   {
   //     images: [img1, img2, img3],
@@ -99,12 +107,12 @@ const SingleProductPage = () => {
   // ]);
 
   const [show, setShow] = useState(false);
+  const [showPic, setShowPic] = useState(false);
+
   const [showVideo, setShowVideo] = useState(false);
   const [unit, setUnit] = useState("in");
   const [categorz, setCategory] = useState("Single");
-  console.log("category", categorz);
   const [selectedDimension, setSelectedDimension] = useState('78" x 30"');
-  console.log("selectedDimension", selectedDimension);
   const [thickness, setThickness] = useState('6"');
   const [customLength, setCustomLength] = useState("");
   const [customBreadth, setCustomBreadth] = useState("");
@@ -122,12 +130,18 @@ const SingleProductPage = () => {
         console.error("Error fetching product details:", error);
       }
     };
-
-    fetchProduct();
+      // Ensure productID is passed here
+      fetchProduct();
+    
   }, [productID]);
   const handleShow = () => setShow(true);
   const handleClose = () => {
     setShow(false);
+    resetFilters();
+  };
+  const handleShowPic = () => setShowPic(true);
+  const handleClosePic = () => {
+    setShowPic(false);
     resetFilters();
   };
 
@@ -185,7 +199,7 @@ const SingleProductPage = () => {
     console.log("Selected Size:", selectedSize);
     // handleClose();
   };
-
+ 
   const dimensions = {
     Single: {
       in: ['72" x 36"', '75" x 42"', '78" x 30"', '80" x 35"', '84" x 36"'],
@@ -226,6 +240,11 @@ const SingleProductPage = () => {
     cm: ["12.7 cm", "15.2 cm", "20.3 cm", "25.4 cm"],
   };
 
+  const openMOdelPic = {
+    width: "100%",
+    height: "100%",
+  };
+
   const selectedStyle = {
     color: "white",
     backgroundColor: "#7fafcb",
@@ -243,6 +262,12 @@ const SingleProductPage = () => {
     color: hover ? "white" : "#7fafcb",
     border: " 1px solid #7fafcb",
   };
+
+  const speCont = styled.main`
+    .p {
+      color: blue;
+    }
+  `;
 
   const [quantity, setQuantity] = useState(1);
   const [subTotal, setSubTotal] = useState(0);
@@ -305,21 +330,25 @@ const SingleProductPage = () => {
           </div>
         </div>
         <div className="col-md-6 col-sm-12 mb-3">
-          <img src={selectedImage} alt={title} className="product-image" />
+          <img
+            src={selectedImage}
+            alt={title}
+            className="product-image"
+            onClick={() => handleShowPic()}
+          />
         </div>
         {/* <div className="col-md-6 mb-3">
          
           <img src={image} alt={title} className='product-image' />
         </div> */}
         <div className="col-md-5 col-sm-12 content">
-          <p className="info">
-            <span>Category : </span>
-            {category}
-          </p>
-
           <h4>{title}</h4>
           {/* <div>{categorz + "," + selectedDimension + "," + thickness}</div> */}
-
+          <p>
+            <span>
+              <h6>Category : {category}</h6>
+            </span>
+          </p>
           <h5 className="price me-2 d-inline">₹{price}</h5>
           {discountPrice && (
             <h6 className="old-price d-inline">₹{discountPrice} </h6>
@@ -461,6 +490,7 @@ const SingleProductPage = () => {
         </center>
 
         <Tabs
+          className="speCont"
           defaultActiveKey="1"
           centered
           items={[
@@ -482,7 +512,7 @@ const SingleProductPage = () => {
                         <Col sm={12} md={10}>
                           <div>
                             {" "}
-                            <p>Mattress Feel: </p>{" "}
+                            <b>Mattress Feel: </b>{" "}
                           </div>
 
                           <p>
@@ -506,7 +536,7 @@ const SingleProductPage = () => {
                         <Col sm={12} md={10}>
                           <div>
                             {" "}
-                            <p>Mattress Material: </p>{" "}
+                            <b>Mattress Material: </b>{" "}
                           </div>
                           <div>
                             <p>
@@ -533,7 +563,7 @@ const SingleProductPage = () => {
                         <Col sm={12} md={10}>
                           <div>
                             {" "}
-                            <p>Cover Material:</p>{" "}
+                            <b>Cover Material:</b>{" "}
                           </div>
                           <div>
                             <p>
@@ -558,7 +588,7 @@ const SingleProductPage = () => {
                         <Col sm={12} md={10}>
                           <div>
                             {" "}
-                            <p>Mattress Usability:</p>{" "}
+                            <b>Mattress Usability:</b>{" "}
                           </div>
                           <div>
                             <p>
@@ -585,7 +615,7 @@ const SingleProductPage = () => {
                         <Col sm={12} md={10}>
                           <div>
                             {" "}
-                            <p>Cover Type: </p>{" "}
+                            <b>Cover Type: </b>{" "}
                           </div>
 
                           <p>
@@ -599,6 +629,65 @@ const SingleProductPage = () => {
                         </Col>
                       </Row>
                       <Row></Row>
+                    </Col>
+                    <Col sm={12} md={12}>
+                      <h5>Rebounded Foam Core</h5>
+                      <p>
+                        At the foundation of our mattress is a durable layer of
+                        rebounded foam. This material is engineered for
+                        long-lasting performance, maintaining its shape and
+                        firmness even after years of use. The rebounded foam
+                        ensures a stable and supportive base, ideal for all
+                        sleeping positions and body types.
+                      </p>
+                    </Col>
+                    <Col sm={12} md={12}>
+                      <h5>High-Resilience (HR) Foam Layers</h5>
+                      <p>
+                        Our mattress features dual layers of high-resilience
+                        (HR) foam, each 40mm thick. These layers are
+                        strategically placed to maximize comfort and support.
+                        The HR foam is known for its superior elasticity and
+                        responsiveness, contouring to your body&#39;s unique
+                        shape and providing excellent pressure relief. This
+                        adaptive support ensures a restful and rejuvenating
+                        sleep.
+                      </p>{" "}
+                    </Col>
+                    <Col sm={12} md={12}>
+                      <h5>Euro Top with Additional HR Foam</h5>
+                      <p>
+                        Enhancing the comfort level is the Euro top design,
+                        incorporating another 40mm layer of HR foam. This added
+                        layer creates a plush yet supportive surface, elevating
+                        your sleeping experience. The Euro top design not only
+                        improves comfort but also adds a touch of elegance and
+                        sophistication to the mattress.
+                      </p>
+                    </Col>
+                    <Col sm={12} md={12}>
+                      <h5>Quilted Fabric with Memory Foam</h5>
+                      <p>
+                        The top of our mattress features high-quality fabric
+                        quilted with a 30mm layer of memory foam. This
+                        combination delivers a plush, luxurious feel and
+                        superior comfort. Memory foam is renowned for its
+                        ability to conform to your body, providing personalized
+                        support and reducing pressure points. The quilted fabric
+                        enhances breathability and adds a soft, inviting touch.
+                      </p>
+                    </Col>
+                    <Col sm={12} md={12}>
+                      <h5>Quilted Border and Bottom</h5>
+                      <p>
+                        Attention to detail extends to the mattress’s borders
+                        and bottom. A 10mm layer of foam, quilted with fabric,
+                        envelops the entire mattress. This thoughtful design
+                        reinforces the mattress’s structure, enhances its
+                        aesthetic appeal, and ensures a seamless, uniform look.
+                        The quilted border and bottom contribute to the overall
+                        comfort and durability of the mattress.
+                      </p>
                     </Col>
                   </Row>
                 </div>
@@ -622,7 +711,7 @@ const SingleProductPage = () => {
                         <Col sm={12} md={10}>
                           <div>
                             {" "}
-                            <p>Mattress Thickness:</p>{" "}
+                            <b>Mattress Thickness:</b>{" "}
                           </div>
 
                           <p>
@@ -649,7 +738,7 @@ const SingleProductPage = () => {
                         <Col sm={12} md={10}>
                           <div>
                             {" "}
-                            <p>Dimensions:</p>{" "}
+                            <b>Dimensions:</b>{" "}
                           </div>
                           <p>
                             {product &&
@@ -684,7 +773,7 @@ const SingleProductPage = () => {
                         <Col sm={12} md={10}>
                           <div>
                             {" "}
-                            <p>Warranty:</p>{" "}
+                            <b>Warranty:</b>{" "}
                           </div>
                           <p>
                             {product &&
@@ -709,7 +798,7 @@ const SingleProductPage = () => {
                         <Col sm={12} md={10}>
                           <div>
                             {" "}
-                            <p>Shipping:</p>{" "}
+                            <b>Shipping:</b>{" "}
                           </div>
                           <p>
                             {product &&
@@ -737,7 +826,7 @@ const SingleProductPage = () => {
                         <Col sm={12} md={10}>
                           <div>
                             {" "}
-                            <p>100 days trial</p>{" "}
+                            <b>100 days trial</b>{" "}
                           </div>
 
                           <p>
@@ -827,7 +916,41 @@ const SingleProductPage = () => {
         </div>
         <div></div>
       </div>
-
+      <Modal show={showPic} onHide={handleClosePic} size="lg" centered>
+        <Modal.Header closeButton className="flex"></Modal.Header>
+        <Row>
+          {" "}
+          <Modal.Title className="w-100 text-center">
+            <img
+              src={selectedImage}
+              alt={title}
+              className="openMOdelPic"
+              style={openMOdelPic}
+            />
+          </Modal.Title>
+        </Row>
+        <Row>
+          {/* <div className="col-md-2">
+            <div className="image-album mb-2" style={{ display: "flex" }}> */}
+          {images?.map((img, index) => (
+            <>
+              <Col lg={3}>
+                <img
+                  style={{ cursor: "pointer", borderRadius: "5px" }}
+                  key={index}
+                  src={img}
+                  alt={title}
+                  width="100%"
+                  onClick={() => handleImageClick(img)}
+                  className={` ${img === selectedImage ? "active" : ""} mb-2`}
+                />
+              </Col>
+            </>
+          ))}
+          {/* </div>
+          </div> */}
+        </Row>
+      </Modal>
       <Modal show={show} onHide={handleClose} size="lg" centered>
         <Modal.Header closeButton className="d-flex justify-content-center">
           <Modal.Title className="w-100 text-center">
@@ -969,6 +1092,11 @@ const SingleProductPage = () => {
 };
 
 const Wrapper = styled.main`
+  .speCont {
+    .p {
+      color: blue;
+    }
+  }
   .product-center {
     margin-top: 2rem;
   }
@@ -977,6 +1105,7 @@ const Wrapper = styled.main`
     margin-bottom: 0rem !important;
   }
   .product-image {
+    cursor: pointer;
     max-width: 100%;
     height: auto;
     border: 1px solid ${(props) => props.theme.borderColor};
