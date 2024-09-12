@@ -3,7 +3,7 @@ import Sidebar from "../components/SideBar";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 
-const DashboardLayout = () => {
+const UserDashboardLayout = () => {
   const { isAdmin } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -21,4 +21,4 @@ const DashboardLayout = () => {
   );
 };
 
-export default DashboardLayout;
+export default UserDashboardLayout;

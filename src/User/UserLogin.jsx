@@ -17,8 +17,8 @@ const StyledHeading = styled.h1`
   margin: 5rem 0;
 `;
 
-const Login = () => {
-  const { isAuthenticated, login, error } = useContext(AuthContext);
+const UserLogin = () => {
+  const { isAuthenticated, loginUser, error } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -33,7 +33,7 @@ const Login = () => {
 
     if (email && password) {
       try {
-        await login(email, password).then((success) => {
+        await loginUser(email, password).then((success) => {
           if (success) {
             // Display success message using SweetAlert
             Swal.fire({
@@ -44,7 +44,7 @@ const Login = () => {
             });
             // Redirect to the home page after a delay
             setTimeout(() => {
-              navigate("/");
+              navigate("/user");
             }, 1500);
           } else {
             // Display error message using SweetAlert
@@ -124,4 +124,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default UserLogin;

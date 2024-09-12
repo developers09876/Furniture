@@ -1,7 +1,16 @@
-import { useContext } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label } from 'recharts';
-import styled from 'styled-components';
-import { DashboardContext } from '../../context/DashboardContext';
+import { useContext } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  Label,
+} from "recharts";
+import styled from "styled-components";
+import { DashboardContext } from "../../context/DashboardContext";
 
 const Title = styled.h5`
   font-weight: bold;
@@ -42,7 +51,12 @@ const OrdersChart = () => {
   return (
     <>
       <Title className="my-4">Orders per Date</Title>
-      <BarChart width={900} height={400} data={chartData} style={{ margin: '0 auto' }}>
+      <BarChart
+        width={900}
+        height={400}
+        data={chartData}
+        style={{ margin: "0 auto" }}
+      >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" />
         <YAxis />

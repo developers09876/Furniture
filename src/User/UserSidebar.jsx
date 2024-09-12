@@ -10,9 +10,9 @@ import {
   faShoppingCart,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import Logo from "./Logo";
+import Logo from "../components/Logo";
 import { AuthContext } from "../context/AuthContext";
-import Button from "./Button";
+import Button from "../components/Button";
 
 // Styled components
 const SidebarContainer = styled.div`
@@ -22,8 +22,7 @@ const SidebarContainer = styled.div`
   width: 230px;
   min-height: 100vh;
   height: 100%;
-  // background-color: ${(props) => props.theme.mainColorLighter};
-  background-color: var(--bg-lite-clr);
+  background-color: ${(props) => props.theme.mainColorLighter};
   padding: 20px;
   margin-right: 20px;
   position: fixed;
@@ -58,7 +57,7 @@ const Footer = styled.div`
   margin-top: auto;
 `;
 
-const Sidebar = () => {
+const UserSidebar = () => {
   const { logout } = useContext(AuthContext);
 
   return (
@@ -66,26 +65,39 @@ const Sidebar = () => {
       <Link className="navbar-brand me-auto mb-4" to="/">
         <Logo fontSize={40} width={150} />
       </Link>
-      <SidebarLink exact to="/admin">
+      <SidebarLink exact to="/user">
         <Icon icon={faChartBar} />
         Dashboard
       </SidebarLink>
-      <SidebarLink to="/admin/products">
+      <SidebarLink exact to="/user/orders">
         <Icon icon={faBox} />
+        Orders
+      </SidebarLink>
+      <SidebarLink exact to="/user/orders/">
+        <Icon icon={faBox} />
+        Profile
+      </SidebarLink>
+      <SidebarLink to="/user/orders">
+        <Icon icon={faBox} />
+        Whistlist
+      </SidebarLink>
+
+      {/* <SidebarLink to="/user/products">
+         <Icon icon={faBox} />
         Products
       </SidebarLink>
-      <SidebarLink to="/admin/users">
+      <SidebarLink to="/user/users">
         <Icon icon={faUsers} />
         Users
       </SidebarLink>
-      <SidebarLink to="/admin/categories">
+      <SidebarLink to="/user/categories">
         <Icon icon={faListAlt} />
         Categories
       </SidebarLink>
-      <SidebarLink to="/admin/orders">
+      <SidebarLink to="/user/orders">
         <Icon icon={faShoppingCart} />
         Orders
-      </SidebarLink>
+      </SidebarLink> */}
       <Footer className="mt-auto">
         <Button className="me-2 my-3" handleClick={logout}>
           Logout <FontAwesomeIcon icon={faRightFromBracket} />
@@ -95,4 +107,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default UserSidebar;

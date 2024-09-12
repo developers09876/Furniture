@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
-import { DashboardContext } from "../../context/DashboardContext";
 import Button from "../../components/Button";
+import { UserDashboardContext } from "../Context/UserDashContext";
 
 // styled components
 const StyledProducts = styled.div`
@@ -22,19 +22,22 @@ const StyledTd = styled.th`
   font-weight: 400;
 `;
 
-const ProductDashboard = () => {
-  const { products, deleteProduct, fetchData } = useContext(DashboardContext);
+const UserProductDashboard = () => {
+  // const { products, deleteProduct, fetchData } =
+  //   useContext(UserDashboardContext);
 
   return (
     <StyledProducts>
       <h2 className="mb-4">All Products</h2>
       <Link
         className="text-reset text-decoration-none"
-        to={"/admin/products/add"}
+        to={"/dashboard/products/add"}
       >
         <Button className="my-4">Add Products</Button>
       </Link>
-      {/* <Button handleClick={() => fetchData()} className='ms-2 my-4'>Refresh Data</Button> */}
+      <Button handleClick={() => fetchData()} className="ms-2 my-4">
+        Refresh Data
+      </Button>
       <div className="table-responsive">
         <table className="table table-striped table-bordered table-hover">
           <thead>
@@ -51,7 +54,7 @@ const ProductDashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product, index) => (
+            {/* {products.map((product, index) => (
               <tr key={product.id}>
                 <StyledTd>{index + 1}</StyledTd>
                 <StyledTd>
@@ -93,7 +96,7 @@ const ProductDashboard = () => {
                   </span>
                 </td>
               </tr>
-            ))}
+            ))} */}
           </tbody>
         </table>
       </div>
@@ -101,4 +104,4 @@ const ProductDashboard = () => {
   );
 };
 
-export default ProductDashboard;
+export default UserProductDashboard;

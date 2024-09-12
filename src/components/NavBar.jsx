@@ -42,13 +42,13 @@ const StyledLink = styled(NavLink)`
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const { isAdmin, isAuthenticated, logout } = useContext(AuthContext);
+  const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
   const { totalItems } = useContext(CartContext);
   const { total } = useContext(WishlistContext);
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg p-0" >
+      <nav className="navbar navbar-expand-lg p-0">
         <div className="container lg-d-flex justify-content-center">
           {/* <Link className="navbar-brand me-auto" to="/">
           <Logo fontSize={40} width={150} />
@@ -95,8 +95,15 @@ const NavBar = () => {
               </li>
               {isAdmin && (
                 <li className="nav-item m-2">
-                  <StyledLink className="nav-link" to="/dashboard">
+                  <StyledLink className="nav-link" to="/admin">
                     Dashboard
+                  </StyledLink>
+                </li>
+              )}
+              {isUser && (
+                <li className="nav-item m-2">
+                  <StyledLink className="nav-link" to="/user">
+                    user Dashboard
                   </StyledLink>
                 </li>
               )}
@@ -119,7 +126,7 @@ const NavBar = () => {
               {!isAuthenticated ? (
                 <Button
                   className="ms-3 me-2 my-1"
-                  handleClick={() => navigate("/login")}
+                  handleClick={() => navigate("/userlogin")}
                 >
                   Login <FontAwesomeIcon icon={faUserPlus} />
                 </Button>

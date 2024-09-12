@@ -5,16 +5,17 @@ import OrdersChart from "../components/dashboard/OrdersChart";
 import Button from "../components/Button";
 
 const AdminDashboard = () => {
-
-  const { users, orders, products, fetchData } = useContext(DashboardContext)
+  const { users, orders, products, fetchData } = useContext(DashboardContext);
 
   return (
-    <div className="d-flex flex-column mt-3" style={{ margin: '0 250px' }}>
-      <Button className="w-25 ms-3" handleClick={() => fetchData()}>Refresh Data</Button>
+    <div className="d-flex flex-column mt-3" style={{ margin: "0 250px" }}>
+      <Button className="w-25 ms-3" handleClick={() => fetchData()}>
+        Refresh Data
+      </Button>
       <Stats users={users} orders={orders} products={products} />
       <OrdersChart />
     </div>
-  )
-}
+  );
+};
 
 export default AdminDashboard;

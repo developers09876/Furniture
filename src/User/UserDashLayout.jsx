@@ -2,23 +2,24 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../components/SideBar";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
+import UserSidebar from "./UserSidebar";
 
-const DashboardLayout = () => {
-  const { isAdmin } = useContext(AuthContext);
+const UserDashboardLayout = () => {
+  const { isUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  console.log(isAdmin);
+  console.log(isUser);
 
   useEffect(() => {
-    !isAdmin && navigate("/");
-  }, [isAdmin]);
+    !isUser && navigate("/");
+  }, [isUser]);
 
   return (
     <div className="d-flex">
-      <Sidebar />
+      <UserSidebar />
       <Outlet />
     </div>
   );
 };
 
-export default DashboardLayout;
+export default UserDashboardLayout;

@@ -56,49 +56,49 @@ export const getOneProduct = async (req, res) => {
   }
 };
 
-// export const createProduct = async (req, res) => {
-//     try {
-//         const newProduct = new Product(req.body);
-//         const savedProduct = await newProduct.save();
-//         res.status(200).json(savedProduct);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// }
-import { v2 as cloudinary } from "cloudinary";
-
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' }); // or configure as needed
-
-export const createProduct =  upload.single('image'), async (req, res) => {
-
-    try {
-    const { name, price, description } = req.body;
-    const image = req.file;
-
-    // Upload image to Cloudinary
-    const uploadResult = await cloudinary.uploader.upload(image.path, {
-      folder: "products",
-      public_id: `${name.replace(/\s+/g, "_").toLowerCase()}`,
-      use_filename: true,
-      unique_filename: false,
-      overwrite: true,
-    });
-
-    // Create a new product with the Cloudinary URL
-    const newProduct = new Product({
-      name,
-      price,
-      description,
-      imageUrl: uploadResult.secure_url,
-    });
-
-    // Save the product in the database
+export const createProduct = async (req, res) => {
+  try {
+    const newProduct = new Product(req.body);
     const savedProduct = await newProduct.save();
-
-    res.status(200).json({ message: "Product added successfully" });
+    res.status(200).json(savedProduct);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}
-;
+};
+// import { v2 as cloudinary } from "cloudinary";
+
+// const multer = require('multer');
+// const upload = multer({ dest: 'uploads/' }); // or configure as needed
+
+// export const createProduct =  upload.single('image'), async (req, res) => {
+
+//     try {
+//     const { name, price, description } = req.body;
+//     const image = req.file;
+
+//     // Upload image to Cloudinary
+//     const uploadResult = await cloudinary.uploader.upload(image.path, {
+//       folder: "products",
+//       public_id: `${name.replace(/\s+/g, "_").toLowerCase()}`,
+//       use_filename: true,
+//       unique_filename: false,
+//       overwrite: true,
+//     });
+
+//     // Create a new product with the Cloudinary URL
+//     const newProduct = new Product({
+//       name,
+//       price,
+//       description,
+//       imageUrl: uploadResult.secure_url,
+//     });
+
+//     // Save the product in the database
+//     const savedProduct = await newProduct.save();
+
+//     res.status(200).json({ message: "Product added successfully" });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// }
+// ;

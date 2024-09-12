@@ -1,19 +1,19 @@
 import React, { useState, useContext } from "react";
 import { styled } from "styled-components";
-import { DashboardContext } from "../../context/DashboardContext";
 import Button from "../../components/Button";
 import { currentDate, generateUUID } from "../../utils/helpers";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { UserDashboardContext } from "../Context/UserDashContext";
 
 // styled components
 const StyledAddUser = styled.div`
-  // width: 450px;
-  // margin: 10px 270px;
+  width: 450px;
+  margin: 10px 270px;
 `;
 
-const AddUser = ({ setAdduser }) => {
-  const { addUser } = useContext(DashboardContext);
+const UserAddUser = () => {
+  const { addUser } = useContext(UserDashboardContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     id: generateUUID(),
@@ -40,7 +40,7 @@ const AddUser = ({ setAdduser }) => {
     e.preventDefault();
 
     const { role, name, email, phone, password, confirmPassword } = formData;
-    console.log("formData", formData);
+
     // Check if any field is empty
     if (!name || !email || !phone || !password || !confirmPassword || !role) {
       Swal.fire({
@@ -63,7 +63,7 @@ const AddUser = ({ setAdduser }) => {
 
     // Call the addUser function from DashboardContext
     addUser(formData);
-    navigate("/admin");
+    navigate("/dashboard/users");
 
     setFormData({
       id: "",
@@ -76,7 +76,6 @@ const AddUser = ({ setAdduser }) => {
       created_at: "",
       updated_at: null,
     });
-    setAdduser(false);
   };
 
   return (
@@ -151,15 +150,15 @@ const AddUser = ({ setAdduser }) => {
             <option value="admin">Admin</option>
           </select>
         </div>
-        <div className="form-group mt-4" style={{ textAlign: "end" }}>
-          <Button className="me-2" type="reset" onCancel={setAdduser}>
-            Cancel
+        <div className="form-group mt-4">
+          <Button type="submit" className="me-2">
+            Add User
           </Button>
-          <Button type="submit">Submit</Button>
+          <Button type="reset">Cancel</Button>
         </div>
       </form>
     </StyledAddUser>
   );
 };
 
-export default AddUser;
+export default UserAddUser;

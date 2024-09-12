@@ -1,26 +1,132 @@
-import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { styled } from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
-import { DashboardContext } from '../../context/DashboardContext';
-import Button from '../../components/Button';
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import { styled } from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { DashboardContext } from "../../context/DashboardContext";
+import Button from "../../components/Button";
+import { Divider, Table } from "antd";
+import { Col, Row } from "react-bootstrap";
+import { MdDelete, MdEdit } from "react-icons/md";
 
 // styled components
+
+const columns = [
+  {
+    title: "Sno",
+    dataIndex: "key",
+  },
+  {
+    title: "Name",
+    dataIndex: "name",
+  },
+  {
+    title: "Address",
+    dataIndex: "address",
+  },
+  {
+    title: "Phone",
+    dataIndex: "phone",
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+  },
+  {
+    title: "Delivery Company",
+    dataIndex: "deliveryCompany",
+  },
+  {
+    title: "Date",
+    dataIndex: "date",
+  },
+  {
+    title: "orderTotal",
+    dataIndex: "orderTotal",
+  },
+  {
+    title: "Change Status",
+    dataIndex: "changeStatus",
+  },
+  {
+    title: "Details",
+    dataIndex: "details",
+  },
+  {
+    title: "Action",
+    key: "Action",
+    render: (_, record) => (
+      <div>
+        <Row>
+          <Col md={3}>
+            <a>
+              <MdEdit style={{ fontSize: "20px" }} />
+            </a>
+          </Col>
+          <Col md={3}>
+            <a>
+              <MdDelete style={{ fontSize: "20px" }} />
+            </a>
+          </Col>
+        </Row>
+      </div>
+    ),
+  },
+];
+
+const data = [
+  {
+    key: "1",
+    name: "User1",
+    phone: "1234567890",
+    date: "10-12-2023",
+    details: "Ordered",
+    changeStatus: "No",
+    orderTotal: "12",
+    deliveryCompany: "Amazon",
+    status: "Process",
+    address: "Delhi",
+  },
+  {
+    key: "2",
+    name: "User2",
+    phone: "2345678901",
+    date: "11-12-2023",
+    details: "Order",
+    changeStatus: "-",
+    orderTotal: "13",
+    deliveryCompany: "SD",
+    status: "Pending",
+    address: "Pune",
+  },
+  {
+    key: "3",
+    name: "User3",
+    phone: "3456789012",
+    date: "12-12-2023",
+    details: "Not Placed",
+    changeStatus: "yes",
+    orderTotal: "14",
+    deliveryCompany: "Flipkart",
+    status: "--",
+    address: "Mumbai",
+  },
+];
 const StyledOrders = styled.div`
   margin: 20px;
   margin-left: 250px;
   margin-right: auto;
+  width: 100%;
 `;
 
 const StyledTh = styled.th`
-padding: 10px 25px!important;
-`
+  padding: 10px 25px !important;
+`;
 
 const StyledTd = styled.th`
-padding: 10px 25px!important;
-font-weight: 400;
-`
+  padding: 10px 25px !important;
+  font-weight: 400;
+`;
 
 const StyledSelectWrapper = styled.div`
   width: 300px;
@@ -48,20 +154,20 @@ const StyledSelect = styled.select`
 
 const Orders = () => {
   const { orders, updateOrderStatus, fetchData } = useContext(DashboardContext);
-  const [selectedStatus, setSelectedStatus] = useState('all');
+  const [selectedStatus, setSelectedStatus] = useState("all");
 
   const handleStatusChange = (orderId, status) => {
     updateOrderStatus(orderId, status);
   };
 
-  const filteredOrders = selectedStatus === 'all'
-    ? orders
-    : orders.filter(order => order.order_status === selectedStatus);
+  const filteredOrders =
+    selectedStatus === "all"
+      ? orders
+      : orders.filter((order) => order.order_status === selectedStatus);
 
   return (
     <StyledOrders>
-      <h2 className="mb-4">All Orders</h2>
-      <Button handleClick={() => fetchData()} className='me-3 my-4'>Refresh Data</Button>
+      {/* <Button handleClick={() => fetchData()} className='me-3 my-4'>Refresh Data</Button> */}
       <StyledSelectWrapper>
         <label htmlFor="orderStatusFilter" className="me-2">
           Filter by Status :
@@ -79,53 +185,10 @@ const Orders = () => {
           <option value="canceled">Canceled</option>
         </StyledSelect>
       </StyledSelectWrapper>
-      <div className="table-responsive mt-3">
-        <table className="table table-striped table-bordered table-hover">
-          <thead>
-            <tr>
-              <StyledTh>#</StyledTh>
-              <StyledTh>Name</StyledTh>
-              <StyledTh>Address</StyledTh>
-              <StyledTh>Phone</StyledTh>
-              <StyledTh>Status</StyledTh>
-              <StyledTh style={{ minWidth: '205px' }}>Delivery Company</StyledTh>
-              <StyledTh>Date</StyledTh>
-              <StyledTh style={{ minWidth: '145px' }}>Order Total</StyledTh>
-              <StyledTh style={{ minWidStyledTh: '155px' }}>Change Status</StyledTh>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredOrders.map((order, index) => (
-              <tr key={order.id}>
-                <StyledTd>{index + 1}</StyledTd>
-                <StyledTd>{order.name}</StyledTd>
-                <StyledTd>{order.shipping_address}</StyledTd>
-                <StyledTd>{order.phone}</StyledTd>
-                <StyledTd>{order.order_status}</StyledTd>
-                <StyledTd>{order.delivery_company}</StyledTd>
-                <StyledTd>{order.created_at}</StyledTd>
-                <StyledTd>{order.order_total.toFixed(2)}</StyledTd>
-                <StyledTd>
-                  {order.order_status != 'delivered' ?
-                    <select
-                      value={order.order_status}
-                      onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="canceled">Canceled</option>
-                    </select> : 'delivered'}
-                </StyledTd>
-                <StyledTd>
-                  <Link to={`/dashboard/orders/${order.id}`} className="text-center fs-5">
-                    <FontAwesomeIcon icon={faEye} />
-                  </Link>
-                </StyledTd>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+      <div>
+        <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
+        <Table columns={columns} dataSource={data} size="middle" />
       </div>
     </StyledOrders>
   );

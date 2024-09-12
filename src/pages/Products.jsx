@@ -126,18 +126,16 @@ const Products = () => {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/products/`);
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
     fetchProducts();
   }, []);
-
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/products/`);
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
   // Filter products based on the query
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(query.toLowerCase())
@@ -151,17 +149,23 @@ const Products = () => {
           <h3 style={{ textAlign: "end" }} className="mt-4">
             All Products
           </h3>
-        <div style={{display:"flex" , justifyContent:"end" , marginRight:"15px"}}>
-        <div 
-          style={{
-            backgroundColor: `var(--button-hover)`,
-            padding: "1px 1px 3px 3px",
-            width: "20%",
-            display:"flex",
-            flexDirection:"revert"
-          }}
-        ></div></div>
-     
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "end",
+              marginRight: "15px",
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: `var(--button-hover)`,
+                padding: "1px 1px 3px 3px",
+                width: "20%",
+                display: "flex",
+                flexDirection: "revert",
+              }}
+            ></div>
+          </div>
         </Col>
         <Col md={6} sm={12}>
           <SearchContainer className="my-4">
@@ -175,7 +179,6 @@ const Products = () => {
           </SearchContainer>
         </Col>
       </Row>
-      
 
       <ResultsSection>
         {query && (
