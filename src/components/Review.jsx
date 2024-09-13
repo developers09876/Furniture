@@ -1,127 +1,78 @@
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
-import { EffectCoverflow, Pagination, Autoplay } from "swiper";
+import React from 'react';
+import { Card, Rate } from 'antd';
+import { Container, Row, Col } from 'react-bootstrap';
+// import AOS from 'aos';
+import '../Css-Pages/HomeCard.css'
 
-import "../Css-Pages/HomeCard.css";
 
-const testimonialData = [
+const reviews = [
   {
-    avatar:
-      "https://img.freepik.com/free-photo/woman-with-long-hair-yellow-hoodie-with-word-music-it_1340-39068.jpg",
-    name: "Simonette Lindermann",
-    review:
-      "Mind-blowing discovery! changed my routine. Essential for everyone. A wise advice to all interested. Can't imagine without it!",
+    id: 1,
+    name: 'John Doe',
+    content: 'The services provided by the officials was smooth and satisfactory. Products and goods delivered were up to satisfaction and compared to market price.',
+    rating: 4,
+    profilePic: 'https://media.istockphoto.com/id/1398385367/photo/happy-millennial-business-woman-in-glasses-posing-with-hands-folded.jpg?s=612x612&w=0&k=20&c=Wd2vTDd6tJ5SeEY-aw0WL0bew8TAkyUGVvNQRj3oJFw=',
+    bgImage: 'https://media.istockphoto.com/id/1398999936/vector/illustration-of-light-blue-dots-and-striped-circles-pattern-background.jpg?s=612x612&w=0&k=20&c=4277V1AOFLZoU4qsrM99_JrimDq5Cbg6Bxc7Fk7yUJY=', 
   },
   {
-    avatar:
-      "https://img.freepik.com/free-photo/close-up-portrait-young-bearded-man-white-shirt-jacket-posing-camera-with-broad-smile-isolated-gray_171337-629.jpg",
-    name: "Merilee Beal",
-    review:
-      "Unbelievable gem! Altered my life. A must-have now. Wholeheartedly advise it to everyone. An absolute game-changer.",
+    id: 2,
+    name: 'Jane Smith',
+    content: 'Have become a regular customer in a very short span of time. Very approachable staff, service and delivery on time.Satisfied with products,Timely delivery.',
+    rating: 5,
+    profilePic: 'https://img.freepik.com/free-photo/young-woman-wearing-striped-shirt-eyeglasses_273609-13226.jpg',
+    bgImage: 'https://media.istockphoto.com/id/1398999936/vector/illustration-of-light-blue-dots-and-striped-circles-pattern-background.jpg?s=612x612&w=0&k=20&c=4277V1AOFLZoU4qsrM99_JrimDq5Cbg6Bxc7Fk7yUJY=',
   },
   {
-    avatar:
-      "https://img.freepik.com/free-photo/close-up-portrait-young-bearded-man-white-shirt-jacket-posing-camera-with-broad-smile-isolated-gray_171337-629.jpg",
-    name: "Merilee Beal",
-    review:
-      "Unbelievable gem! Altered my life. A must-have now. Wholeheartedly advise it to everyone. An absolute game-changer.",
+    id: 3,
+    name: 'pooja',
+    content: 'We purchased so many products from durian and we would recommend Durian Furniture to everyone who needs quality and decent looking furniture.',
+    rating: 5,
+    profilePic: 'https://t3.ftcdn.net/jpg/02/81/81/86/360_F_281818663_XXRCNuGktKeZsnknqWkKI0rR4JPWui3H.jpg',
+    bgImage: 'https://media.istockphoto.com/id/1398999936/vector/illustration-of-light-blue-dots-and-striped-circles-pattern-background.jpg?s=612x612&w=0&k=20&c=4277V1AOFLZoU4qsrM99_JrimDq5Cbg6Bxc7Fk7yUJY=',
   },
-  {
-    avatar:
-      "https://img.freepik.com/free-photo/close-up-portrait-young-bearded-man-white-shirt-jacket-posing-camera-with-broad-smile-isolated-gray_171337-629.jpg",
-    name: "Merilee Beal",
-    review:
-      "Unbelievable gem! Altered my life. A must-have now. Wholeheartedly advise it to everyone. An absolute game-changer.",
-  },
-  {
-    avatar:
-      "https://img.freepik.com/free-photo/close-up-portrait-young-bearded-man-white-shirt-jacket-posing-camera-with-broad-smile-isolated-gray_171337-629.jpg",
-    name: "Merilee Beal",
-    review:
-      "Unbelievable gem! Altered my life. A must-have now. Wholeheartedly advise it to everyone. An absolute game-changer.",
-  },
-  // Add other testimonials here...
-];
+ ];
 
-function Review() {
+  // useEffect(() => {
+  //   AOS.init({
+  //     duration: 1000, 
+  //   });
+  // }, []);
+
+const ReviewCards = () => {
   return (
-    <Swiper
-      modules={[EffectCoverflow, Pagination, Autoplay]}
-      grabCursor={true}
-      centeredSlides={true}
-      slidesPerView={2.3}
-      loop={true}
-      spaceBetween={40}
-      effect="coverflow"
-      coverflowEffect={{
-        rotate: 0,
-        depth: 800,
-        slideShadows: true,
-      }}
-      pagination={{
-        el: ".swiper-pagination",
-        clickable: true,
-      }}
-      autoplay={{
-        delay: 500,
-        disableOnInteraction: false,
-      }}
-      breakpoints={{
-        501: { slidesPerView: 2 },
-        724: { slidesPerView: 2.3 },
-        0: { slidesPerView: 1 }, // For screens smaller than 501px
-      }}
-    >
-      {testimonialData.map((testimonial, index) => (
-        <SwiperSlide key={index}>
-          <div className="quote-container">
-            <div className="star-rating">★★★★★</div>
-            <p className="quote">{testimonial.review}</p>
-            <div className="reviewer-photo">
-              <img
-                src={testimonial.avatar}
-                width="100"
-                height="100"
-                alt={`Photo of ${testimonial.name}`}
-              />
-            </div>
-            <div className="reviewer-details">
-              <span className="name">{testimonial.name}</span>
-              <span className="title">
-                Site Reliability Engineer at <strong>Google</strong>
-              </span>
-            </div>
-            <div className="bottom">
-              <svg width="100%" height="80">
-                <rect width="100%" height="80" className="shape-fill" />
-              </svg>
-              <svg
-                className="curves"
-                data-name="Layer 1"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 900 200"
-                preserveAspectRatio="none"
-              >
-                <path
-                  d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
-                  opacity=".35"
-                  className="shape-fill"
-                ></path>
-                <path
-                  d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
-                  className="shape-fill"
-                ></path>
-              </svg>
-            </div>
-          </div>
-        </SwiperSlide>
-      ))}
-      <div className="swiper-pagination"></div>
-    </Swiper>
+    <Container>
+      <Row className="g-4">
+        <h1 style={{textAlign:'center',fontSize:'36.7px',fontStyle:'poppins,sans-serif',color:'#212529',textDecorationLine:'underline',textDecorationColor:'#7FAFEB',padding:'1px 1px 3px 3px'}}>Testimonial</h1>
+        {reviews.map((review) => (
+          <Col lg={4} md={6} sm={12} key={review.id}> 
+            <Card
+              className="custom-card"
+              hoverable
+              // data-aos="zoom-out" 
+              style={{
+                borderRadius: '15px',
+                backgroundImage: `url(${review.bgImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              <div className="profile-container">
+                <img
+                  src={review.profilePic}
+                  alt={review.name}
+                  className="profile-pic"
+                />
+              </div>
+              <h4>{review.name}</h4>
+              <p>{review.content}</p>
+              <Rate style={{marginLeft:'70px'}}disabled defaultValue={review.rating} />
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
-}
+};
 
-export default Review;
+export default ReviewCards;
+

@@ -80,6 +80,8 @@ const EditCategory = () => {
     await updateCategory(formData.id, updatedCategory);
     navigate('/dashboard/categories');
   };
+   
+
   
 
   return (
