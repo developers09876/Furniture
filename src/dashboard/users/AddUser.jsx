@@ -62,8 +62,8 @@ const AddUser = ({ setAdduser }) => {
     }
 
     // Call the addUser function from DashboardContext
-    addUser(formData);
-    navigate("/admin");
+    // addUser(formData);
+    // navigate("/admin");
 
     setFormData({
       id: "",
@@ -82,7 +82,8 @@ const AddUser = ({ setAdduser }) => {
   return (
     <StyledAddUser>
       <h2 className="mb-5">Add User</h2>
-      <form onSubmit={handleAddUser}>
+      {/* <form> */}
+      <>
         <div className="form-group fw-bold my-2">
           <label htmlFor="name">Name:</label>
           <input
@@ -152,12 +153,13 @@ const AddUser = ({ setAdduser }) => {
           </select>
         </div>
         <div className="form-group mt-4" style={{ textAlign: "end" }}>
-          <Button className="me-2" type="reset" onCancel={setAdduser}>
+          <Button className="me-2" onClick={() => setAdduser(false)}>
             Cancel
           </Button>
-          <Button type="submit">Submit</Button>
+          <Button onClick={handleAddUser}>Submit</Button>
         </div>
-      </form>
+        {/* </form> */}
+      </>
     </StyledAddUser>
   );
 };

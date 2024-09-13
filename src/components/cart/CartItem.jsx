@@ -1,29 +1,37 @@
-import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useContext } from 'react';
-import { CartContext } from '../../context/CartContext';
-
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useContext } from "react";
+import { CartContext } from "../../context/CartContext";
+import { FaIndianRupeeSign } from "react-icons/fa6";
 const CartItem = ({ id, image, title, price, quantity }) => {
-
-  const { removeItem } = useContext(CartContext)
+  const { removeItem } = useContext(CartContext);
 
   return (
-    <Wrapper className='row'>
+    <Wrapper className="row">
       <div className="title col-md-3 col-4 ">
-        <img src={image} alt={title} /> <br className='d-block d-md-none' />
-        <div style={{ width: '200px' }}>
+        <img src={image} alt={title} /> <br className="d-block d-md-none" />
+        <div style={{ width: "200px" }}>
           <h5 className="name">{title}</h5>
           <h5 className="price d-block d-md-none">{price} MAD</h5>
         </div>
       </div>
-      <h5 className="price d-none d-md-block col">{price} MAD</h5>
+      <h5 className="price d-none d-md-block col">
+        <FaIndianRupeeSign />
+        {price}
+      </h5>
       <div className="amount d-none d-md-block col">
         <h5 className="quantity ms-4">{quantity}</h5>
       </div>
-      <h5 className="subtotal col-4 col-md">{(price * quantity)} MAD</h5>
-      <button className="remove-btn col-4 col-md" onClick={() => removeItem(id)}>
-        <FontAwesomeIcon className='text-danger' icon={faTrash} />
+      <h5 className="subtotal col-4 col-md">
+        <FaIndianRupeeSign />
+        {price * quantity}
+      </h5>
+      <button
+        className="remove-btn col-4 col-md"
+        onClick={() => removeItem(id)}
+      >
+        <FontAwesomeIcon className="text-danger" icon={faTrash} />
       </button>
     </Wrapper>
   );
@@ -48,7 +56,7 @@ const Wrapper = styled.article`
     width: 100%;
     height: 100%;
     display: block;
-    border-radius: ${props => props.theme.raduis};
+    border-radius: ${(props) => props.theme.raduis};
     object-fit: cover;
   }
 
@@ -59,7 +67,7 @@ const Wrapper = styled.article`
 
   .price {
     width: 110%;
-    color: ${props => props.theme.mainColorLight};
+    color: ${(props) => props.theme.mainColorLight};
   }
 
   .amount {
@@ -76,7 +84,7 @@ const Wrapper = styled.article`
   .subtotal {
     width: 200px;
     font-size: 1.25rem;
-    color: ${props => props.theme.mainColorLight};
+    color: ${(props) => props.theme.mainColorLight};
   }
 
   .remove-btn {

@@ -96,6 +96,7 @@ const Users = () => {
   console.log("Aaddusder", Adduser);
   const { addUser } = useContext(DashboardContext);
   const handleclose = () => {
+    alert("vantew");
     setAdduser(false);
   };
 
@@ -143,7 +144,7 @@ const Users = () => {
         onCancel={() => setAdduser(false)}
         footer={null}
       >
-        <AddUser setAdduser={false} />
+        <AddUser setAdduser={handleclose} />
       </Modal>
     </StyledUsers>
   );

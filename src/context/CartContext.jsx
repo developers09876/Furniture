@@ -1,31 +1,33 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { AuthContext } from './AuthContext';
-import Swal from 'sweetalert2';
+import { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { AuthContext } from "./AuthContext";
+import Swal from "sweetalert2";
 
 // Create the Cart Context
 export const CartContext = createContext();
 
 // Cart Provider component
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState({ id: '', user_id: '', items: [] });
+  const [cart, setCart] = useState({ id: "", user_id: "", items: [] });
   const [userID, setUserID] = useState(null);
   const { isAuthenticated } = useContext(AuthContext);
-  const [total, setTotal] = useState(0)
-  const [totalItems, setTotalItems] = useState(0)
+  const [total, setTotal] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   // Function to fetch the user's cart from the API
   const fetchCart = async (userId) => {
     try {
       if (isAuthenticated) {
-        const response = await axios.get(`http://localhost:3000/carts?user_id=${userId}`);
+        const response = await axios.get(
+          `http://localhost:3000/carts?user_id=${userId}`
+        );
         const fetchedCart = response.data[0];
         setCart(fetchedCart);
       }
     } catch (error) {
-      console.error('Error fetching cart:', error);
-      setCart({ id: '', user_id: '', items: [] });
+      console.error("Error fetching cart:", error);
+      setCart({ id: "", user_id: "", items: [] });
     }
   };
 
@@ -37,20 +39,20 @@ export const CartProvider = ({ children }) => {
           ...cart,
           items: [...cart.items, { ...item }],
         };
-        const response = await axios.put(`http://localhost:3000/carts/${userID}`, updatedCart);
-        const fetchedCart = response.data;
+        // const response = await axios.put(`http://localhost:3000/carts/${userID}`, updatedCart);
+        // const fetchedCart = response.data;
         setCart(updatedCart);
         Swal.fire({
-          icon: 'success',
-          title: 'Item added to cart',
+          icon: "success",
+          title: "Item added to cart",
           showConfirmButton: false,
           timer: 1500,
         });
       } else {
-        console.error('User cart is not available');
+        console.error("User cart is not available");
       }
     } catch (error) {
-      console.error('Error adding item to cart:', error);
+      console.error("Error adding item to cart:", error);
     }
   };
 
@@ -58,7 +60,6 @@ export const CartProvider = ({ children }) => {
   const clearCart = async () => {
     try {
       if (isAuthenticated) {
-
         const updatedCart = {
           ...cart,
           items: [],
@@ -67,14 +68,14 @@ export const CartProvider = ({ children }) => {
         await axios.put(`http://localhost:3000/carts/${userID}`, updatedCart);
         setCart(updatedCart);
         Swal.fire({
-          icon: 'success',
-          title: 'Cart cleared',
+          icon: "success",
+          title: "Cart cleared",
           showConfirmButton: false,
           timer: 1500,
         });
       }
     } catch (error) {
-      console.error('Error clearing cart:', error);
+      console.error("Error clearing cart:", error);
     }
   };
 
@@ -86,30 +87,29 @@ export const CartProvider = ({ children }) => {
           ...cart,
           items: cart.items.filter((cartItem) => cartItem.id !== productId),
         };
-  
+
         await axios.put(`http://localhost:3000/carts/${userID}`, updatedCart);
         setCart(updatedCart);
         Swal.fire({
-          icon: 'success',
-          title: 'Item removed from cart',
+          icon: "success",
+          title: "Item removed from cart",
           showConfirmButton: false,
           timer: 1500,
         });
       }
     } catch (error) {
-      console.error('Error removing item from cart:', error);
+      console.error("Error removing item from cart:", error);
     }
   };
-  
 
   // Fetch the user's cart on component mount and when userID changes
   useEffect(() => {
-    const userID = Cookies.get('userID');
+    const userID = Cookies.get("userID");
     setUserID(userID);
     if (userID && isAuthenticated) {
       fetchCart(userID);
     } else {
-      setCart({ id: '', user_id: '', items: [] });
+      setCart({ id: "", user_id: "", items: [] });
     }
   }, [userID, isAuthenticated]);
 
@@ -124,11 +124,13 @@ export const CartProvider = ({ children }) => {
     }, 0);
 
     setTotal(total.toFixed(2));
-    setTotalItems(totalItems)
+    setTotalItems(totalItems);
   }, [cart]);
 
   return (
-    <CartContext.Provider value={{ cart, totalItems, total, addToCart, clearCart, removeItem }}>
+    <CartContext.Provider
+      value={{ cart, totalItems, total, addToCart, clearCart, removeItem }}
+    >
       {children}
     </CartContext.Provider>
   );

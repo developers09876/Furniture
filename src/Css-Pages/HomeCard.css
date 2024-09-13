@@ -173,3 +173,58 @@ p.quote {
   background-position: center center;
   background-color: black;
 }
+
+/* card css */
+.order-total-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.order-total-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.order-total-heading {
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.order-total-amount {
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: #ff5722;
+}
+
+hr {
+  margin: 20px 0;
+}
+
+.proceed-btn,
+.login-btn {
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.proceed-btn:hover,
+.login-btn:hover {
+  background-color: #e64a19;
+}
+
+.proceed-btn:focus,
+.login-btn:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
+}

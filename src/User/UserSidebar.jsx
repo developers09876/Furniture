@@ -73,31 +73,15 @@ const UserSidebar = () => {
         <Icon icon={faBox} />
         Orders
       </SidebarLink>
-      <SidebarLink exact to="/user/orders/">
+      <SidebarLink exact to="/user/profile">
         <Icon icon={faBox} />
         Profile
       </SidebarLink>
-      <SidebarLink to="/user/orders">
+      <SidebarLink to="/user/whistlist">
         <Icon icon={faBox} />
         Whistlist
       </SidebarLink>
 
-      {/* <SidebarLink to="/user/products">
-         <Icon icon={faBox} />
-        Products
-      </SidebarLink>
-      <SidebarLink to="/user/users">
-        <Icon icon={faUsers} />
-        Users
-      </SidebarLink>
-      <SidebarLink to="/user/categories">
-        <Icon icon={faListAlt} />
-        Categories
-      </SidebarLink>
-      <SidebarLink to="/user/orders">
-        <Icon icon={faShoppingCart} />
-        Orders
-      </SidebarLink> */}
       <Footer className="mt-auto">
         <Button className="me-2 my-3" handleClick={logout}>
           Logout <FontAwesomeIcon icon={faRightFromBracket} />

@@ -5,12 +5,94 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button";
 import { UserDashboardContext } from "../Context/UserDashContext";
+import { Divider, Table } from "antd";
+import React from "react";
+import { Col, Row } from "react-bootstrap";
+import { MdDelete, MdEdit } from "react-icons/md";
+
+// Column
+const columns = [
+  {
+    title: "Sno",
+    dataIndex: "key",
+  },
+
+  {
+    title: "Status",
+    dataIndex: "status",
+  },
+  {
+    title: "Delivery Company",
+    dataIndex: "deliveryCompany",
+  },
+  {
+    title: "Date",
+    dataIndex: "date",
+  },
+  {
+    title: "Order Total",
+    dataIndex: "orderTotal",
+  },
+
+  {
+    title: "Action",
+    key: "Action",
+    render: (_, record) => (
+      <div>
+        <Row>
+          <Col md={3}>
+            <a>
+              <MdEdit style={{ fontSize: "20px" }} />
+            </a>
+          </Col>
+          <Col md={3}>
+            <a>
+              <MdDelete style={{ fontSize: "20px" }} />
+            </a>
+          </Col>
+        </Row>
+      </div>
+    ),
+  },
+];
+//datas for table
+const data = [
+  {
+    key: "1",
+    status: "pending",
+    deliveryCompany: "amazon",
+    date: "11-12-24",
+    orderTotal: "121",
+  },
+  {
+    key: "2",
+    status: "shipped",
+    deliveryCompany: "amazon",
+    date: "11-12-24",
+    orderTotal: "121",
+  },
+  {
+    key: "3",
+    status: "delivered",
+    deliveryCompany: "amazon",
+    date: "11-12-24",
+    orderTotal: "121",
+  },
+  {
+    key: "3",
+    status: "canceled",
+    deliveryCompany: "amazon",
+    date: "11-12-24",
+    orderTotal: "121",
+  },
+];
 
 // styled components
 const StyledOrders = styled.div`
   margin: 20px;
   margin-left: 250px;
   margin-right: auto;
+  width: 100%;
 `;
 
 const StyledTh = styled.th`
@@ -63,12 +145,7 @@ const UserOrders = () => {
   return (
     <StyledOrders>
       <h2 className="mb-4">All Orders</h2>
-      {/* <Button
-        // handleClick={() => fetchData()}
-        className="me-3 my-4"
-      >
-        Refresh Data
-      </Button> */}
+
       <StyledSelectWrapper>
         <label htmlFor="orderStatusFilter" className="me-2">
           Filter by Status :
@@ -88,7 +165,7 @@ const UserOrders = () => {
       </StyledSelectWrapper>
       <div className="table-responsive mt-3">
         <table className="table table-striped table-bordered table-hover">
-          <thead>
+          {/* <thead>
             <tr>
               <StyledTh>#</StyledTh>
               <StyledTh>Name</StyledTh>
@@ -105,7 +182,7 @@ const UserOrders = () => {
               </StyledTh>
               <th>Details</th>
             </tr>
-          </thead>
+          </thead> */}
           <tbody>
             {/* {filteredOrders.map((order, index) => (
               <tr key={order.id}>
@@ -145,6 +222,11 @@ const UserOrders = () => {
             ))} */}
           </tbody>
         </table>
+      </div>
+
+      <div>
+        <Divider style={{ fontSize: "30px" }}>Whistlist</Divider>
+        <Table columns={columns} dataSource={data} size="middle" />
       </div>
     </StyledOrders>
   );

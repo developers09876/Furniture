@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import img1 from "../assets/sofa.jpg"
+import img1 from "../assets/sofa.jpg";
 import { Card } from "antd";
 const { Meta } = Card;
 const ProductCard = ({
@@ -11,7 +11,7 @@ const ProductCard = ({
   discountPrice,
   description,
   offer,
-  LongDesc
+  LongDesc,
 }) => {
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ const ProductCard = ({
           <img
             alt="example"
             src={img1}
-            style={{ height: "250px", padding: "10px", borderRadius:"20px" }}
+            style={{ height: "250px", padding: "10px", borderRadius: "20px" }}
           />
         }
         onClick={() => {
@@ -35,9 +35,9 @@ const ProductCard = ({
       >
         <div style={{ height: "auto" }}>
           <Meta title={title} description={description} />
-          <div style={{display:"flex" , justifyContent:"center"}}>
-          <s>₹{price}</s>
-            <p style={{ fontWeight: 'bold' }}>₹{discountPrice}</p> 
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <s>₹{price}</s>
+            <p style={{ fontWeight: "bold" }}>₹{discountPrice}</p>
           </div>
           {/* {offer}% off */}
         </div>

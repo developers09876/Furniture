@@ -50,16 +50,11 @@ import UserDashboardLayout from "./User/UserDashLayout";
 
 //user
 
-import UserProductDashboard from "./User/UserProducts/UserProductsDashboard";
-import UserAddProduct from "./User/UserProducts/UserAddProduct";
-import UserEditProduct from "./User/UserProducts/UserEditProduct";
-import UserCategories from "./User/UserCategories/Categories";
-import UserAddCategory from "./User/UserCategories/UserAddCategory";
 import UserOrders from "./User/UserOrders/UserOrders";
 import UserOrderDetails from "./User/UserOrders/UserOrderDetails";
-import UserAddUser from "./User/Users/UserAddUser";
-import UserUsers from "./User/Users/User_Users";
 import UserLogin from "./User/UserLogin";
+import Whistlist from "./User/Whistlist/Whistlist";
+import Profile from "./User/Profile/Profile";
 
 // router
 
@@ -97,16 +92,10 @@ const router = createBrowserRouter(
       </Route>
       <Route path="/user" element={<UserDashboardLayout />}>
         <Route path="/user" element={<UserDashboard />} />
-        <Route path="/user/products" element={<UserProductDashboard />} />
-        <Route path="/user/products/add" element={<UserAddProduct />} />
-        <Route path="/user/products/edit/:id" element={<UserEditProduct />} />
-        <Route path="/user/users" element={<UserUsers />} />
-        <Route path="/user/users/add" element={<UserAddUser />} />
-        <Route path="/user/categories" element={<UserCategories />} />
-        <Route path="/user/categories/add" element={<UserAddCategory />} />
-        <Route path="/user/categories/edit/:id" element={<UserEditProduct />} />
         <Route path="/user/orders" element={<UserOrders />} />
         <Route path="/user/orders/:id" element={<UserOrderDetails />} />
+        <Route path="/user/profile" element={<Profile />} />
+        <Route path="/user/whistlist" element={<Whistlist />} />
       </Route>
 
       <Route path="*" exact element={<NotFound />} />
