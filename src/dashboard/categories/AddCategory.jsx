@@ -6,10 +6,11 @@ import { currentDate, generateUUID } from '../../utils/helpers';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
+
 // styled components
 const StyledCategories = styled.div`
   width: 450px;
-  margin: 10px 270px;
+  margin: 5px 10px;
 `;
 
 const AddCategory = () => {
@@ -93,5 +94,6 @@ const AddCategory = () => {
     </StyledCategories>
   );
 };
-
 export default AddCategory;
+
+

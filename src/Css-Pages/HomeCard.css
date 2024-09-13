@@ -188,6 +188,7 @@ p.quote {
   min-height: 300px; 
   margin-bottom: 40px;
   margin-top: 10px;
+  background-color:  #7FAFEB;
   /* opacity: 0.8; */
 }
 
@@ -209,8 +210,8 @@ p.quote {
   width: 80px;
   height: 80px;
   border-radius: 70%;
-  border: 3px solid rgb(118, 197, 228);
-  box-shadow: 0 0 10px rgba(123, 213, 224, 0.2); 
+  border: 3px solid #7FAFEB;
+  box-shadow: 0 0 10px  #7FAFEB; 
 }
 
 .profile-pic:hover{

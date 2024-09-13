@@ -42,7 +42,7 @@ const ReviewCards = () => {
   return (
     <Container>
       <Row className="g-4">
-        <h1 style={{textAlign:'center',fontSize:'36.7px',fontStyle:'poppins,sans-serif',color:'#212529'}}>Testimonial</h1>
+        <h1 style={{textAlign:'center',fontSize:'36.7px',fontStyle:'poppins,sans-serif',color:'#212529',textDecorationLine:'underline',textDecorationColor:'#7FAFEB',padding:'1px 1px 3px 3px'}}>Testimonial</h1>
         {reviews.map((review) => (
           <Col lg={4} md={6} sm={12} key={review.id}> 
             <Card

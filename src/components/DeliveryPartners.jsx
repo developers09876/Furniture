@@ -11,7 +11,7 @@ const Logo = styled.img`
 const DeliveryPartners = () => {
   return (
     <div className='container text-center my-5'>
-      <h2 className='mb-5'>Delivery Partners</h2>
+      <h2 style={{textDecorationLine:'underline',textDecorationColor:'#7FAFEB',}}className='mb-5'>Delivery Partners</h2>
       <div className='row'>
         <div className='col-md-6 col-sm-12'>
           <Logo src={amana} alt='Amana Logo' />
