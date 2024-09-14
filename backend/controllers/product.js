@@ -36,6 +36,7 @@ export const getAllProducts = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 export const getOneProduct = async (req, res) => {
   console.log("req.params.productId", req.params.productId);
   try {
