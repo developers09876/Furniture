@@ -228,3 +228,71 @@ hr {
   outline: none;
   box-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
 }
+
+
+/* Custom CSS file for styling */
+
+
+
+
+.custom-card {
+  color: black;
+  text-align: justify;
+  padding: 20px;
+  border-radius: 25px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  min-height: 300px; 
+  margin-bottom: 40px;
+  margin-top: 10px;
+  /* opacity: 0.8; */
+}
+
+
+.custom-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+
+.profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 70%;
+  border: 3px solid rgb(118, 197, 228);
+  box-shadow: 0 0 10px rgba(123, 213, 224, 0.2); 
+}
+
+.profile-pic:hover{
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(50, 194, 182, 0.15);
+}
+
+
+.custom-card h4 {
+  font-weight: bold;
+  color: #0f0e0e;
+  margin-bottom: 10px;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+
+.custom-card p {
+  font-size: 14px;
+  color: #0e0d0d;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+
+
+
