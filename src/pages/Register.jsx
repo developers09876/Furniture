@@ -156,12 +156,12 @@
 
 //   const handleRegistration = async (e) => {
 //     e.preventDefault();
-  
+
 //     const { name, email, phone, password, confirmPassword } = formData;
-  
-   
+
+
 //     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{10,}$/;
-  
+
 //     if (name && email && phone && password && confirmPassword) {
 //       if (password !== confirmPassword) {
 //         Swal.fire({
@@ -171,7 +171,7 @@
 //         });
 //         return;
 //       }
-  
+
 //       if (!passwordRegex.test(password)) {
 //         Swal.fire({
 //           title: 'Error',
@@ -180,7 +180,7 @@
 //         });
 //         return;
 //       }
-  
+
 //       try {
 //         const userData = {
 //           username: name,
@@ -188,7 +188,7 @@
 //           phoneNumber: phone,
 //           password: password,
 //         };
-  
+
 //         const response = await axios.post(
 //           'http://localhost:5000/user/register',
 //           userData,
@@ -198,10 +198,10 @@
 //             },
 //           }
 //         );
-  
+
 //         if (response.status === 200) {
 //           setIsRegistered(true);
-  
+
 //           Swal.fire({
 //             title: 'Registration successful!',
 //             text: 'Redirecting to login...',
@@ -209,8 +209,8 @@
 //             timer: 1500,
 //             showConfirmButton: false,
 //           });
-  
-        
+
+
 //           setTimeout(() => {
 //             navigate('/login');
 //           }, 1500);
@@ -239,7 +239,7 @@
 //       });
 //     }
 //   };
-  
+
 //   const handleFormChange = (event) => {
 //     const { name, value } = event.target;
 //     setFormData((prevForm) => ({
@@ -349,7 +349,6 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { styled } from 'styled-components';
-import { currentDate, generateUUID } from '../utils/helpers';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
@@ -382,6 +381,7 @@ const Register = () => {
     confirmPassword: '',
   });
   const [passwordValid, setPasswordValid] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
   const navigate = useNavigate();
 
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{10,}$/;
@@ -538,13 +538,16 @@ const Register = () => {
             name="password"
             value={formData.password}
             onChange={handleFormChange}
+            onFocus={() => setPasswordFocused(true)}
+            onBlur={() => setPasswordFocused(false)}
           />
-          <PasswordStrengthMessage isValid={passwordValid}>
-            {passwordValid
-              ? 'Password is strong.'
-              : 'Password must be at least 10 characters long, including uppercase, lowercase, number, and special character.'}
-          </PasswordStrengthMessage>
+          {passwordValid && !passwordFocused && (
+            <PasswordStrengthMessage isValid={passwordValid}>
+              Password is strong.
+            </PasswordStrengthMessage>
+          )}
         </div>
+
 
         <div className="mb-4">
           <label htmlFor="confirmPassword" className="form-label">
