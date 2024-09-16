@@ -26,35 +26,77 @@ const UserLogin = () => {
 
   const navigate = useNavigate();
 
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+
+  //   const { email, password } = formData;
+
+  //   if (email && password) {
+  //     try {
+  //       await loginUser(email, password).then((success) => {
+  //         if (success) {
+  //           // Display success message using SweetAlert
+  //           Swal.fire({
+  //             icon: "success",
+  //             title: "Login successful!",
+  //             showConfirmButton: false,
+  //             timer: 1500,
+  //           });
+  //           // Redirect to the home page after a delay
+  //           setTimeout(() => {
+  //             navigate("/user");
+  //           }, 1500);
+  //         } else {
+  //           // Display error message using SweetAlert
+  //           Swal.fire({
+  //             icon: "error",
+  //             title: "Error",
+  //             text: "Incorrect email or password. Please try again.",
+  //           });
+  //         }
+  //       });
+  //     } catch (error) {
+  //       console.error("Error occurred during login:", error);
+  //     }
+  //   } else {
+  //     // Display error message for incomplete fields
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error",
+  //       text: "Please fill in all the fields.",
+  //     });
+  //   }
+  // };
+
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     const { email, password } = formData;
-
+  
     if (email && password) {
       try {
-        await loginUser(email, password).then((success) => {
-          if (success) {
-            // Display success message using SweetAlert
-            Swal.fire({
-              icon: "success",
-              title: "Login successful!",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            // Redirect to the home page after a delay
-            setTimeout(() => {
-              navigate("/user");
-            }, 1500);
-          } else {
-            // Display error message using SweetAlert
-            Swal.fire({
-              icon: "error",
-              title: "Error",
-              text: "Incorrect email or password. Please try again.",
-            });
-          }
-        });
+        const success = await loginUser(email, password); // Awaiting the promise
+  
+        if (success) {
+          // Display success message using SweetAlert
+          Swal.fire({
+            icon: "success",
+            title: "Login successful!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          // Redirect to the home page after a delay
+          setTimeout(() => {
+            navigate("/user");
+          }, 1500);
+        } else {
+          // Display error message using SweetAlert
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Incorrect email or password. Please try again.",
+          });
+        }
       } catch (error) {
         console.error("Error occurred during login:", error);
       }
@@ -67,7 +109,6 @@ const UserLogin = () => {
       });
     }
   };
-
   const handleFormChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevForm) => ({
