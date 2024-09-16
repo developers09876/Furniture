@@ -32,7 +32,7 @@ export const registerUser = async (req, res) => {
   try {
     //check to make sure the email provided not registered
     const registeredUser = await User.findOne({ email: email });
-
+console.log("vantea",registeredUser )
     if (registeredUser) {
       // throw an error if the email address already registered
       return res.status(HTTP_RESPONSE.BAD_REQUEST.CODE).json({
