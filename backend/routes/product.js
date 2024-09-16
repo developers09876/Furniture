@@ -9,8 +9,8 @@ import { isLoggedIn } from "../middleware.js";
 const router = Router();
 
 router.get("/:productId", getOneProduct);
-router.get("/", isLoggedIn, getAllProducts);
-router.post("/create", createProduct);
+router.get("/", getAllProducts);
+router.post("/create", isLoggedIn, createProduct);
 // router.post('/create', upload.array('images', 5), createProduct);
 
 export default router;

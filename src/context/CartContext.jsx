@@ -39,6 +39,7 @@ export const CartProvider = ({ children }) => {
           ...cart,
           items: [...cart.items, { ...item }],
         };
+        console.log("updatedCart", updatedCart);
         // const response = await axios.put(`http://localhost:3000/carts/${userID}`, updatedCart);
         // const fetchedCart = response.data;
         setCart(updatedCart);
@@ -65,7 +66,7 @@ export const CartProvider = ({ children }) => {
           items: [],
         };
 
-        await axios.put(`http://localhost:3000/carts/${userID}`, updatedCart);
+        // await axios.put(`http://localhost:3000/carts/${userID}`, updatedCart);
         setCart(updatedCart);
         Swal.fire({
           icon: "success",

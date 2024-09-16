@@ -30,16 +30,13 @@ export const registerUser = async (req, res) => {
   const passwordHashed = await hashPassword(password);
 
   try {
-    //check to make sure the email provided not registered
     const registeredUser = await User.findOne({ email: email });
 
     if (registeredUser) {
-      // throw an error if the email address already registered
       return res.status(HTTP_RESPONSE.BAD_REQUEST.CODE).json({
         email: "A user has already registered with this email address.",
       });
     } else {
-      // create a new user
       const newUser = new User({
         username,
         email,
@@ -61,7 +58,6 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// log in user==================================================
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -95,5 +91,26 @@ export const loginUser = async (req, res) => {
     return res
       .status(HTTP_RESPONSE.INTERNAL_ERROR.CODE)
       .json(HTTP_RESPONSE.INTERNAL_ERROR.MESSAGE);
+  }
+};
+
+export const createCart = async (req, res) => {
+  try {
+    const { id, cartItem } = req.body; // Expect email and cartItem in the request body
+
+    // Find the user by email (or you can use another unique identifier)
+    const user = await User.findOne({ id });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.Carts.push(cartItem);
+
+    await user.save();
+
+    res.status(200).json({ message: "Cart updated successfully", user });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating cart", error });
   }
 };
