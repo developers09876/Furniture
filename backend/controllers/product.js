@@ -27,8 +27,20 @@ import { Product } from "../models/product.js";
 // });
 
 export const getAllProducts = async (req, res) => {
-  console.log("resss");
+  console.log("resss", req.body);
+  const token = req.headers.authorization;
+
   try {
+    // const token = req.headers.authorization;
+
+    // const decodedToken = jwt.decode(token);
+    // const tokenId = decodedToken.id;
+
+    // if (tokenId !== userId) {
+    //   return res
+    //     .status(HTTP_RESPONSE.UNAUTHORIZED.CODE)
+    //     .json(HTTP_RESPONSE.UNAUTHORIZED.MESSAGE);
+    // }
     const allProduct = await Product.find();
 
     res.status(200).json(allProduct);
