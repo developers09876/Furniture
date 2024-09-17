@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }) => {
         setIsUser(true);
         Cookies.set("isUser", "true");
         localStorage.setItem("token", res.data.token); 
-        localStorage.setItem("id", res.data.data._id); 
+        localStorage.setItem("id", res.data.data.id); 
         localStorage.setItem("name", res.data.data.username); // Make sure to use res.data.Token
         return true; 
       } else {
