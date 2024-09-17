@@ -33,15 +33,15 @@ const Login = () => {
      
     if (email && password) {
       try {
-        const response = await axios.post(
-          'http://localhost:5000/admin/login',
-          userData,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        );
+        // const response = await axios.post(
+        //   'http://localhost:5000/admin/login',
+        //   userData,
+        //   {
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //   }
+        // );
 
         await login(email, password).then((success) => {
           if (success) {
