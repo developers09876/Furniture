@@ -146,7 +146,7 @@ const AddProduct = () => {
         .then((res) => {
           if (res.status === 200) {
             alert("inside");
-            // navigate('/dashboard/products');
+            // navigate('/admin/products');
           } else {
             throw new Error("Failed to add product");
           }

@@ -10,6 +10,7 @@ import img2 from "../assets/chair.jpg";
 import img3 from "../assets/bed.jpg";
 import img4 from "../assets/hero-bg.png";
 import { Row, Col } from "react-bootstrap";
+
 // Styled Components
 const Container = styled.div`
   margin-top: 20px;
@@ -136,6 +137,7 @@ const Products = () => {
       console.error("Error fetching products:", error);
     }
   };
+
   // Filter products based on the query
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(query.toLowerCase())
