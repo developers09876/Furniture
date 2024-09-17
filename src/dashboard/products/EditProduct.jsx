@@ -1,11 +1,11 @@
-import { useState, useEffect, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { styled } from 'styled-components';
-import { DashboardContext } from '../../context/DashboardContext';
-import Button from '../../components/Button';
-import axios from 'axios';
-import Swal from 'sweetalert2';
-import { currentDate } from '../../utils/helpers';
+import { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { styled } from "styled-components";
+import { DashboardContext } from "../../context/DashboardContext";
+import Button from "../../components/Button";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { currentDate } from "../../utils/helpers";
 
 // styled components
 const StyledEditProduct = styled.div`
@@ -18,16 +18,16 @@ const EditProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    id: '',
-    category: '',
-    title: '',
-    image: '',
-    description: '',
-    price: '',
-    old_price: '',
-    quantity_stock: '',
+    id: "",
+    category: "",
+    title: "",
+    image: "",
+    description: "",
+    price: "",
+    old_price: "",
+    quantity_stock: "",
     featured: false,
-    created_at: '',
+    created_at: "",
     updated_at: null,
   });
 
@@ -35,7 +35,9 @@ const EditProduct = () => {
     // Fetch product details by ID and set the form data
     const fetchProductDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/products/${id}`);
+        const response = await axios.get(
+          `http://localhost:3000/products/${id}`
+        );
         const productData = response.data;
 
         setFormData({
@@ -51,7 +53,7 @@ const EditProduct = () => {
           created_at: productData.created_at,
         });
       } catch (error) {
-        console.error('Error fetching product details:', error);
+        console.error("Error fetching product details:", error);
       }
     };
 
@@ -60,7 +62,7 @@ const EditProduct = () => {
 
   const handleFormChange = (event) => {
     const { name, value, type, checked } = event.target;
-    const newValue = type === 'checkbox' ? checked : value;
+    const newValue = type === "checkbox" ? checked : value;
 
     setFormData((prevForm) => ({
       ...prevForm,
@@ -82,30 +84,45 @@ const EditProduct = () => {
 
   const handleUpdateProduct = async (e) => {
     e.preventDefault();
-  
-    const { title, description, image, price, old_price, category, quantity_stock } = formData;
-  
+
+    const {
+      title,
+      description,
+      image,
+      price,
+      old_price,
+      category,
+      quantity_stock,
+    } = formData;
+
     // Check if any field is empty
-    if (!title || !description || !price || !image || !old_price || !category || !quantity_stock) {
+    if (
+      !title ||
+      !description ||
+      !price ||
+      !image ||
+      !old_price ||
+      !category ||
+      !quantity_stock
+    ) {
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Please fill in all required fields.',
+        icon: "error",
+        title: "Error",
+        text: "Please fill in all required fields.",
       });
       return;
     }
-  
+
     // Update the updated_at field with the current date
     const updatedProduct = {
       ...formData,
       updated_at: currentDate(),
     };
-  
+
     // Call the updateProduct function from DashboardContext
     await updateProduct(formData.id, updatedProduct);
-    navigate('/dashboard/products');
+    navigate("/admin/products");
   };
-  
 
   return (
     <StyledEditProduct>
@@ -207,7 +224,14 @@ const EditProduct = () => {
             accept="image/*"
             onChange={handleImageChange}
           />
-          {formData.image && <img className="my-1" src={formData.image} alt="Product" width="200" />}
+          {formData.image && (
+            <img
+              className="my-1"
+              src={formData.image}
+              alt="Product"
+              width="200"
+            />
+          )}
         </div>
         <div className="form-group mt-4">
           <Button type="submit" className="me-2">

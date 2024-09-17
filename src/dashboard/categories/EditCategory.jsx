@@ -1,11 +1,11 @@
-import { useState, useEffect, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { styled } from 'styled-components';
-import { DashboardContext } from '../../context/DashboardContext';
-import Button from '../../components/Button';
-import axios from 'axios';
-import Swal from 'sweetalert2';
-import { currentDate } from '../../utils/helpers';
+import { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { styled } from "styled-components";
+import { DashboardContext } from "../../context/DashboardContext";
+import Button from "../../components/Button";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { currentDate } from "../../utils/helpers";
 
 // styled components
 const StyledEditCategory = styled.div`
@@ -18,10 +18,10 @@ const EditCategory = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    id: '',
-    name: '',
-    description: '',
-    created_at: '',
+    id: "",
+    name: "",
+    description: "",
+    created_at: "",
     updated_at: null,
   });
 
@@ -29,7 +29,9 @@ const EditCategory = () => {
     // Fetch product details by ID and set the form data
     const fetchCategoryDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/categories/${id}`);
+        const response = await axios.get(
+          `http://localhost:3000/categories/${id}`
+        );
         const productData = response.data;
 
         setFormData({
@@ -39,7 +41,7 @@ const EditCategory = () => {
           created_at: productData.created_at,
         });
       } catch (error) {
-        console.error('Error fetching product details:', error);
+        console.error("Error fetching product details:", error);
       }
     };
 
@@ -57,32 +59,29 @@ const EditCategory = () => {
 
   const handleUpdateCategory = async (e) => {
     e.preventDefault();
-  
+
     const { name, description } = formData;
-  
+
     // Check if any field is empty
     if (!name || !description) {
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Please fill in all required fields.',
+        icon: "error",
+        title: "Error",
+        text: "Please fill in all required fields.",
       });
       return;
     }
-  
+
     // Update the updated_at field with the current date
     const updatedCategory = {
       ...formData,
       updated_at: currentDate(),
     };
-  
+
     // Call the updateProduct function from DashboardContext
     await updateCategory(formData.id, updatedCategory);
-    navigate('/dashboard/categories');
+    navigate("/admin/categories");
   };
-   
-
-  
 
   return (
     <StyledEditCategory>
