@@ -1,7 +1,7 @@
 {
-  "name": "woodland-backend",
+  "name": "Furniture-backend",
   "version": "1.0.0",
-  "description": "woodland-backend",
+  "description": "Furniture-backend",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

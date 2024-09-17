@@ -114,3 +114,16 @@ export const createCart = async (req, res) => {
     res.status(500).json({ message: "Error updating cart", error });
   }
 };
+
+export const getAllUser = async (req, res) => {
+  console.log("resss", req.body);
+  const token = req.headers.authorization;
+
+  try {
+    const allUser = await User.find();
+
+    res.status(200).json(allUser);
+  } catch {
+    res.status(500).json({ message: error.message });
+  }
+};
