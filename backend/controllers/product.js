@@ -1,30 +1,5 @@
 import { Product } from "../models/product.js";
-// import { randomFnForProducts } from "../utils/utils.js";
-// import { HTTP_RESPONSE } from "../utils/config.js";
-
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, 'uploads/'); // directory where the files will be stored
-//     },
-//     filename: function (req, file, cb) {
-//         cb(null, Date.now() + path.extname(file.originalname)); // save file with a unique name
-//     }
-// })
-
-// const fileFilter = (req, file, cb) => {
-//     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-//     if (allowedTypes.includes(file.mimetype)) {
-//         cb(null, true);
-//     } else {
-//         cb(null, false);
-//     }
-// };
-
-// const upload = multer({
-//     storage: storage,
-//     limits: { fileSize: 1024 * 1024 * 5 }, // 5MB file size limit
-//     fileFilter: fileFilter
-// });
+import { Category } from "../models/category.js";
 
 export const getAllProducts = async (req, res) => {
   console.log("resss", req.body);
@@ -78,40 +53,24 @@ export const createProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// import { v2 as cloudinary } from "cloudinary";
 
-// const multer = require('multer');
-// const upload = multer({ dest: 'uploads/' }); // or configure as needed
+//catergories
 
-// export const createProduct =  upload.single('image'), async (req, res) => {
+export const getAllCategory = async (req, res) => {
+  try {
+    const allProduct = await Category.find();
+    res.status(200).json(allProduct);
+  } catch {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-//     try {
-//     const { name, price, description } = req.body;
-//     const image = req.file;
-
-//     // Upload image to Cloudinary
-//     const uploadResult = await cloudinary.uploader.upload(image.path, {
-//       folder: "products",
-//       public_id: `${name.replace(/\s+/g, "_").toLowerCase()}`,
-//       use_filename: true,
-//       unique_filename: false,
-//       overwrite: true,
-//     });
-
-//     // Create a new product with the Cloudinary URL
-//     const newProduct = new Product({
-//       name,
-//       price,
-//       description,
-//       imageUrl: uploadResult.secure_url,
-//     });
-
-//     // Save the product in the database
-//     const savedProduct = await newProduct.save();
-
-//     res.status(200).json({ message: "Product added successfully" });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// }
-// ;
+export const createCategory = async (req, res) => {
+  try {
+    const newCategory = new Category(req.body);
+    const savedCategory = await newCategory.save();
+    res.status(200).json(savedCategory);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

@@ -9,7 +9,7 @@ import initProductRouter from "./routes/init.js";
 import featuredItemsRouter from "./routes/featuredItems.js";
 import productsRouter from "./routes/product.js";
 import basketRouter from "./routes/basket.js";
-
+import CategoryRouter from "./routes/category.js";
 const app = express();
 const port = process.env.PORT || 5000;
 const dbUrl = process.env.DB_URL;
@@ -23,6 +23,7 @@ app.use(express.json());
 // app.use("/init", initProductRouter);
 // app.use("/featuredItems", featuredItemsRouter);
 app.use("/products", productsRouter);
+app.use("/Category", CategoryRouter);
 app.use("/user", userRouter);
 // app.use("/basket", basketRouter);
 // app.use('/uploads', express.static('uploads'));
