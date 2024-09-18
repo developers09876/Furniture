@@ -54,22 +54,17 @@ export const createProduct = async (req, res) => {
   }
 };
 
-//catergories
-
-export const getAllCategory = async (req, res) => {
+export const deleteProduct = async (req, res) => {
   try {
-    const allProduct = await Category.find();
-    res.status(200).json(allProduct);
-  } catch {
-    res.status(500).json({ message: error.message });
-  }
-};
+    const { id } = req.params;
+    console.log("id", id);
+    const deletedCategory = await Product.findByIdAndDelete({ _id: id });
 
-export const createCategory = async (req, res) => {
-  try {
-    const newCategory = new Category(req.body);
-    const savedCategory = await newCategory.save();
-    res.status(200).json(savedCategory);
+    if (!deletedCategory) {
+      return res.status(404).json({ message: "Product not found" }); // If the category doesn't exist
+    }
+
+    res.status(200).json({ message: "Product deleted successfully" }); // Success response
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
