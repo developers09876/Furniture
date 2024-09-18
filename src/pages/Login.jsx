@@ -127,6 +127,7 @@ const Login = () => {
           )}
           <p className="text-center">
             Not a member? <Link to="/register">Register</Link>
+           
           </p>
         </form>
       </StyledLogin>
