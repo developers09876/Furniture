@@ -31,7 +31,7 @@ export const registerUser = async (req, res) => {
 
   try {
     const registeredUser = await User.findOne({ email: email });
-console.log("vantea",registeredUser )
+    console.log("vantea", registeredUser);
     if (registeredUser) {
       return res.status(HTTP_RESPONSE.BAD_REQUEST.CODE).json({
         email: "A user has already registered with this email address.",
@@ -125,5 +125,44 @@ export const getAllUser = async (req, res) => {
     res.status(200).json(allUser);
   } catch {
     res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log("id", id);
+    const deletedCategory = await User.findByIdAndDelete({ _id: id });
+
+    if (!deletedCategory) {
+      return res.status(404).json({ message: "User not found" }); // If the category doesn't exist
+    }
+
+    res.status(200).json({ message: "User deleted successfully" }); // Success response
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { username, phoneNumber } = req.body;
+    const users = await User.findById(id);
+
+    if (!users) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (username) users.username = username;
+    if (phoneNumber) users.phoneNumber = phoneNumber;
+    const updatedCategory = await users.save();
+    res.status(200).json(updatedCategory);
+  } catch (error) {
+    if (error.kind === "ObjectId") {
+      return res.status(400).json({ message: "Invalid User ID" });
+    }
+
+    res.status(500).json({ message: "Server Error: " + error.message });
   }
 };

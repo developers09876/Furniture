@@ -63,7 +63,7 @@ const StyledTd = styled.th`
 
 const Categories = () => {
   const { categories, deleteCategory } = useContext(DashboardContext);
-  const [modal2Open, setModal2Open] = useState(false);
+  const [modal2Open, setCategoriesModel] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [data, setData] = useState([
@@ -83,22 +83,6 @@ const Categories = () => {
       description: "Lorem ipsum dolo amet consectetur.",
     },
   ]);
-
-  // const [Categories, setCategory] = useState([]);
-  // const [query, setQuery] = useState("");
-
-  // useEffect(() => {
-  //   fetchCategories();
-  // }, []);
-  // const fetchCategories = async () => {
-  //   try {
-  //     axios.get(`http://localhost:5000/Category/`).then((res) => {
-  //       setCategory(res.data);
-  //     });
-  //   } catch (error) {
-  //     console.error("Error fetching category:", error);
-  //   }
-  // };
 
   const [category, setCategory] = useState([]);
 
@@ -130,8 +114,13 @@ const Categories = () => {
   const columns = [
     {
       title: "Sno",
-      dataIndex: "key",
+      render: (i, record, index) => (
+        <div>
+          <p>{1 + index}</p>
+        </div>
+      ),
     },
+
     {
       title: "Name",
       dataIndex: "name",
@@ -163,9 +152,11 @@ const Categories = () => {
   return (
     <>
       <StyledCategories>
-        <Button type="primary" onClick={() => setModal2Open(true)}>
-          Add Categories
-        </Button>
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          <Button type="primary" onClick={() => setCategoriesModel(true)}>
+            Add Categories
+          </Button>
+        </div>
         <div>
           <Divider style={{ fontSize: "30px" }}>Categories</Divider>
           <Table columns={columns} dataSource={category} size="middle" />
@@ -175,8 +166,9 @@ const Categories = () => {
       <Modal
         centered
         open={modal2Open}
-        onOk={() => setModal2Open(false)}
-        onCancel={() => setModal2Open(false)}
+        onOk={() => setCategoriesModel(false)}
+        onCancel={() => setCategoriesModel(false)}
+        footer={null}
       >
         <AddCategory />
       </Modal>

@@ -2,10 +2,11 @@ import { Router } from "express";
 
 import {
   getAllProducts,
-  getOneProduct,
+  // getOneProduct,
   createProduct,
-  getAllCategory,
-  createCategory,
+  // getAllCategory,
+  // createCategory,
+  deleteProduct,
 } from "../controllers/product.js";
 import { isLoggedIn } from "../middleware.js";
 const router = Router();
@@ -14,5 +15,6 @@ const router = Router();
 router.get("/", getAllProducts);
 router.post("/create", isLoggedIn, createProduct);
 // router.post('/create', upload.array('images', 5), createProduct);
+router.delete("/delete/:id", deleteProduct);
 
 export default router;
