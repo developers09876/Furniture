@@ -1,11 +1,12 @@
 import { Divider, Table, Modal, Button, Form, Input, Select } from "antd";
 import { Col, Row } from "react-bootstrap";
-import { useContext, useState } from "react";
+import { useContext, useEffect,useState } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { DashboardContext } from "../../context/DashboardContext";
 import Swal from "sweetalert2";
 import styled from "styled-components";
 import AddUser from "../users/AddUser";
+import axios from "axios";
 
 const { confirm } = Modal;
 const { Option } = Select;
@@ -58,32 +59,23 @@ const Users = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState(initialData); // State to manage table data
 
-  const handleDelete = (record) => {
-    confirm({
-      title: "Are you sure you want to delete this user?",
-      icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,
-      content: `Name: ${record.name}`,
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "No",
-      onOk() {
-        setData((prevData) =>
-          prevData.filter((item) => item.key !== record.key)
-        ); // Remove the user from data
+ 
+  const [users, setUsers] = useState([]);
+  
 
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: `User ${record.name} has been deleted.`,
-        });
+  useEffect(() => {
+    const fetchUsersData = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/User/get");
+        setUsers(res.data);
+      } catch (error) {
+        console.error("Error fetching category:", error);
+      }
+    };
 
-        console.log("Deleted user:", record);
-      },
-      onCancel() {
-        console.log("Deletion cancelled");
-      },
-    });
-  };
+    fetchUsersData();
+  }, []);
+
 
   const handleEdit = (record) => {
     setSelectedUser(record);
@@ -104,15 +96,68 @@ const Users = () => {
     });
     setEditUser(false);
   };
+   
 
+
+  const deleteRecordFromAPI = async (id) => {
+    console.log("subi", id);
+
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/user/delete/${id}`
+      );
+
+      if (response.status === 200) {
+        const newData = data.filter((item) => item.key !== key);
+        setData(newData);
+
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: `User has been deleted successfully.`,
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting record:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "There was an error deleting the user. Please try again.",
+      });
+    }
+  };
+
+  const handleDelete = (record, data, setData) => {
+    console.log("firstrecord", record);
+    confirm({
+      title: "Are you sure you want to delete this user?",
+      icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,
+      content: `Name: ${record.name}`,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        deleteRecordFromAPI(record._id); // Call the API to delete the record
+      },
+      onCancel() {
+        console.log("Deletion cancelled");
+      },
+    });
+  }
   const columns = [
     {
       title: "Sno",
-      dataIndex: "key",
+      render: (i, record, index) => (
+        <div>
+          <p>
+            {index + 1}
+          </p>
+        </div>
+      )
     },
     {
       title: "Name",
-      dataIndex: "name",
+      dataIndex: "username",
     },
     {
       title: "Email",
@@ -120,7 +165,7 @@ const Users = () => {
     },
     {
       title: "Phone",
-      dataIndex: "phone",
+      dataIndex: "phoneNumber",
     },
     {
       title: "Role",
@@ -134,12 +179,15 @@ const Users = () => {
           <Col md={3}>
             <a onClick={() => handleEdit(record)}>
               <MdEdit style={{ fontSize: "20px", cursor: "pointer" }} />
+              
             </a>
           </Col>
           <Col md={3}>
-            <a onClick={() => handleDelete(record)}>
-              <MdDelete style={{ fontSize: "20px", cursor: "pointer" }} />
-            </a>
+           
+          <MdDelete
+            style={{ fontSize: "20px", cursor: "pointer", color: "red" }}
+            onClick={() => handleDelete(record, data, setData)}
+          />
           </Col>
         </Row>
       ),
@@ -150,11 +198,12 @@ const Users = () => {
 
   return (
     <StyledUsers>
-      <Divider style={{ fontSize: "30px" }}>Customers</Divider>
-      <Table columns={columns} dataSource={data} size="middle" />
-      <Button type="primary" onClick={() => setAdduser(true)}>
+       {/* <Button style={{marginLeft:'90%'}} type="primary" onClick={() => setAdduser(true)}>
         Add User
-      </Button>
+      </Button> */}
+      <Divider style={{ fontSize: "30px" }}>Customers</Divider>
+      <Table columns={columns} dataSource={users} size="middle" />
+      
 
       <Modal
         centered
