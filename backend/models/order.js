@@ -11,8 +11,15 @@ const orderSchema = new Schema({
   subTotal: { type: String },
   color: { type: String },
   category: { type: String },
-  userName: { type: String },
+  name: { type: String },
   userID: { type: String },
+  Phone: { type: Number },
+  Address: { type: String },
+  Status: { type: String, default: "inital" },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
   //   images: { type: [String] },
 });
 

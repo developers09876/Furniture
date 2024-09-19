@@ -64,58 +64,6 @@ const SingleProductPage = () => {
   }
   const [selectedImage, setSelectedImage] = useState(null);
   const [images, setImages] = useState([img1, img2, img3, Amenity, Amenity_ET]);
-
-  // const [products, setProducts] = useState([
-  //   {
-  //     images: [img1, img2, img3],
-  //     title: "chair",
-  //     id: "3",
-  //     price: "5000",
-  //     discountPrice: "4000",
-  //     description: "Comfortable Chair",
-  //     LongDesc:
-  //       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-  //     offer: "50",
-  //     quantity_stock: "5",
-  //   },
-  //   {
-  //     images: [img1, img2, img3],
-  //     title: "Bed",
-  //     id: "4",
-  //     price: "5000",
-  //     discountPrice: "4000",
-  //     description: "Comfortable Sofa",
-  //     LongDesc:
-  //       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-  //     offer: "80",
-  //     quantity_stock: "5",
-  //   },
-  //   {
-  //     images: [img1, img2, img3],
-  //     title: "Bed4",
-  //     id: "2",
-  //     price: "5000",
-  //     discountPrice: "4000",
-  //     LongDesc:
-  //       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-  //     description: "Comfortable Sofa",
-  //     offer: "20",
-  //     quantity_stock: "5",
-  //   },
-  //   {
-  //     images: [img1, img2, img3],
-  //     title: "5Bed",
-  //     id: "5",
-  //     price: "55000",
-  //     discountPrice: "54000",
-  //     description: "Comfortable Sofa",
-  //     LongDesc:
-  //       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut architecto, harum accusamus illo commodi optio, quae sint a maiores quis dolorum nostrum explicabo eveniet numquam eligendi repellat consequatur quasi nesciunt officiis laborum recusandae odio. Iste, totam omnis. Ut ipsa praesentium ratione libero, reprehenderit nesciunt, nemo esse accusamus perferendis illo quas!",
-  //     offer: "520",
-  //     quantity_stock: "5",
-  //   },
-  // ]);
-
   const [show, setShow] = useState(false);
   const [showPic, setShowPic] = useState(false);
 
@@ -133,7 +81,7 @@ const SingleProductPage = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/products/${productID}`
+          `http://localhost:5000/products/getOne/${productID}`
         );
         setProduct(response.data);
       } catch (error) {

@@ -56,7 +56,7 @@ const Users = () => {
   const [EditUser, setEditUser] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [form] = Form.useForm();
-  const [data, setData] = useState(initialData); // State to manage table data
+  const [data, setData] = useState(initialData);
 
   const handleDelete = (record) => {
     confirm({
@@ -145,8 +145,6 @@ const Users = () => {
       ),
     },
   ];
-
-  //
 
   return (
     <StyledUsers>
