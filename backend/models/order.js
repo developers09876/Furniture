@@ -11,6 +11,8 @@ const orderSchema = new Schema({
   subTotal: { type: String },
   color: { type: String },
   category: { type: String },
+  userName: { type: String },
+  userID: { type: String },
   //   images: { type: [String] },
 });
 
