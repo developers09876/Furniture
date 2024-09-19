@@ -39,6 +39,10 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     console.log("emailzz", email, password);
+    const userData = {
+      email: email,
+      password: password,
+    };
     try {
       // const response = await fetch('http://localhost:3000/users');
       // const users = await response.json(
@@ -46,25 +50,35 @@ export const AuthProvider = ({ children }) => {
       // const user = users.find(
       //   () => "abcd@123" === email && 12345 === password
       // );
-
+          
       if (email && password) {
+       
+          // const res = await axios.post(
+          //   'http://localhost:5000/admin/login',
+          //   userData,
+          //   {
+          //     headers: {
+          //       'Content-Type': 'application/json',
+          //     },
+          //   }
+          // );
+          // if(res){
         setIsAuthenticated(true);
         setUserID(1);
         Cookies.set("isLoggedIn", "true", { expires: 1 });
-
-        // Check if the user is an admin
-        if (email == "abcd@123") {
-          setIsAdmin(true);
-          Cookies.set("isAdmin", "true", { expires: 1 });
-        } else {
-          setIsAdmin(false);
-        }
-
-        console.log("adin", isAdmin);
-
+        setIsAdmin(true);
+        Cookies.set("isAdmin", "true", { expires: 1 });
         setError(null);
         return true;
+      // }else{
+      //   setIsAuthenticated(false);
+      //   Cookies.set("isLoggedIn", "false");
+      //   setError("Something went wrong");
+      //   return false;
+      // }
+
       } else {
+        setIsAdmin(false);
         setIsAuthenticated(false);
         Cookies.set("isLoggedIn", "false");
         setError("Invalid email or password");
@@ -95,17 +109,26 @@ export const AuthProvider = ({ children }) => {
               'Content-Type': 'application/json',
             },
           }
-        );
+        )
+        if(res){
+         
+          setIsAuthenticated(true);
+          setUserID(res.data.data._id);
+          Cookies.set("isLoggedIn", "true", { expires: 1 });
+          setIsUser(true);
+          Cookies.set("isUser", "true");
+          localStorage.setItem("token", res.data.token); 
+          localStorage.setItem("id", res.data.data.id); 
+          localStorage.setItem("name", res.data.data.username); // Make sure to use res.data.Token
+          return true; 
+        }else{
+          setIsAuthenticated(false);
+          Cookies.set("isLoggedIn", "false");
+          setError("Something went wrong");
+          return false;
+        }
   
-        setIsAuthenticated(true);
-        setUserID(res.data.data._id);
-        Cookies.set("isLoggedIn", "true", { expires: 1 });
-        setIsUser(true);
-        Cookies.set("isUser", "true");
-        localStorage.setItem("token", res.data.token); 
-        localStorage.setItem("id", res.data.data.id); 
-        localStorage.setItem("name", res.data.data.username); // Make sure to use res.data.Token
-        return true; 
+       
       } else {
         setIsAuthenticated(false);
         Cookies.set("isLoggedIn", "false");

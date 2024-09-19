@@ -33,6 +33,16 @@ const Login = () => {
      
     if (email && password) {
       try {
+        // const response = await axios.post(
+        //   'http://localhost:5000/admin/login',
+        //   userData,
+        //   {
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //   }
+        // );
+
         await login(email, password).then((success) => {
           if (success) {
             // Display success message using SweetAlert
@@ -117,6 +127,7 @@ const Login = () => {
           )}
           <p className="text-center">
             Not a member? <Link to="/register">Register</Link>
+           
           </p>
         </form>
       </StyledLogin>
