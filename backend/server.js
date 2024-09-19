@@ -25,6 +25,7 @@ app.use(express.json());
 app.use("/products", productsRouter);
 app.use("/Category", CategoryRouter);
 app.use("/user", userRouter);
+// app.use("/order", orderRouter);
 // app.use("/basket", basketRouter);
 // app.use('/uploads', express.static('uploads'));
 

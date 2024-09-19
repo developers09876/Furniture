@@ -52,7 +52,7 @@ const SingleProductPage = () => {
   const { productID } = useParams();
   console.log("productID", productID);
   const [product, setProduct] = useState([]);
-  console.log("product", product);
+  console.log("productz", product);
   if (
     product &&
     Array.isArray(product.specification) &&
@@ -283,6 +283,7 @@ const SingleProductPage = () => {
   const { addToCart } = useContext(CartContext);
   const { addToWishlist } = useContext(WishlistContext);
   const { isAuthenticated } = useContext(AuthContext);
+  console.log("isAuthenticated chedckkk", isAuthenticated);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -297,12 +298,12 @@ const SingleProductPage = () => {
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
   };
-  useEffect(() =>{
+  useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth", 
+      behavior: "smooth",
     });
-  })
+  });
   if (!product) {
     return <Spinner />;
   }
@@ -318,7 +319,7 @@ const SingleProductPage = () => {
     LongDesc,
     quantity_stock,
   } = product;
-
+  console.log("product", product);
   return (
     <Wrapper className="container section-center page">
       <Breadcrumb />

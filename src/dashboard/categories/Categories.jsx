@@ -186,32 +186,33 @@ const Categories = () => {
   const { addCategory } = useContext(DashboardContext);
   const navigate = useNavigate();
 
-  const handleAddCategoy = async (e) => {
-    e.preventDefault();
-    setResponseMessage("");
+  // const handleAddCategoy = async (e) => {
+  //   alert("hiii");
+  //   // e.preventDefault();
+  //   setResponseMessage("");
 
-    const { name, description } = formData;
+  //   const { name, description } = formData;
+  //   console.log("formData", formData);
+  //   if (!name || !description) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error",
+  //       text: "Please fill in all required fields.",
+  //     });
+  //     return;
+  //   }
 
-    if (!name || !description) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Please fill in all required fields.",
-      });
-      return;
-    }
-
-    console.log(formData);
-    addCategory(formData);
-    navigate("/admin/categories");
-    setFormData({
-      id: "",
-      name: "",
-      description: "",
-      created_at: "",
-      updated_at: null,
-    });
-  };
+  //   console.log(formData);
+  //   addCategory(formData);
+  //   navigate("/admin/categories");
+  //   setFormData({
+  //     id: "",
+  //     name: "",
+  //     description: "",
+  //     created_at: "",
+  //     updated_at: null,
+  //   });
+  // };
 
   const [formData, setFormData] = useState({
     name: "",
@@ -304,9 +305,11 @@ const Categories = () => {
             Cancel
           </Button>,
           <Button
-            key="submit"
+            // key="submit"
             type="primary"
-            onClick={() => AddCategory.submit()}
+            onClick={() => {
+              handleAddCategoy();
+            }}
           >
             Add Category
           </Button>,
