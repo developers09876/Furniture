@@ -1,21 +1,10 @@
 import { Product } from "../models/product.js";
-import { Category } from "../models/category.js";
-
+import { order } from "../models/order.js";
 export const getAllProducts = async (req, res) => {
   console.log("resss", req.body);
   const token = req.headers.authorization;
 
   try {
-    // const token = req.headers.authorization;
-
-    // const decodedToken = jwt.decode(token);
-    // const tokenId = decodedToken.id;
-
-    // if (tokenId !== userId) {
-    //   return res
-    //     .status(HTTP_RESPONSE.UNAUTHORIZED.CODE)
-    //     .json(HTTP_RESPONSE.UNAUTHORIZED.MESSAGE);
-    // }
     const allProduct = await Product.find();
 
     res.status(200).json(allProduct);
@@ -65,6 +54,45 @@ export const deleteProduct = async (req, res) => {
     }
 
     res.status(200).json({ message: "Product deleted successfully" }); // Success response
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+//orders
+export const getAllOrder = async (req, res) => {
+  console.log("resss", req.body);
+
+  try {
+    const allorder = await order.find();
+
+    res.status(200).json(allorder);
+  } catch {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const createOrder = async (req, res) => {
+  try {
+    const newProduct = new order(req.body);
+    const savedProduct = await newProduct.save();
+    res.status(200).json(savedProduct);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log("id", id);
+    const deletedCategory = await order.findByIdAndDelete({ _id: id });
+
+    if (!deletedCategory) {
+      return res.status(404).json({ message: "Order not found" }); // If the category doesn't exist
+    }
+
+    res.status(200).json({ message: "Order deleted successfully" }); // Success response
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

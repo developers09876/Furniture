@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,13 +8,18 @@ import Button from "../../components/Button";
 import { Divider, Table } from "antd";
 import { Col, Row } from "react-bootstrap";
 import { MdDelete, MdEdit } from "react-icons/md";
+import axios from "axios";
 
 // styled components
 
 const columns = [
   {
     title: "Sno",
-    dataIndex: "key",
+    render: (i, record, index) => (
+      <div>
+        <p>{1 + index}</p>
+      </div>
+    ),
   },
   {
     title: "Name",
@@ -22,56 +27,56 @@ const columns = [
   },
   {
     title: "Address",
-    dataIndex: "address",
+    dataIndex: "Address",
   },
   {
     title: "Phone",
-    dataIndex: "phone",
+    dataIndex: "Phone",
   },
   {
     title: "Status",
-    dataIndex: "status",
+    dataIndex: "Status",
   },
-  {
-    title: "Delivery Company",
-    dataIndex: "deliveryCompany",
-  },
+  // {
+  //   title: "Delivery Company",
+  //   dataIndex: "deliveryCompany",
+  // },
   {
     title: "Date",
-    dataIndex: "date",
+    dataIndex: "createdAt",
   },
   {
     title: "orderTotal",
-    dataIndex: "orderTotal",
+    dataIndex: "quantity",
   },
   {
     title: "Change Status",
     dataIndex: "changeStatus",
   },
-  {
-    title: "Details",
-    dataIndex: "details",
-  },
-  {
-    title: "Action",
-    key: "Action",
-    render: (_, record) => (
-      <div>
-        <Row>
-          <Col md={3}>
-            <a>
-              <MdEdit style={{ fontSize: "20px" }} />
-            </a>
-          </Col>
-          <Col md={3}>
-            <a>
-              <MdDelete style={{ fontSize: "20px" }} />
-            </a>
-          </Col>
-        </Row>
-      </div>
-    ),
-  },
+  // {
+  //   title: "Details",
+  //   dataIndex: "details",
+  // },
+  // {
+  //   title: "Action",
+  //   key: "Action",
+  //   render: (_, record) => (
+  //     <div>
+  //       <Row>
+  //         <Col md={3}>
+  //           <a>
+  //             <MdEdit style={{ fontSize: "20px" }} />
+  //           </a>
+  //         </Col>
+  //         <Col md={3}>
+  //           <a>
+  //             <MdDelete style={{ fontSize: "20px" }} />
+  //           </a>
+  //         </Col>
+  //       </Row>
+  //     </div>
+  //   ),
+  // },
 ];
 
 const data = [
@@ -164,6 +169,21 @@ const Orders = () => {
     selectedStatus === "all"
       ? orders
       : orders.filter((order) => order.order_status === selectedStatus);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/products/order")
+      .then((response) => {
+        setData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching the order data", error);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <StyledOrders>
@@ -188,7 +208,13 @@ const Orders = () => {
 
       <div>
         <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
-        <Table columns={columns} dataSource={data} size="middle" />
+        <Table
+          columns={columns}
+          dataSource={data}
+          loading={loading}
+          rowKey="_id"
+          size="middle"
+        />
       </div>
     </StyledOrders>
   );
