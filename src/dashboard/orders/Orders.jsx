@@ -5,90 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { DashboardContext } from "../../context/DashboardContext";
 import Button from "../../components/Button";
-import { Divider, Table } from "antd";
+import { Divider, Modal, Table, Select } from "antd";
 import { Col, Row } from "react-bootstrap";
-import { MdDelete, MdEdit } from "react-icons/md";
 import axios from "axios";
-
+import { IoEyeOutline } from "react-icons/io5";
 // styled components
-
-const columns = [
-  {
-    title: "Sno",
-    render: (i, record, index) => (
-      <div>
-        <p>{1 + index}</p>
-      </div>
-    ),
-  },
-  {
-    title: "Name",
-    dataIndex: "name",
-  },
-  {
-    title: "Address",
-    dataIndex: "shipping_address",
-  },
-  {
-    title: "Phone",
-    dataIndex: "phone",
-  },
-  {
-    title: "Status",
-    dataIndex: "order_status",
-  },
-  // {
-  //   title: "Delivery Company",
-  //   dataIndex: "deliveryCompany",
-  // },
-
-  {
-    title: "Date",
-    dataIndex: "created_at",
-  },
-  {
-    title: "Quanity",
-    dataIndex: "items",
-    key: "quantity",
-    render: (items) => items.map((item) => item.quantity).join(", "),
-  },
-  {
-    title: "orderTotal",
-    dataIndex: "order_total",
-  },
-  {
-    title: "Change Status",
-    dataIndex: "changeStatus",
-  },
-  // {
-  //   title: "Details",
-  //   dataIndex: "details",
-  // },
-  // {
-  //   title: "Action",
-  //   key: "Action",
-  //   render: (_, record) => (
-  //     <div>
-  //       <Row>
-  //         <Col md={3}>
-  //           <a>
-  //             <MdEdit style={{ fontSize: "20px" }} />
-  //           </a>
-  //         </Col>
-  //         <Col md={3}>
-  //           <a>
-  //             <MdDelete style={{ fontSize: "20px" }} />
-  //           </a>
-  //         </Col>
-  //       </Row>
-  //     </div>
-  //   ),
-  // },
-  {
-    title: "Action",
-    dataIndex: "action",
-  },
-];
 
 const data = [
   {
@@ -171,7 +92,143 @@ const StyledSelect = styled.select`
 const Orders = () => {
   const { orders, updateOrderStatus, fetchData } = useContext(DashboardContext);
   const [selectedStatus, setSelectedStatus] = useState("all");
+  const [isOrderModel, setOrderModel] = useState(false);
 
+  const orderModel = () => {
+    setOrderModel(true);
+  };
+  const handleOk = () => {
+    setOrderModel(false);
+  };
+  const handleCancel = () => {
+    setOrderModel(false);
+  };
+
+  const columns = [
+    {
+      title: "Sno",
+      render: (i, record, index) => (
+        <div>
+          <p>{1 + index}</p>
+        </div>
+      ),
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+    },
+    {
+      title: "Address",
+      dataIndex: "shipping_address",
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone",
+    },
+    {
+      title: "Status",
+      dataIndex: "order_status",
+    },
+    // {
+    //   title: "Delivery Company",
+    //   dataIndex: "deliveryCompany",
+    // },
+
+    {
+      title: "Date",
+      dataIndex: "created_at",
+    },
+    {
+      title: "Quanity",
+      dataIndex: "items",
+      key: "quantity",
+      render: (items) => items.map((item) => item.quantity).join(", "),
+    },
+    {
+      title: "orderTotal",
+      dataIndex: "order_total",
+    },
+    {
+      title: "Change Status",
+      dataIndex: "changeStatus",
+      render: (text, record) => (
+        <Select
+          defaultValue={record.status}
+          onChange={(value) => handleStatusChange(record.key, value)}
+          style={{ width: 120 }}
+        >
+          <Option value="Pending">Pending</Option>
+          <Option value="Inprogress">In Progress</Option>
+          <Option value="Delivered">Delivered</Option>
+          <Option value="Initial">Initial</Option>
+        </Select>
+      ),
+    },
+    // {
+    //   title: "Details",
+    //   dataIndex: "details",
+    // },
+    // {
+    //   title: "Action",
+    //   key: "Action",
+    //   render: (_, record) => (
+    //     <div>
+    //       <Row>
+    //         <Col md={3}>
+    //           <a>
+    //             <MdEdit style={{ fontSize: "20px" }} />
+    //           </a>
+    //         </Col>
+    //         <Col md={3}>
+    //           <a>
+    //             <MdDelete style={{ fontSize: "20px" }} />
+    //           </a>
+    //         </Col>
+    //       </Row>
+    //     </div>
+    //   ),
+    // },
+    {
+      title: "Action",
+      key: "Action",
+      render: (_, record) => (
+        <div>
+          <center>
+            {" "}
+            <IoEyeOutline
+              style={{
+                fontSize: "20px",
+                cursor: "pointer",
+                marginRight: "10px",
+              }}
+              onClick={orderModel}
+              Open
+              Modal
+            />
+          </center>
+          {/* <MdEdit
+            style={{ fontSize: "20px", cursor: "pointer", marginRight: "10px" }}
+            onClick={() => handleEdit(record)}
+          />
+          <MdDelete
+            style={{ fontSize: "20px", cursor: "pointer", color: "red" }}
+            onClick={() => handleDelete(record)}
+          /> */}
+        </div>
+      ),
+    },
+  ];
+
+  const viewOrder = [
+    {
+      title: "Sno",
+      render: (i, record, index) => (
+        <div>
+          <p>{1 + index}</p>
+        </div>
+      ),
+    },
+  ];
   const handleStatusChange = (orderId, status) => {
     updateOrderStatus(orderId, status);
   };
@@ -227,6 +284,23 @@ const Orders = () => {
           size="middle"
         />
       </div>
+      <Modal
+        title="Order Model"
+        open={isOrderModel}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <div>
+          <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
+          <Table
+            columns={viewOrder}
+            dataSource={data}
+            loading={loading}
+            rowKey="_id"
+            size="middle"
+          />
+        </div>
+      </Modal>
     </StyledOrders>
   );
 };

@@ -154,8 +154,8 @@ const Checkout = () => {
   };
 
   const deliveryOptions = {
-    amana: { label: "Delivery by Amana 24h", cost: 30.0 },
-    ozone: { label: "Delivery by Ozone 48h", cost: 20.0 },
+    amana: { label: "Delivery by Amana 24h", cost: 60.0 },
+    ozone: { label: "Delivery by Ozone 48h", cost: 40.0 },
   };
 
   const subTotal = cart.items.reduce((total, item) => total + item.subTotal, 0);
@@ -215,7 +215,7 @@ const Checkout = () => {
                     Phone Number :
                   </label>
                   <input
-                    type="number"
+                    type="numbe r"
                     className="form-control"
                     id="phone"
                     value={phone}
@@ -226,7 +226,7 @@ const Checkout = () => {
 
                 <div className="mb-3">
                   <label htmlFor="shippingAddress" className="form-label">
-                    Shipping Address :
+                    Shipping Address:
                   </label>
                   <input
                     type="text"
