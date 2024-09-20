@@ -383,7 +383,7 @@ const Users = () => {
     confirm({
       title: `Are you sure you want to update ${record.username}?`,
       icon: <MdEdit style={{ fontSize: "20px", color: "red" }} />,
-      content: `Name: ${record.username}`, // Show the name of the user dynamically
+      content: `Name: ${record.username}`, 
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
