@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
-import axios from "axios"
+import axios from "axios";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -50,19 +50,18 @@ export const AuthProvider = ({ children }) => {
       // const user = users.find(
       //   () => "abcd@123" === email && 12345 === password
       // );
-          
+
       if (email && password) {
-       
-          // const res = await axios.post(
-          //   'http://localhost:5000/admin/login',
-          //   userData,
-          //   {
-          //     headers: {
-          //       'Content-Type': 'application/json',
-          //     },
-          //   }
-          // );
-          // if(res){
+        // const res = await axios.post(
+        //   'http://localhost:5000/admin/login',
+        //   userData,
+        //   {
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //   }
+        // );
+        // if(res){
         setIsAuthenticated(true);
         setUserID(1);
         Cookies.set("isLoggedIn", "true", { expires: 1 });
@@ -70,13 +69,12 @@ export const AuthProvider = ({ children }) => {
         Cookies.set("isAdmin", "true", { expires: 1 });
         setError(null);
         return true;
-      // }else{
-      //   setIsAuthenticated(false);
-      //   Cookies.set("isLoggedIn", "false");
-      //   setError("Something went wrong");
-      //   return false;
-      // }
-
+        // }else{
+        //   setIsAuthenticated(false);
+        //   Cookies.set("isLoggedIn", "false");
+        //   setError("Something went wrong");
+        //   return false;
+        // }
       } else {
         setIsAdmin(false);
         setIsAuthenticated(false);
@@ -90,57 +88,53 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-
   const loginUser = async (email, password) => {
     console.log("emailzzuser", email, password);
-  
+
     const userData = {
       email: email,
       password: password,
     };
-  
+
     try {
       if (email && password) {
         const res = await axios.post(
-          'http://localhost:5000/user/login',
+          "http://localhost:5000/user/login",
           userData,
           {
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
           }
-        )
-        if(res){
-         
+        );
+        if (res) {
           setIsAuthenticated(true);
           setUserID(res.data.data._id);
           Cookies.set("isLoggedIn", "true", { expires: 1 });
           setIsUser(true);
           Cookies.set("isUser", "true");
-          localStorage.setItem("token", res.data.token); 
-          localStorage.setItem("id", res.data.data.id); 
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("id", res.data.data.id);
           localStorage.setItem("name", res.data.data.username); // Make sure to use res.data.Token
-          return true; 
-        }else{
+          return true;
+        } else {
           setIsAuthenticated(false);
           Cookies.set("isLoggedIn", "false");
           setError("Something went wrong");
           return false;
         }
-  
-       
       } else {
         setIsAuthenticated(false);
         Cookies.set("isLoggedIn", "false");
         setError("Invalid email or password");
-        return false; 
+        return false;
       }
     } catch (error) {
       console.log("Error occurred while logging in:", error);
-      return false; 
+      return false;
     }
-  };  
- 
+  };
+
   const logout = () => {
     setIsAuthenticated(false);
     setIsAdmin(false); // Reset isAdmin state on logout
@@ -149,10 +143,10 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove("isAdmin");
     Cookies.remove("isUser");
     Cookies.remove("userID");
-    localStorage.removeItem("token")
-    localStorage.removeItem("id")
+    localStorage.removeItem("token");
+    localStorage.removeItem("id");
 
-    localStorage.removeItem("name")
+    localStorage.removeItem("name");
 
     Swal.fire({
       title: "Logout successful!",

@@ -27,27 +27,34 @@ const columns = [
   },
   {
     title: "Address",
-    dataIndex: "Address",
+    dataIndex: "shipping_address",
   },
   {
     title: "Phone",
-    dataIndex: "Phone",
+    dataIndex: "phone",
   },
   {
     title: "Status",
-    dataIndex: "Status",
+    dataIndex: "order_status",
   },
   // {
   //   title: "Delivery Company",
   //   dataIndex: "deliveryCompany",
   // },
+
   {
     title: "Date",
-    dataIndex: "createdAt",
+    dataIndex: "created_at",
+  },
+  {
+    title: "Quanity",
+    dataIndex: "items",
+    key: "quantity",
+    render: (items) => items.map((item) => item.quantity).join(", "),
   },
   {
     title: "orderTotal",
-    dataIndex: "quantity",
+    dataIndex: "order_total",
   },
   {
     title: "Change Status",
@@ -77,6 +84,10 @@ const columns = [
   //     </div>
   //   ),
   // },
+  {
+    title: "Action",
+    dataIndex: "action",
+  },
 ];
 
 const data = [

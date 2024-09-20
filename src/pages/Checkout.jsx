@@ -8,6 +8,7 @@ import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Breadcrumb from "../components/Breadcrumb";
+import { FaIndianRupeeSign } from "react-icons/fa6";
 
 const Title = styled.h1`
   font-size: 24px;
@@ -16,8 +17,9 @@ const Title = styled.h1`
 
 const Checkout = () => {
   const { cart, clearCart } = useContext(CartContext);
+  console.log("cardza", cart);
+  console.log("caditeAM", cart.items[0]);
   const { userID, isAuthenticated } = useContext(AuthContext);
-
   const [shippingAddress, setShippingAddress] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -25,7 +27,9 @@ const Checkout = () => {
   const [success, setSuccess] = useState(false);
   const [selectedDeliveryOption, setSelectedDeliveryOption] = useState("amana");
   const navigate = useNavigate();
-
+  let cartValue = cart.items[0];
+  const userId = localStorage.getItem("id");
+  console.log("userId", userId);
   // redirect to login if the user is not Authenticated
   useEffect(() => {
     if (!isAuthenticated || cart.items.lenght == 0) {
@@ -41,22 +45,22 @@ const Checkout = () => {
         );
       }
 
-      const orderId = generateUUID();
+      // const orderId = generateUUID();
       const deliveryOption = deliveryOptions[selectedDeliveryOption];
 
       const order = {
-        id: orderId,
-        user_id: userID,
+        // order_id: orderId,
+        user_id: userId,
         shipping_address: shippingAddress,
         name: name,
         phone: phone,
         order_status: "pending",
         created_at: currentDate(),
-        description: `order n° ${orderId}`,
+        description: `hiii this descrprtion `,
         order_total: totalOrder,
         delivery_company:
           selectedDeliveryOption === "amana" ? "Amana" : "Ozone",
-        delivery_coast: deliveryOption.cost,
+        delivery_cost: deliveryOption.cost,
         items: cart.items.map((item) => ({
           id: item.id,
           image: item.image,
@@ -68,7 +72,10 @@ const Checkout = () => {
         })),
       };
 
-      const response = await axios.post("http://localhost:3000/orders", order);
+      const response = await axios.post(
+        "http://localhost:5000/products/createorder",
+        order
+      );
       return response.data.id;
     } catch (error) {
       console.error("Error creating order:", error);
@@ -95,24 +102,39 @@ const Checkout = () => {
     }
   };
 
-  const handleOrderPlace = async () => {
-    try {
-      const orderId = await createOrder();
-      await updateProductStock();
-      clearCart();
-      setOrderID(orderId);
-      setSuccess(true);
+  // const handleOrderPlace = async () => {
+  //   const details = {
+  //     name: name,
+  //     phone: phone,
+  //     shippingAddress: shippingAddress,
+  //     title: cartValue.title,
+  //     quantity: cartValue.quantity,
+  //     price: cartValue.price,
+  //     subTotal: cartValue.subTotal,
+  //     category: "sofa",
+  //     userId: userId,
+  //   };
+  //   console.log("details", details);
 
-      Swal.fire({
-        icon: "success",
-        title: "Order placed successfully!",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  //   try {
+  //     await axios.post(`http://localhost:5000/products/createorder`, details, {
+  //       order_status: "delivered",
+  //     });
+  //     await updateProductStock();
+  //     clearCart();
+  //     setOrderID(orderId);
+  //     setSuccess(true);
+
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "Order placed successfully!",
+  //       showConfirmButton: false,
+  //       timer: 2000,
+  //     });
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
 
   const handleOrderDelivered = async () => {
     try {
@@ -140,7 +162,7 @@ const Checkout = () => {
   const totalOrder = subTotal + deliveryOptions[selectedDeliveryOption].cost;
 
   return (
-    <div className="container px-4 ">
+    <div className="container px-4 mb-4">
       <Breadcrumb />
       <Title>Checkout</Title>
       <div className="row">
@@ -166,9 +188,9 @@ const Checkout = () => {
               <hr />
               <p className="mb-0">Thank you for choosing our service!</p>
             </div>
-            <Button handleClick={handleOrderDelivered}>
+            {/* <Button handleClick={handleOrderDelivered}>
               I received my order
-            </Button>
+            </Button> */}
           </div>
         ) : (
           <>
@@ -234,21 +256,23 @@ const Checkout = () => {
                       <p className="card-text">
                         {item.title} <small>({item.quantity})</small>
                       </p>
-                      <span>{item.subTotal.toFixed(2)} DH</span>
+                      <span>
+                        <FaIndianRupeeSign /> {item.subTotal.toFixed(2)}{" "}
+                      </span>
                     </div>
                   ))}
                   <hr />
                   <div className="d-flex justify-content-between mb-2">
                     <p className="card-text fw-bold">Order Sub-Total : </p>
                     <span className="text-success">
-                      {subTotal.toFixed(2)} DH
+                      <FaIndianRupeeSign /> {subTotal.toFixed(2)}
                     </span>
                   </div>
                   <hr />
                   <div className="d-flex justify-content-between mb-2">
                     <p className="card-text fw-bold">Order Total : </p>
                     <span className="text-danger">
-                      {totalOrder.toFixed(2)} DH
+                      <FaIndianRupeeSign /> {totalOrder.toFixed(2)}
                     </span>
                   </div>
                   <p className="card-text">
@@ -283,7 +307,7 @@ const Checkout = () => {
                   </div>
                 </div>
                 <div className="card-footer text-center">
-                  <Button className="my-3 px-4" handleClick={handleOrderPlace}>
+                  <Button className="my-3 px-4" handleClick={createOrder}>
                     Place Order
                   </Button>
                 </div>

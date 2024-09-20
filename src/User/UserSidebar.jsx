@@ -23,7 +23,7 @@ const SidebarContainer = styled.div`
   min-height: 100vh;
   height: 100%;
   // background-color: ${(props) => props.theme.mainColorLighter};
-  background-color:#7FAFCB;
+  background-color: var(--bg-lite-clr);
   padding: 20px;
   margin-right: 20px;
   position: fixed;
