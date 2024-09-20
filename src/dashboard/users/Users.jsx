@@ -59,9 +59,7 @@
 //   const [form] = Form.useForm();
 //   const [data, setData] = useState(initialData); // State to manage table data
 
- 
 //   const [users, setUsers] = useState([]);
-  
 
 //   useEffect(() => {
 //     const fetchUsersData = async () => {
@@ -75,7 +73,6 @@
 
 //     fetchUsersData();
 //   }, []);
-
 
 //   const handleEdit = (record) => {
 //     setSelectedUser(record);
@@ -96,8 +93,6 @@
 //     });
 //     setEditUser(false);
 //   };
-   
-
 
 //   const deleteRecordFromAPI = async (id) => {
 //     console.log("subi", id);
@@ -179,11 +174,11 @@
 //           <Col md={3}>
 //             <a onClick={() => handleEdit(record)}>
 //               <MdEdit style={{ fontSize: "20px", cursor: "pointer" }} />
-              
+
 //             </a>
 //           </Col>
 //           <Col md={3}>
-           
+
 //           <MdDelete
 //             style={{ fontSize: "20px", cursor: "pointer", color: "red" }}
 //             onClick={() => handleDelete(record, data, setData)}
@@ -203,7 +198,6 @@
 //       </Button> */}
 //       <Divider style={{ fontSize: "30px" }}>Customers</Divider>
 //       <Table columns={columns} dataSource={users} size="middle" />
-      
 
 //       <Modal
 //         centered
@@ -282,10 +276,6 @@
 
 // export default Users;
 
-
-
-
-
 import { Divider, Table, Modal, Button, Form, Input, Select } from "antd";
 import { Col, Row } from "react-bootstrap";
 import { useContext, useEffect, useState } from "react";
@@ -321,6 +311,9 @@ const Users = () => {
   const [EditUser, setEditUser] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [form] = Form.useForm();
+// <<<<<<<<< Temporary merge branch 
+  // const [data, setData] = useState(initialData);
+// =========
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -335,7 +328,6 @@ const Users = () => {
 
     fetchUsersData();
   }, []);
-
 
   const deleteRecordFromAPI = async (id) => {
     try {
@@ -363,7 +355,6 @@ const Users = () => {
       });
     }
   };
-
 
   const handleDelete = (record) => {
     confirm({
@@ -404,23 +395,24 @@ const Users = () => {
       },
     });
   };
-  
+
   const editRecordFromAPI = async (id, record) => {
     try {
-      await axios.post(`http://localhost:5000/user/update/${id}`, record)
+      await axios
+        .post(`http://localhost:5000/user/update/${id}`, record)
         .then((res) => {
           Swal.fire({
             icon: "success",
             title: "Updated!",
             text: `User has been updated successfully.`,
           });
-  
+
           // Update the user details in the local state
           const updatedUsers = users.map((user) =>
             user._id === id ? { ...user, ...record } : user
           );
           setUsers(updatedUsers);
-  
+
           // Close the edit modal
           setEditUser(false);
         });
@@ -433,7 +425,6 @@ const Users = () => {
       });
     }
   };
-  
 
   const columns = [
     {
@@ -501,11 +492,7 @@ const Users = () => {
           <Button key="cancel" onClick={() => setEditUser(false)}>
             Cancel
           </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            onClick={() => form.submit()}
-          >
+          <Button key="submit" type="primary" onClick={() => form.submit()}>
             Save
           </Button>,
         ]}
