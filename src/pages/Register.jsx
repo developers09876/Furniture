@@ -452,7 +452,7 @@ const Register = () => {
           });
 
           setTimeout(() => {
-            navigate('/login');
+            navigate('/userlogin');
           }, 1500);
         } else {
           Swal.fire({

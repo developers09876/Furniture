@@ -79,10 +79,16 @@
 
 
 
-import { Divider, Form, Input, Button } from "antd";
+// 
+
+import { Divider, Form, Input, Button, Modal } from "antd";
 import React, { useState } from "react";
-import { Row, Col } from "react-bootstrap"; 
+import { Row, Col } from "react-bootstrap";
 import styled from "styled-components";
+import axios from "axios";
+import Swal from "sweetalert2";
+
+const { confirm } = Modal;
 
 const StyledProfile = styled.div`
   margin: 20px;
@@ -94,8 +100,8 @@ const StyledProfile = styled.div`
 const initialData = [
   {
     key: "1",
-    name: "name",
-    email: "name@example.com",
+    name: "John Doe",
+    email: "john@example.com",
     phonenumber: "1234567890",
     password: "password",
   },
@@ -104,23 +110,59 @@ const initialData = [
 function Profile() {
   const [form] = Form.useForm();
   const [data, setData] = useState(initialData);
-
+console.log('data', data)
   const handleUpdate = (values, key) => {
-    const updatedData = data.map((item) =>
-      item.key === key ? { ...item, ...values } : item
-    );
-    setData(updatedData);
+    confirm({
+      title: `Are you sure you want to update ${values.name}?`,
+      content: `Phonenumber: ${values.phonenumber}`,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        updateRecordFromAPI(key, values);
+      },
+      onCancel() {
+        console.log("Update cancelled");
+      },
+    });
+  };
+
+  const updateRecordFromAPI = async (id, record) => {
+    console.log('record', record)
+    try {
+      await axios.post(`http://localhost:5000/user/update/66ec0aac4c766f7b0270f4a5`, record)
+      .then((res) => {
+        Swal.fire({
+          icon: "success",
+          title: "Updated!",
+          text: `User has been updated successfully.`,
+        });
+    })
+      const updatedData = data.map((user) =>
+        user.id === id ? { ...user, ...record } : user
+      );
+      setData(updatedData);
+    }
+    catch (error) {
+      console.error("Error updating user:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "There was an error updating the user. Please try again.",
+      });
+    }
   };
 
   const handleCancel = () => {
-    form.resetFields(); 
+    form.resetFields();
   };
 
   return (
     <StyledProfile>
       <Divider style={{ fontSize: "30px" }}>Profile</Divider>
       {data.map((user) => (
-        <Form style={{marginLeft:'250px',width:'70%'}}
+        <Form
+          style={{ marginLeft: '250px', width: '70%' }}
           form={form}
           key={user.key}
           initialValues={user}
@@ -138,7 +180,6 @@ function Profile() {
               </Form.Item>
             </Col>
 
-       
             <Col xs={12} sm={6}>
               <Form.Item label="Email" name="email">
                 <Input disabled />
@@ -147,7 +188,6 @@ function Profile() {
           </Row>
 
           <Row>
-           
             <Col xs={12} sm={6}>
               <Form.Item
                 label="Phonenumber"
@@ -155,17 +195,6 @@ function Profile() {
                 rules={[{ required: true, message: "Please enter your phone number!" }]}
               >
                 <Input />
-              </Form.Item>
-            </Col>
-
-            
-            <Col xs={12} sm={6}>
-              <Form.Item
-                label="Password"
-                name="password"
-                rules={[{ required: true, message: "Please enter your password!" }]}
-              >
-                <Input.Password />
               </Form.Item>
             </Col>
           </Row>

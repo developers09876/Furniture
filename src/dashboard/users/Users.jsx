@@ -322,7 +322,6 @@ const Users = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [form] = Form.useForm();
   const [users, setUsers] = useState([]);
-  const [data, setData] = useState(initialData);
 
   useEffect(() => {
     const fetchUsersData = async () => {
