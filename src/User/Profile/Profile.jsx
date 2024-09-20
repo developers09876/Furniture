@@ -211,7 +211,7 @@ console.log('data', data)
                 Cancel
               </Button>
             </Col>
-          </Row>
+          </Row> 
         </Form>
       ))}
     </StyledProfile>
