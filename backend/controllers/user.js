@@ -145,6 +145,7 @@ export const deleteUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
+  console.log("asd",req.body)
   try {
     const { id } = req.params;
     const { username, phoneNumber } = req.body;

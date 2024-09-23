@@ -79,8 +79,6 @@
 
 
 
-// 
-
 import { Divider, Form, Input, Button, Modal } from "antd";
 import React, { useState } from "react";
 import { Row, Col } from "react-bootstrap";
@@ -100,18 +98,24 @@ const StyledProfile = styled.div`
 const initialData = [
   {
     key: "1",
-    name: "John Doe",
-    email: "john@example.com",
-    phonenumber: "1234567890",
-    password: "password",
+    name: "",
+    email: "",
+    phonenumber: "",
+    password: "",
   },
 ];
 
 function Profile() {
   const [form] = Form.useForm();
   const [data, setData] = useState(initialData);
-console.log('data', data)
+  const [name, setName] = useState("");
+  const [phonenumber, setPhonenumber] = useState("");
+console.log('dataz', data)
+
+const userId = localStorage.getItem("id")
+
   const handleUpdate = (values, key) => {
+    
     confirm({
       title: `Are you sure you want to update ${values.name}?`,
       content: `Phonenumber: ${values.phonenumber}`,
@@ -126,11 +130,17 @@ console.log('data', data)
       },
     });
   };
-
-  const updateRecordFromAPI = async (id, record) => {
-    console.log('record', record)
+ 
+  const updateRecordFromAPI = async (id) => {
+   
+    const record1 ={
+      username:name , 
+      phoneNumber:phonenumber , 
+  
+    }
+    console.log('recordz', record1)
     try {
-      await axios.post(`http://localhost:5000/user/update/66ec0aac4c766f7b0270f4a5`, record)
+      await axios.post(`http://localhost:5000/user/update/${userId}`, record1)
       .then((res) => {
         Swal.fire({
           icon: "success",
@@ -139,9 +149,11 @@ console.log('data', data)
         });
     })
       const updatedData = data.map((user) =>
-        user.id === id ? { ...user, ...record } : user
+        user.id === id ? { ...user, ...record1 } : user
       );
       setData(updatedData);
+
+
     }
     catch (error) {
       console.error("Error updating user:", error);
@@ -160,6 +172,7 @@ console.log('data', data)
   return (
     <StyledProfile>
       <Divider style={{ fontSize: "30px" }}>Profile</Divider>
+     
       {data.map((user) => (
         <Form
           style={{ marginLeft: '250px', width: '70%' }}
@@ -176,7 +189,11 @@ console.log('data', data)
                 name="name"
                 rules={[{ required: true, message: "Please enter your name!" }]}
               >
-                <Input />
+                <Input  
+               
+                onChange={(e) => setName(e.target.value)}
+                required
+                />
               </Form.Item>
             </Col>
 
@@ -194,7 +211,10 @@ console.log('data', data)
                 name="phonenumber"
                 rules={[{ required: true, message: "Please enter your phone number!" }]}
               >
-                <Input />
+                <Input 
+                 
+                 onChange={(e) => setPhonenumber(e.target.value)}
+                 required/>
               </Form.Item>
             </Col>
           </Row>
