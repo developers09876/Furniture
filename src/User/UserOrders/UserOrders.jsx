@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState ,useEffect} from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +9,7 @@ import { Divider, Table } from "antd";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { MdDelete, MdEdit } from "react-icons/md";
+import axios from "axios";
 
 // Column
 const columns = [
@@ -141,7 +142,43 @@ const UserOrders = () => {
   //   selectedStatus === "all"
   //     ? orders
   //     : orders.filter((order) => order.order_status === selectedStatus);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const fetchOrders = () => {
+    axios
+     .get("http://localhost:5000/products/getOrder/$id")
+     .then((response) => {
+       const data = response.data; 
+       setLoading(false);
 
+      
+       Swal.fire({
+         icon: "success",
+         title: "Updated!",
+         text: `Order has been updated successfully.`,
+       });
+     })
+     .catch((err) => {
+       setError(err.message);
+       setLoading(false);
+
+      
+       Swal.fire({
+         icon: "error",
+         title: "Error!",
+         text: `Failed to fetch orders: ${err.message}`,
+       });
+     });
+ };
+  
+    useEffect(() => {
+     
+    
+      fetchOrders();
+    }, []);
+    
+  
   return (
     <StyledOrders>
       <h2 className="mb-4">All Orders</h2>
