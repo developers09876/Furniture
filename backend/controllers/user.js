@@ -145,7 +145,11 @@ export const deleteUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
+<<<<<<< HEAD
   console.log("asd",req.body)
+=======
+  console.log("vantea");
+>>>>>>> 6d9f5b92ca3fe7c1ef4c7a409fff42cf77c92c30
   try {
     const { id } = req.params;
     const { username, phoneNumber } = req.body;

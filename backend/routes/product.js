@@ -7,6 +7,7 @@ import {
   getAllOrder,
   createOrder,
   deleteOrder,
+  getOneOrder,
   // getAllCategory,
   // createCategory,
   deleteProduct,
@@ -20,6 +21,7 @@ router.post("/create", isLoggedIn, createProduct);
 // router.post('/create', upload.array('images', 5), createProduct);
 router.delete("/delete/:id", deleteProduct);
 router.get("/order", getAllOrder);
+router.get("/getOrder/:productId", getOneOrder);
 router.post("/createorder", createOrder);
 // router.post('/create', upload.array('images', 5), createOrder);
 router.delete("/deleteorder/:id", deleteOrder);

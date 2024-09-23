@@ -97,3 +97,22 @@ export const deleteOrder = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getOneOrder = async (req, res) => {
+  const { productId } = req.params;
+  console.log("req.paramsz", productId);
+
+  try {
+    // const parsedProductId = parseInt(productId, 10);
+
+    const product = await order.find({ user_id: productId });
+
+    if (!product || product.length === 0) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
