@@ -97,3 +97,21 @@ export const deleteOrder = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getOneOrder = async (req, res) => {
+  console.log("req.params.productId", req.params.productId);
+  try {
+    const productId = parseInt(req.params.productId);
+
+    if (isNaN(productId)) {
+      return res.status(400).json({ message: "Invalid User ID format" });
+    }
+
+    const product = await Product.findOne({ user_id: productId });
+    if (!product) return res.status(404).json({ message: "Order not found" });
+
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

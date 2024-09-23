@@ -7,7 +7,7 @@ import {
   getAllUser,
   deleteUser,
   updateUser,
-  getUserById,
+  // getUserById,
 } from "../controllers/user.js";
 import { isLoggedIn } from "../middleware.js";
 
