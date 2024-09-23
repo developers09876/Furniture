@@ -17,8 +17,6 @@ const Title = styled.h1`
 
 const Checkout = () => {
   const { cart, clearCart } = useContext(CartContext);
-  console.log("cardza", cart);
-  console.log("caditeAM", cart.items[0]);
   const { userID, isAuthenticated } = useContext(AuthContext);
   const [shippingAddress, setShippingAddress] = useState("");
   const [name, setName] = useState("");
@@ -27,6 +25,7 @@ const Checkout = () => {
   const [success, setSuccess] = useState(false);
   const [selectedDeliveryOption, setSelectedDeliveryOption] = useState("amana");
   const navigate = useNavigate();
+
   let cartValue = cart.items[0];
   const userId = localStorage.getItem("id");
   console.log("userId", userId);

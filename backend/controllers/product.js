@@ -99,19 +99,20 @@ export const deleteOrder = async (req, res) => {
 };
 
 export const getOneOrder = async (req, res) => {
-  console.log("req.params.productId", req.params.productId);
+  const { productId } = req.params;
+  console.log("req.paramsz", productId);
+
   try {
-    const productId = parseInt(req.params.productId);
+    // const parsedProductId = parseInt(productId, 10);
 
-    if (isNaN(productId)) {
-      return res.status(400).json({ message: "Invalid User ID format" });
+    const product = await order.find({ user_id: productId });
+
+    if (!product || product.length === 0) {
+      return res.status(404).json({ message: "Order not found" });
     }
-
-    const product = await Product.findOne({ user_id: productId });
-    if (!product) return res.status(404).json({ message: "Order not found" });
 
     res.json(product);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
