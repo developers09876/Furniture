@@ -296,7 +296,7 @@ const Checkout = () => {
                     </span>
                   </div>
                   <p className="card-text">
-                    Delivered By :{" "}
+                    Delivered By :
                     {selectedDeliveryOption === "amana" ? "Amana" : "Ozone"}
                   </p>
                   <div className="form-check">

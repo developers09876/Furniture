@@ -93,11 +93,13 @@ const Orders = () => {
   const { orders, updateOrderStatus, fetchData } = useContext(DashboardContext);
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [isOrderModel, setOrderModel] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState([]);
+  console.log("selectedOrder", selectedOrder);
 
-  const orderModel = (order) => {
+  const orderModel = (e) => {
     setOrderModel(true);
-    setSelectedOrder(order);
+    setSelectedOrder(e.items);
+    console.log("eitazzzzzzzzzzz", e.items);
   };
   const handleOk = () => {
     setOrderModel(false);
@@ -141,12 +143,7 @@ const Orders = () => {
       title: "Date",
       dataIndex: "created_at",
     },
-    {
-      title: "Quanity",
-      dataIndex: "items",
-      key: "quantity",
-      render: (items) => items.map((item) => item.quantity).join(", "),
-    },
+
     {
       title: "orderTotal",
       dataIndex: "order_total",
@@ -167,10 +164,7 @@ const Orders = () => {
         </Select>
       ),
     },
-    {
-      title: "Details",
-      dataIndex: "details",
-    },
+
     // {
     //   title: "Action",
     //   key: "Action",
@@ -194,17 +188,16 @@ const Orders = () => {
     {
       title: "Action",
       key: "Action",
-      render: (_, order) => (
+      render: (e) => (
         <div>
           <center>
-            {" "}
             <IoEyeOutline
               style={{
                 fontSize: "20px",
                 cursor: "pointer",
                 marginRight: "10px",
               }}
-              onClick={() => orderModel(order)}
+              onClick={() => orderModel(e)}
             />
           </center>
           {/* <MdEdit
@@ -230,32 +223,24 @@ const Orders = () => {
       ),
     },
     {
-      title: "Name",
-      dataIndex: "name",
-    },
-    {
       title: "Title",
-      dataIndex: "items",
+      dataIndex: "title",
       key: "title",
-      render: (items) => items.map((item) => item.title),
     },
     {
       title: "Price",
-      dataIndex: "items",
+      dataIndex: "price",
       key: "price",
-      render: (items) => items.map((item) => item.price),
     },
     {
       title: "Quantity",
-      dataIndex: "items",
+      dataIndex: "quantity",
       key: "quantity",
-      render: (items) => items.map((item) => item.quantity),
     },
     {
       title: "Sub Total",
-      dataIndex: "items",
+      dataIndex: "subTotal",
       key: "subTotal",
-      render: (items) => items.map((item) => item.subTotal),
     },
   ];
   const handleStatusChange = (orderId, status) => {
@@ -325,7 +310,7 @@ const Orders = () => {
           {selectedOrder && (
             <Table
               columns={viewOrder}
-              dataSource={[selectedOrder]}
+              dataSource={selectedOrder}
               loading={loading}
               // rowKey="_id"
               size="middle"

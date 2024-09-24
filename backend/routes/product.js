@@ -17,7 +17,7 @@ const router = Router();
 
 router.get("/getOne/:productId", getOneProduct);
 router.get("/", getAllProducts);
-router.post("/create", isLoggedIn, createProduct);
+router.post("/create", createProduct);
 // router.post('/create', upload.array('images', 5), createProduct);
 router.delete("/delete/:id", deleteProduct);
 router.get("/order", getAllOrder);
