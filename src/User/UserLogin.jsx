@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Breadcrumb from "../components/Breadcrumb";
+import { Modal, Steps } from 'antd';
 
 // styled components
 const StyledLogin = styled.div`
@@ -18,6 +19,18 @@ const StyledHeading = styled.h1`
 `;
 
 const UserLogin = () => {
+
+
+  const [loginModel, setLoginModel] = useState(false);
+  const showLoginModal = () => {
+    setLoginModel(true);
+  };
+  const handleOk = () => {
+    setLoginModel(false);
+  };
+  const handleCancel = () => {
+    setLoginModel(false);
+  };
   const { isAuthenticated, loginUser, error } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: "",
@@ -70,13 +83,13 @@ const UserLogin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     const { email, password } = formData;
-  
+
     if (email && password) {
       try {
         const success = await loginUser(email, password); // Awaiting the promise
-  
+
         if (success) {
           // Display success message using SweetAlert
           Swal.fire({
@@ -150,16 +163,29 @@ const UserLogin = () => {
               onChange={handleFormChange}
             />
           </div>
+
+
           {error && <p style={{ color: "red" }}>{error}</p>}
           {!isAuthenticated && (
             <Button className="mb-4 w-100" type="submit">
               Sign in
             </Button>
           )}
+          <div>
+            <p className="text-center" style={{ cursor: "pointer" }} onClick={showLoginModal}  >
+              Forgot Password
+            </p>
+
+            <Modal title="Basic Modal" open={loginModel} onOk={handleOk} onCancel={handleCancel}>
+              <p>Some contents...</p>
+            </Modal>
+          </div>
           <p className="text-center">
             Not a member? <Link to="/register">Register</Link>
           </p>
         </form>
+
+
       </StyledLogin>
     </>
   );

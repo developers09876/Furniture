@@ -1,4 +1,4 @@
-import { useContext, useState ,useEffect} from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,28 +11,28 @@ import { Col, Row } from "react-bootstrap";
 import { MdDelete, MdEdit } from "react-icons/md";
 import axios from "axios";
 
-// Column
+
 const columns = [
   {
     title: "Sno",
-    dataIndex: "key",
+    render: (i, record, index) => <p>{index + 1}</p>,
   },
 
   {
     title: "Status",
-    dataIndex: "status",
+    dataIndex: "order_status",
   },
   {
     title: "Delivery Company",
-    dataIndex: "deliveryCompany",
+    dataIndex: "delivery_company",
   },
   {
     title: "Date",
-    dataIndex: "date",
+    dataIndex: "created_at",
   },
   {
     title: "Order Total",
-    dataIndex: "orderTotal",
+    dataIndex: "order_total",
   },
 
   {
@@ -56,7 +56,6 @@ const columns = [
     ),
   },
 ];
-//datas for table
 const data = [
   {
     key: "1",
@@ -142,43 +141,22 @@ const UserOrders = () => {
   //   selectedStatus === "all"
   //     ? orders
   //     : orders.filter((order) => order.order_status === selectedStatus);
-  const [orders, setOrders] = useState([]);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const fetchOrders = () => {
+  useEffect(() => {
+
+    const id = localStorage.getItem("id")
     axios
-     .get("http://localhost:5000/products/getOrder/$id")
-     .then((response) => {
-       const data = response.data; 
-       setLoading(false);
-
-      
-       Swal.fire({
-         icon: "success",
-         title: "Updated!",
-         text: `Order has been updated successfully.`,
-       });
-     })
-     .catch((err) => {
-       setError(err.message);
-       setLoading(false);
-
-      
-       Swal.fire({
-         icon: "error",
-         title: "Error!",
-         text: `Failed to fetch orders: ${err.message}`,
-       });
-     });
- };
-  
-    useEffect(() => {
-     
-    
-      fetchOrders();
-    }, []);
-    
-  
+      .get(`http://localhost:5000/products/getOrder/${id}`)
+      .then((response) => {
+        setData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching the order data", error);
+        setLoading(false);
+      });
+  }, []);
   return (
     <StyledOrders>
       <h2 className="mb-4">All Orders</h2>
@@ -263,7 +241,7 @@ const UserOrders = () => {
 
       <div>
         <Divider style={{ fontSize: "30px" }}>Whistlist</Divider>
-        <Table columns={columns} dataSource={data} size="middle" />
+        <Table columns={columns} dataSource={data} loading={loading} size="middle" />
       </div>
     </StyledOrders>
   );
