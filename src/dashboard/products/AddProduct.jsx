@@ -14,6 +14,7 @@ const StyledProducts = styled.div`
 `;
 
 const AddProduct = () => {
+  const [selectedImages, setSelectedImages] = useState([])
   const categories = [
     { id: "1", cat_name: "Sofa" },
     { id: "2", cat_name: "Chair" },
@@ -76,34 +77,60 @@ const AddProduct = () => {
       return { ...prevForm, specifications: updatedSpecifications };
     });
   };
+  const handleImageChange = (e) => {
+    setSelectedImages(e.target.files); // Store the selected files
+  };
 
-  const handleImageChange = (event) => {
-    const files = Array.from(event.target.files);
+  // Upload images to Cloudinary and get URLs
+  const uploadImages = async () => {
+    const uploadedImages = [];
 
-    if (formData.images && files.length + formData.images.length > 10) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "You can only select up to 10 images.",
-      });
-      return;
+    for (const image of selectedImages) {
+      const data = new FormData();
+      data.append('file', image);
+      data.append('upload_preset', 'Furniture'); // Replace with your Cloudinary upload preset
+
+      try {
+        const response = await fetch(
+          'https://api.cloudinary.com/v1_1/dk6vgylx3/image/upload', // Replace with your Cloudinary URL
+          {
+            method: 'POST',
+            body: data,
+          }
+        );
+        const cloudinaryData = await response.json();
+        uploadedImages.push(cloudinaryData.secure_url); // Collect the URL
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
     }
 
-    const newImages = files.map((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      return new Promise((resolve) => {
-        reader.onloadend = () => resolve(reader.result);
-      });
-    });
-
-    Promise.all(newImages).then((results) => {
-      setFormData((prevForm) => ({
-        ...prevForm,
-        images: [...prevForm.images, ...results],
-      }));
-    });
+    return uploadedImages;
   };
+
+  //   const handleImageChange = (event) => {
+//     console.log(event.target)
+//     const files = Array.from(event.target.files);
+// console.log('files', files)
+//     if (formData.images && files.length + formData.images.length > 10) {
+//       Swal.fire({
+//         icon: "error",
+//         title: "Error",
+//         text: "You can only select up to 10 images.",
+//       });
+//       return;
+//     }
+
+ 
+ 
+
+//     Promise.all(newImages).then((results) => {
+//       setFormData((prevForm) => ({
+//         ...prevForm,
+//         images: [...prevForm.images, ...results],
+//       }));
+//     });
+//   };
   const handleDynamicInputChange = (e, index) => {
     const { name, value } = e.target;
     const updatedSpecifications = [...formData.specifications];
@@ -133,16 +160,24 @@ const AddProduct = () => {
       title: "",
       description: "",
     });
-    setFormData({ ...formData, specifications: updatedSpecifications });
+    setFormData({ ...formData, specifications:JSON.stringify( updatedSpecifications) });
   };
 
   console.log("form data:", formData);
 
   const addProduct = async () => {
-    console.log("Form Data:", formData);
+ 
+    const imageUrls = await uploadImages();
+
+    // Add uploaded image URLs to form data
+    const updatedFormData = {
+      ...formData,
+      images: imageUrls,
+    };
+    
     try {
       axios
-        .post("http://localhost:5000/products/create", formData)
+        .post("http://localhost:5000/products/create", updatedFormData)
         .then((res) => {
           if (res.status === 200) {
             alert("inside");
@@ -217,7 +252,7 @@ const AddProduct = () => {
               name="images"
               accept="image/*"
               multiple
-              onChange={handleImageChange}
+              onChange={(e)=>{handleImageChange(e)}}
             />
             <p className="my-2 fw-bold">
               Total Images Selected: {formData.images.length}
@@ -550,7 +585,7 @@ const AddProduct = () => {
               <Button type="submit" className="me-2">
                 Submit
               </Button>
-              <Button type="reset">Cancel</Button>
+              <Button type="reset" onClick={()=>{navigate(-1)}}>Cancel</Button>
             </div>
           </div>
         </div>
