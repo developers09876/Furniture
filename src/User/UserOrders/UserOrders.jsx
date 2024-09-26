@@ -11,7 +11,6 @@ import { Col, Row } from "react-bootstrap";
 import { MdDelete, MdEdit } from "react-icons/md";
 import axios from "axios";
 
-
 const columns = [
   {
     title: "Sno",
@@ -132,7 +131,7 @@ const UserOrders = () => {
   // const { orders, updateOrderStatus, fetchData } =
   //   useContext(UserDashboardContext);
   const [selectedStatus, setSelectedStatus] = useState("all");
-
+  console.log("Ajith", selectedStatus);
   // const handleStatusChange = (orderId, status) => {
   //   updateOrderStatus(orderId, status);
   // };
@@ -143,13 +142,15 @@ const UserOrders = () => {
   //     : orders.filter((order) => order.order_status === selectedStatus);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [dataFilter, setDataFilter] = useState([]);
   useEffect(() => {
+    const id = localStorage.getItem("id");
 
-    const id = localStorage.getItem("id")
     axios
       .get(`http://localhost:5000/products/getOrder/${id}`)
       .then((response) => {
         setData(response.data);
+        setDataFilter(response.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -157,6 +158,8 @@ const UserOrders = () => {
         setLoading(false);
       });
   }, []);
+
+  // useEffect(() )
   return (
     <StyledOrders>
       <h2 className="mb-4">All Orders</h2>
@@ -172,7 +175,7 @@ const UserOrders = () => {
           className="me-2 form-select"
         >
           <option value="all">All</option>
-          <option value="pending">Pending</option>
+          <option value="pending">Pending </option>
           <option value="shipped">Shipped</option>
           <option value="delivered">Delivered</option>
           <option value="canceled">Canceled</option>
@@ -241,7 +244,12 @@ const UserOrders = () => {
 
       <div>
         <Divider style={{ fontSize: "30px" }}>Whistlist</Divider>
-        <Table columns={columns} dataSource={data} loading={loading} size="middle" />
+        <Table
+          columns={columns}
+          dataSource={data}
+          loading={loading}
+          size="middle"
+        />
       </div>
     </StyledOrders>
   );

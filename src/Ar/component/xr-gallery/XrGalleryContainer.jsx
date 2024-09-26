@@ -30,7 +30,7 @@ const XrGalleryContainer = () => {
 
       <Canvas
         shadows
-        style={{ touchAction: "none" }}
+        style={{ touchAction: "none", height: "100vh" }}
         gl={{ preserveDrawingBuffer: true }}
       >
         <ambientLight intensity={0.5} />
