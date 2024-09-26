@@ -16,20 +16,20 @@ export const CartProvider = ({ children }) => {
   const [totalItems, setTotalItems] = useState(0);
 
   // Function to fetch the user's cart from the API
-  const fetchCart = async (userId) => {
-    try {
-      if (isAuthenticated) {
-        const response = await axios.get(
-          `http://localhost:3000/carts?user_id=${userId}`
-        );
-        const fetchedCart = response.data[0];
-        setCart(fetchedCart);
-      }
-    } catch (error) {
-      console.error("Error fetching cart:", error);
-      setCart({ id: "", user_id: "", items: [] });
-    }
-  };
+  // const fetchCart = async (userId) => {
+  //   try {
+  //     if (isAuthenticated) {
+  //       const response = await axios.get(
+  //         `http://localhost:3000/carts?user_id=${userId}`
+  //       );
+  //       const fetchedCart = response.data[0];
+  //       setCart(fetchedCart);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching cart:", error);
+  //     setCart({ id: "", user_id: "", items: [] });
+  //   }
+  // };
 
   // Function to add item to the cart
   const addToCart = async (item) => {
@@ -108,7 +108,7 @@ export const CartProvider = ({ children }) => {
     const userID = Cookies.get("userID");
     setUserID(userID);
     if (userID && isAuthenticated) {
-      fetchCart(userID);
+      // fetchCart(userID);
     } else {
       setCart({ id: "", user_id: "", items: [] });
     }

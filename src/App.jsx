@@ -56,8 +56,11 @@ import UserLogin from "./User/UserLogin";
 import Whistlist from "./User/Whistlist/Whistlist";
 import Profile from "./User/Profile/Profile";
 
+// import Testing from "./Ar/view";
 // router
-
+import Model from "./Ar/component/xr-gallery/XrGalleryContainer";
+import Sofas from "./Ar/component/Sofa";
+import Test from "./Ar/view";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
@@ -99,6 +102,26 @@ const router = createBrowserRouter(
       </Route>
 
       <Route path="*" exact element={<NotFound />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/test" element={<Test />} />
+      <Route path="/chair1" element={<Model />} />
+      <Route path="/chair2" element={<Model />} />
+      <Route path="/table1" element={<Model />} />
+      <Route path="/table2" element={<Model />} />
+      <Route path="/table3" element={<Model />} />
+      <Route path="/table4" element={<Model />} />
+      <Route path="/table5" element={<Model />} />
+      <Route path="/sofa1" element={<Model />} />
+      <Route path="/sofa2" element={<Model />} />
+      <Route path="/sofa3" element={<Model />} />
+      <Route path="/sofa4" element={<Model />} />
+      <Route path="/sofa5" element={<Model />} />
+      <Route path="/sofa6" element={<Model />} />
+      <Route path="/sofa7" element={<Model />} />
+      <Route path="/lamp1" element={<Model />} />
+      <Route path="/lamp2" element={<Model />} />
+      <Route path="/kitchen1" element={<Model />} />
+      <Route path="/elevator1" element={<Model />} />
     </Route>
   )
 );

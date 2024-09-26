@@ -105,12 +105,12 @@ const Users = () => {
     confirm({
       title: `Are you sure you want to update ${record.username}?`,
       icon: <MdEdit style={{ fontSize: "20px", color: "red" }} />,
-      content: `Name: ${record.username}`, 
+      content: `Name: ${record.username}`,
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
       onOk() {
-        editRecordFromAPI(selectedUser._id, record); // Pass the updated values and ID
+        editRecordFromAPI(selectedUser._id, record);
       },
       onCancel() {
         console.log("Edit cancelled");
@@ -129,13 +129,11 @@ const Users = () => {
             text: `User has been updated successfully.`,
           });
 
-          // Update the user details in the local state
           const updatedUsers = users.map((user) =>
             user._id === id ? { ...user, ...record } : user
           );
           setUsers(updatedUsers);
 
-          // Close the edit modal
           setEditUser(false);
         });
     } catch (error) {

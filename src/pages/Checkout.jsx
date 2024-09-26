@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Breadcrumb from "../components/Breadcrumb";
 import { FaIndianRupeeSign } from "react-icons/fa6";
+import { useForm } from "react-hook-form";
 
 const Title = styled.h1`
   font-size: 24px;
@@ -16,6 +17,14 @@ const Title = styled.h1`
 `;
 
 const Checkout = () => {
+  const isFormValid = () => {
+    return (
+      name.trim() !== "" && phone.trim() !== "" && shippingAddress.trim() !== ""
+    );
+  };
+
+  const onSubmit = (data) => console.log(data);
+
   const { cart, clearCart } = useContext(CartContext);
   const { userID, isAuthenticated } = useContext(AuthContext);
   const [shippingAddress, setShippingAddress] = useState("");
@@ -29,7 +38,6 @@ const Checkout = () => {
   let cartValue = cart.items[0];
   const userId = localStorage.getItem("id");
   console.log("userId", userId);
-  // redirect to login if the user is not Authenticated
   useEffect(() => {
     if (!isAuthenticated || cart.items.lenght == 0) {
       navigate("/cart");
@@ -37,16 +45,17 @@ const Checkout = () => {
   }, [isAuthenticated, cart]);
 
   const createOrder = async () => {
+    if (!isFormValid()) {
+      return;
+    }
+    console.log("Order placed");
     try {
       if (cart.items.length === 0) {
         throw new Error(
           "No items in the cart. Please fill your cart to make an order."
         );
       }
-
-      // const orderId = generateUUID();
       const deliveryOption = deliveryOptions[selectedDeliveryOption];
-
       const order = {
         // order_id: orderId,
         user_id: userId,
@@ -75,14 +84,27 @@ const Checkout = () => {
         "http://localhost:5000/products/createorder",
         order
       );
-      return response.data.id;
+      if (response) {
+        Swal.fire({
+          title: "Order Placed!",
+          text: "your order has been placed",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+        return navigate(`/`);
+      }
     } catch (error) {
+      Swal.fire({
+        title: "Order Not placed went something error!",
+        text: "Something went wrong while placing your order. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
       console.error("Error creating order:", error);
       throw error;
     }
   };
 
-  // update product quantity in stock
   const updateProductStock = async () => {
     try {
       for (const item of cart.items) {
@@ -233,7 +255,6 @@ const Checkout = () => {
                     id="shippingAddress"
                     value={shippingAddress}
                     onChange={(e) => setShippingAddress(e.target.value)}
-                    required
                   />
                 </div>
               </form>
@@ -275,7 +296,7 @@ const Checkout = () => {
                     </span>
                   </div>
                   <p className="card-text">
-                    Delivered By :{" "}
+                    Delivered By :
                     {selectedDeliveryOption === "amana" ? "Amana" : "Ozone"}
                   </p>
                   <div className="form-check">
@@ -306,7 +327,11 @@ const Checkout = () => {
                   </div>
                 </div>
                 <div className="card-footer text-center">
-                  <Button className="my-3 px-4" handleClick={createOrder}>
+                  <Button
+                    className="my-3 px-4"
+                    handleClick={createOrder}
+                    disabled={!isFormValid()}
+                  >
                     Place Order
                   </Button>
                 </div>

@@ -48,7 +48,10 @@ const NavBar = () => {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg p-0">
+      <nav
+        className="navbar navbar-expand-lg p-0"
+        style={{ backgroundColor: "var(--bgColor)" }}
+      >
         <div className="container lg-d-flex justify-content-center">
           {/* <Link className="navbar-brand me-auto" to="/">
           <Logo fontSize={40} width={150} />
