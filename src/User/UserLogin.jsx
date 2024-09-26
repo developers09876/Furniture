@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Breadcrumb from "../components/Breadcrumb";
 import { Modal, Steps } from 'antd';
+import { LoadingOutlined, SmileOutlined, SolutionOutlined, UserOutlined } from '@ant-design/icons';
 
 // styled components
 const StyledLogin = styled.div`
@@ -21,12 +22,14 @@ const StyledHeading = styled.h1`
 const UserLogin = () => {
 
 
-  const [loginModel, setLoginModel] = useState(false);
+  const [loginModel, setLoginModel] = useState();
   const showLoginModal = () => {
     setLoginModel(true);
   };
   const handleOk = () => {
     setLoginModel(false);
+    setPasswordField(true)
+    setPasswordField(false)
   };
   const handleCancel = () => {
     setLoginModel(false);
@@ -37,6 +40,7 @@ const UserLogin = () => {
     password: "",
   });
 
+  const [passwordField, setPasswordField] = useState(false);
   const navigate = useNavigate();
 
   // const handleLogin = async (e) => {
@@ -176,8 +180,62 @@ const UserLogin = () => {
               Forgot Password
             </p>
 
-            <Modal title="Basic Modal" open={loginModel} onOk={handleOk} onCancel={handleCancel}>
-              <p>Some contents...</p>
+            <Modal title="Basic Modal" open={loginModel} onCancel={handleCancel}
+
+
+              footer={[
+                <button onClick={handleOk}  >
+                  Submit
+                </button>
+
+              ]}
+
+            >
+
+
+              <div className="mb-4">
+                <label htmlFor="form1" className="form-label">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleFormChange}
+                />
+              </div>
+
+              {passwordField && (
+                <>
+                  <div className="mb-4">
+                    <label htmlFor="form1" className="form-label">
+                      Confirm Password
+                    </label>
+                    <input
+                      type="input"
+                      className="form-control"
+                      id="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleFormChange}
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="form1" className="form-label">
+                      Confirm New Password                </label>
+                    <input
+                      type="input"
+                      className="form-control"
+                      id="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleFormChange}
+                    />
+                  </div>
+                </>)}
+
             </Modal>
           </div>
           <p className="text-center">
