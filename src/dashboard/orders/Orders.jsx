@@ -89,8 +89,9 @@ const StyledSelect = styled.select`
   }
 `;
 
-const Orders = () => {
-  const { orders, updateOrderStatus, fetchData } = useContext(DashboardContext);
+const UserOrders = () => {
+  // const { orders, updateOrderStatus, fetchData } =
+  //   useContext(UserDashboardContext);
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [isOrderModel, setOrderModel] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState([]);
@@ -247,10 +248,10 @@ const Orders = () => {
     updateOrderStatus(orderId, status);
   };
 
-  const filteredOrders =
-    selectedStatus === "all"
-      ? orders
-      : orders.filter((order) => order.order_status === selectedStatus);
+  // const filteredOrders =
+  //   selectedStatus === "all"
+  //     ? orders
+  //     : orders.filter((order) => order.order_status === selectedStatus);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -287,6 +288,66 @@ const Orders = () => {
           <option value="canceled">Canceled</option>
         </StyledSelect>
       </StyledSelectWrapper>
+      <div className="table-responsive mt-3">
+        <table className="table table-striped table-bordered table-hover">
+          {/* <thead>
+            <tr>
+              <StyledTh>#</StyledTh>
+              <StyledTh>Name</StyledTh>
+              <StyledTh>Address</StyledTh>
+              <StyledTh>Phone</StyledTh>
+              <StyledTh>Status</StyledTh>
+              <StyledTh style={{ minWidth: "205px" }}>
+                Delivery Company
+              </StyledTh>
+              <StyledTh>Date</StyledTh>
+              <StyledTh style={{ minWidth: "145px" }}>Order Total</StyledTh>
+              <StyledTh style={{ minWidStyledTh: "155px" }}>
+                Change Status
+              </StyledTh>
+              <th>Details</th>
+            </tr>
+          </thead> */}
+          <tbody>
+            {/* {filteredOrders.map((order, index) => (
+              <tr key={order.id}>
+                <StyledTd>{index + 1}</StyledTd>
+                <StyledTd>{order.name}</StyledTd>
+                <StyledTd>{order.shipping_address}</StyledTd>
+                <StyledTd>{order.phone}</StyledTd>
+                <StyledTd>{order.order_status}</StyledTd>
+                <StyledTd>{order.delivery_company}</StyledTd>
+                <StyledTd>{order.created_at}</StyledTd>
+                <StyledTd>{order.order_total.toFixed(2)}</StyledTd>
+                <StyledTd>
+                  {order.order_status != "delivered" ? (
+                    <select
+                      value={order.order_status}
+                      onChange={(e) =>
+                        handleStatusChange(order.id, e.target.value)
+                      }
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="shipped">Shipped</option>
+                      <option value="canceled">Canceled</option>
+                    </select>
+                  ) : (
+                    "delivered"
+                  )}
+                </StyledTd>
+                <StyledTd>
+                  <Link
+                    to={`/dashboard/orders/${order.id}`}
+                    className="text-center fs-5"
+                  >
+                    <FontAwesomeIcon icon={faEye} />
+                  </Link>
+                </StyledTd>
+              </tr>
+            ))} */}
+          </tbody>
+        </table>
+      </div>
 
       <div>
         <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
@@ -323,4 +384,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default UserOrders;

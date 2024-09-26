@@ -293,6 +293,11 @@ hr {
   padding: 0 10px;
 }
 
+/* shop by catergories */
+.card-container {
+  transition: transform 0.3s ease-in-out;
+}
 
-
-
+.card-container:hover {
+  transform: scale(0.9); 
+}

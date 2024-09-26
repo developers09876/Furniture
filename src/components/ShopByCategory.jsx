@@ -9,6 +9,7 @@ import img3 from "../assets/bed.jpg";
 import img4 from "../assets/chair.jpg";
 
 import { Card } from "antd";
+import '../Css-Pages/HomeCard.css'
 
 function ShopByCategory() {
   const settings = {
@@ -91,6 +92,7 @@ function ShopByCategory() {
               <Row className="mt-3">
                 <Col sm={12} md={12}>
                   <Card
+                    className="card-container" 
                     style={{
                       padding: "10px",
                       border: "none",
@@ -105,7 +107,6 @@ function ShopByCategory() {
                   >
                     <h6 style={{ textAlign: "center" }}>
                       {data.title}
-                      {/* // description={data.price} */}
                     </h6>
                   </Card>
                 </Col>
