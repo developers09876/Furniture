@@ -132,7 +132,7 @@ const UserOrders = () => {
   // const { orders, updateOrderStatus, fetchData } =
   //   useContext(UserDashboardContext);
   const [selectedStatus, setSelectedStatus] = useState("all");
-
+  console.log("Ajith", selectedStatus);
   // const handleStatusChange = (orderId, status) => {
   //   updateOrderStatus(orderId, status);
   // };
@@ -157,7 +157,7 @@ const UserOrders = () => {
           className="me-2 form-select"
         >
           <option value="all">All</option>
-          <option value="pending">Pending</option>
+          <option value="pending">Pending </option>
           <option value="shipped">Shipped</option>
           <option value="delivered">Delivered</option>
           <option value="canceled">Canceled</option>
