@@ -23,7 +23,7 @@ const productSchema = new Schema({
   offer: { type: String },
   quantity_stock: { type: String, required: true },
   productId: { type: Number, unique: true }, // Auto-incrementing field
-  specification: [
+  specifications: [
     {
       product_Details: {
         feel: { type: String },

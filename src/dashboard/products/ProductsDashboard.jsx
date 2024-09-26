@@ -1,16 +1,18 @@
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from "axios";
 import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { DashboardContext } from '../../context/DashboardContext';
 import Button from '../../components/Button';
-
+import { Table } from 'antd';
 // styled components
 const StyledProducts = styled.div`
   margin: 20px;
   margin-left: 250px;
   margin-right: auto;
+  width: 100%;
 `;
 
 const StyledTh = styled.th`
@@ -23,14 +25,76 @@ const StyledTd = styled.th`
 `
 
 const ProductDashboard = () => {
-  const { products, deleteProduct, fetchData } = useContext(DashboardContext);
+  // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
+  const [product, setProducts] = useState([])
+  console.log('product', product)
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/products/`);
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
 
+    fetchProducts();
+  }, []);
+  const dataSource = [
+    {
+      key: '1',
+      name: 'Mike',
+      age: 32,
+      address: '10 Downing Street',
+    },
+    {
+      key: '2',
+      name: 'John',
+      age: 42,
+      address: '10 Downing Street',
+    },
+  ];
+  
+  const columns = [
+    {
+      title: 'ProductId',
+      dataIndex: 'productId',
+      key: 'productId',
+    },
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
+    },
+   
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+    },
+    {
+      title: 'Category',
+      dataIndex: 'category',
+      key: 'category',
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+      
+    },
+    {
+      title: 'Actions',
+      
+    },
+  ];
+  
   return (
     <StyledProducts>
       <h2 className="mb-4">All Products</h2>
       <Link className='text-reset text-decoration-none' to={'/dashboard/products/add'}><Button className='my-4'>Add Products</Button></Link>
-      <Button handleClick={() => fetchData()} className='ms-2 my-4'>Refresh Data</Button>
-      <div className="table-responsive">
+      {/* <Button handleClick={() => fetchData()} className='ms-2 my-4'>Refresh Data</Button> */}
+      {/* <div className="table-responsive">
         <table className="table table-striped table-bordered table-hover">
           <thead>
             <tr>
@@ -80,7 +144,8 @@ const ProductDashboard = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
+      <Table dataSource={product} columns={columns} />;
     </StyledProducts>
   );
 };
