@@ -5,6 +5,8 @@ import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Breadcrumb from "../components/Breadcrumb";
+import { Input, Space } from "antd";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 
 // styled components
 const StyledLogin = styled.div`
@@ -30,7 +32,7 @@ const Login = () => {
     e.preventDefault();
 
     const { email, password } = formData;
-     
+
     if (email && password) {
       try {
         // const response = await axios.post(
@@ -110,6 +112,23 @@ const Login = () => {
             <label htmlFor="form2" className="form-label">
               Password
             </label>
+            <Space direction="vertical" />
+            <Input.Password
+              placeholder=" password"
+              name="password"
+              id="password"
+              value={formData.password}
+              onChange={handleFormChange}
+              iconRender={(visible) =>
+                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+              }
+            />
+          </div>
+
+          {/* <div className="mb-4">
+            <label htmlFor="form2" className="form-label">
+              Password
+            </label>
             <input
               type="password"
               className="form-control"
@@ -118,7 +137,7 @@ const Login = () => {
               value={formData.password}
               onChange={handleFormChange}
             />
-          </div>
+          </div> */}
           {error && <p style={{ color: "red" }}>{error}</p>}
           {!isAuthenticated && (
             <Button className="mb-4 w-100" type="submit">
@@ -127,7 +146,6 @@ const Login = () => {
           )}
           <p className="text-center">
             Not a member? <Link to="/register">Register</Link>
-           
           </p>
         </form>
       </StyledLogin>

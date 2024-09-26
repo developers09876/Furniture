@@ -5,8 +5,14 @@ import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Breadcrumb from "../components/Breadcrumb";
-import { Modal, Steps } from 'antd';
-import { LoadingOutlined, SmileOutlined, SolutionOutlined, UserOutlined } from '@ant-design/icons';
+import { Input, Modal, Space, Steps } from "antd";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  SmileOutlined,
+  SolutionOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
 // styled components
 const StyledLogin = styled.div`
@@ -20,16 +26,15 @@ const StyledHeading = styled.h1`
 `;
 
 const UserLogin = () => {
-
-
   const [loginModel, setLoginModel] = useState();
   const showLoginModal = () => {
     setLoginModel(true);
+    setPasswordField(false);
   };
   const handleOk = () => {
-    setLoginModel(false);
-    setPasswordField(true)
-    setPasswordField(false)
+    setLoginModel(true);
+    setPasswordField(true);
+    // setPasswordField(false);
   };
   const handleCancel = () => {
     setLoginModel(false);
@@ -153,8 +158,24 @@ const UserLogin = () => {
               onChange={handleFormChange}
             />
           </div>
-
           <div className="mb-4">
+            <label htmlFor="form2" className="form-label">
+              Password
+            </label>
+            <Space direction="vertical" />
+            <Input.Password
+              placeholder=" password"
+              name="password"
+              id="password"
+              value={formData.password}
+              onChange={handleFormChange}
+              iconRender={(visible) =>
+                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+              }
+            />
+          </div>
+
+          {/* <div className="mb-4">
             <label htmlFor="form2" className="form-label">
               Password
             </label>
@@ -166,8 +187,7 @@ const UserLogin = () => {
               value={formData.password}
               onChange={handleFormChange}
             />
-          </div>
-
+          </div> */}
 
           {error && <p style={{ color: "red" }}>{error}</p>}
           {!isAuthenticated && (
@@ -175,24 +195,22 @@ const UserLogin = () => {
               Sign in
             </Button>
           )}
+
           <div>
-            <p className="text-center" style={{ cursor: "pointer" }} onClick={showLoginModal}  >
+            <p
+              className="text-center"
+              style={{ cursor: "pointer" }}
+              onClick={showLoginModal}
+            >
               Forgot Password
             </p>
 
-            <Modal title="Basic Modal" open={loginModel} onCancel={handleCancel}
-
-
-              footer={[
-                <button onClick={handleOk}  >
-                  Submit
-                </button>
-
-              ]}
-
+            <Modal
+              title="Basic Modal"
+              open={loginModel}
+              onCancel={handleCancel}
+              footer={[<button onClick={handleOk}>Submit</button>]}
             >
-
-
               <div className="mb-4">
                 <label htmlFor="form1" className="form-label">
                   Email address
@@ -224,7 +242,8 @@ const UserLogin = () => {
                   </div>
                   <div className="mb-4">
                     <label htmlFor="form1" className="form-label">
-                      Confirm New Password                </label>
+                      Confirm New Password{" "}
+                    </label>
                     <input
                       type="input"
                       className="form-control"
@@ -234,16 +253,14 @@ const UserLogin = () => {
                       onChange={handleFormChange}
                     />
                   </div>
-                </>)}
-
+                </>
+              )}
             </Modal>
           </div>
           <p className="text-center">
             Not a member? <Link to="/register">Register</Link>
           </p>
         </form>
-
-
       </StyledLogin>
     </>
   );

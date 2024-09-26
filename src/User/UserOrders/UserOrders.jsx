@@ -141,6 +141,7 @@ const UserOrders = () => {
   //     ? orders
   //     : orders.filter((order) => order.order_status === selectedStatus);
   const [data, setData] = useState([]);
+  console.log("data1", data);
   const [loading, setLoading] = useState(true);
   const [dataFilter, setDataFilter] = useState([]);
   useEffect(() => {
@@ -159,7 +160,17 @@ const UserOrders = () => {
       });
   }, []);
 
-  // useEffect(() )
+  useEffect(() => {
+    if (selectedStatus === "all") {
+      setDataFilter(data);
+    } else {
+      const orderFilter = data.filter(
+        (order) => order.order_status === selectedStatus
+      );
+      setDataFilter(orderFilter);
+    }
+    [selectedStatus, data];
+  });
   return (
     <StyledOrders>
       <h2 className="mb-4">All Orders</h2>
@@ -178,7 +189,7 @@ const UserOrders = () => {
           <option value="pending">Pending </option>
           <option value="shipped">Shipped</option>
           <option value="delivered">Delivered</option>
-          <option value="canceled">Canceled</option>
+          <option value="cancelled">Cancelled</option>
         </StyledSelect>
       </StyledSelectWrapper>
       <div className="table-responsive mt-3">
@@ -243,12 +254,13 @@ const UserOrders = () => {
       </div>
 
       <div>
-        <Divider style={{ fontSize: "30px" }}>Whistlist</Divider>
+        <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={dataFilter}
           loading={loading}
           size="middle"
+          rowKey="id"
         />
       </div>
     </StyledOrders>
