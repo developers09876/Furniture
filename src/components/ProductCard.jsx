@@ -36,7 +36,7 @@ const ProductCard = ({
         <div style={{ height: "auto" }}>
           <Meta title={title} description={description} />
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <s>₹{price}</s>
+            <s>₹{price}</s> &nbsp;
             <p style={{ fontWeight: "bold" }}>₹{discountPrice}</p>
           </div>
           {/* {offer}% off */}

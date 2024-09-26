@@ -36,23 +36,73 @@ export const getOneProduct = async (req, res) => {
   }
 };
 
+
 // export const createProduct = async (req, res) => {
-//     try {
-//         const newProduct = new Product(req.body);
-//         const savedProduct = await newProduct.save();
-//         res.status(200).json(savedProduct);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
+//   try {
+//     console.log("Request body:", req.body, images); // Log the request body
+//     // Log the uploaded file
+//     // Extract data from the request body
+//     const {
+//       title,
+//       price,
+//       discountPrice,
+//       collection_,
+//       color,
+//       category,
+//       description,
+//       LongDesc,
+//       feature,
+//       rating,
+//       review,
+//       offer,
+//       images,
+//       quantity_stock,
+//       specifications, // Assuming specification is part of req.body
+//     } = req.body;
+
+//     let parsedSpecifications;
+//     if (typeof specifications === "string") {
+//       try {
+//         parsedSpecifications = JSON.parse(specifications);
+//       } catch (error) {
+//         return res
+//           .status(400)
+//           .json({ message: '"specifications" is not valid JSON' });
+//       }
+//     } else {
+//       parsedSpecifications = specifications; // If it's already an object
 //     }
-// }
+//     const newProduct = new Product({
+//       title,
+//       price,
+//       discountPrice,
+//       collection_,
+//       color,
+//       category,
+//       description,
+//       LongDesc,
+//       feature,
+//       rating,
+//       review,
+//       offer,
+//       images,
+//       quantity_stock,
+//       //   images: imageUrl ? [imageUrl] : [], // Add image URL to images array
+//       specifications: parsedSpecifications ? parsedSpecifications : [], // Parse specification if necessary
+//     });
 
-// Create product with image and specifications
+//     // Save the product in the database
+//     const savedProduct = await newProduct.save();
+//     res
+//       .status(200)
+//       .json({ message: "Product added successfully", product: savedProduct });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
-// Route handler for creating a product
 export const createProduct = async (req, res) => {
   try {
-    console.log("Request body:", req.body, images); // Log the request body
-    // Log the uploaded file
     // Extract data from the request body
     const {
       title,
@@ -67,10 +117,13 @@ export const createProduct = async (req, res) => {
       rating,
       review,
       offer,
-      images,
+      images, // Now images is defined before being used
       quantity_stock,
-      specifications, // Assuming specification is part of req.body
+      specifications, // Assuming specifications is part of req.body
     } = req.body;
+
+    // Log the request body after extracting images
+    console.log("Request body:", req.body, images);
 
     let parsedSpecifications;
     if (typeof specifications === "string") {
@@ -84,6 +137,7 @@ export const createProduct = async (req, res) => {
     } else {
       parsedSpecifications = specifications; // If it's already an object
     }
+
     const newProduct = new Product({
       title,
       price,
@@ -99,8 +153,7 @@ export const createProduct = async (req, res) => {
       offer,
       images,
       quantity_stock,
-      //   images: imageUrl ? [imageUrl] : [], // Add image URL to images array
-      specifications: parsedSpecifications ? parsedSpecifications : [], // Parse specification if necessary
+      specifications: parsedSpecifications ? parsedSpecifications : [], // Parse specifications if necessary
     });
 
     // Save the product in the database
@@ -113,16 +166,15 @@ export const createProduct = async (req, res) => {
   }
 };
 
+
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("id", id);
     const deletedCategory = await Product.findByIdAndDelete({ _id: id });
 
     if (!deletedCategory) {
       return res.status(404).json({ message: "Product not found" }); // If the category doesn't exist
     }
-
     res.status(200).json({ message: "Product deleted successfully" }); // Success response
   } catch (error) {
     res.status(500).json({ message: error.message });
