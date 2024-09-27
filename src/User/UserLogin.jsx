@@ -158,12 +158,13 @@ const UserLogin = () => {
               onChange={handleFormChange}
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4" style={{ height: "38px" }}>
             <label htmlFor="form2" className="form-label">
               Password
             </label>
             <Space direction="vertical" />
             <Input.Password
+              style={{ height: "38px" }}
               placeholder=" password"
               name="password"
               id="password"

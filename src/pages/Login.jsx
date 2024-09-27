@@ -114,6 +114,7 @@ const Login = () => {
             </label>
             <Space direction="vertical" />
             <Input.Password
+              style={{ height: "38px" }}
               placeholder=" password"
               name="password"
               id="password"
