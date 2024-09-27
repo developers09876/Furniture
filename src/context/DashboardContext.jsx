@@ -10,29 +10,54 @@ export const DashboardProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
 
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [datafilter, setFilter] = useState([]);
+
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
+    // try {
+    //   const usersResponse = await axios.get("http://localhost:3000/users");
+    //   setUsers(usersResponse.data);
+
+    //   const ordersResponse = await axios.get("http://localhost:3000/orders");
+    //   setOrders(ordersResponse.data);
+
+    //   const categoriesResponse = await axios.get(
+    //     "http://localhost:3000/categories"
+    //   );
+    //   setCategories(categoriesResponse.data);
+
+    //   const productsResponse = await axios.get(
+    //     "http://localhost:3000/products"
+    //   );
+    //   setProducts(productsResponse.data);
+    // } catch (error) {
+    //   // showAlert('error', 'Error', 'Error while fetching data')
+    // }
+
     try {
-      const usersResponse = await axios.get("http://localhost:3000/users");
-      setUsers(usersResponse.data);
-
-      const ordersResponse = await axios.get("http://localhost:3000/orders");
-      setOrders(ordersResponse.data);
-
-      const categoriesResponse = await axios.get(
-        "http://localhost:3000/categories"
-      );
-      setCategories(categoriesResponse.data);
-
-      const productsResponse = await axios.get(
-        "http://localhost:3000/products"
-      );
-      setProducts(productsResponse.data);
+      const res = await axios.get("http://localhost:5000/User/get");
+      setUsers(res.data);
     } catch (error) {
-      // showAlert('error', 'Error', 'Error while fetching data')
+      console.error("Error fetching users:", error);
+    }
+
+    try {
+      const res = await axios.get("http://localhost:5000/products/order");
+      setOrders(res.data);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+
+    try {
+      const response = await axios.get(`http://localhost:5000/products/`);
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
     }
   };
 
