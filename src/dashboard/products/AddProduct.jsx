@@ -14,7 +14,7 @@ const StyledProducts = styled.div`
 `;
 
 const AddProduct = () => {
-  const [selectedImages, setSelectedImages] = useState([])
+  const [selectedImages, setSelectedImages] = useState([]);
   const categories = [
     { id: "1", cat_name: "Sofa" },
     { id: "2", cat_name: "Chair" },
@@ -58,6 +58,7 @@ const AddProduct = () => {
       },
     ],
   });
+  console.log("firstz", formData);
 
   const handleFormChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -87,21 +88,21 @@ const AddProduct = () => {
 
     for (const image of selectedImages) {
       const data = new FormData();
-      data.append('file', image);
-      data.append('upload_preset', 'Furniture'); // Replace with your Cloudinary upload preset
+      data.append("file", image);
+      data.append("upload_preset", "Furniture"); // Replace with your Cloudinary upload preset
 
       try {
         const response = await fetch(
-          'https://api.cloudinary.com/v1_1/dk6vgylx3/image/upload', // Replace with your Cloudinary URL
+          "https://api.cloudinary.com/v1_1/dk6vgylx3/image/upload", // Replace with your Cloudinary URL
           {
-            method: 'POST',
+            method: "POST",
             body: data,
           }
         );
         const cloudinaryData = await response.json();
         uploadedImages.push(cloudinaryData.secure_url); // Collect the URL
       } catch (error) {
-        console.error('Error uploading image:', error);
+        console.error("Error uploading image:", error);
       }
     }
 
@@ -109,28 +110,25 @@ const AddProduct = () => {
   };
 
   //   const handleImageChange = (event) => {
-//     console.log(event.target)
-//     const files = Array.from(event.target.files);
-// console.log('files', files)
-//     if (formData.images && files.length + formData.images.length > 10) {
-//       Swal.fire({
-//         icon: "error",
-//         title: "Error",
-//         text: "You can only select up to 10 images.",
-//       });
-//       return;
-//     }
+  //     console.log(event.target)
+  //     const files = Array.from(event.target.files);
+  // console.log('files', files)
+  //     if (formData.images && files.length + formData.images.length > 10) {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Error",
+  //         text: "You can only select up to 10 images.",
+  //       });
+  //       return;
+  //     }
 
- 
- 
-
-//     Promise.all(newImages).then((results) => {
-//       setFormData((prevForm) => ({
-//         ...prevForm,
-//         images: [...prevForm.images, ...results],
-//       }));
-//     });
-//   };
+  //     Promise.all(newImages).then((results) => {
+  //       setFormData((prevForm) => ({
+  //         ...prevForm,
+  //         images: [...prevForm.images, ...results],
+  //       }));
+  //     });
+  //   };
   const handleDynamicInputChange = (e, index) => {
     const { name, value } = e.target;
     const updatedSpecifications = [...formData.specifications];
@@ -160,13 +158,15 @@ const AddProduct = () => {
       title: "",
       description: "",
     });
-    setFormData({ ...formData, specifications:JSON.stringify( updatedSpecifications) });
+    setFormData({
+      ...formData,
+      specifications: JSON.stringify(updatedSpecifications),
+    });
   };
 
   console.log("form data:", formData);
 
   const addProduct = async () => {
- 
     const imageUrls = await uploadImages();
 
     // Add uploaded image URLs to form data
@@ -174,7 +174,7 @@ const AddProduct = () => {
       ...formData,
       images: imageUrls,
     };
-    
+
     try {
       axios
         .post("http://localhost:5000/products/create", updatedFormData)
@@ -252,7 +252,9 @@ const AddProduct = () => {
               name="images"
               accept="image/*"
               multiple
-              onChange={(e)=>{handleImageChange(e)}}
+              onChange={(e) => {
+                handleImageChange(e);
+              }}
             />
             <p className="my-2 fw-bold">
               Total Images Selected: {formData.images.length}
@@ -324,13 +326,13 @@ const AddProduct = () => {
               </h5>
               {/* Specification fields using handleSpecificationChange */}
               <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
-                <label htmlFor="feel">Feel:</label>
+                <label htmlFor="feel">feel:</label>
                 <input
                   type="text"
                   className="form-control"
                   id="feel"
                   name="feel"
-                  value={formData.specifications[0].product_Details.feel}
+                  // value={formData?.specifications[0].product_Details.feel || ""}
                   onChange={(e) =>
                     handleSpecificationChange(e, "product_Details", "feel")
                   }
@@ -344,7 +346,9 @@ const AddProduct = () => {
                   className="form-control"
                   id="cover_Type"
                   name="cover_Type"
-                  value={formData.specifications[0].product_Details.cover_Type}
+                  value={
+                    formData?.specifications[0].product_Details.cover_Type || ""
+                  }
                   onChange={(e) =>
                     handleSpecificationChange(
                       e,
@@ -362,9 +366,10 @@ const AddProduct = () => {
                   className="form-control"
                   id="cover_Material"
                   name="cover_Material"
-                  value={
-                    formData.specifications[0].product_Details.cover_Material
-                  }
+                  // value={
+                  //   formData?.specifications[0].product_Details
+                  //     .cover_Material || ""
+                  // }
                   onChange={(e) =>
                     handleSpecificationChange(
                       e,
@@ -382,9 +387,10 @@ const AddProduct = () => {
                   className="form-control"
                   id="matress_Type"
                   name="matress_Type"
-                  value={
-                    formData.specifications[0].product_Details.matress_Type
-                  }
+                  // value={
+                  //   formData?.specifications[0].product_Details.matress_Type ||
+                  //   ""
+                  // }
                   onChange={(e) =>
                     handleSpecificationChange(
                       e,
@@ -402,7 +408,9 @@ const AddProduct = () => {
                   className="form-control"
                   id="Usability"
                   name="Usability"
-                  value={formData.specifications[0].product_Details.Usability}
+                  // value={
+                  //   formData?.specifications[0].product_Details.Usability || ""
+                  // }
                   onChange={(e) =>
                     handleSpecificationChange(e, "product_Details", "Usability")
                   }
@@ -473,7 +481,8 @@ const AddProduct = () => {
                     id="thickness"
                     name="thickness"
                     value={
-                      formData.specifications[0].product_Dimension.thickness
+                      formData?.specifications[0].product_Dimension.thickness ||
+                      ""
                     }
                     onChange={(e) =>
                       handleSpecificationChange(
@@ -492,9 +501,10 @@ const AddProduct = () => {
                     className="form-control"
                     id="dimensions"
                     name="dimensions"
-                    value={
-                      formData.specifications[0].product_Dimension.dimensions
-                    }
+                    // value={
+                    //   formData?.specifications[0].product_Dimension
+                    //     .dimensions || ""
+                    // }
                     onChange={(e) =>
                       handleSpecificationChange(
                         e,
@@ -516,7 +526,7 @@ const AddProduct = () => {
                     className="form-control"
                     id="Warranty"
                     name="Warranty"
-                    value={formData.specifications[0].product_Policies.Warranty}
+                    // value={formData.specifications[0].product_Policies.Warranty}
                     onChange={(e) =>
                       handleSpecificationChange(
                         e,
@@ -534,7 +544,7 @@ const AddProduct = () => {
                     className="form-control"
                     id="Shipping"
                     name="Shipping"
-                    value={formData.specifications[0].product_Policies.Shipping}
+                    // value={formData.specifications[0].product_Policies.Shipping}
                     onChange={(e) =>
                       handleSpecificationChange(
                         e,
@@ -552,10 +562,10 @@ const AddProduct = () => {
                     className="form-control"
                     id="available_Offers"
                     name="available_Offers"
-                    value={
-                      formData.specifications[0].product_Policies
-                        .available_Offers
-                    }
+                    // value={
+                    //   formData.specifications[0].product_Policies
+                    //     .available_Offers
+                    // }
                     onChange={(e) =>
                       handleSpecificationChange(
                         e,
@@ -573,7 +583,7 @@ const AddProduct = () => {
                     className="form-control"
                     id="trial"
                     name="trial"
-                    value={formData.specifications[0].product_Policies.trial}
+                    // value={formData.specifications[0].product_Policies.trial}
                     onChange={(e) =>
                       handleSpecificationChange(e, "product_Policies", "trial")
                     }
@@ -585,7 +595,14 @@ const AddProduct = () => {
               <Button type="submit" className="me-2">
                 Submit
               </Button>
-              <Button type="reset" onClick={()=>{navigate(-1)}}>Cancel</Button>
+              <Button
+                type="reset"
+                onClick={() => {
+                  navigate(-1);
+                }}
+              >
+                Cancel
+              </Button>
             </div>
           </div>
         </div>
