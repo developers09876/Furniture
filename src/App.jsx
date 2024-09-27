@@ -61,6 +61,7 @@ import Profile from "./User/Profile/Profile";
 import Model from "./Ar/component/xr-gallery/XrGalleryContainer";
 import Sofas from "./Ar/component/Sofa";
 import Test from "./Ar/view";
+import UserResetPassword from "./User/UserResetPassword";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
@@ -77,6 +78,7 @@ const router = createBrowserRouter(
           <Route path="/adminlogin" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/userlogin" element={<UserLogin />} />
+          <Route path="/reset" element={<UserResetPassword />} />
         </Route>
         <Route path="*" exact element={<NotFound />} />
       </Route>
@@ -133,7 +135,6 @@ const App = () => {
     mainColorLight: "#FF9800",
     mainColorLighter: "#e1dbd3",
     textColor: "#474747",
-
     bgDark: "#1f1a1a",
     borderColor: "#ffd7ba",
     headingColor: "#2a2828",
