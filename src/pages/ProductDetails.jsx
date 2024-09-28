@@ -235,7 +235,6 @@ console.log('imagesz', images)
   const { addToCart } = useContext(CartContext);
   const { addToWishlist } = useContext(WishlistContext);
   const { isAuthenticated } = useContext(AuthContext);
-  console.log("isAuthenticated chedckkk", isAuthenticated);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -271,7 +270,6 @@ console.log('imagesz', images)
     LongDesc,
     quantity_stock,
   } = product;
-  console.log("product", product);
   return (
     <Wrapper className="container section-center page">
       <Breadcrumb />
@@ -356,7 +354,7 @@ console.log('imagesz', images)
             </button>
 
             &nbsp;
-            <button>View</button>
+            <button>View 3D</button>
           </div>
           <div className="chooseVarientButton">
             {/* Choose Varient  Modal */}

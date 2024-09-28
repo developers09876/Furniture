@@ -7,7 +7,7 @@ import { Table } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { DashboardContext } from "../../context/DashboardContext";
-
+import { MdDelete, MdEdit } from "react-icons/md";
 // styled components
 const StyledProducts = styled.div`
   margin: 20px;
@@ -84,7 +84,20 @@ const ProductDashboard = () => {
       key: "description",
     },
     {
-      title: "Actions",
+      title: "Action",
+      key:"Action",
+      render: (_, record) => (
+        <div>
+          <MdEdit
+            style={{ fontSize: "20px", cursor: "pointer", marginRight: "10px" }}
+            onClick={() => handleEdit(record)}
+          />
+          <MdDelete
+            style={{ fontSize: "20px", cursor: "pointer", color: "red" }}
+            onClick={() => handleDelete(record)}
+          />
+        </div>
+      ),
     },
   ];
 
