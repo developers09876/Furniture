@@ -22,7 +22,7 @@ function ShopByCategory() {
   const datas = [
     {
       image: img1,
-      title: "Bed Room",
+      title: "Matteress",
       id: "1",
       price: "5000",
       discountPrice: "4000",
@@ -30,7 +30,7 @@ function ShopByCategory() {
     },
     {
       image: img2,
-      title: "Living",
+      title: "Sofa",
       id: "2",
       price: "5000",
       discountPrice: "4000",
@@ -38,7 +38,7 @@ function ShopByCategory() {
     },
     {
       image: img3,
-      title: "Kitchen",
+      title: "Beds",
       id: "3",
       price: "5000",
       discountPrice: "4000",
@@ -46,7 +46,7 @@ function ShopByCategory() {
     },
     {
       image: img4,
-      title: "Dining",
+      title: "Pillow",
       id: "4",
       price: "5000",
       discountPrice: "4000",
@@ -54,7 +54,7 @@ function ShopByCategory() {
     },
     {
       image: img4,
-      title: "Study",
+      title: "Table",
       id: "5",
       price: "5000",
       discountPrice: "4000",
@@ -62,7 +62,7 @@ function ShopByCategory() {
     },
     {
       image: img4,
-      title: "Kids",
+      title: "Dinner",
       id: "6",
       price: "5000",
       discountPrice: "4000",
@@ -96,6 +96,7 @@ function ShopByCategory() {
                     style={{
                       padding: "10px",
                       border: "none",
+                      cursor:"pointer"
                     }}
                     cover={
                       <img

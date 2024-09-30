@@ -152,18 +152,39 @@ const AddProduct = () => {
     setFormData({ ...formData, specifications: updatedSpecifications });
   };
 
+  // const handleDynamicAddClick = () => {
+  //   const updatedSpecifications = [...formData.specifications];
+  //   updatedSpecifications[0].product_Details.dynamicFields.push({
+  //     title: "",
+  //     description: "",
+  //   });
+  //   setFormData({
+  //     ...formData,
+  //     specifications: JSON.stringify(updatedSpecifications),
+  //   });
+  // };
+
   const handleDynamicAddClick = () => {
+    // Make a deep copy of specifications to avoid mutating the state directly
     const updatedSpecifications = [...formData.specifications];
+    
+    // Ensure that the dynamicFields array exists
+    if (!updatedSpecifications[0].product_Details.dynamicFields) {
+      updatedSpecifications[0].product_Details.dynamicFields = [];
+    }
+  
+    // Push new dynamic field
     updatedSpecifications[0].product_Details.dynamicFields.push({
       title: "",
       description: "",
     });
+  
+    // Set the updated state without converting it to a JSON string
     setFormData({
       ...formData,
-      specifications: JSON.stringify(updatedSpecifications),
+      specifications: updatedSpecifications,  // No need for JSON.stringify here
     });
   };
-
   console.log("form data:", formData);
 
   const addProduct = async () => {
@@ -346,9 +367,9 @@ const AddProduct = () => {
                   className="form-control"
                   id="cover_Type"
                   name="cover_Type"
-                  value={
-                    formData?.specifications[0].product_Details.cover_Type || ""
-                  }
+                  // value={
+                  //   formData?.specifications[0].product_Details.cover_Type || ""
+                  // }
                   onChange={(e) =>
                     handleSpecificationChange(
                       e,

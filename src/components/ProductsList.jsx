@@ -18,7 +18,7 @@ const ProductsList = ({ products }) => {
                 className="col-12 col-md-3 col-lg-3 mb-4"
               >
                 <ProductCard
-                  image={product.image}
+                  image={product.images}
                   title={product.title}
                   price={product.price}
                   id={product.productId}

@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Spinner from "./Spinner";
 import Button from "./Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import img1 from "../assets/sofa.jpg";
 import img2 from "../assets/chair.jpg";
@@ -13,10 +13,12 @@ import { Row, Col, Container } from "react-bootstrap";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import { DashboardContext } from "../context/DashboardContext";
 import ScrollReveal from "scrollreveal";
 
 const FeaturedProducts = () => {
+  const navigate = useNavigate()
+  const { users, orders, products, fetchData } = useContext(DashboardContext);
   const settings = {
     infinite: true,
     speed: 500,
@@ -25,56 +27,7 @@ const FeaturedProducts = () => {
     
   };
 
-  const [featuredProducts, setFeaturedProducts] = useState([
-    {
-      image: img1,
-      title: "SOFA",
-      id: "1",
-      price: "5000",
-      discountPrice: "4000",
-      description: "Comfortable Sofa",
-      offer: "50",
-    },
-    {
-      image: img2,
-      title: "chair",
-      id: "3",
-      price: "5000",
-      discountPrice: "4000",
-      description: "Comfortable Sofa",
-      offer: "50",
-    },
-    {
-      image: img3,
-      title: "Bed",
-      id: "4",
-      price: "5000",
-      discountPrice: "4000",
-      description: "Comfortable Sofa",
-      offer: "80",
-    },
-    {
-      image: img2,
-      title: "Bed4",
-      id: "2",
-      price: "5000",
-      discountPrice: "4000",
-      description: "Comfortable Sofa",
-      offer: "20",
-    },
-    {
-      image: img3,
-      title: "5Bed",
-      id: "5",
-      price: "55000",
-      discountPrice: "54000",
-      description: "Comfortable Sofa",
-      offer: "520",
-    },
-  ]);
-
-// ScrollReveal animation
-  
+  // const [featuredProducts, setFeaturedProducts] = useState(products);
 useEffect(() => {
   ScrollReveal().reveal(".hero-description", {
     distance: "200px",
@@ -101,20 +54,9 @@ useEffect(() => {
   });
 }, []);
 
-
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     try {
-  //       const response = await axios.get("http://localhost:3000/products?featured=true"); // get the featured products only
-  //       setFeaturedProducts(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching products:", error);
-  //     }
-  //   };
-
-  //   fetchProducts();
-  // }, []);
-
+// useEffect(()=>{
+//   setFeaturedProducts(products)
+// },[products])
   return (
     <>
       <div className="container text-center">
@@ -132,20 +74,20 @@ useEffect(() => {
           </center>
         </h1>
         <>
-          {featuredProducts.length > 0 ? (
+          {products.length > 0 ? (
             <>
               <div className="row">
                 <Slider {...settings}>
-                  {featuredProducts.map((product) => (
+                  {products.map((product) => (
                     <div
-                      key={product.id}
+                      key={product.productId}
                       className="col-lg-3 col-md-3 col-sm-12"
                     >
                       
                       <ProductCard
-                        image={product.image}
+                        image={product.images}
                         title={product.title}
-                        id={product.id}
+                        id={product.productId}
                         description={product.description}
                         price={product.price}
                         discountPrice={product.discountPrice}
@@ -162,7 +104,7 @@ useEffect(() => {
                   className="link-underline link-underline-opacity-0 mb-5"
                   style={{ display: "flex", justifyContent: "end" }}
                 >
-                  <Button handleClick={() => null}>All Products</Button>
+                  <Button handleClick={() => navigate("/products")}>All Products</Button>
                 </Link>
               </div>
             </>
