@@ -7,6 +7,8 @@ import { Table } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { DashboardContext } from "../../context/DashboardContext";
+import { Api } from "../../Api.js";
+console.log("baseUrl", import.meta.env);
 
 // styled components
 const StyledProducts = styled.div`
@@ -28,19 +30,16 @@ const StyledTd = styled.th`
 const ProductDashboard = () => {
   // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
   const [product, setProducts] = useState([]);
-  console.log("product", product);
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/products/`);
+    axios
+      .get(`http://localhost:5000/products/`)
+      .then((response) => {
         setProducts(response.data);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+      });
+  });
   const dataSource = [
     {
       key: "1",

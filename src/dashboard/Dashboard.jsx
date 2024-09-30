@@ -13,7 +13,7 @@ const Dashboard = () => {
         Refresh Data
       </Button> */}
       <Stats users={users} orders={orders} products={products} />
-      <OrdersChart />
+      {/* <OrdersChart /> */}
     </div>
   );
 };

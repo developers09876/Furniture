@@ -347,7 +347,6 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Breadcrumb from "../components/Breadcrumb";
 
-// styled components
 const StyledRegister = styled.form`
   max-width: 350px;
   margin: 10px auto;

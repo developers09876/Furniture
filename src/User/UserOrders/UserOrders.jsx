@@ -131,7 +131,6 @@ const UserOrders = () => {
   // const { orders, updateOrderStatus, fetchData } =
   //   useContext(UserDashboardContext);
   const [selectedStatus, setSelectedStatus] = useState("all");
-  console.log("Ajith", selectedStatus);
   // const handleStatusChange = (orderId, status) => {
   //   updateOrderStatus(orderId, status);
   // };
