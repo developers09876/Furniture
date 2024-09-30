@@ -125,7 +125,7 @@ const Contact = () => {
       <ContactSection id="contact">
         <ContactBox className="contact-box">
           <StyledMap>
-            <div><iframe width="100%" height="500" src="https://maps.google.com/maps?width=100%25&amp;height=443&amp;hl=en&amp;q=rahma,%20casablanca,%20morocco+(EShop)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a href="https://www.maps.ie/population/">Population Estimator map</a></iframe></div>
+            <div><iframe width="100%" height="500" src="https://maps.google.com/maps?width=100%25&amp;height=443&amp;hl=en&amp;q=bangalore,%20karnataka,%20india+(EShop)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a href="https://www.maps.ie/population/">Population Estimator map</a></iframe></div>
           </StyledMap>
           <ContactFormWrapper className="contact-form-wrapper">
             <ContactForm onSubmit={handleFormSubmit}>

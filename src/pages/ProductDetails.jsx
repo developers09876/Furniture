@@ -63,7 +63,9 @@ const SingleProductPage = () => {
     console.log("Specification is not available");
   }
   const [selectedImage, setSelectedImage] = useState(null);
-  const [images, setImages] = useState([img1, img2, img3, Amenity, Amenity_ET]);
+  // const [images, setImages] = useState([img1, img2, img3, Amenity, Amenity_ET]);
+  const [images, setImages] = useState([]);
+console.log('imagesz', images)
   const [show, setShow] = useState(false);
   const [showPic, setShowPic] = useState(false);
 
@@ -84,6 +86,8 @@ const SingleProductPage = () => {
           `http://localhost:5000/products/getOne/${productID}`
         );
         setProduct(response.data);
+        setImages(response.data.images)
+        setSelectedImage(response.data.images[0])
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
@@ -231,7 +235,6 @@ const SingleProductPage = () => {
   const { addToCart } = useContext(CartContext);
   const { addToWishlist } = useContext(WishlistContext);
   const { isAuthenticated } = useContext(AuthContext);
-  console.log("isAuthenticated chedckkk", isAuthenticated);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -267,7 +270,6 @@ const SingleProductPage = () => {
     LongDesc,
     quantity_stock,
   } = product;
-  console.log("product", product);
   return (
     <Wrapper className="container section-center page">
       <Breadcrumb />
@@ -350,6 +352,9 @@ const SingleProductPage = () => {
               {categorz + "," + selectedDimension + "," + thickness}
               <FaChevronDown />
             </button>
+
+            &nbsp;
+            <button>View 3D</button>
           </div>
           <div className="chooseVarientButton">
             {/* Choose Varient  Modal */}
@@ -484,9 +489,9 @@ const SingleProductPage = () => {
 
                           <p>
                             {product &&
-                            Array.isArray(product.specification) &&
-                            product.specification.length > 0
-                              ? product.specification[0]?.product_Details
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
+                              ? product.specifications[0]?.product_Details
                                   ?.feel || "N/A"
                               : "Specification is not available"}
                           </p>
@@ -508,11 +513,11 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {product &&
-                              Array.isArray(product.specification) &&
-                              product.specification.length > 0
-                                ? product.specification[0]?.product_Details
+                              Array.isArray(product.specifications) &&
+                              product.specifications.length > 0
+                                ? product.specifications[0]?.product_Details
                                     ?.cover_Type || "N/A"
-                                : "Specification is not available"}
+                                : "specifications is not available"}
                             </p>
                           </div>
                         </Col>
@@ -535,11 +540,11 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {product &&
-                              Array.isArray(product.specification) &&
-                              product.specification.length > 0
-                                ? product.specification[0]?.product_Details
+                              Array.isArray(product.specifications) &&
+                              product.specifications.length > 0
+                                ? product.specifications[0]?.product_Details
                                     ?.cover_Material || "N/A"
-                                : "Specification is not available"}
+                                : "specifications is not available"}
                             </p>
                           </div>
                         </Col>
@@ -560,11 +565,11 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {product &&
-                              Array.isArray(product.specification) &&
-                              product.specification.length > 0
-                                ? product.specification[0]?.product_Details
+                              Array.isArray(product.specifications) &&
+                              product.specifications.length > 0
+                                ? product.specifications[0]?.product_Details
                                     ?.Usability || "N/A"
-                                : "Specification is not available"}
+                                : "specifications is not available"}
                             </p>
                           </div>
                         </Col>
@@ -587,11 +592,11 @@ const SingleProductPage = () => {
 
                           <p>
                             {product &&
-                            Array.isArray(product.specification) &&
-                            product.specification.length > 0
-                              ? product.specification[0]?.product_Details
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
+                              ? product.specifications[0]?.product_Details
                                   ?.cover_Type || "N/A"
-                              : "Specification is not available"}
+                              : "specifications is not available"}
                           </p>
                         </Col>
                       </Row>
@@ -683,11 +688,11 @@ const SingleProductPage = () => {
 
                           <p>
                             {product &&
-                            Array.isArray(product.specification) &&
-                            product.specification.length > 0
-                              ? product.specification[0]?.product_Dimension
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
+                              ? product.specifications[0]?.product_Dimension
                                   ?.thickness || "N/A"
-                              : "Specification is not available"}
+                              : "specifications is not available"}
                           </p>
                         </Col>
                       </Row>
@@ -709,11 +714,11 @@ const SingleProductPage = () => {
                           </div>
                           <p>
                             {product &&
-                            Array.isArray(product.specification) &&
-                            product.specification.length > 0
-                              ? product.specification[0]?.product_Dimension
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
+                              ? product.specifications[0]?.product_Dimension
                                   ?.dimensions || "N/A"
-                              : "Specification is not available"}
+                              : "specifications is not available"}
                           </p>
                         </Col>
                       </Row>
@@ -744,11 +749,11 @@ const SingleProductPage = () => {
                           </div>
                           <p>
                             {product &&
-                            Array.isArray(product.specification) &&
-                            product.specification.length > 0
-                              ? product.specification[0]?.product_Policies
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
+                              ? product.specifications[0]?.product_Policies
                                   ?.Warranty || "N/A"
-                              : "Specification is not available"}
+                              : "specifications is not available"}
                           </p>
                         </Col>
                       </Row>
@@ -769,11 +774,11 @@ const SingleProductPage = () => {
                           </div>
                           <p>
                             {product &&
-                            Array.isArray(product.specification) &&
-                            product.specification.length > 0
-                              ? product.specification[0]?.product_Policies
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
+                              ? product.specifications[0]?.product_Policies
                                   ?.Shipping || "N/A"
-                              : "Specification is not available"}
+                              : "specifications is not available"}
                           </p>
                         </Col>
                       </Row>
@@ -798,11 +803,11 @@ const SingleProductPage = () => {
 
                           <p>
                             {product &&
-                            Array.isArray(product.specification) &&
-                            product.specification.length > 0
-                              ? product.specification[0]?.product_Policies
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
+                              ? product.specifications[0]?.product_Policies
                                   ?.trial || "N/A"
-                              : "Specification is not available"}
+                              : "specifications is not available"}
                           </p>
                         </Col>
                       </Row>

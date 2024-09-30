@@ -7,7 +7,7 @@ import { Table } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { DashboardContext } from "../../context/DashboardContext";
-
+import { MdDelete, MdEdit } from "react-icons/md";
 // styled components
 const StyledProducts = styled.div`
   margin: 20px;
@@ -25,22 +25,115 @@ const StyledTd = styled.th`
   font-weight: 400;
 `;
 
+
 const ProductDashboard = () => {
   // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
   const [product, setProducts] = useState([]);
-  console.log("product", product);
+  const { Products, deleteProducts } = useContext(DashboardContext);
+  const [editingProducts, setEditingProducts] = useState([]);
+  const [data, setData] = useState([]);
+  console.log("product12", product);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/products/`);
         setProducts(response.data);
+    
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
-
+   
     fetchProducts();
   }, []);
+
+  const deleteRecordFromAPI = async (id) => {
+    try {
+      await axios
+        .delete(`http://localhost:5000/Products/delete/${id}`)
+        .then((res) => {
+          fetchCategoriesData();
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: `User has been deleted successfully.`,
+          });
+        });
+    } catch (error) {
+      console.error("Error deleting record:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "There was an error deleting the user. Please try again.",
+      });
+    }
+  };
+
+  const handleDelete = (record, data, setData) => {
+    confirm({
+      title: "Are you sure you want to delete this user?",
+      icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,
+      content: `Name: ${record.name}`,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        deleteRecordFromAPI(record._id);
+      },
+      onCancel() {
+        console.log("Deletion cancelled");
+      },
+    });
+  };
+
+  const editRecordFromAPI = async (id) => {
+    try {
+      await axios
+        .post(`http://localhost:5000/Products/edit/${id}`)
+        .then((res) => {
+          fetchCategoriesData();
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: `User has been deleted successfully.`,
+          })
+          const updatedUsers = users.map((user) =>
+            user._id === id ? { ...user, ...record } : user
+          );
+          setUsers(updatedUsers);
+
+          setEditUser(false);
+        });
+    } catch (error) {
+      console.error("Error deleting record:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "There was an error deleting the user. Please try again.",
+      });
+    }
+  };
+
+  const handleEdit = (record) => {
+    console.log('jan', record._id)
+
+    confirm({
+      title: "Are you sure you want to delete this user?",
+      icon: <MdEdit style={{ fontSize: "20px", color: "red" }} />,
+      // content: `Name: ${record.name}`,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        editRecordFromAPI(record._id);
+      },
+      onCancel() {
+        console.log("Edit cancelled");
+      },
+    });
+  };
+
+
   const dataSource = [
     {
       key: "1",
@@ -84,11 +177,24 @@ const ProductDashboard = () => {
       key: "description",
     },
     {
-      title: "Actions",
+      title: "Action",
+      key:"Action",
+      render: ( record) => (
+        <div>
+          <MdEdit
+            style={{ fontSize: "20px", cursor: "pointer", marginRight: "10px" }}
+            onClick={() => handleEdit(record)}
+          />
+          <MdDelete
+            style={{ fontSize: "20px", cursor: "pointer", color: "red" }}
+            onClick={() => handleDelete(record)}
+          />
+        </div>
+      ),
     },
   ];
 
-  return (
+  return ( 
     <StyledProducts>
       <h2 className="mb-4">All Products</h2>
       <Link
