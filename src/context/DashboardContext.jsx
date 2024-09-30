@@ -10,11 +10,10 @@ export const DashboardProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
 
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [datafilter, setFilter] = useState([]);
+  // console.log('newOrder', newOrder.length, orders.length)
 
   useEffect(() => {
+
     fetchData();
   }, []);
 
@@ -49,6 +48,8 @@ export const DashboardProvider = ({ children }) => {
     try {
       const res = await axios.get("http://localhost:5000/products/order");
       setOrders(res.data);
+
+
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -56,9 +57,13 @@ export const DashboardProvider = ({ children }) => {
     try {
       const response = await axios.get(`http://localhost:5000/products/`);
       setProducts(response.data);
+
     } catch (error) {
       console.error("Error fetching products:", error);
     }
+
+
+
   };
 
   const showAlert = (icon, title, text) => {
@@ -281,5 +286,7 @@ export const DashboardProvider = ({ children }) => {
     >
       {children}
     </DashboardContext.Provider>
+
   );
 };
+

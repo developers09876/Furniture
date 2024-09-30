@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faUser, faListAlt, faBox, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { getTodayOrders, calculateTotalSales } from '../../utils/helpers';
+import { UNSAFE_DataRouterStateContext } from 'react-router-dom';
 
 const StyledCard = styled.div`
   border: 1px solid ${props => props.theme.borderColor};
@@ -28,12 +29,15 @@ const BottomText = styled.div`
 `;
 
 const Stats = ({ orders, users, products }) => {
-  const newOrdersCount = getTodayOrders(orders).length;
-  const totalUsers = users.length;
-  const totalOrders = orders.length;
-  const totalProducts = products.length;
+  // const [newOrder, setNewOrder] = useState([]);
+
+  // const OrdersCount = orders?.length;
+  // const totalUsers = users?.length;
+  const totalProducts = products?.length;
   const totalSales = calculateTotalSales(orders);
   const todaySales = calculateTotalSales(getTodayOrders(orders));
+  // const pendingOrders = res.data.filter(order => order.order_status === "pending");
+  // setNewOrder(pendingOrders);
 
   return (
     <div className="container mt-4">
@@ -43,7 +47,7 @@ const Stats = ({ orders, users, products }) => {
             <IconWrapper>
               <FontAwesomeIcon icon={faListAlt} />
             </IconWrapper>
-            <NumberText>{newOrdersCount}</NumberText>
+            {/* <NumberText>{pendingOrders.length}</NumberText> */}
             <BottomText>New Orders</BottomText>
           </StyledCard>
         </div>
@@ -52,7 +56,7 @@ const Stats = ({ orders, users, products }) => {
             <IconWrapper>
               <FontAwesomeIcon icon={faUser} />
             </IconWrapper>
-            <NumberText>{totalUsers}</NumberText>
+            {/* <NumberText>{totalUsers}</NumberText> */}
             <BottomText>Total Users</BottomText>
           </StyledCard>
         </div>
@@ -61,7 +65,7 @@ const Stats = ({ orders, users, products }) => {
             <IconWrapper>
               <FontAwesomeIcon icon={faShoppingCart} />
             </IconWrapper>
-            <NumberText>{totalOrders}</NumberText>
+            <NumberText>{OrdersCount}</NumberText>
             <BottomText>Total Orders</BottomText>
           </StyledCard>
         </div>
@@ -89,7 +93,7 @@ const Stats = ({ orders, users, products }) => {
               <FontAwesomeIcon icon={faDollarSign} />
             </IconWrapper>
             <NumberText>{todaySales.toFixed(2)}</NumberText>
-            <BottomText>Today&apos;s Sales</BottomText>
+            <BottomText>Today&apos; Sales</BottomText>
           </StyledCard>
         </div>
       </div>
