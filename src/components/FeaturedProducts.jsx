@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import Spinner from "./Spinner";
 import Button from "./Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import img1 from "../assets/sofa.jpg";
 import img2 from "../assets/chair.jpg";
@@ -17,6 +17,7 @@ import { DashboardContext } from "../context/DashboardContext";
 import ScrollReveal from "scrollreveal";
 
 const FeaturedProducts = () => {
+  const navigate = useNavigate()
   const { users, orders, products, fetchData } = useContext(DashboardContext);
   const settings = {
     infinite: true,
@@ -103,7 +104,7 @@ useEffect(() => {
                   className="link-underline link-underline-opacity-0 mb-5"
                   style={{ display: "flex", justifyContent: "end" }}
                 >
-                  <Button handleClick={() => null}>All Products</Button>
+                  <Button handleClick={() => navigate("/products")}>All Products</Button>
                 </Link>
               </div>
             </>
