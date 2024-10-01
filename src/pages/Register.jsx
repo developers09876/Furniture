@@ -86,7 +86,7 @@
 //   //           }
 //   //         );
 
-//   //         if (response.status === 201) { // 201 indicates that the request has succeeded and has led to the creation of a resource 
+//   //         if (response.status === 201) { // 201 indicates that the request has succeeded and has led to the creation of a resource
 //   //           setIsRegistered(true)
 //   //           // Create a cart for the user
 //   //           try {
@@ -159,7 +159,6 @@
 
 //     const { name, email, phone, password, confirmPassword } = formData;
 
-
 //     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{10,}$/;
 
 //     if (name && email && phone && password && confirmPassword) {
@@ -209,7 +208,6 @@
 //             timer: 1500,
 //             showConfirmButton: false,
 //           });
-
 
 //           setTimeout(() => {
 //             navigate('/login');
@@ -341,20 +339,14 @@
 
 // export default Register;
 
+import axios from "axios";
+import { useState } from "react";
+import { styled } from "styled-components";
+import Swal from "sweetalert2";
+import { Link, useNavigate } from "react-router-dom";
+import Button from "../components/Button";
+import Breadcrumb from "../components/Breadcrumb";
 
-
-
-
-
-import axios from 'axios';
-import { useState } from 'react';
-import { styled } from 'styled-components';
-import Swal from 'sweetalert2';
-import { Link, useNavigate } from 'react-router-dom';
-import Button from '../components/Button';
-import Breadcrumb from '../components/Breadcrumb';
-
-// styled components
 const StyledRegister = styled.form`
   max-width: 350px;
   margin: 10px auto;
@@ -366,7 +358,7 @@ const StyledHeading = styled.h1`
 `;
 
 const PasswordStrengthMessage = styled.p`
-  color: ${({ isValid }) => (isValid ? 'green' : 'red')};
+  color: ${({ isValid }) => (isValid ? "green" : "red")};
   font-size: 0.9rem;
   margin-top: 0.5rem;
 `;
@@ -374,11 +366,11 @@ const PasswordStrengthMessage = styled.p`
 const Register = () => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
   });
   const [passwordValid, setPasswordValid] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
@@ -393,7 +385,7 @@ const Register = () => {
       [name]: value,
     }));
 
-    if (name === 'password') {
+    if (name === "password") {
       setPasswordValid(passwordRegex.test(value));
     }
   };
@@ -406,18 +398,18 @@ const Register = () => {
     if (name && email && phone && password && confirmPassword) {
       if (password !== confirmPassword) {
         Swal.fire({
-          title: 'Error',
-          text: 'Passwords do not match.',
-          icon: 'error',
+          title: "Error",
+          text: "Passwords do not match.",
+          icon: "error",
         });
         return;
       }
 
       if (!passwordValid) {
         Swal.fire({
-          title: 'Error',
-          text: 'Password does not meet the requirements.',
-          icon: 'error',
+          title: "Error",
+          text: "Password does not meet the requirements.",
+          icon: "error",
         });
         return;
       }
@@ -431,11 +423,11 @@ const Register = () => {
         };
 
         const response = await axios.post(
-          'http://localhost:5000/user/register',
+          "http://localhost:5000/user/register",
           userData,
           {
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
           }
         );
@@ -444,38 +436,38 @@ const Register = () => {
           setIsRegistered(true);
 
           Swal.fire({
-            title: 'Registration successful!',
-            text: 'Redirecting to login...',
-            icon: 'success',
+            title: "Registration successful!",
+            text: "Redirecting to login...",
+            icon: "success",
             timer: 1500,
             showConfirmButton: false,
           });
 
           setTimeout(() => {
-            navigate('/userlogin');
+            navigate("/userlogin");
           }, 1500);
         } else {
           Swal.fire({
-            title: 'Error',
-            text: 'Registration failed.',
-            icon: 'error',
+            title: "Error",
+            text: "Registration failed.",
+            icon: "error",
           });
         }
       } catch (error) {
         setIsRegistered(false);
-        console.error('Error during registration:', error);
+        console.error("Error during registration:", error);
         Swal.fire({
-          title: 'Error',
-          text: 'An error occurred during registration.',
-          icon: 'error',
+          title: "Error",
+          text: "An error occurred during registration.",
+          icon: "error",
         });
       }
     } else {
       setIsRegistered(false);
       Swal.fire({
-        title: 'Error',
-        text: 'Please fill in all the fields.',
-        icon: 'error',
+        title: "Error",
+        text: "Please fill in all the fields.",
+        icon: "error",
       });
     }
   };
@@ -548,7 +540,6 @@ const Register = () => {
           )}
         </div>
 
-
         <div className="mb-4">
           <label htmlFor="confirmPassword" className="form-label">
             Confirm Password
@@ -569,7 +560,10 @@ const Register = () => {
           </Button>
         ) : null}
         <p className="text-center">
-          Already have an account? <Link to="/userlogin">Login</Link>
+          Already have an account?{" "}
+          <Link style={{ textDecoration: "none" }} to="/userlogin">
+            Login
+          </Link>
         </p>
       </StyledRegister>
     </>

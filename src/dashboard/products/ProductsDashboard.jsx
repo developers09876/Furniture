@@ -28,19 +28,16 @@ const StyledTd = styled.th`
 const ProductDashboard = () => {
   // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
   const [product, setProducts] = useState([]);
-  console.log("product", product);
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/products/`);
+    axios
+      .get(`http://localhost:5000/products/`)
+      .then((response) => {
         setProducts(response.data);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+      });
+  });
   const dataSource = [
     {
       key: "1",
@@ -85,7 +82,7 @@ const ProductDashboard = () => {
     },
     {
       title: "Action",
-      key:"Action",
+      key: "Action",
       render: (_, record) => (
         <div>
           <MdEdit

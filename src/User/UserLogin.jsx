@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Breadcrumb from "../components/Breadcrumb";
-import { Input, Modal, Space, Steps } from "antd";
+import { Input, Space } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import {
   LoadingOutlined,
@@ -26,19 +26,6 @@ const StyledHeading = styled.h1`
 `;
 
 const UserLogin = () => {
-  const [loginModel, setLoginModel] = useState();
-  const showLoginModal = () => {
-    setLoginModel(true);
-    setPasswordField(false);
-  };
-  const handleOk = () => {
-    setLoginModel(true);
-    setPasswordField(true);
-    // setPasswordField(false);
-  };
-  const handleCancel = () => {
-    setLoginModel(false);
-  };
   const { isAuthenticated, loginUser, error } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: "",
@@ -47,55 +34,16 @@ const UserLogin = () => {
 
   const [passwordField, setPasswordField] = useState(false);
   const navigate = useNavigate();
-
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-
-  //   const { email, password } = formData;
-
-  //   if (email && password) {
-  //     try {
-  //       await loginUser(email, password).then((success) => {
-  //         if (success) {
-  //           // Display success message using SweetAlert
-  //           Swal.fire({
-  //             icon: "success",
-  //             title: "Login successful!",
-  //             showConfirmButton: false,
-  //             timer: 1500,
-  //           });
-  //           // Redirect to the home page after a delay
-  //           setTimeout(() => {
-  //             navigate("/user");
-  //           }, 1500);
-  //         } else {
-  //           // Display error message using SweetAlert
-  //           Swal.fire({
-  //             icon: "error",
-  //             title: "Error",
-  //             text: "Incorrect email or password. Please try again.",
-  //           });
-  //         }
-  //       });
-  //     } catch (error) {
-  //       console.error("Error occurred during login:", error);
-  //     }
-  //   } else {
-  //     // Display error message for incomplete fields
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Error",
-  //       text: "Please fill in all the fields.",
-  //     });
-  //   }
-  // };
-
+  const validateEmail = (email) => {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  };
   const handleLogin = async (e) => {
     e.preventDefault();
 
     const { email, password } = formData;
 
-    if (email && password) {
+    if (!validateEmail(email && password)) {
       try {
         const success = await loginUser(email, password); // Awaiting the promise
 
@@ -131,6 +79,7 @@ const UserLogin = () => {
       });
     }
   };
+
   const handleFormChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevForm) => ({
@@ -150,6 +99,7 @@ const UserLogin = () => {
               Email address
             </label>
             <input
+              placeholder="Email adress"
               type="email"
               className="form-control"
               id="email"
@@ -158,14 +108,14 @@ const UserLogin = () => {
               onChange={handleFormChange}
             />
           </div>
-          <div className="mb-4" style={{ height: "38px" }}>
+          <div className="mb-4">
             <label htmlFor="form2" className="form-label">
               Password
             </label>
             <Space direction="vertical" />
             <Input.Password
               style={{ height: "38px" }}
-              placeholder=" password"
+              placeholder="Password"
               name="password"
               id="password"
               value={formData.password}
@@ -198,68 +148,17 @@ const UserLogin = () => {
           )}
 
           <div>
-            <p
-              className="text-center"
-              style={{ cursor: "pointer" }}
-              onClick={showLoginModal}
-            >
-              Forgot Password
+            <p className="text-center" style={{ cursor: "pointer" }}>
+              <Link to="/reset" style={{ textDecoration: "none" }}>
+                Forgot Password
+              </Link>
             </p>
-
-            <Modal
-              title="Basic Modal"
-              open={loginModel}
-              onCancel={handleCancel}
-              footer={[<button onClick={handleOk}>Submit</button>]}
-            >
-              <div className="mb-4">
-                <label htmlFor="form1" className="form-label">
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleFormChange}
-                />
-              </div>
-
-              {passwordField && (
-                <>
-                  <div className="mb-4">
-                    <label htmlFor="form1" className="form-label">
-                      Confirm Password
-                    </label>
-                    <input
-                      type="input"
-                      className="form-control"
-                      id="password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label htmlFor="form1" className="form-label">
-                      Confirm New Password{" "}
-                    </label>
-                    <input
-                      type="input"
-                      className="form-control"
-                      id="password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-                </>
-              )}
-            </Modal>
           </div>
           <p className="text-center">
-            Not a member? <Link to="/register">Register</Link>
+            Not a member?{" "}
+            <Link to="/register" style={{ textDecoration: "none" }}>
+              Register
+            </Link>
           </p>
         </form>
       </StyledLogin>

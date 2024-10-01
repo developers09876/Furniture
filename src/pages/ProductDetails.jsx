@@ -17,6 +17,7 @@ import img1 from "../assets/sofa.jpg";
 import img2 from "../assets/chair.jpg";
 import img3 from "../assets/bed.jpg";
 import Amenity from "../assets/Amenity.png";
+import threeSixtyDegree from "../assets/360degere.jpg";
 import Amenity_ET from "../assets/Amenity_ET.png";
 import "../Css-Pages/HomeCard.css";
 import Slider from "react-slick";
@@ -35,11 +36,7 @@ import { Radio } from "antd";
 import { ImYoutube } from "react-icons/im";
 import { IoIosArrowForward } from "react-icons/io";
 const { Group: RadioGroup, Button: RadioButton } = Radio;
-
-const card_help = {
-  width: "100%",
-  backgroundColor: "var(--bgColor)",
-};
+import "../Css-Pages/WallBackground.css";
 
 const SingleProductPage = () => {
   const settings = {
@@ -65,7 +62,7 @@ const SingleProductPage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   // const [images, setImages] = useState([img1, img2, img3, Amenity, Amenity_ET]);
   const [images, setImages] = useState([]);
-console.log('imagesz', images)
+  console.log("imagesz", images);
   const [show, setShow] = useState(false);
   const [showPic, setShowPic] = useState(false);
 
@@ -86,8 +83,8 @@ console.log('imagesz', images)
           `http://localhost:5000/products/getOne/${productID}`
         );
         setProduct(response.data);
-        setImages(response.data.images)
-        setSelectedImage(response.data.images[0])
+        setImages(response.data.images);
+        setSelectedImage(response.data.images[0]);
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
@@ -230,6 +227,11 @@ console.log('imagesz', images)
     }
   `;
 
+  const card_help = {
+    width: "100%",
+    backgroundColor: "var(--bgColor)",
+  };
+
   const [quantity, setQuantity] = useState(1);
   const [subTotal, setSubTotal] = useState(0);
   const { addToCart } = useContext(CartContext);
@@ -332,29 +334,39 @@ console.log('imagesz', images)
               <span>Available : </span>
               {quantity_stock > 0 ? "In Stock" : "Out of Stock"}
             </p>
-
             <span>Choose Mattress Dimensions</span>
             <br />
-
-            <button
-              className="chooseVarientButton mb-3 mt-2"
-              onClick={() => handleShow()}
-              style={{
-                backgroundColor: "white",
-                color: "var(--button-hover)",
-                border: "2px solid #7fafcb",
-                padding: "8px 16px",
-                transition: "0.3s ease-in-out",
-                borderRadius: "0.375rem ",
-              }}
-            >
-              {/* Choose Varity{`${category, selectedDimension , }`} */}
-              {categorz + "," + selectedDimension + "," + thickness}
-              <FaChevronDown />
-            </button>
-
-            &nbsp;
-            <button onClick={()=>navigate("/sofa4")}>View 3D</button>
+            <Row>
+              <Col md={5}>
+                <button
+                  className="chooseVarientButton mb-3 mt-2"
+                  onClick={() => handleShow()}
+                  style={{
+                    backgroundColor: "white",
+                    color: "var(--button-hover)",
+                    border: "2px solid #7fafcb",
+                    padding: "8px 16px",
+                    transition: "0.3s ease-in-out",
+                    borderRadius: "0.375rem ",
+                  }}
+                >
+                  {/* Choose Varity{`${category, selectedDimension , }`} */}
+                  {categorz + "," + selectedDimension + "," + thickness}
+                  <FaChevronDown />
+                </button>
+              </Col>
+              <Col md={2}>
+                {/* <button>View 3D</button> */}
+                <div class="threeSixtyDegreePic mb-2 mt-3">
+                  <img
+                    src={threeSixtyDegree}
+                    // style={threeSixtyDegreeStyle}
+                    style={{ height: "32px" }}
+                    alt="360° Button"
+                  />
+                </div>
+              </Col>
+            </Row>
           </div>
           <div className="chooseVarientButton">
             {/* Choose Varient  Modal */}
