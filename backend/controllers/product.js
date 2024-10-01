@@ -22,14 +22,11 @@ export const getOneProduct = async (req, res) => {
   console.log("req.params.productId", req.params.productId);
   try {
     const productId = parseInt(req.params.productId, 10);
-
     if (isNaN(productId)) {
       return res.status(400).json({ message: "Invalid product ID format" });
     }
-
     const product = await Product.findOne({ productId: productId });
     if (!product) return res.status(404).json({ message: "Product not found" });
-
     res.json(product);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -180,6 +177,80 @@ export const deleteProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+//update api
+export const updateProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const {
+      title,
+      price,
+      discountPrice,
+      collection_,
+      color,
+      category,
+      description,
+      LongDesc,
+      feature,
+      rating,
+      review,
+      offer,
+      images, // Now images is defined before being used
+      quantity_stock,
+      specifications, // Assuming specifications is part of req.body
+    } = req.body;
+
+
+    let parsedSpecifications;
+    if (typeof specifications === "string") {
+      try {
+        parsedSpecifications = JSON.parse(specifications);
+      } catch (error) {
+        return res
+          .status(400)
+          .json({ message: '"specifications" is not valid JSON' });
+      }
+    } else {
+      parsedSpecifications = specifications; // If it's already an object
+    }
+
+    // Find the product by ID and update the relevant fields
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      {
+        title,
+        price,
+        discountPrice,
+        collection_,
+        color,
+        category,
+        description,
+        LongDesc,
+        feature,
+        rating,
+        review,
+        offer,
+        images,
+        quantity_stock,
+        specifications: parsedSpecifications ? parsedSpecifications : [], // Parse specifications if necessary
+      },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Product updated successfully", product: updatedProduct });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 
 //orders
 export const getAllOrder = async (req, res) => {

@@ -7,6 +7,7 @@ export const DashboardContext = createContext();
 export const DashboardProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [orders, setOrders] = useState([]);
+  // const [neworder, setnewOrder] = useState([]);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
 
@@ -272,6 +273,7 @@ export const DashboardProvider = ({ children }) => {
         users,
         addUser,
         deleteUser,
+        // newOrder,
         orders,
         updateOrderStatus,
         categories,

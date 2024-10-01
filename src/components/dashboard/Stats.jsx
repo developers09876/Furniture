@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faUser, faListAlt, faBox, faDollarSign } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart, faUser, faListAlt, faBox } from '@fortawesome/free-solid-svg-icons';
+import { FaIndianRupeeSign } from "react-icons/fa6";
 import styled from 'styled-components';
 import { getTodayOrders, calculateTotalSales } from '../../utils/helpers';
 import { UNSAFE_DataRouterStateContext } from 'react-router-dom';
@@ -28,7 +29,7 @@ const BottomText = styled.div`
   color: ${props => props.theme.textColor};
 `;
 
-const Stats = ({ orders, users, products }) => {
+const Stats = ({ orders, users, products, neworder }) => {
   // const [newOrder, setNewOrder] = useState([]);
 
   // const OrdersCount = orders?.length;
@@ -65,7 +66,7 @@ const Stats = ({ orders, users, products }) => {
             <IconWrapper>
               <FontAwesomeIcon icon={faShoppingCart} />
             </IconWrapper>
-            <NumberText>{OrdersCount}</NumberText>
+            {/* <NumberText>{OrdersCount}</NumberText> */}
             <BottomText>Total Orders</BottomText>
           </StyledCard>
         </div>
@@ -81,7 +82,7 @@ const Stats = ({ orders, users, products }) => {
         <div className="col-md-4">
           <StyledCard>
             <IconWrapper>
-              <FontAwesomeIcon icon={faDollarSign} />
+              <FaIndianRupeeSign />
             </IconWrapper>
             <NumberText>{totalSales.toFixed(2)}</NumberText>
             <BottomText>Total Sales</BottomText>
@@ -90,7 +91,7 @@ const Stats = ({ orders, users, products }) => {
         <div className="col-md-4">
           <StyledCard>
             <IconWrapper>
-              <FontAwesomeIcon icon={faDollarSign} />
+              <FaIndianRupeeSign />
             </IconWrapper>
             <NumberText>{todaySales.toFixed(2)}</NumberText>
             <BottomText>Today&apos; Sales</BottomText>
