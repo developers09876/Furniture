@@ -256,7 +256,8 @@ const SingleProductPage = () => {
       top: 0,
       behavior: "smooth",
     });
-  });
+  }, []);
+
   if (!product) {
     return <Spinner />;
   }
