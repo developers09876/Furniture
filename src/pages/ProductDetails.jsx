@@ -354,7 +354,7 @@ console.log('imagesz', images)
             </button>
 
             &nbsp;
-            <button>View 3D</button>
+            <button onClick={()=>navigate("/sofa4")}>View 3D</button>
           </div>
           <div className="chooseVarientButton">
             {/* Choose Varient  Modal */}
