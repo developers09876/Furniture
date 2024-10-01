@@ -62,9 +62,11 @@ import Model from "./Ar/component/xr-gallery/XrGalleryContainer";
 import Sofas from "./Ar/component/Sofa";
 import Test from "./Ar/view";
 import UserResetPassword from "./User/UserResetPassword";
+import ButtonAnimation from "./components/ButtonAnimation";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
+      <Route path="/bt" element={<ButtonAnimation />} />
       <Route path="/" element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
