@@ -60,13 +60,14 @@ export const registerUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
+  console.log("name", email, password);
 
   try {
     const foundUser = await User.findOne({ email });
     if (!foundUser) {
       return res
         .status(HTTP_RESPONSE.NOT_FOUND.CODE)
-        .json({ error: "Invalid email or password..." });
+        .json({ error: "user not found" });
     }
 
     // check password match

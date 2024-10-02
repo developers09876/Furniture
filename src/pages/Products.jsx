@@ -127,6 +127,7 @@ const Products = () => {
   //   //   quantity_stock:"5"
   //   // },
   // ]);
+
   const { users, orders, products, fetchData } = useContext(DashboardContext);
 
   const [query, setQuery] = useState("");
@@ -142,7 +143,12 @@ const Products = () => {
   //     console.error("Error fetching products:", error);
   //   }
   // };
-
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
   // Filter products based on the query
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(query.toLowerCase())

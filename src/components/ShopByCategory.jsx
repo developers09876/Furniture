@@ -1,6 +1,7 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useEffect } from "react";
 
 import { Col, Container, Row } from "react-bootstrap";
 import img1 from "../assets/sofa.jpg";
@@ -10,6 +11,7 @@ import img4 from "../assets/chair.jpg";
 
 import { Card } from "antd";
 import '../Css-Pages/HomeCard.css'
+const [category, setCategory] = useState([]);
 
 function ShopByCategory() {
   const settings = {
@@ -18,7 +20,31 @@ function ShopByCategory() {
     slidesToShow: 5,
     slidesToScroll: 1,
   };
+  useEffect(() => {
+    fetchCategoriesData();
+  }, []);
 
+  const fetchCategoriesData = async () => {
+    try {
+      await axios
+        .get(`http://localhost:5000/products/${id}`)
+        .then((res) => {
+          fetchCategoriesData();
+          setCategory(res.data);
+          Swal.fire({
+            icon: "success",
+            tittle: "Success",
+
+          });
+        });
+    } catch (error) {
+      console.error("Error prouducts category record:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+      });
+    }
+  };
   const datas = [
     {
       image: img1,
@@ -27,6 +53,8 @@ function ShopByCategory() {
       price: "5000",
       discountPrice: "4000",
       description: "Comfortable Sofa",
+      category: "bedroom",
+
     },
     {
       image: img2,
@@ -92,7 +120,7 @@ function ShopByCategory() {
               <Row className="mt-3">
                 <Col sm={12} md={12}>
                   <Card
-                    className="card-container" 
+                    className="card-container"
                     style={{
                       padding: "10px",
                       border: "none",
