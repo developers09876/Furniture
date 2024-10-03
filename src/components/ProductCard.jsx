@@ -42,7 +42,7 @@ const ProductCard = ({
           }}
         >
           <div style={{ height: "auto" }}>
-            <Meta title={title} description={description.slice(0, 100)} />
+            <Meta title={title} description={description.slice(0, 70)} />
             <div
               className="mt-3"
               style={{ display: "flex", justifyContent: "center" }}
