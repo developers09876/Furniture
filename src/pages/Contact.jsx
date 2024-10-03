@@ -1,9 +1,9 @@
-import styled from 'styled-components';
-import Swal from 'sweetalert2';
-import Breadcrumb from '../components/Breadcrumb';
-import { useState } from 'react';
-import Button from '../components/Button';
-import emailjs from 'emailjs-com';
+import styled from "styled-components";
+import Swal from "sweetalert2";
+import Breadcrumb from "../components/Breadcrumb";
+import { useState } from "react";
+import Button from "../components/Button";
+import emailjs from "emailjs-com";
 
 const ContactSection = styled.section`
   display: flex;
@@ -25,13 +25,13 @@ const StyledMap = styled.div`
     width: 100%;
     border-radius: 0 0 10px 10px;
   }
-`
+`;
 
 const ContactFormWrapper = styled.div`
   width: 50%;
   padding: 8% 5% 10% 5%;
   // background-color: #fdf1e9;
-   background-color: var(--bgColor);
+  background-color: var(--bgColor);
   border-radius: 0 10px 10px 0;
 
   @media only screen and (max-width: 800px) {
@@ -78,54 +78,73 @@ const sendMessage = async (form) => {
     };
 
     await emailjs.send(
-      'service_vg2a0g3',
-      'template_vd0rq39',
+      "service_vg2a0g3",
+      "template_vd0rq39",
       templateParams,
-      'uR-pWmuRecgQJO4mA'
+      "uR-pWmuRecgQJO4mA"
     );
-
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error("Error sending email:", error);
   }
 };
 
-
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
+    name: "",
+    email: "",
+    message: "",
   });
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     await sendMessage(formData);
-
+    if ((email, email, message)) {
+      await axios.post("http://localhost:3000/enquiry", {
+        email,
+        email,
+        message,
+      });
+      setEmail("");
+      Swal.fire({
+        icon: "success",
+        title: "Subscribed",
+        text: "Thank you for subscribing to Our Newsletter",
+      });
+    }
     Swal.fire({
-      icon: 'success',
-      title: 'Form Submitted!',
-      text: 'Thank you for reaching out. We will get back to you soon.',
+      icon: "success",
+      title: "Form Submitted!",
+      text: "Thank you for reaching out. We will get back to you soon.",
     });
 
     // Reset the form data
     setFormData({
-      name: '',
-      email: '',
-      message: '',
+      name: "",
+      email: "",
+      message: "",
     });
   };
-
 
   return (
     <>
       <Breadcrumb />
       {/* <h1 className='text-center my-5 px-3'>Reach Out and Connect with Us</h1> */}
-      <h2 className='text-center my-5 px-3'>Contact with Us</h2>
+      <h2 className="text-center my-5 px-3">Contact with Us</h2>
 
       <ContactSection id="contact">
         <ContactBox className="contact-box">
           <StyledMap>
-            <div><iframe width="100%" height="500" src="https://maps.google.com/maps?width=100%25&amp;height=443&amp;hl=en&amp;q=bangalore,%20karnataka,%20india+(EShop)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a href="https://www.maps.ie/population/">Population Estimator map</a></iframe></div>
+            <div>
+              <iframe
+                width="100%"
+                height="500"
+                src="https://maps.google.com/maps?width=100%25&amp;height=443&amp;hl=en&amp;q=bangalore,%20karnataka,%20india+(EShop)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+              >
+                <a href="https://www.maps.ie/population/">
+                  Population Estimator map
+                </a>
+              </iframe>
+            </div>
           </StyledMap>
           <ContactFormWrapper className="contact-form-wrapper">
             <ContactForm onSubmit={handleFormSubmit}>
@@ -134,7 +153,9 @@ const Contact = () => {
                   type="text"
                   name="sender"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   placeholder="Name"
                   required
                 />
@@ -144,7 +165,9 @@ const Contact = () => {
                   type="text"
                   name="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   placeholder="Email"
                   required
                 />
@@ -153,17 +176,19 @@ const Contact = () => {
                 <TextArea
                   name="message"
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, message: e.target.value })
+                  }
                   placeholder="Message"
                   required
                 />
               </FormItem>
-              <Button  type='submit'>Send</Button>
+              <Button type="submit">Send</Button>
             </ContactForm>
           </ContactFormWrapper>
         </ContactBox>
       </ContactSection>
-      <br/>
+      <br />
     </>
   );
 };
