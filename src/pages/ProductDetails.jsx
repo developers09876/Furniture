@@ -270,6 +270,7 @@ const SingleProductPage = () => {
     description,
     category,
     LongDesc,
+    path_view,
     quantity_stock,
   } = product;
   return (
@@ -337,7 +338,7 @@ const SingleProductPage = () => {
             <span>Choose Mattress Dimensions</span>
             <br />
             <Row>
-              <Col md={5}>
+              <Col md={6}>
                 <button
                   className="chooseVarientButton mb-3 mt-2"
                   onClick={() => handleShow()}
@@ -361,8 +362,11 @@ const SingleProductPage = () => {
                   <img
                     src={threeSixtyDegree}
                     // style={threeSixtyDegreeStyle}
-                    style={{ height: "32px" }}
+                    style={{ height: "32px", cursor:"pointer" }}
                     alt="360° Button"
+                    onClick={()=>{
+                      navigate(`/${path_view}`)
+                    }}
                   />
                 </div>
               </Col>
