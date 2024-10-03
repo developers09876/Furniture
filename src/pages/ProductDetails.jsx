@@ -305,6 +305,7 @@ const SingleProductPage = () => {
         <div className="col-md-6 col-sm-12 mb-3">
           <img
             src={selectedImage}
+            style={{cursor:"zoom-in"}}
             alt={title}
             className="product-image"
             onClick={() => handleShowPic()}
@@ -466,7 +467,7 @@ const SingleProductPage = () => {
               </Button>
             </div>
           ) : (
-            <Button className="my-3" handleClick={() => navigate("/login")}>
+            <Button className="my-3" handleClick={() => navigate("/userlogin")}>
               login
             </Button>
           )}
