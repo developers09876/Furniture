@@ -1,7 +1,7 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useEffect } from "react";
+// import { useEffect, useState } from "react";
 
 import { Col, Container, Row } from "react-bootstrap";
 import img1 from "../assets/sofa.jpg";
@@ -11,7 +11,7 @@ import img4 from "../assets/chair.jpg";
 
 import { Card } from "antd";
 import '../Css-Pages/HomeCard.css'
-const [category, setCategory] = useState([]);
+
 
 function ShopByCategory() {
   const settings = {
@@ -20,35 +20,35 @@ function ShopByCategory() {
     slidesToShow: 5,
     slidesToScroll: 1,
   };
-  useEffect(() => {
-    fetchCategoriesData();
-  }, []);
+  // useEffect(() => {
+  //   fetchCategoriesData();
+  // }, []);
 
-  const fetchCategoriesData = async () => {
-    try {
-      await axios
-        .get(`http://localhost:5000/products/${id}`)
-        .then((res) => {
-          fetchCategoriesData();
-          setCategory(res.data);
-          Swal.fire({
-            icon: "success",
-            tittle: "Success",
+  // const fetchCategoriesData = async () => {
+  //   try {
+  //     await axios
+  //       .get(`http://localhost:5000/products/${id}`)
+  //       .then((res) => {
+  //         fetchCategoriesData();
+  //         setCategory(res.data);
+  //         Swal.fire({
+  //           icon: "success",
+  //           tittle: "Success",
 
-          });
-        });
-    } catch (error) {
-      console.error("Error prouducts category record:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-      });
-    }
-  };
+  //         });
+  //       });
+  //   } catch (error) {
+  //     console.error("Error prouducts category record:", error);
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //     });
+  //   }
+  // };
   const datas = [
     {
       image: img1,
-      title: "Matteress",
+      title: "Bed Room",
       id: "1",
       price: "5000",
       discountPrice: "4000",
@@ -58,7 +58,7 @@ function ShopByCategory() {
     },
     {
       image: img2,
-      title: "Sofa",
+      title: "Living",
       id: "2",
       price: "5000",
       discountPrice: "4000",
@@ -66,7 +66,7 @@ function ShopByCategory() {
     },
     {
       image: img3,
-      title: "Beds",
+      title: "Kitchen",
       id: "3",
       price: "5000",
       discountPrice: "4000",
@@ -74,7 +74,7 @@ function ShopByCategory() {
     },
     {
       image: img4,
-      title: "Pillow",
+      title: "Dining",
       id: "4",
       price: "5000",
       discountPrice: "4000",
@@ -82,7 +82,7 @@ function ShopByCategory() {
     },
     {
       image: img4,
-      title: "Table",
+      title: "Study",
       id: "5",
       price: "5000",
       discountPrice: "4000",
@@ -90,7 +90,7 @@ function ShopByCategory() {
     },
     {
       image: img4,
-      title: "Dinner",
+      title: "Kids",
       id: "6",
       price: "5000",
       discountPrice: "4000",
@@ -124,7 +124,6 @@ function ShopByCategory() {
                     style={{
                       padding: "10px",
                       border: "none",
-                      cursor:"pointer"
                     }}
                     cover={
                       <img
