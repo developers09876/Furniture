@@ -87,7 +87,12 @@ const Login = () => {
       [name]: value,
     }));
   };
-
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
   return (
     <>
       <Breadcrumb />

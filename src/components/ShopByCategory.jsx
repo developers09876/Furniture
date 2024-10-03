@@ -1,7 +1,7 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-// import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { Col, Container, Row } from "react-bootstrap";
 import img1 from "../assets/sofa.jpg";
@@ -10,91 +10,82 @@ import img3 from "../assets/bed.jpg";
 import img4 from "../assets/chair.jpg";
 
 import { Card } from "antd";
+
 import '../Css-Pages/HomeCard.css'
 
-
 function ShopByCategory() {
+  const navigate = useNavigate();
+  // const location = useLocation();
+  // const { category } = location.state || {};
+
+
+  // useEffect(() => {
+  //   if (category) {
+  //     console.log("Category:", category);
+  //   }
+  // }, []);
+
   const settings = {
     infinite: true,
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
   };
-  // useEffect(() => {
-  //   fetchCategoriesData();
-  // }, []);
 
-  // const fetchCategoriesData = async () => {
-  //   try {
-  //     await axios
-  //       .get(`http://localhost:5000/products/${id}`)
-  //       .then((res) => {
-  //         fetchCategoriesData();
-  //         setCategory(res.data);
-  //         Swal.fire({
-  //           icon: "success",
-  //           tittle: "Success",
-
-  //         });
-  //       });
-  //   } catch (error) {
-  //     console.error("Error prouducts category record:", error);
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Error!",
-  //     });
-  //   }
-  // };
   const datas = [
     {
       image: img1,
-      title: "Bed Room",
+      title: "Matteress",
       id: "1",
       price: "5000",
       discountPrice: "4000",
       description: "Comfortable Sofa",
-      category: "bedroom",
-
+      category: "Matteress",
     },
     {
       image: img2,
-      title: "Living",
+      title: "Sofa",
       id: "2",
       price: "5000",
       discountPrice: "4000",
       description: "Comfortable Sofa",
+      category: "Sofa",
     },
     {
       image: img3,
-      title: "Kitchen",
+      title: "Beds",
       id: "3",
       price: "5000",
       discountPrice: "4000",
       description: "Comfortable Sofa",
+      category: "Beds",
     },
     {
       image: img4,
-      title: "Dining",
+      title: "Pillow",
       id: "4",
       price: "5000",
       discountPrice: "4000",
       description: "Comfortable Sofa",
+      category: "Pillow",
     },
     {
       image: img4,
-      title: "Study",
+      title: "Table",
       id: "5",
       price: "5000",
       discountPrice: "4000",
       description: "Comfortable Sofa",
+      category: "Table",
     },
     {
       image: img4,
-      title: "Kids",
+      title: "Dinner",
       id: "6",
       price: "5000",
       discountPrice: "4000",
       description: "Comfortable Sofa",
+      category: "Dinner",
     },
   ];
 
@@ -124,18 +115,21 @@ function ShopByCategory() {
                     style={{
                       padding: "10px",
                       border: "none",
+                      cursor: "pointer",
                     }}
                     cover={
                       <img
                         src={data.image}
-                        alt="chair"
+                        alt={data.title}
                         style={{ height: "31vh", borderRadius: "10px" }}
                       />
                     }
+                    onClick={() => navigate(`/products`, {
+                      state: { category: data.category },
+                    })
+                    }
                   >
-                    <h6 style={{ textAlign: "center" }}>
-                      {data.title}
-                    </h6>
+                    <h6 style={{ textAlign: "center" }}>{data.title}</h6>
                   </Card>
                 </Col>
               </Row>

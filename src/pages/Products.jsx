@@ -1,19 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-
 import ProductsList from "../components/ProductsList";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import Breadcrumb from "../components/Breadcrumb";
-import img1 from "../assets/sofa.jpg";
-import img2 from "../assets/chair.jpg";
-import img3 from "../assets/bed.jpg";
-import img4 from "../assets/hero-bg.png";
 import { Row, Col } from "react-bootstrap";
 import { DashboardContext } from "../context/DashboardContext";
 import { useContext } from "react";
-
+import { useLocation } from "react-router-dom"
 // Styled Components
 const Container = styled.div`
   margin-top: 20px;
@@ -65,6 +60,7 @@ const SearchIcon = styled(FontAwesomeIcon)`
 `;
 
 const Products = () => {
+
   // const [products, setProducts] = useState([
   //   // {
   //   //   image: img1,
@@ -131,7 +127,10 @@ const Products = () => {
   const { users, orders, products, fetchData } = useContext(DashboardContext);
 
   const [query, setQuery] = useState("");
+  const location = useLocation()
+  const locationData = location.state.category
 
+  console.log('locationData', locationData)
   // useEffect(() => {
   //   fetchProducts();
   // }, []);

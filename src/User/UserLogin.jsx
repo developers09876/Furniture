@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -7,6 +7,7 @@ import Button from "../components/Button";
 import Breadcrumb from "../components/Breadcrumb";
 import { Input, Space } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+
 import {
   LoadingOutlined,
   SmileOutlined,
@@ -87,7 +88,12 @@ const UserLogin = () => {
       [name]: value,
     }));
   };
-
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
   return (
     <>
       <Breadcrumb />
