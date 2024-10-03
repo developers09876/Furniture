@@ -252,6 +252,7 @@ const Categories = () => {
     } catch (error) {}
   };
   const handleAddCategory = async (e) => {
+    // setCategoriesModel(false)}
     e.preventDefault();
     try {
       const response = await fetch("http://localhost:5000/Category/create", {
@@ -308,14 +309,14 @@ const Categories = () => {
             // key="submit"
             type="primary"
             onClick={() => {
-              handleAddCategoy();
+              handleAddCategory();
             }}
           >
             Add Category
           </Button>,
         ]}
       >
-        <AddCategory />
+        <AddCategory closeModal={() => setCategoriesModel(false)} />
       </Modal>
 
       <Modal

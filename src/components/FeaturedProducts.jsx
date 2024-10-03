@@ -104,7 +104,7 @@ const FeaturedProducts = () => {
                   className="link-underline link-underline-opacity-0 mb-5"
                   style={{ display: "flex", justifyContent: "end" }}
                 >
-                  <Button handleClick={() => navigate("/products ")}>All Products</Button>
+                  <Button handleClick={() => navigate("/products")}>All Products</Button>
                 </Link>
               </div>
             </>

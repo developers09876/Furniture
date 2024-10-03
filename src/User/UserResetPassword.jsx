@@ -7,15 +7,90 @@ const UserResetPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isEmailSubmitted, setIsEmailSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleEmailSubmit = (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
-    if (validateEmail(email)) {
-      setIsEmailSubmitted(true);
-    } else {
-      alert("Please enter a valid email address");
+    setLoading(true);
+
+    // Validate email...
+    try {
+      const response = await axios.post("http://localhost:5000/User/get", {
+        email,
+      });
+      if (response.data.exists) {
+        setIsEmailSubmitted(true);
+      } else {
+        alert("This email is not registered.");
+      }
+    } catch (error) {
+      console.error("Error checking email:", error);
+    } finally {
+      setLoading(false); // Always reset loading state
     }
   };
+
+  // const handleEmailSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!validateEmail(email)) {
+  //     alert("Please enter a valid email address");
+  //     return;
+  //   }
+
+  //   // else {
+  //   //   alert("Please enter a valid email address");
+  //   // }
+
+  //   // try {
+  //   //   const response = await axios.post("http://localhost:5000/user/register", {
+  //   //     email,
+  //   //   });
+  //   //   if (response.data.exists) {
+  //   //     setIsEmailSubmitted(true);
+  //   //   } else {
+  //   //   }
+  //   // } catch (error) {
+  //   //   console.error("Error checking email:", error);
+  //   //   alert("An error occurred. Please try again.");
+  //   // }
+
+  //   try {
+  //     const response = await axios.post("http://localhost:5000/user/register", {
+  //       email,
+  //     });
+
+  //     // Checking the response data
+  //     if (response.data.exists) {
+  //       // Email exists in the system, proceed to the next step
+  //       setIsEmailSubmitted(true);
+  //       alert("Email found! Proceeding to the next step.");
+  //     } else {
+  //       // Email does not exist
+  //       alert(
+  //         "This email is not registered in our system. Please try again or register a new account."
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Error checking email:", error);
+
+  //     if (error.response) {
+  //       const status = error.response.status;
+  //       const message = error.response.data?.message || "An error occurred.";
+
+  //       if (status === 500) {
+  //         alert("Server error occurred. Please try again later.");
+  //       } else if (status === 404) {
+  //         alert("API endpoint not found. Please check the URL.");
+  //       } else {
+  //         alert(message);
+  //       }
+  //     } else {
+  //       alert(
+  //         "Network error occurred. Please check your connection and try again."
+  //       );
+  //     }
+  //   }
+  // };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();

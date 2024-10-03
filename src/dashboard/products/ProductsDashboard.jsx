@@ -9,7 +9,6 @@ import Swal from "sweetalert2";
 import { DashboardContext } from "../../context/DashboardContext";
 import AddProduct from "./AddProduct";
 
-// styled components
 const StyledProducts = styled.div`
   margin: 20px;
   margin-left: 250px;
@@ -18,111 +17,18 @@ const StyledProducts = styled.div`
 `;
 
 const ProductDashboard = () => {
-  const { fetchData } = useContext(DashboardContext);
-  const [products, setProducts] = useState([]);
-  const [editProductsVisible, setEditProductsVisible] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [form] = Form.useForm();
-
+  // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
+  const [product, setProducts] = useState([]);
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/products/`);
+    axios
+      .get(`http://localhost:5000/products/`)
+      .then((response) => {
         setProducts(response.data);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error("Error fetching products:", error);
-      }
-    };
-    fetchProducts();
-  }, []);
-
-  const deleteRecordFromAPI = async (id) => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:5000/products/delete/${id}`
-      );
-
-      if (response.status === 200) {
-        const updatedProducts = products.filter((product) => product._id !== id);
-        setProducts(updatedProducts);
-
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: "Product has been deleted successfully.",
-        });
-      }
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "There was an error deleting the product. Please try again.",
       });
-    }
-  };
-
-  const handleDelete = (record) => {
-    Modal.confirm({
-      title: `Are you sure you want to delete ${record.title}?`,
-      content: `This action cannot be undone.`,
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "No",
-      onOk() {
-        deleteRecordFromAPI(record._id);
-      },
-    });
-  };
-
-  const editRecordFromAPI = async (id, record) => {
-    try {
-      await axios
-        .post(`http://localhost:5000/products/edit/${id}`, record)
-        .then((res) => {
-          Swal.fire({
-            icon: "success",
-            title: "Updated!",
-            text: `User has been updated successfully.`,
-          });
-
-          const updatedProducts = products.map((product) =>
-            product._id === id ? { ...product, ...record } : product
-          );
-          setProducts(updatedProducts);
-
-          setEditProductsVisible(false);
-        });
-    } catch (error) {
-      console.error("Error updating user:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "There was an error updating the user. Please try again.",
-      });
-    }
-  };
-
-  const handleEditSubmit = (values) => {
-    const productId = selectedProduct._id;
-
-    Modal.confirm({
-      title: "Confirm Update",
-      content: `Are you sure you want to save changes to ${selectedProduct.title}?`,
-      okText: "Yes",
-      cancelText: "No",
-      onOk: () => {
-        editRecordFromAPI(productId, values);
-        setEditProductsVisible(false);
-      },
-    });
-  };
-
-  const handleEditClick = (record) => {
-    setEditProductsVisible(true);
-    form.setFieldsValue(record);
-    setSelectedProduct(record);
-  };
+  });
 
   const columns = [
     {
@@ -153,7 +59,7 @@ const ProductDashboard = () => {
     {
       title: "Action",
       key: "Action",
-      render: (record) => (
+      render: (_, record) => (
         <div>
           <MdEdit
             style={{ fontSize: "20px", cursor: "pointer", marginRight: "10px" }}

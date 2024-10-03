@@ -14,9 +14,7 @@ const Dashboard = () => {
       {/* <Button className="w-25 ms-3" handleClick={() => fetchData()}>
         Refresh Data
       </Button> */}
-      <Stats users={users} orders={orders} products={products}
-      //  newOrder={newOrder} 
-      />
+      <Stats users={users} orders={orders} products={products} />
       {/* <OrdersChart /> */}
     </div>
   );

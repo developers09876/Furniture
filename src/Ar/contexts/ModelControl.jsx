@@ -4,13 +4,11 @@ import { createContext, useContext, useState, useEffect } from "react";
 const CharacterAnimationsContext = createContext({});
 
 export const CharacterAnimationsProvider = (props) => {
-  console.log("modelcontrol pops", props);
   const [IsDrag, SetDrag] = useState(false);
   const [IsPresenting, SetPresenting] = useState(false);
   const [currentColor, setCurrentColor] = useState("#ffffff");
   let path = window.location.pathname.substring(1);
   const [currentModelName, setCurrentModelName] = useState(path);
-  console.log("currentModelName", currentModelName);
   const { Color } = useControls({
     Color: {
       options: {
@@ -23,31 +21,31 @@ export const CharacterAnimationsProvider = (props) => {
         setCurrentColor(Val);
       },
     },
-    Model: {
-      value: currentModelName,
-      options: {
-        "Sofa 1": "sofa1",
-        "Sofa 2": "sofa2",
-        "Sofa 3": "sofa3",
-        "Sofa 4": "sofa4",
-        "Sofa 5": "sofa5",
-        "Sofa 6": "sofa6",
-        "Chair 1": "chair1",
-        "Chair 2": "chair2",
-        "Table 1": "table1",
-        "Table 2": "table2",
-        "Table 3": "table3",
-        "Table 4": "table4",
-        "Table 5": "table5",
-        "Lamp 1": "lamp1",
-        "Lamp 2": "lamp2",
-        "Kitchen 1": "kitchen1",
-        "Elevator 1": "elevator1",
-      },
-      onChange: (value) => {
-        setCurrentModelName(value);
-      },
-    },
+    // Model: {
+    //   value: currentModelName,
+    //   options: {
+    //     "Sofa 1": "sofa1",
+    //     "Sofa 2": "sofa2",
+    //     "Sofa 3": "sofa3",
+    //     "Sofa 4": "sofa4",
+    //     "Sofa 5": "sofa5",
+    //     "Sofa 6": "sofa6",
+    //     "Chair 1": "chair1",
+    //     "Chair 2": "chair2",
+    //     "Table 1": "table1",
+    //     "Table 2": "table2",
+    //     "Table 3": "table3",
+    //     "Table 4": "table4",
+    //     "Table 5": "table5",
+    //     "Lamp 1": "lamp1",
+    //     "Lamp 2": "lamp2",
+    //     "Kitchen 1": "kitchen1",
+    //     "Elevator 1": "elevator1",
+    //   },
+    //   onChange: (value) => {
+    //     setCurrentModelName(value);
+    //   },
+    // },
   });
 
   useEffect(() => {
