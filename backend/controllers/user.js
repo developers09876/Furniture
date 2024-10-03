@@ -167,3 +167,10 @@ export const updateUser = async (req, res) => {
     res.status(500).json({ message: "Server Error: " + error.message });
   }
 };
+
+//enquiry api
+export const enquiryUser = (req, res, next) => {
+  const { name, email, message } = req.body;
+
+  res.status(200).json({ status: "success" });
+};

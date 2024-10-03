@@ -17,9 +17,9 @@ import img1 from "../assets/sofa.jpg";
 import img2 from "../assets/chair.jpg";
 import img3 from "../assets/bed.jpg";
 import Amenity from "../assets/Amenity.png";
-import threeSixtyDegree from "../assets/360degere.jpg";
+// import threeSixtyDegree from "../assets/360degere.jpg";
+import threeSixtyDegreeAnimation from "../assets/360_Animation.gif";
 import Amenity_ET from "../assets/Amenity_ET.png";
-import "../Css-Pages/HomeCard.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -36,7 +36,8 @@ import { Radio } from "antd";
 import { ImYoutube } from "react-icons/im";
 import { IoIosArrowForward } from "react-icons/io";
 const { Group: RadioGroup, Button: RadioButton } = Radio;
-import "../Css-Pages/WallBackground.css";
+import "../Css-Pages/HomeCard.css";
+// import "../Css-Pages/WallBackground.css";
 
 const SingleProductPage = () => {
   const settings = {
@@ -339,9 +340,9 @@ const SingleProductPage = () => {
             <span>Choose Mattress Dimensions</span>
             <br />
             <Row>
-              <Col md={6}>
+              <Col md={5}>
                 <button
-                  className="chooseVarientButton mb-3 mt-2"
+                  className="chooseVarientButton mb-3 mt-3"
                   onClick={() => handleShow()}
                   style={{
                     backgroundColor: "white",
@@ -357,16 +358,16 @@ const SingleProductPage = () => {
                   <FaChevronDown />
                 </button>
               </Col>
-              <Col md={2}>
+              <Col md={3}>
                 {/* <button>View 3D</button> */}
-                <div class="threeSixtyDegreePic mb-2 mt-3">
+                <div class="threeSixtyDegreePic mb-2">
                   <img
-                    src={threeSixtyDegree}
+                    src={threeSixtyDegreeAnimation}
                     // style={threeSixtyDegreeStyle}
-                    style={{ height: "32px", cursor:"pointer" }}
+                    style={{ height: "70px", cursor: "pointer" }}
                     alt="360° Button"
-                    onClick={()=>{
-                      navigate(`/${path_view}`)
+                    onClick={() => {
+                      navigate(`/${path_view}`);
                     }}
                   />
                 </div>
@@ -466,7 +467,7 @@ const SingleProductPage = () => {
               </Button>
             </div>
           ) : (
-            <Button className="my-3" handleClick={() => navigate("/login")}>
+            <Button className="my-3" handleClick={() => navigate("/userlogin")}>
               login
             </Button>
           )}

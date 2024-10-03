@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import Button from './Button';
-import axios from 'axios';
-import { useState } from 'react';
-import Swal from 'sweetalert2';
+import styled from "styled-components";
+import Button from "./Button";
+import axios from "axios";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 const NewsletterSection = styled.section`
   background-color: ${(props) => props.theme.bgColor};
@@ -36,7 +36,7 @@ const EmailInput = styled.input`
   border-radius: ${(props) => props.theme.raduis};
   margin-right: 10px;
   width: 250px;
-  
+
   &:focus {
     outline: 1px solid ${(props) => props.theme.borderColor};
     border: 1px solid ${(props) => props.theme.borderColor};
@@ -46,21 +46,20 @@ const EmailInput = styled.input`
 `;
 
 const Newsletter = () => {
-
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState("");
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
     if (email) {
-      await axios.post('http://localhost:3000/newsletter', { email })
-      setEmail('')
+      await axios.post("http://localhost:3000/newsletter", { email });
+      setEmail("");
       Swal.fire({
-        icon: 'success',
-        title: 'Subscribed',
-        text: 'Thank you for subscribing to Our Newsletter',
+        icon: "success",
+        title: "Subscribed",
+        text: "Thank you for subscribing to Our Newsletter",
       });
     }
-  }
+  };
 
   return (
     <NewsletterSection>
@@ -69,7 +68,12 @@ const Newsletter = () => {
         Stay updated on our latest products and promotions.
       </NewsletterDescription>
       <NewsletterForm onSubmit={handleSubmit}>
-        <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Your email address" />
+        <EmailInput
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          type="email"
+          placeholder="Your email address"
+        />
         <Button className="my-2">Subscribe</Button>
       </NewsletterForm>
     </NewsletterSection>
