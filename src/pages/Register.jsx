@@ -408,7 +408,7 @@ const Register = () => {
       if (!passwordValid) {
         Swal.fire({
           title: "Error",
-          text: "Password does not meet the requirements.",
+          text: "password required this format above 10 characters eg:(ABCD@1234).",
           icon: "error",
         });
         return;
@@ -422,7 +422,7 @@ const Register = () => {
           password: password,
         };
 
-        const response = await axios.post(
+       await axios.post(
           "http://localhost:5000/user/register",
           userData,
           {
@@ -430,9 +430,7 @@ const Register = () => {
               "Content-Type": "application/json",
             },
           }
-        );
-
-        if (response.status === 200) {
+        ).then((res)=>{
           setIsRegistered(true);
 
           Swal.fire({
@@ -446,19 +444,16 @@ const Register = () => {
           setTimeout(() => {
             navigate("/userlogin");
           }, 1500);
-        } else {
-          Swal.fire({
-            title: "Error",
-            text: "Registration failed.",
-            icon: "error",
-          });
-        }
+        })
+
+       
+      
       } catch (error) {
         setIsRegistered(false);
         console.error("Error during registration:", error);
         Swal.fire({
           title: "Error",
-          text: "An error occurred during registration.",
+          text: error.response.data.message,
           icon: "error",
         });
       }

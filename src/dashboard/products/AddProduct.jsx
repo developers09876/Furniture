@@ -205,14 +205,12 @@ const AddProduct = () => {
             throw new Error("Failed to add product");
           }
         });
-      console.log("demo:", formData);
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Error",
         text: "Failed to add product. Please try again.",
       });
-      console.error("API Error:", error);
     }
   };
 
