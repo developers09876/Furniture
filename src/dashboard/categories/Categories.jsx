@@ -70,7 +70,7 @@ const Categories = () => {
           Swal.fire({
             icon: "success",
             title: "Deleted!",
-            text: `User has been deleted successfully.`,
+            text: `Caytegory has been deleted successfully.`,
           });
         });
     } catch (error) {

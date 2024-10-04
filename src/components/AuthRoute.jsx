@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-useLocat;
 
 const AuthRoute = () => {
   const { isAuthenticated } = useContext(AuthContext);
