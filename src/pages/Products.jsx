@@ -124,24 +124,50 @@ const Products = () => {
   //   // },
   // ]);
 
-  const { users, orders, products, fetchData } = useContext(DashboardContext);
-
+  const { users, orders } = useContext(DashboardContext);
+  // console.log("category", category)
   const [query, setQuery] = useState("");
-  const location = useLocation()
-  const locationData = location.state.category
 
-  console.log('locationData', locationData)
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, []);
-  // const fetchProducts = async () => {
-  //   try {
-  //     const response = await axios.get(`http://localhost:5000/products/`);
-  //     setProducts(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching products:", error);
-  //   }
-  // };
+  const location = useLocation()
+  const locationData = location?.state.category
+  console.log("locationData", locationData)
+
+  const [categorys, setCategory] = useState(locationData);
+  const [products, setProducts] = useState("");
+  const [productsFilter, setProductsFilter] = useState("");
+
+
+  // console.log('locationData', locationData)
+  useEffect(() => {
+    fetchProducts();
+  }, [locationData]);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/products/`);
+      console.log("productFilterresponse", response);
+
+      // Filter the products before setting them in state
+      const productFilter = response.data.filter((res) => res.category === locationData);
+
+      console.log("productFilter", productFilter);
+
+
+      // Set the products in state
+      setProducts(response.data);
+      setProductsFilter(productFilter);
+
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (locationData) {
+      setCategory(locationData);
+    }
+  }, [locationData]);
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -149,9 +175,18 @@ const Products = () => {
     });
   }, []);
   // Filter products based on the query
-  const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(query.toLowerCase())
-  );
+
+  // const filteredProducts = products.filter((product) =>
+  //   product.title.toLowerCase().includes(query.toLowerCase())
+  // );
+  // console.log("filteredProducts", filteredProducts)
+  // if (category) {
+  //   console.log('category', category)
+  //   return product.category.toLowerCase() === category.toLowerCase();
+  // } else {
+  //   return true;
+  // }
+
 
   return (
     <Container>
@@ -198,7 +233,7 @@ const Products = () => {
             Results For: <strong className="text-muted">{query}</strong>
           </h6>
         )}
-        <ProductsList products={filteredProducts} />
+        <ProductsList products={productsFilter} />
       </ResultsSection>
     </Container>
   );
