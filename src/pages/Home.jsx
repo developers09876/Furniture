@@ -17,7 +17,7 @@ const Home = () => {
       <ServicesSection />
       <DeliveryPartners />
       <Review />
-      <Newsletter />
+      {/* <Newsletter /> */}
     </>
   );
 };

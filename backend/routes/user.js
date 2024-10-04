@@ -14,7 +14,7 @@ import { isLoggedIn } from "../middleware.js";
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.route("/enquiry").post(enquiryUser);
+router.post("/enquiry", enquiryUser);
 // router.get("/:id", getUserById);
 router.get("/get", getAllUser);
 router.post("/update/:id", updateUser);

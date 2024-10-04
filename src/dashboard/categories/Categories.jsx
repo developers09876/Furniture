@@ -30,35 +30,29 @@ const Categories = () => {
   const [modal2Open, setCategoriesModel] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState([]);
-  const [data, setData] = useState([
-    {
-      key: "1",
-      name: "Ganesh",
-      description: "Lorem ipsum dolor sit amet.",
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      description: "Lorem ipsum dolor sit amet consectetur.",
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      description: "Lorem ipsum dolo amet consectetur.",
-    },
-  ]);
+  const { addCategory } = useContext(DashboardContext);
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+  });
+
+  const [responseMessage, setResponseMessage] = useState("");
 
   const [category, setCategory] = useState([]);
-
   useEffect(() => {
-    fetchCategoriesData();
+    fetchCategories();
   }, []);
 
-  const fetchCategoriesData = async () => {
+  const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/Category/");
-      setCategory(res.data);
-    } catch (error) {}
+      const response = await fetch("http://localhost:5000/Category");
+      const result = await response.json();
+      setCategory(result);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
   };
 
   const deleteRecordFromAPI = async (id) => {
@@ -134,15 +128,7 @@ const Categories = () => {
     }
   };
 
-  const updateData = (updatedUser) => {
-    const newData = data.map((item) =>
-      item._id === updatedUser._id ? updatedUser : item
-    );
-    setData(newData);
-  };
-
   const handleEdit = (record) => {
-    console.log("Editing record:", record); // Check if the correct user is being set
     setEditingUser(record);
     setEditModalVisible(true);
   };
@@ -183,9 +169,6 @@ const Categories = () => {
     },
   ];
 
-  const { addCategory } = useContext(DashboardContext);
-  const navigate = useNavigate();
-
   // const handleAddCategoy = async (e) => {
   //   alert("hiii");
   //   // e.preventDefault();
@@ -214,26 +197,6 @@ const Categories = () => {
   //   });
   // };
 
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-  });
-
-  const [responseMessage, setResponseMessage] = useState("");
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/Category");
-      const result = await response.json();
-      setCategories(result);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
-
   const handleFormChange = (e) => {
     setFormData({
       ...formData,
@@ -241,16 +204,6 @@ const Categories = () => {
     });
   };
 
-  useEffect(() => {
-    fetchCategoriesData1();
-  }, []);
-
-  const fetchCategoriesData1 = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/Category/");
-      category(res.data);
-    } catch (error) {}
-  };
   const handleAddCategory = async (e) => {
     // setCategoriesModel(false)}
     e.preventDefault();

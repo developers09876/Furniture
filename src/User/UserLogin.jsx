@@ -57,7 +57,7 @@ const UserLogin = () => {
           });
           // Redirect to the home page after a delay
           setTimeout(() => {
-            navigate("/user");
+            navigate("/");
           }, 1500);
         } else {
           // Display error message using SweetAlert

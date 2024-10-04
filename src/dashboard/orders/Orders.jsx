@@ -256,8 +256,7 @@ const UserOrders = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/products/order")
+    Api.get("products/order")
       .then((response) => {
         setData(response.data);
         setLoading(false);
