@@ -189,8 +189,6 @@ const AddProduct = () => {
 
   const addProduct = async () => {
     const imageUrls = await uploadImages();
-
-    // Add uploaded image URLs to form data
     const updatedFormData = {
       ...formData,
       images: imageUrls,
@@ -228,9 +226,9 @@ const AddProduct = () => {
         }}
         style={{ width: "100%" }}
       >
-        <div className="row" style={{ width: "100%" }}>
+        <div className="row" >
           {/* Form Fields */}
-          <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
+          <div className="form-group fw-bold my-2 col-lg-4 col-md-10">
             <label htmlFor="title">Title :</label>
             <input
               type="text"
