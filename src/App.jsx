@@ -55,7 +55,7 @@ import UserOrderDetails from "./User/UserOrders/UserOrderDetails";
 import UserLogin from "./User/UserLogin";
 import Whistlist from "./User/Whistlist/Whistlist";
 import Profile from "./User/Profile/Profile";
-
+import Ortholatex from "./Ar/newAr/Ortholatex";
 // import Testing from "./Ar/view";
 // router
 import Model from "./Ar/component/xr-gallery/XrGalleryContainer";
@@ -126,6 +126,7 @@ const router = createBrowserRouter(
       <Route path="/lamp2" element={<Model />} />
       <Route path="/kitchen1" element={<Model />} />
       <Route path="/elevator1" element={<Model />} />
+      <Route path="/ortholatex" element={<Ortholatex/>}/>
     </Route>
   )
 );
