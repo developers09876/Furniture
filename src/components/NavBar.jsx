@@ -58,7 +58,7 @@ const NavBar = () => {
         </Link> */}
           <h3 href="#" alt="Home" className="fw-bolder text-decoration-none">
             {/* <Logo fontSize={30} width={150} /> */}
-            Furniture
+            Restopedic
           </h3>
           <button
             className="navbar-toggler"

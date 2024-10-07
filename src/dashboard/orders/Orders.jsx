@@ -360,14 +360,15 @@ const UserOrders = () => {
         />
       </div>
       <Modal
-        title="Order Model"
+        // title="Order Model"
         open={isOrderModel}
         onOk={handleOk}
         onCancel={handleCancel}
+        footer={null}
         width={800}
       >
         <div>
-          <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
+          <Divider style={{ fontSize: "30px" }}>Order Details</Divider>
           {selectedOrder && (
             <Table
               columns={viewOrder}

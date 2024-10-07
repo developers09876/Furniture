@@ -6,6 +6,7 @@ import Review from "../components/Review";
 import ServicesSection from "../components/ServicesSection";
 import ShopByCategory from "../components/ShopByCategory";
 import HomeHeader from "./HomeHeader";
+import ScrollToTop from "react-scroll-to-top"
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
       <DeliveryPartners />
       <Review />
       {/* <Newsletter /> */}
+      <ScrollToTop smooth />
     </>
   );
 };

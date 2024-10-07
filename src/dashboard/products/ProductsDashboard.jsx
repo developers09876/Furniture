@@ -17,8 +17,9 @@ const StyledProducts = styled.div`
 `;
 
 const ProductDashboard = () => {
-  // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
+  const { products, deleteProduct, fetchData } = useContext(DashboardContext);
   const [product, setProducts] = useState([]);
+
   useEffect(() => {
     axios
       .get(`http://localhost:5000/products/`)

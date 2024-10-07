@@ -1,12 +1,11 @@
 import axios from "axios";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import ProductsList from "../components/ProductsList";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import Breadcrumb from "../components/Breadcrumb";
 import { Row, Col } from "react-bootstrap";
-import { DashboardContext } from "../context/DashboardContext";
 import { useLocation } from "react-router-dom";
 
 // Styled Components
@@ -81,19 +80,37 @@ const Products = () => {
     }
   };
 
+  // Handle search input change
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setQuery(query);
+
+    // Filter based on both category (locationData) and search query
+    let filtered = products;
+    if (locationData) {
+      filtered = products.filter((product) => product.category === locationData);
+    }
+
+
+    if (query) {
+      filtered = filtered.filter((product) =>
+        product.title.toLowerCase().includes(query)
+      );
+    }
+
+    setFilteredProducts(filtered);
+  };
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
   useEffect(() => {
     fetchProducts();
   }, [locationData]);
-
-
-  const handleSearch = (e) => {
-    setQuery(e.target.value);
-    const searchResults = products.filter((product) =>
-      product.title.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    setFilteredProducts(searchResults);
-  };
 
   return (
     <Container>
@@ -126,7 +143,7 @@ const Products = () => {
             <StyledInput
               type="text"
               placeholder="Search products"
-              value={query}
+              // value={query}
               onChange={handleSearch}
             />
             <SearchIcon icon={faSearch} className="text-muted" />

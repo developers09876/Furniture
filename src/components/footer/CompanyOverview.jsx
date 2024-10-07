@@ -4,9 +4,9 @@ const CompanyOverview = () => {
   return (
     <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mt-2">
       <div className="mb-2">
-        <a href="#" alt="Home"      className="fw-bold text-decoration-none">
+        <a href="#" alt="Home" className="fw-bold text-decoration-none">
           {/* <Logo fontSize={30} width={150} /> */}
-Furniture
+          Restopedic
         </a>
       </div>
       <p>
