@@ -19,6 +19,7 @@ import ScrollReveal from "scrollreveal";
 const FeaturedProducts = () => {
   const navigate = useNavigate()
   const { users, orders, products, fetchData } = useContext(DashboardContext);
+  console.log('products', products)
   const settings = {
     infinite: true,
     speed: 500,

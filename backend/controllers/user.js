@@ -34,7 +34,7 @@ export const registerUser = async (req, res) => {
     const registeredUser = await User.findOne({ email: email });
     if (registeredUser) {
       return res.status(HTTP_RESPONSE.BAD_REQUEST.CODE).json({
-        email: "A user has already registered with this email address.",
+        message: "A user has already registered with this email address.",
       });
     } else {
       const newUser = new User({
@@ -51,7 +51,7 @@ export const registerUser = async (req, res) => {
 
       return res
         .status(HTTP_RESPONSE.OK.CODE)
-        .json({ data: userWithoutpassword, token });
+        .json({ data: userWithoutpassword, token , message: "User created Succesfully",});
     }
   } catch (err) {
     console.log("error inside register user!", err);

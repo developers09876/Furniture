@@ -8,18 +8,18 @@ import '../Css-Pages/HomeCard.css'
 const reviews = [
   {
     id: 1,
-    name: 'John Doe',
-    content: 'The services provided by the officials was smooth and satisfactory. Products and goods delivered were up to satisfaction and compared to market price.',
+    name: 'John',
+    content: 'The services provided by the officials was smooth and satisfactory.Products and goods delivered were up to satisfaction and compared to market price.',
     rating: 4,
-    profilePic: 'https://media.istockphoto.com/id/1398385367/photo/happy-millennial-business-woman-in-glasses-posing-with-hands-folded.jpg?s=612x612&w=0&k=20&c=Wd2vTDd6tJ5SeEY-aw0WL0bew8TAkyUGVvNQRj3oJFw=',
+    profilePic: 'https://img.freepik.com/premium-photo/silhouette-person-inside-circular-frame-icon_1228868-17024.jpg?size=626&ext=jpg&ga=GA1.1.1207373600.1727696587&semt=ais_hybrid',
     bgImage: 'https://media.istockphoto.com/id/1398999936/vector/illustration-of-light-blue-dots-and-striped-circles-pattern-background.jpg?s=612x612&w=0&k=20&c=4277V1AOFLZoU4qsrM99_JrimDq5Cbg6Bxc7Fk7yUJY=', 
   },
   {
     id: 2,
-    name: 'Jane Smith',
+    name: 'Rajan',
     content: 'Have become a regular customer in a very short span of time. Very approachable staff, service and delivery on time.Satisfied with products,Timely delivery.',
     rating: 5,
-    profilePic: 'https://img.freepik.com/free-photo/young-woman-wearing-striped-shirt-eyeglasses_273609-13226.jpg',
+    profilePic: 'https://img.freepik.com/premium-photo/silhouette-person-inside-circular-frame-icon_1228868-17024.jpg?size=626&ext=jpg&ga=GA1.1.1207373600.1727696587&semt=ais_hybrid',
     bgImage: 'https://media.istockphoto.com/id/1398999936/vector/illustration-of-light-blue-dots-and-striped-circles-pattern-background.jpg?s=612x612&w=0&k=20&c=4277V1AOFLZoU4qsrM99_JrimDq5Cbg6Bxc7Fk7yUJY=',
   },
   {
@@ -27,7 +27,7 @@ const reviews = [
     name: 'pooja',
     content: 'We purchased so many products from durian and we would recommend Durian Furniture to everyone who needs quality and decent looking furniture.',
     rating: 5,
-    profilePic: 'https://t3.ftcdn.net/jpg/02/81/81/86/360_F_281818663_XXRCNuGktKeZsnknqWkKI0rR4JPWui3H.jpg',
+    profilePic: 'https://img.freepik.com/premium-photo/silhouette-person-inside-circular-frame-icon_1228868-17024.jpg?size=626&ext=jpg&ga=GA1.1.1207373600.1727696587&semt=ais_hybrid',
     bgImage: 'https://media.istockphoto.com/id/1398999936/vector/illustration-of-light-blue-dots-and-striped-circles-pattern-background.jpg?s=612x612&w=0&k=20&c=4277V1AOFLZoU4qsrM99_JrimDq5Cbg6Bxc7Fk7yUJY=',
   },
  ];
@@ -42,19 +42,19 @@ const ReviewCards = () => {
   return (
     <Container>
       <Row className="g-4">
-        <h1 style={{textAlign:'center',fontSize:'36.7px',fontStyle:'poppins,sans-serif',color:'#212529',textDecorationLine:'underline',textDecorationColor:'#7FAFEB',padding:'1px 1px 3px 3px'}}>Testimonial</h1>
+        <h2 style={{textAlign:'center',textDecorationLine:'underline',textDecorationColor:'#7FAFEB',padding:'1px 1px 3px 3px'}}>Testimonial</h2>
         {reviews.map((review) => (
           <Col lg={4} md={6} sm={12} key={review.id}> 
             <Card
               className="custom-card"
               hoverable
               // data-aos="zoom-out" 
-              style={{
-                borderRadius: '15px',
-                backgroundImage: `url(${review.bgImage})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
+              // style={{
+              //   borderRadius: '15px',
+              //   // backgroundImage: `url(${review.bgImage})`,
+              //   backgroundSize: 'cover',
+              //   backgroundPosition: 'center',
+              // }}
             >
               <div className="profile-container">
                 <img
