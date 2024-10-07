@@ -5,86 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button";
 // import { UserDashboardContext } from "../Context/UserDashContext";
-import { Divider, Table } from "antd";
+import { Divider, Modal, Table } from "antd";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { MdDelete, MdEdit } from "react-icons/md";
 import axios from "axios";
-
-const columns = [
-  {
-    title: "Sno",
-    render: (i, record, index) => <p>{index + 1}</p>,
-  },
-
-  {
-    title: "Status",
-    dataIndex: "order_status",
-  },
-  {
-    title: "Delivery Company",
-    dataIndex: "delivery_company",
-  },
-  {
-    title: "Date",
-    dataIndex: "created_at",
-  },
-  {
-    title: "Order Total",
-    dataIndex: "order_total",
-  },
-
-  {
-    title: "Action",
-    key: "Action",
-    render: (_, record) => (
-      <div>
-        <Row>
-          <Col md={3}>
-            <a>
-              <MdEdit style={{ fontSize: "20px" }} />
-            </a>
-          </Col>
-          <Col md={3}>
-            <a>
-              <MdDelete style={{ fontSize: "20px" }} />
-            </a>
-          </Col>
-        </Row>
-      </div>
-    ),
-  },
-];
-const data = [
-  {
-    key: "1",
-    status: "pending",
-    deliveryCompany: "amazon",
-    date: "11-12-24",
-    orderTotal: "121",
-  },
-  {
-    key: "2",
-    status: "shipped",
-    deliveryCompany: "amazon",
-    date: "11-12-24",
-    orderTotal: "121",
-  },
-  {
-    key: "3",
-    status: "delivered",
-    deliveryCompany: "amazon",
-    date: "11-12-24",
-    orderTotal: "121",
-  },
-  {
-    key: "3",
-    status: "canceled",
-    deliveryCompany: "amazon",
-    date: "11-12-24",
-    orderTotal: "121",
-  },
-];
+import { IoEyeOutline } from "react-icons/io5";
 
 // styled components
 const StyledOrders = styled.div`
@@ -140,14 +66,96 @@ const UserOrders = () => {
   //     ? orders
   //     : orders.filter((order) => order.order_status === selectedStatus);
   const [data, setData] = useState([]);
-  console.log("data1", data);
   const [loading, setLoading] = useState(true);
   const [dataFilter, setDataFilter] = useState([]);
+  const [isOrderModel, setOrderModel] = useState(false);
+  const [userOrder, setUserOrder] = useState([]);
+  console.log("dataqw", data);
+  const orderModel = (e) => {
+    console.log("e", e);
+    setOrderModel(true);
+    setUserOrder(e.items);
+  };
+  const handleOk = () => {
+    setOrderModel(false);
+  };
+  const handleCancel = () => {
+    setOrderModel(false);
+  };
+
+  const userOrderColumn = [
+    {
+      title: "Sno",
+      render: (i, record, index) => <p>{1 + index}</p>,
+    },
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+    {
+      title: "Sub Total",
+      dataIndex: "subTotal",
+      key: "subTotal",
+    },
+  ];
+  const columns = [
+    {
+      title: "Sno",
+      render: (i, record, index) => <p>{index + 1}</p>,
+    },
+
+    {
+      title: "Status",
+      dataIndex: "order_status",
+    },
+    {
+      title: "Delivery Company",
+      dataIndex: "delivery_company",
+    },
+    {
+      title: "Date",
+      dataIndex: "created_at",
+    },
+    {
+      title: "Order Total",
+      dataIndex: "order_total",
+    },
+
+    {
+      title: "View",
+      key: "Action",
+      render: (e) => (
+        <div>
+          <center>
+            <IoEyeOutline
+              style={{
+                fontSize: "20px",
+                cursor: "pointer",
+                marginRight: "10px",
+              }}
+              onClick={() => orderModel(e)}
+            />
+          </center>
+        </div>
+      ),
+    },
+  ];
   useEffect(() => {
     const id = localStorage.getItem("id");
 
     axios
-      .get(`http://localhost:5000/products/getOrder/${id}`)
+      .get(`${import.meta.env.VITE_MY_API}products/getOrder/${id}`)
       .then((response) => {
         setData(response.data);
         setDataFilter(response.data);
@@ -262,6 +270,27 @@ const UserOrders = () => {
           rowKey="id"
         />
       </div>
+
+      <Modal
+        title="Order Model"
+        open={isOrderModel}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        width={800}
+      >
+        <div>
+          <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
+          {userOrder && (
+            <Table
+              columns={userOrderColumn}
+              dataSource={userOrder}
+              loading={loading}
+              size="middle"
+              pagination={false}
+            />
+          )}
+        </div>
+      </Modal>
     </StyledOrders>
   );
 };

@@ -346,6 +346,8 @@ import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Breadcrumb from "../components/Breadcrumb";
+import { Input, Space } from "antd";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 
 const StyledRegister = styled.form`
   max-width: 350px;
@@ -520,18 +522,24 @@ const Register = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="password" className="form-label">
+          <label htmlFor="form2" className="form-label">
             Password
           </label>
-          <input
+          <Space direction="vertical" />
+          <Input.Password
+            // className="form-control flex"
+            style={{ height: "38px" }}
             type="password"
-            className="form-control"
             id="password"
             name="password"
+            placeholder=" password"
             value={formData.password}
             onChange={handleFormChange}
             onFocus={() => setPasswordFocused(true)}
             onBlur={() => setPasswordFocused(false)}
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
           />
           {passwordValid && !passwordFocused && (
             <PasswordStrengthMessage isValid={passwordValid}>
@@ -544,13 +552,29 @@ const Register = () => {
           <label htmlFor="confirmPassword" className="form-label">
             Confirm Password
           </label>
-          <input
+          {/* <input
             type="password"
             className="form-control"
             id="confirmPassword"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleFormChange}
+          /> */}
+          <Space direction="vertical" />
+          <Input.Password
+            // className="form-control flex"
+            style={{ height: "38px" }}
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder=" confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleFormChange}
+            onFocus={() => setPasswordFocused(true)}
+            onBlur={() => setPasswordFocused(false)}
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
           />
         </div>
 

@@ -167,6 +167,34 @@ export const updateUser = async (req, res) => {
   }
 };
 
+// reset password
+
+export async function resetUser(req, res) {
+  try {
+    const data = req.body;
+    const existUser = await User.findOne({ email: data.email });
+    console.log("existUser", existUser);
+    if (!existUser) {
+      return res.status(400).json({
+        message: "User  NOt found",
+        status: "Failed",
+      });
+    }
+
+    return res.status(200).json({
+      message: "User found",
+      data: existUser,
+      status: "Successful",
+    });
+  } catch (err) {
+    console.error("Error during login:", err);
+    return res.status(500).json({
+      message: "An error occurred during reset",
+      status: "Failed",
+    });
+  }
+}
+
 //enquiry api
 
 export async function enquiryUser(req, res, next) {
