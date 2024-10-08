@@ -17,7 +17,7 @@ const dbUrl = process.env.DB_URL;
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(morgan("dev"));
 app.use(cors({
-  origin:"*"
+  origin:"http://13.233.115.17/"
 }));
 app.use(express.json());
 // routes
