@@ -15,7 +15,7 @@ const UserResetPassword = () => {
 
     // Validate email...
     try {
-      const response = await axios.post("http://localhost:5000/User/get", {
+      const response = await axios.post("http://localhost:5000/user/get", {
         email,
       });
       if (response.data.exists) {

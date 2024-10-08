@@ -40,7 +40,7 @@ export const DashboardProvider = ({ children }) => {
     // }
 
     try {
-      const res = await axios.get("http://localhost:5000/User/get");
+      const res = await axios.get("http://localhost:5000/user/get");
       setUsers(res.data);
     } catch (error) {
       console.error("Error fetching users:", error);
