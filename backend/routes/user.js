@@ -10,6 +10,7 @@ import {
   enquiryUser,
   // getUserById,
   resetUser,
+  whistlistUser,
 } from "../controllers/user.js";
 import { isLoggedIn } from "../middleware.js";
 
@@ -22,5 +23,5 @@ router.post("/update/:id", updateUser);
 router.post("/resetUser", resetUser);
 router.post("/createCart", createCart);
 router.delete("/delete/:id", deleteUser);
-router.post("whistlist", whistlistUser);
+router.post("/whistlist", whistlistUser);
 export default router;
