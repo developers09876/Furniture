@@ -257,20 +257,7 @@ const Categories = () => {
         centered
         open={modal2Open}
         onCancel={() => setCategoriesModel(false)}
-        footer={[
-          <Button type="primary" onClick={() => setCategoriesModel(false)}>
-            Cancel
-          </Button>,
-          <Button
-            // key="submit"
-            type="primary"
-            onClick={() => {
-              handleAddCategory();
-            }}
-          >
-            Add Category
-          </Button>,
-        ]}
+        footer={null}
       >
         <AddCategory closeModal={() => setCategoriesModel(false)} />
       </Modal>

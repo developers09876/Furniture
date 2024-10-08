@@ -65,7 +65,7 @@ const Hero = () => {
   `;
 
   // ScrollReveal animation
-  
+
   useEffect(() => {
     ScrollReveal().reveal(".hero-description", {
       distance: "200px",
@@ -94,26 +94,26 @@ const Hero = () => {
 
   return (
     <>
-    <StyledHero className="container mb-5">
-      <div className="row">
-        <StyledDescription className="col mt-5 hero-description">
-          <StyledHeading className="pt-5 fw-bold">
-            Discover Endless <br />
-            Possibilitie
-          </StyledHeading>
-          <StyledParagraph className="mt-4 lh-lg">
-            Elevate your lifestyle with our premium furniture collection,
-            featuring high-quality and stylish pieces to enhance your home.
-          </StyledParagraph>
-          <Link to={'/products'}><Button>Shop Now</Button></Link>
-        </StyledDescription>
-        <ImageContainer className="col d-lg-block d-none p-3 hero-images">
-          <StyledImage src={hero} alt="hero" />
-          <StyledImage2 src={hero2} alt="hero-2" />
-        </ImageContainer>
-      </div>
-    </StyledHero>
-   
+      <StyledHero className="container mb-5">
+        <div className="row">
+          <StyledDescription className="col mt-5 hero-description">
+            <StyledHeading className="pt-5 fw-bold">
+              Discover Endless <br />
+              Possibilitie
+            </StyledHeading>
+            <StyledParagraph className="mt-4 lh-lg">
+              Elevate your lifestyle with our premium furniture collection,
+              featuring high-quality and stylish pieces to enhance your home.
+            </StyledParagraph>
+            <Link to={'/products'}><Button>Shop Now</Button></Link>
+          </StyledDescription>
+          <ImageContainer className="col d-lg-block d-none p-3 hero-images">
+            <StyledImage src={hero} alt="hero" />
+            <StyledImage2 src={hero2} alt="hero-2" />
+          </ImageContainer>
+        </div>
+      </StyledHero>
+
       {/* <Row style={{ marginTop: "3vh" }}>
         <div className="chair-card" style={{boxShadow:"5px 5px 5px"}}>
           <Col lg={12} className="chair-card-pic1">
@@ -143,7 +143,7 @@ const Hero = () => {
           </Col>
         </div>
       </Row> */}
-    
+
     </>
   );
 };

@@ -8,18 +8,19 @@ import {
   createOrder,
   deleteOrder,
   getOneOrder,
+  updateProduct,
   // getAllCategory,
   // createCategory,
   deleteProduct,
 } from "../controllers/product.js";
 import { isLoggedIn } from "../middleware.js";
 const router = Router();
-
 router.get("/getOne/:productId", getOneProduct);
 router.get("/", getAllProducts);
 router.post("/create", createProduct);
-// router.post('/create', upload.array('images', 5), createProduct);
+//router.post('/create', upload.array('images', 5), createProduct);
 router.delete("/delete/:id", deleteProduct);
+router.post("/edit/:id", updateProduct);
 router.get("/order", getAllOrder);
 router.get("/getOrder/:productId", getOneOrder);
 router.post("/createorder", createOrder);

@@ -1,6 +1,7 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { Col, Container, Row } from "react-bootstrap";
 import img1 from "../assets/sofa.jpg";
@@ -9,9 +10,21 @@ import img3 from "../assets/bed.jpg";
 import img4 from "../assets/chair.jpg";
 
 import { Card } from "antd";
+
 import '../Css-Pages/HomeCard.css'
 
 function ShopByCategory() {
+  const navigate = useNavigate();
+  // const location = useLocation();
+  // const { category } = location.state || {};
+
+
+  // useEffect(() => {
+  //   if (category) {
+  //     console.log("Category:", category);
+  //   }
+  // }, []);
+
   const settings = {
     infinite: true,
     speed: 500,
@@ -27,6 +40,7 @@ function ShopByCategory() {
       price: "5000",
       discountPrice: "4000",
       description: "Comfortable Sofa",
+      category: "Matteress",
     },
     {
       image: img2,
@@ -35,6 +49,7 @@ function ShopByCategory() {
       price: "5000",
       discountPrice: "4000",
       description: "Comfortable Sofa",
+      category: "Sofa",
     },
     {
       image: img3,
@@ -43,6 +58,7 @@ function ShopByCategory() {
       price: "5000",
       discountPrice: "4000",
       description: "Comfortable Sofa",
+      category: "Beds",
     },
     {
       image: img4,
@@ -51,6 +67,7 @@ function ShopByCategory() {
       price: "5000",
       discountPrice: "4000",
       description: "Comfortable Sofa",
+      category: "Pillow",
     },
     {
       image: img4,
@@ -59,6 +76,7 @@ function ShopByCategory() {
       price: "5000",
       discountPrice: "4000",
       description: "Comfortable Sofa",
+      category: "Table",
     },
     {
       image: img4,
@@ -67,6 +85,7 @@ function ShopByCategory() {
       price: "5000",
       discountPrice: "4000",
       description: "Comfortable Sofa",
+      category: "Dinner",
     },
   ];
 
@@ -92,23 +111,25 @@ function ShopByCategory() {
               <Row className="mt-3">
                 <Col sm={12} md={12}>
                   <Card
-                    className="card-container" 
+                    className="card-container"
                     style={{
                       padding: "10px",
                       border: "none",
-                      cursor:"pointer"
+                      cursor: "pointer",
                     }}
                     cover={
                       <img
                         src={data.image}
-                        alt="chair"
+                        alt={data.title}
                         style={{ height: "31vh", borderRadius: "10px" }}
                       />
                     }
+                    onClick={() => navigate(`/products`, {
+                      state: { category: data.category },
+                    })
+                    }
                   >
-                    <h6 style={{ textAlign: "center" }}>
-                      {data.title}
-                    </h6>
+                    <h6 style={{ textAlign: "center" }}>{data.title}</h6>
                   </Card>
                 </Col>
               </Row>
