@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -87,7 +87,12 @@ const Login = () => {
       [name]: value,
     }));
   };
-
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
   return (
     <>
       <Breadcrumb />

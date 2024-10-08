@@ -14,7 +14,7 @@ const Logo = ({ fontSize, width }) => {
         fill="url(#grad)"
         cursor='pointer'
       >
-        <tspan fill="#474747" style={{ fontFamily: "'Brush Script MT', cursive" }}>Furni</tspan>ture
+        <tspan fill="#474747" style={{ fontFamily: "'Brush Script MT', cursive" }}> Resto</tspan>pedic
       </text>
     </svg>
   );

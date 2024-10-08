@@ -70,9 +70,7 @@ const UserOrders = () => {
   const [dataFilter, setDataFilter] = useState([]);
   const [isOrderModel, setOrderModel] = useState(false);
   const [userOrder, setUserOrder] = useState([]);
-  console.log("dataqw", data);
   const orderModel = (e) => {
-    console.log("e", e);
     setOrderModel(true);
     setUserOrder(e.items);
   };
