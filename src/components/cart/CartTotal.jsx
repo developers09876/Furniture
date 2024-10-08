@@ -6,6 +6,7 @@ import { AuthContext } from "../../context/AuthContext";
 import Button from "../Button";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import "../../Css-Pages/HomeCard.css";
+import { Col, Row } from "react-bootstrap";
 
 const CartTotal = () => {
   const { cart, total } = useContext(CartContext);
@@ -36,12 +37,16 @@ const CartTotal = () => {
       </div> */}
       <div className="order-total-container">
         <article className="order-total-card">
-          <h4 className="order-total-heading">
-            Order Total :
-            <span className="order-total-amount">
-              <FaIndianRupeeSign /> {total}
-            </span>
-          </h4>
+          <Row>
+            <Col md={6}>
+              <p className="order-total-heading">Order Total :</p>
+            </Col>
+            <Col md={6}>
+              <span className="order-total-amount">
+                <FaIndianRupeeSign /> {total}
+              </span>
+            </Col>
+          </Row>
           <hr />
           {isAuthenticated ? (
             <Button
@@ -53,7 +58,7 @@ const CartTotal = () => {
           ) : (
             <Button
               className="login-btn"
-              handleClick={() => navigate("/login")}
+              handleClick={() => navigate("/userlogin")}
             >
               Login
             </Button>

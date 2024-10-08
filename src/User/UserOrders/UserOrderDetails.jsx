@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import { styled } from "styled-components";
-import { UserDashboardContext } from "../Context/UserDashContext";
+// import { UserDashboardContext } from "../Context/UserDashContext";
 
 const StyledOrder = styled.div`
   margin: 30px 270px;
@@ -10,7 +10,7 @@ const StyledOrder = styled.div`
 
 const UserOrderDetails = () => {
   const { id } = useParams();
-  const { orders } = useContext(UserDashboardContext);
+  // const { orders } = useContext(UserDashboardContext);
   const [order, setOrder] = useState(null);
 
   useEffect(() => {

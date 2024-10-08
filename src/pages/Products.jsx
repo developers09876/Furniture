@@ -131,17 +131,19 @@ const Products = () => {
 
   const [query, setQuery] = useState("");
 
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, []);
-  // const fetchProducts = async () => {
-  //   try {
-  //     const response = await axios.get(`http://localhost:5000/products/`);
-  //     setProducts(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching products:", error);
-  //   }
-  // };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_MY_API}products/`
+      );
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
   // Filter products based on the query
   const filteredProducts = products.filter((product) =>

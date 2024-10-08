@@ -89,7 +89,10 @@ export const CartProvider = ({ children }) => {
           items: cart.items.filter((cartItem) => cartItem.id !== productId),
         };
 
-        await axios.put(`http://localhost:3000/carts/${userID}`, updatedCart);
+        await axios.put(
+          `${import.meta.env.VITE_MY_API}carts/${userID}`,
+          updatedCart
+        );
         setCart(updatedCart);
         Swal.fire({
           icon: "success",

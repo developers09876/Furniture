@@ -36,7 +36,7 @@ const EditProduct = () => {
     const fetchProductDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/products/${id}`
+          `${import.meta.env.VITE_MY_API}products/${id}`
         );
         const productData = response.data;
 

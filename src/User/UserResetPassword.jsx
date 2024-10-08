@@ -1,11 +1,28 @@
-import { Input, Space } from "antd";
 import React, { useState } from "react";
 import Button from "../components/Button";
+import axios from "axios";
+import { Container, Form, Spinner, Alert } from "react-bootstrap";
 
 const UserResetPassword = () => {
+  const styles = {
+    container: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "80vh",
+      backgroundColor: "#f1f1f1",
+    },
+    form: {
+      backgroundColor: "#fff",
+      padding: "40px",
+      borderRadius: "8px",
+      boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+      width: "40%",
+      height: "auto",
+    },
+  };
+
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [isEmailSubmitted, setIsEmailSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -103,105 +120,90 @@ const UserResetPassword = () => {
       return;
     }
   };
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const validateEmail = (email) => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
   };
+
+  // const handleEmailSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!validateEmail(email)) {
+  //     setErrorMessage("Please enter a valid email address.");
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   setErrorMessage(null);
+  //   try {
+  //     const response = await axios.post(
+  //       `${import.meta.env.VITE_MY_API}user/resetUser`,
+  //       { email }
+  //     );
+  //     if (response.data.status === "Successful") {
+  //       setIsEmailSubmitted(true);
+  //       setErrorMessage(null);
+  //     } else {
+  //       setErrorMessage(response.data.message);
+  //     }
+  //   } catch (error) {
+  //     setErrorMessage(
+  //       "No account found with this email. Please sign up or enter Correct email..."
+  //     );
+  //     console.error("Error checking email:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div style={styles.container}>
-      <form
-        onSubmit={isEmailSubmitted ? handleFormSubmit : handleEmailSubmit}
-        style={styles.form}
-      >
-        <center>
-          <h4>Reset</h4>
-        </center>
-
-        {!isEmailSubmitted && (
-          <>
-            <div className="mb-4">
-              <div className="mb-4">
-                <label>Enter your email </label>
-              </div>
-              <input
+      <div style={styles.form}>
+        <h2>Reset Your Password</h2>
+        {isEmailSubmitted ? (
+          <Alert variant="success">Email found! Check your inbox.</Alert>
+        ) : (
+          <Form onSubmit={handleEmailSubmit}>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
-                className="form-control"
-                id="email"
-                name="email"
               />
-            </div>
-            <center>
-              <Button>Next</Button>
-            </center>
-          </>
-        )}
+            </Form.Group>
 
-        {isEmailSubmitted && (
-          <>
-            <div className="mb-4">
-              <label htmlFor="form2" className="form-label">
-                Password
-              </label>
-              <Space direction="vertical" />
-              <Input
-                className="form-control"
-                style={{ height: "38px" }}
-                placeholder="Password"
-                name="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label>Enter your Confirm Password </label>
-              <Space direction="vertical" />
-              <Input
-                className="form-control"
-                style={{ height: "38px" }}
-                placeholder="Confirm Password"
-                name="password"
-                id="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-            </div>
+            {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+
             <center>
-              <div>
-                <Button type="submit">Submit</Button>
-              </div>
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={loading}
+                className="mt-3"
+              >
+                {loading ? (
+                  <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />{" "}
+                    Loading...
+                  </>
+                ) : (
+                  "Submit"
+                )}
+              </Button>
             </center>
-          </>
+          </Form>
         )}
-      </form>
+      </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "80vh",
-    backgroundColor: "#f1f1f1",
-  },
-  form: {
-    backgroundColor: "#fff",
-    padding: "40px",
-    borderRadius: "8px",
-    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-    width: "40%",
-    height: "50vh",
-  },
 };
 
 export default UserResetPassword;
