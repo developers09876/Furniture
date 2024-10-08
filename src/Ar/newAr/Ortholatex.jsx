@@ -50,12 +50,10 @@ const Ortholatex = () => {
   const style = {
     display: "block",
     margin: "0 auto",
-    position: "absolute",
+    position: "fixed",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "100vw",
-    height: "100vh"
   };
   return (
     <Canvas
@@ -72,7 +70,7 @@ const Ortholatex = () => {
       />
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} />
-      <primitive object={earth.scene} scale={1.5} position={[0, 0, 0]} /> {/* Adjust scale */}
+      <primitive object={earth.scene} scale={0.3} position={[0, 0, 0]}/> {/* Adjust scale */}
     </Canvas>
   );
 };
