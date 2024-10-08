@@ -81,7 +81,7 @@ const SingleProductPage = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/products/getOne/${productID}`
+          `${import.meta.env.VITE_MY_API}products/getOne/${productID}`
         );
         setProduct(response.data);
         setImages(response.data.images);
@@ -306,7 +306,7 @@ const SingleProductPage = () => {
         <div className="col-md-6 col-sm-12 mb-3">
           <img
             src={selectedImage}
-            style={{cursor:"zoom-in"}}
+            style={{ cursor: "zoom-in" }}
             alt={title}
             className="product-image"
             onClick={() => handleShowPic()}

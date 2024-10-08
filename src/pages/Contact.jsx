@@ -108,7 +108,7 @@ const Contact = () => {
     };
 
     await axios
-      .post("http://localhost:5000/User/enquiry", details)
+      .post(`${import.meta.env.VITE_MY_API}User/enquiry`, details)
       .then((response) => {
         Swal.fire({
           icon: "success",

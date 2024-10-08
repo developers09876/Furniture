@@ -62,7 +62,7 @@ const AddProduct = () => {
   });
 
   useEffect(() => {
-    axios.get("http://localhost:5000/Category/").then((response) => {
+    axios.get(`${import.meta.env.VITE_MY_API}/Category/`).then((response) => {
       setCategoriesField(response.data);
     });
   }, []);
@@ -203,7 +203,7 @@ const AddProduct = () => {
 
     try {
       axios
-        .post("http://localhost:5000/products/create", updatedFormData)
+        .post(`${import.meta.env.VITE_MY_API}/products/create`, updatedFormData)
         .then((res) => {
           Swal.fire({
             icon: "success",
@@ -230,7 +230,7 @@ const AddProduct = () => {
         }}
         style={{ width: "100%" }}
       >
-        <div className="row" >
+        <div className="row">
           {/* Form Fields */}
           <div className="form-group fw-bold my-2 col-lg-4 col-md-10">
             <label htmlFor="title">Title :</label>

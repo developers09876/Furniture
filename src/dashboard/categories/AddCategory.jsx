@@ -57,7 +57,7 @@ const AddCategory = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:5000/Category");
+      const response = await fetch(`${import.meta.env.VITE_MY_API}Category`);
       const result = await response.json();
       setCategories(result);
     } catch (error) {
@@ -78,20 +78,23 @@ const AddCategory = () => {
 
   const fetchCategoriesData = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/Category/");
+      const res = await axios.get(`${import.meta.env.VITE_MY_API}Category/`);
       category(res.data);
     } catch (error) {}
   };
   const handleAddCategory = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/Category/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_MY_API}Category/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {

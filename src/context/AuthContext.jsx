@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }) => {
     try {
       if (email && password) {
         const res = await axios.post(
-          "http://localhost:5000/user/login",
+          `${import.meta.env.VITE_MY_API}user/login`,
           userData,
           {
             headers: {

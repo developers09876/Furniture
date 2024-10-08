@@ -39,7 +39,7 @@ export const DashboardProvider = ({ children }) => {
     // }
 
     try {
-      const res = await axios.get(`${Api}User/get`);
+      const res = await axios.get(`${import.meta.env.VITE_MY_API}User/get`);
       console.log("res", res);
       setUsers(res.data);
     } catch (error) {
@@ -111,7 +111,7 @@ export const DashboardProvider = ({ children }) => {
       }
       // Create a wishlist for the new user
       try {
-        await axios.post("http://localhost:3000/wishlists", {
+        await axios.post(`${import.meta.env.VITE_MY_API}wishlists`, {
           id: newUser.id,
           user_id: newUser.id,
           items: [],
@@ -136,7 +136,7 @@ export const DashboardProvider = ({ children }) => {
       });
 
       if (result.isConfirmed) {
-        await axios.delete(`http://localhost:3000/users/${userId}`);
+        await axios.delete(`${import.meta.env.VITE_MY_API}users/${userId}`);
         setUsers(users.filter((user) => user.id !== userId));
         showAlert("success", "User Deleted", "User deleted successfully.");
       }
@@ -148,7 +148,7 @@ export const DashboardProvider = ({ children }) => {
   // Orders
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
-      await axios.patch(`http://localhost:3000/orders/${orderId}`, {
+      await axios.patch(`${import.meta.env.VITE_MY_API}orders/${orderId}`, {
         order_status: newStatus,
       });
       fetchData();
@@ -161,7 +161,7 @@ export const DashboardProvider = ({ children }) => {
   const addCategory = async (newCategory) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/categories",
+        `${import.meta.env.VITE_MY_API}categories`,
         newCategory
       );
       setCategories([...categories, response.data]);
@@ -183,7 +183,9 @@ export const DashboardProvider = ({ children }) => {
       });
 
       if (result.isConfirmed) {
-        await axios.delete(`http://localhost:3000/categories/${categoryId}`);
+        await axios.delete(
+          `${import.meta.env.VITE_MY_API}categories/${categoryId}`
+        );
         setCategories(
           categories.filter((category) => category.id !== categoryId)
         );
@@ -201,7 +203,7 @@ export const DashboardProvider = ({ children }) => {
   const updateCategory = async (categoryId, updatedCategory) => {
     try {
       await axios.put(
-        `http://localhost:3000/categories/${categoryId}`,
+        `${import.meta.env.VITE_MY_API}categories/${categoryId}`,
         updatedCategory
       );
       fetchData();
@@ -219,7 +221,7 @@ export const DashboardProvider = ({ children }) => {
   const addProduct = async (newProduct) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/products",
+        `${import.meta.env.VITE_MY_API}products`,
         newProduct
       );
       setProducts([...products, response.data]);
@@ -241,7 +243,9 @@ export const DashboardProvider = ({ children }) => {
       });
 
       if (result.isConfirmed) {
-        await axios.delete(`http://localhost:3000/products/${productId}`);
+        await axios.delete(
+          `${import.meta.env.VITE_MY_API}products/${productId}`
+        );
         setProducts(products.filter((product) => product.id !== productId));
         showAlert(
           "success",
@@ -257,7 +261,7 @@ export const DashboardProvider = ({ children }) => {
   const updateProduct = async (productId, updatedProduct) => {
     try {
       await axios.put(
-        `http://localhost:3000/products/${productId}`,
+        `${import.meta.env.VITE_MY_API}products/${productId}`,
         updatedProduct
       );
       fetchData();

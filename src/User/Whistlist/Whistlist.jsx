@@ -62,6 +62,7 @@ const data = [
     description: "Lorem ipsum dolo amet consectetur.",
   },
 ];
+
 function Whistlist() {
   return (
     <StyledWhistlist>

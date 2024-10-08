@@ -424,32 +424,27 @@ const Register = () => {
           password: password,
         };
 
-       await axios.post(
-          "http://localhost:5000/user/register",
-          userData,
-          {
+        await axios
+          .post(`${import.meta.env.VITE_MY_API}user/register`, userData, {
             headers: {
               "Content-Type": "application/json",
             },
-          }
-        ).then((res)=>{
-          setIsRegistered(true);
+          })
+          .then((res) => {
+            setIsRegistered(true);
 
-          Swal.fire({
-            title: "Registration successful!",
-            text: "Redirecting to login...",
-            icon: "success",
-            timer: 1500,
-            showConfirmButton: false,
+            Swal.fire({
+              title: "Registration successful!",
+              text: "Redirecting to login...",
+              icon: "success",
+              timer: 1500,
+              showConfirmButton: false,
+            });
+
+            setTimeout(() => {
+              navigate("/userlogin");
+            }, 1500);
           });
-
-          setTimeout(() => {
-            navigate("/userlogin");
-          }, 1500);
-        })
-
-       
-      
       } catch (error) {
         setIsRegistered(false);
         console.error("Error during registration:", error);

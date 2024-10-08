@@ -51,7 +51,11 @@ export const registerUser = async (req, res) => {
 
       return res
         .status(HTTP_RESPONSE.OK.CODE)
-        .json({ data: userWithoutpassword, token , message: "User created Succesfully",});
+        .json({
+          data: userWithoutpassword,
+          token,
+          message: "User created Succesfully",
+        });
     }
   } catch (err) {
     console.log("error inside register user!", err);

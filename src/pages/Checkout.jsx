@@ -81,7 +81,7 @@ const Checkout = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:5000/products/createorder",
+        `${import.meta.env.VITE_MY_API}products/createorder`,
         order
       );
       if (response) {
@@ -110,7 +110,7 @@ const Checkout = () => {
       for (const item of cart.items) {
         const updatedStock =
           parseInt(item.quantity_stock) - parseInt(item.quantity);
-        await axios.patch(`http://localhost:3000/products/${item.id}`, {
+        await axios.patch(`${import.meta.env.VITE_MY_API}products/${item.id}`, {
           quantity_stock: updatedStock,
         });
         console.log(updatedStock);
@@ -138,7 +138,7 @@ const Checkout = () => {
   //   console.log("details", details);
 
   //   try {
-  //     await axios.post(`http://localhost:5000/products/createorder`, details, {
+  //     await axios.post(`${import.meta.env.VITE_MY_API}products/createorder`, details, {
   //       order_status: "delivered",
   //     });
   //     await updateProductStock();
@@ -159,7 +159,7 @@ const Checkout = () => {
 
   const handleOrderDelivered = async () => {
     try {
-      await axios.patch(`http://localhost:3000/orders/${orderID}`, {
+      await axios.patch(`${import.meta.env.VITE_MY_API}orders/${orderID}`, {
         order_status: "delivered",
       });
       Swal.fire({
