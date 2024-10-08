@@ -73,12 +73,12 @@ const router = createBrowserRouter(
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route element={<AuthRoute />}>
+        {/* <Route element={<AuthRoute />}> */}
           <Route path="/adminlogin" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/userlogin" element={<UserLogin />} />
           <Route path="/reset" element={<UserResetPassword />} />
-        </Route>
+        {/* </Route> */}
         <Route path="*" exact element={<NotFound />} />
       </Route>
       <Route path="/admin" element={<DashboardLayout />}>
