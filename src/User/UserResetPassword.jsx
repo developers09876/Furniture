@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from "../components/Button";
 import axios from "axios";
 import { Container, Form, Spinner, Alert } from "react-bootstrap";
+import Password from "antd/es/input/Password";
 
 const UserResetPassword = () => {
   const styles = {
