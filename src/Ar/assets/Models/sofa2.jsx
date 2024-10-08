@@ -14,7 +14,9 @@ export default function Model(props) {
     scl = props.scale;
     pos = props.position;
   }
-  const { nodes, materials } = useGLTF("/model/sofa2-transformed.glb");
+  const { nodes, materials } = useGLTF("/model/sofa2.glb");
+  console.log('nodes , materials', nodes , materials)
+
   return (
     <group
       ref={group}
@@ -44,4 +46,4 @@ export default function Model(props) {
   );
 }
 
-useGLTF.preload("/model/sofa2-transformed.glb");
+useGLTF.preload("/model/sofa2.glb");

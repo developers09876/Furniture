@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { styled } from "styled-components";
 import { DashboardContext } from "../../context/DashboardContext";
 import Button from "../../components/Button";
@@ -15,6 +15,8 @@ const StyledProducts = styled.div`
 
 const AddProduct = () => {
   const [selectedImages, setSelectedImages] = useState([]);
+  const [categoriesField, setCategoriesField] = useState([]);
+  console.log("firstW", categoriesField);
   const categories = [
     { id: "1", cat_name: "Sofa" },
     { id: "2", cat_name: "Chair" },
@@ -58,7 +60,12 @@ const AddProduct = () => {
       },
     ],
   });
-  console.log("firstz", formData);
+
+  useEffect(() => {
+    axios.get("http://localhost:5000/Category/").then((response) => {
+      setCategoriesField(response.data);
+    });
+  }, []);
 
   const handleFormChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -167,30 +174,28 @@ const AddProduct = () => {
   const handleDynamicAddClick = () => {
     // Make a deep copy of specifications to avoid mutating the state directly
     const updatedSpecifications = [...formData.specifications];
-    
+
     // Ensure that the dynamicFields array exists
     if (!updatedSpecifications[0].product_Details.dynamicFields) {
       updatedSpecifications[0].product_Details.dynamicFields = [];
     }
-  
+
     // Push new dynamic field
     updatedSpecifications[0].product_Details.dynamicFields.push({
       title: "",
       description: "",
     });
-  
+
     // Set the updated state without converting it to a JSON string
     setFormData({
       ...formData,
-      specifications: updatedSpecifications,  // No need for JSON.stringify here
+      specifications: updatedSpecifications, // No need for JSON.stringify here
     });
   };
   console.log("form data:", formData);
 
   const addProduct = async () => {
     const imageUrls = await uploadImages();
-
-    // Add uploaded image URLs to form data
     const updatedFormData = {
       ...formData,
       images: imageUrls,
@@ -200,21 +205,18 @@ const AddProduct = () => {
       axios
         .post("http://localhost:5000/products/create", updatedFormData)
         .then((res) => {
-          if (res.status === 200) {
-            alert("inside");
-            // navigate('/admin/products');
-          } else {
-            throw new Error("Failed to add product");
-          }
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Product Added Successfully",
+          });
         });
-      console.log("demo:", formData);
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Error",
         text: "Failed to add product. Please try again.",
       });
-      console.error("API Error:", error);
     }
   };
 
@@ -228,9 +230,9 @@ const AddProduct = () => {
         }}
         style={{ width: "100%" }}
       >
-        <div className="row" style={{ width: "100%" }}>
+        <div className="row" >
           {/* Form Fields */}
-          <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
+          <div className="form-group fw-bold my-2 col-lg-4 col-md-10">
             <label htmlFor="title">Title :</label>
             <input
               type="text"
@@ -251,9 +253,9 @@ const AddProduct = () => {
               onChange={handleFormChange}
             >
               <option value="">Select a category</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.cat_name}>
-                  {category.cat_name}
+              {categoriesField.map((categoryField) => (
+                <option key={categoryField.id} value={categoryField.name}>
+                  {categoryField.name}
                 </option>
               ))}
             </select>

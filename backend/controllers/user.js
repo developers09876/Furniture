@@ -5,7 +5,8 @@ import {
   checkPasswordMatch,
 } from "../utils/auth.js";
 import { HTTP_RESPONSE } from "../utils/config.js";
-
+import nodemailer from "nodemailer";
+import { google } from "googleapis";
 // create user without password=============================
 const createUserWithoutPass = async (user) => {
   const newUser = {
@@ -31,10 +32,9 @@ export const registerUser = async (req, res) => {
 
   try {
     const registeredUser = await User.findOne({ email: email });
-    console.log("vantea", registeredUser);
     if (registeredUser) {
       return res.status(HTTP_RESPONSE.BAD_REQUEST.CODE).json({
-        email: "A user has already registered with this email address.",
+        message: "A user has already registered with this email address.",
       });
     } else {
       const newUser = new User({
@@ -51,7 +51,7 @@ export const registerUser = async (req, res) => {
 
       return res
         .status(HTTP_RESPONSE.OK.CODE)
-        .json({ data: userWithoutpassword, token });
+        .json({ data: userWithoutpassword, token , message: "User created Succesfully",});
     }
   } catch (err) {
     console.log("error inside register user!", err);
@@ -118,14 +118,14 @@ export const createCart = async (req, res) => {
 
 export const getAllUser = async (req, res) => {
   console.log("resss", req.body);
-  const token = req.headers.authorization;
-
+  // const token = req.headers.authorization;
+  console.log("triggerd");
   try {
     const allUser = await User.find();
 
     res.status(200).json(allUser);
   } catch {
-    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: error.message });
   }
 };
 
@@ -168,9 +168,86 @@ export const updateUser = async (req, res) => {
   }
 };
 
-//enquiry api
-export const enquiryUser = (req, res, next) => {
-  const { name, email, message } = req.body;
+// reset password
 
-  res.status(200).json({ status: "success" });
-};
+export async function resetUser(req, res) {
+  try {
+    const data = req.body;
+    const existUser = await User.findOne({ email: data.email });
+    console.log("existUser", existUser);
+    if (!existUser) {
+      return res.status(400).json({
+        message: "User  NOt found",
+        status: "Failed",
+      });
+    }
+
+    return res.status(200).json({
+      message: "User found",
+      data: existUser,
+      status: "Successful",
+    });
+  } catch (err) {
+    console.error("Error during login:", err);
+    return res.status(500).json({
+      message: "An error occurred during reset",
+      status: "Failed",
+    });
+  }
+}
+
+//enquiry api
+
+export async function enquiryUser(req, res, next) {
+  try {
+    const data = req.body;
+
+    const details = {
+      name: data.name,
+      email: data.email,
+      message: data.message,
+    };
+    console.log("details", details);
+    console.log("process.env.EMAIL", process.env.EMAIL);
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      secure: true,
+      port: 465,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: "ganeshgm3113@gmail.com",
+      // to: `${details.email}`,
+      subject: "Furniture Enquiry",
+      html: `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+      <h2 style="color: #007bff;">New Enquiry</h2>
+      <p><strong>Name:</strong> ${details.name}</p>
+      <p><strong>Email:</strong> ${details.email}</p>
+      <p><strong>Message:</strong> ${details.message}</p>
+      <hr style="border: 1px solid #ddd;" />
+      <p>Thank you for reaching out to us!</p>
+      <p style="color: #007bff;">Furniture Team</p>
+    </div>
+  `,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent: " + info.response);
+
+    res.status(200).json({
+      message: "Enquiry sent successfully!",
+      details,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: ("Error sending enquiry", err),
+    });
+  }
+}

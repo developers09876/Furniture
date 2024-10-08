@@ -3,6 +3,7 @@ import { useThree } from "@react-three/fiber";
 import { Interactive, useHitTest, useXR } from "@react-three/xr";
 
 import { Fragment, useEffect, useRef, useState } from "react";
+import Ortholatex from "../../assets/Models/Ortholatex"
 import Chair1 from "../../assets/Models/Chair1";
 import Chair2 from "../../assets/Models/Chair2";
 import Lamp1 from "../../assets/Models/Lamp1";
@@ -104,6 +105,14 @@ const XrOverlay = () => {
         models.map(({ position, id }) => {
           return (
             <Fragment key={id}>
+              {currentModelName === "Ortholatex" && (
+                <Ortholatex
+                Ortholatex={isPresenting}
+                  position={position}
+                  rotation={rotation}
+                  scale={[zoom * 0.85, zoom * 0.85, zoom * 0.85]}
+                />
+              )}
               {currentModelName === "chair1" && (
                 <Chair1
                   chair={isPresenting}

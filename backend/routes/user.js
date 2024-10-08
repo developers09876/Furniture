@@ -9,6 +9,7 @@ import {
   updateUser,
   enquiryUser,
   // getUserById,
+  resetUser,
 } from "../controllers/user.js";
 import { isLoggedIn } from "../middleware.js";
 
@@ -18,6 +19,7 @@ router.post("/enquiry", enquiryUser);
 // router.get("/:id", getUserById);
 router.get("/get", getAllUser);
 router.post("/update/:id", updateUser);
+router.post("/resetUser", resetUser);
 router.post("/createCart", createCart);
 router.delete("/delete/:id", deleteUser);
 

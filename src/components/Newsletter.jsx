@@ -51,7 +51,7 @@ const Newsletter = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (email) {
-      await axios.post("http://localhost:3000/newsletter", { email });
+      await axios.post(`${import.meta.env.VITE_MY_API}newsletter`, { email });
       setEmail("");
       Swal.fire({
         icon: "success",

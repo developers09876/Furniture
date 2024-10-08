@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-
 export const DashboardContext = createContext();
 
 export const DashboardProvider = ({ children }) => {
@@ -40,14 +39,17 @@ export const DashboardProvider = ({ children }) => {
     // }
 
     try {
-      const res = await axios.get("http://localhost:5000/User/get");
+      const res = await axios.get(`${Api}User/get`);
+      console.log("res", res);
       setUsers(res.data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
 
     try {
-      const res = await axios.get("http://localhost:5000/products/order");
+      const res = await axios.get(
+        `${import.meta.env.VITE_MY_API}products/order`
+      );
       setOrders(res.data);
 
 
@@ -56,7 +58,9 @@ export const DashboardProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.get(`http://localhost:5000/products/`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_MY_API}products/`
+      );
       setProducts(response.data);
 
     } catch (error) {
@@ -95,12 +99,15 @@ export const DashboardProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/users", newUser);
+      const response = await axios.post(
+        `${import.meta.env.VITE_MY_API}users`,
+        newUser
+      );
       setUsers([...users, response.data]);
       showAlert("success", "User Added", "User added successfully.");
       // Create a cart for the new user
       try {
-        await axios.post("http://localhost:3000/carts", {
+        await axios.post(`${import.meta.env.VITE_MY_API}carts`, {
           id: newUser.id,
           user_id: newUser.id,
           items: [],

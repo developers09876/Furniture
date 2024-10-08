@@ -17,19 +17,8 @@ const StyledProducts = styled.div`
 `;
 
 const ProductDashboard = () => {
-  const { products, deleteProduct, fetchData } = useContext(DashboardContext);
-  const [product, setProducts] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/products/`)
-      .then((response) => {
-        setProducts(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching products:", error);
-      });
-  });
+  // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
+  const { users, orders, products, fetchData } = useContext(DashboardContext);
 
   const columns = [
     {
@@ -78,109 +67,13 @@ const ProductDashboard = () => {
   return (
     <StyledProducts>
       <h2 className="mb-4">All Products</h2>
-      <Link className="text-reset text-decoration-none" to={"/admin/products/add"}>
-        <Button className="my-4">Add Product</Button>
-      </Link>
-      <Table dataSource={products} columns={columns} rowKey="_id" />
-      <Modal
-        title="Edit Product"
-        centered
-        open={editProductsVisible}
-        onCancel={() => setEditProductsVisible(false)}
-        footer={[
-          <Button key="cancel" onClick={() => setEditProductsVisible(false)}>
-            Cancel
-          </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            onClick={() => form.submit()}
-          >
-            Save
-          </Button>,
-        ]}
+      <Link
+        className="text-reset text-decoration-none"
+        to={"/admin/products/add"}
       >
-        <Form
-          layout="vertical"
-          form={form}
-          onFinish={handleEditSubmit}
-          initialValues={selectedProduct}
-        >
-          <Form.Item
-            name="title"
-            label="Title"
-            rules={[{ required: true, message: "Please enter the Title" }]}
-          >
-            <Input placeholder="Enter Title" />
-          </Form.Item>
-
-          <Form.Item
-            name="price"
-            label="Price"
-            rules={[{ required: true, message: "Please enter the Price" }]}
-          >
-            <Input placeholder="Enter Price" />
-          </Form.Item>
-
-          <Form.Item
-            name="discountPrice"
-            label="Discount Price"
-            rules={[{ required: true, message: "Please enter the Discount Price" }]}
-          >
-            <Input placeholder="Enter Discount Price" />
-          </Form.Item>
-
-          <Form.Item
-            name="category"
-            label="Category"
-            rules={[{ required: true, message: "Please enter the Category" }]}
-          >
-            <Input placeholder="Enter Category" />
-          </Form.Item>
-
-          <Form.Item
-            name="description"
-            label="Description"
-            rules={[{ required: true, message: "Please enter the Description" }]}
-          >
-            <Input.TextArea placeholder="Enter Description" rows={4} />
-          </Form.Item>
-
-
-          <Form.Item
-            name="LongDesc"
-            label="Long Description"
-            rules={[{ required: true, message: "Please enter Long Description" }]}
-          >
-            <Input.TextArea placeholder="EnterLong Description" rows={4} />
-          </Form.Item>
-
-          <Form.Item
-            name="images"
-            label="Images"
-            rules={[{ required: true, message: "Please enter Images " }]}
-          >
-            <Input.TextArea placeholder="Enter  Images " rows={4} />
-          </Form.Item>
-
-          <Form.Item
-            name="quantity_stock"
-            label="Quantity Stock"
-            rules={[{ required: true, message: "Please enter Quantity Stock" }]}
-          >
-            <Input.TextArea placeholder="Enter  Quantity Stock" rows={4} />
-          </Form.Item>
-
-          <Form.Item
-            name="offer"
-            label="Offer"
-            rules={[{ required: true, message: "Please enter Offer " }]}
-          >
-            <Input.TextArea placeholder="Enter Offer" rows={4} />
-          </Form.Item>
-
-        </Form>
-      </Modal>
+        <Button className="my-4">Add Products</Button>
+      </Link>
+      <Table dataSource={products} columns={columns} />;
     </StyledProducts>
   );
 };

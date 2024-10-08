@@ -4,6 +4,7 @@ import Breadcrumb from "../components/Breadcrumb";
 import { useState } from "react";
 import Button from "../components/Button";
 import emailjs from "emailjs-com";
+import axios from "axios";
 
 const ContactSection = styled.section`
   display: flex;
@@ -94,37 +95,43 @@ const Contact = () => {
     email: "",
     message: "",
   });
+  console.log("first", formData);
 
   const handleFormSubmit = async (e) => {
+    console.log("first", e);
     e.preventDefault();
-    await sendMessage(formData);
-    if ((email, email, message)) {
-      await axios.post("http://localhost:3000/enquiry", {
-        email,
-        email,
-        message,
-      });
-      setEmail("");
-      Swal.fire({
-        icon: "success",
-        title: "Subscribed",
-        text: "Thank you for subscribing to Our Newsletter",
-      });
-    }
-    Swal.fire({
-      icon: "success",
-      title: "Form Submitted!",
-      text: "Thank you for reaching out. We will get back to you soon.",
-    });
 
-    // Reset the form data
-    setFormData({
-      name: "",
-      email: "",
-      message: "",
-    });
+    const details = {
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+    };
+
+    await axios
+      .post("http://localhost:5000/User/enquiry", details)
+      .then((response) => {
+        Swal.fire({
+          icon: "success",
+          title: "Mail Was Succesfully send",
+          showConfirmButton: true,
+          timer: 1000,
+        });
+        setFormData({
+          name: "",
+          email: "",
+          message: "",
+        });
+      })
+      .catch((error) => {
+        console.error("Error Accured:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Failed to send message",
+          text: "Please try again later",
+          showConfirmButton: true,
+        });
+      });
   };
-
   return (
     <>
       <Breadcrumb />

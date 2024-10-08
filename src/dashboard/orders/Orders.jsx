@@ -95,12 +95,10 @@ const UserOrders = () => {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [isOrderModel, setOrderModel] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState([]);
-  console.log("selectedOrder", selectedOrder);
 
   const orderModel = (e) => {
     setOrderModel(true);
     setSelectedOrder(e.items);
-    console.log("eitazzzzzzzzzzz", e.items);
   };
   const handleOk = () => {
     setOrderModel(false);
@@ -187,7 +185,7 @@ const UserOrders = () => {
     //   ),
     // },
     {
-      title: "Action",
+      title: "View",
       key: "Action",
       render: (e) => (
         <div>
@@ -257,7 +255,8 @@ const UserOrders = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/products/order")
+      .get(`${import.meta.env.VITE_MY_API}products/order`)
+
       .then((response) => {
         setData(response.data);
         setLoading(false);
