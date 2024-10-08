@@ -45,7 +45,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 
 const Ortholatex = () => {
-  const earth = useGLTF('/model/sofa2.glb');
+  const earth = useGLTF('/model/Ortholatex.glb');
 
   const style = {
     display: "block",
