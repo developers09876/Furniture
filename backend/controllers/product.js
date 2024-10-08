@@ -189,8 +189,8 @@ export const getAllOrder = async (req, res) => {
     const allorder = await order.find();
 
     res.status(200).json(allorder);
-  } catch {
-    res.status(500).json({ message: error.message });
+  } catch (e){
+    res.status(500).json({ message: e.message });
   }
 };
 
