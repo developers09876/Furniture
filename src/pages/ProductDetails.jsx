@@ -123,6 +123,11 @@ const SingleProductPage = () => {
     // setSelectedDimension("");
   };
 
+  const moveAr = () => {
+    navigate("/ortholatex");
+    window.location.reload(); // This will refresh the page after navigation
+}
+
   const handleDimensionChange = (value) => {
     setSelectedDimension(value);
   };
@@ -365,10 +370,9 @@ const SingleProductPage = () => {
                     // style={threeSixtyDegreeStyle}
                     style={{ height: "70px", cursor: "pointer" }}
                     alt="360° Button"
-                    onClick={() => {
-                      // navigate(`/${path_view}`);
-                     navigate("/ortholatex")
-                    }}
+                    onClick={()=>{moveAr()}
+                  
+                    }
                   />
                 </div>
               </Col>
