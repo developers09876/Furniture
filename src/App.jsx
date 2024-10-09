@@ -63,7 +63,6 @@ import ButtonAnimation from "./components/ButtonAnimation";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path="/bt" element={<ButtonAnimation />} />
       <Route path="/" element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -104,8 +103,8 @@ const router = createBrowserRouter(
 
       <Route path="*" exact element={<NotFound />} />
       <Route path="/" element={<Home />} />
-      
-      <Route path="/ortholatex" element={<Ortholatex/>}/>
+
+      <Route path="/ortholatex" element={<Ortholatex />} />
     </Route>
   )
 );

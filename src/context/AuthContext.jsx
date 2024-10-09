@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
       //   () => "abcd@123" === email && 12345 === password
       // );
 
-      if (email && password) {
+      if (email == "rajan@gmail.com" && password == "12345") {
         // const res = await axios.post(
         //   'http://localhost:5000/admin/login',
         //   userData,
@@ -89,8 +89,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loginUser = async (email, password) => {
-    console.log("emailzzuser", email, password);
-
     const userData = {
       email: email,
       password: password,

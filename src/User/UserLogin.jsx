@@ -41,7 +41,6 @@ const UserLogin = () => {
   };
   const handleLogin = async (e) => {
     e.preventDefault();
-
     const { email, password } = formData;
 
     if (!validateEmail(email && password)) {
