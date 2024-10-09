@@ -39,7 +39,7 @@ export const DashboardProvider = ({ children }) => {
     // }
 
     try {
-      const res = await axios.get(`${import.meta.env.VITE_MY_API}User/get`);
+      const res = await axios.get(`${import.meta.env.VITE_MY_API}user/get`);
       console.log("res", res);
       setUsers(res.data);
     } catch (error) {

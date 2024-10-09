@@ -72,6 +72,7 @@ const router = createBrowserRouter(
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/checkout" element={<Checkout />} />
+
         <Route element={<AuthRoute />}>
           <Route path="/adminlogin" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -103,7 +104,6 @@ const router = createBrowserRouter(
 
       <Route path="*" exact element={<NotFound />} />
       <Route path="/" element={<Home />} />
-
       <Route path="/ortholatex" element={<Ortholatex />} />
     </Route>
   )

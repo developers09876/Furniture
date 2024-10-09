@@ -48,9 +48,7 @@ const SingleProductPage = () => {
   };
 
   const { productID } = useParams();
-  console.log("productID", productID);
   const [product, setProduct] = useState([]);
-  console.log("productz", product);
   if (
     product &&
     Array.isArray(product.specification) &&
@@ -124,6 +122,11 @@ const SingleProductPage = () => {
     setCategory(value);
     // setSelectedDimension("");
   };
+
+  const moveAr = () => {
+    navigate("/ortholatex");
+    window.location.reload(); // This will refresh the page after navigation
+}
 
   const handleDimensionChange = (value) => {
     setSelectedDimension(value);
@@ -341,7 +344,7 @@ const SingleProductPage = () => {
             <span>Choose Mattress Dimensions</span>
             <br />
             <Row>
-              <Col md={5}>
+              <Col md={6}>
                 <button
                   className="chooseVarientButton mb-3 mt-3"
                   onClick={() => handleShow()}
@@ -367,9 +370,9 @@ const SingleProductPage = () => {
                     // style={threeSixtyDegreeStyle}
                     style={{ height: "70px", cursor: "pointer" }}
                     alt="360° Button"
-                    onClick={() => {
-                      navigate(`/${path_view}`);
-                    }}
+                    onClick={()=>{moveAr()}
+                  
+                    }
                   />
                 </div>
               </Col>

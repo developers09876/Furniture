@@ -41,7 +41,7 @@ const Users = () => {
   useEffect(() => {
     const fetchUsersData = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_MY_API}User/get`);
+        const res = await axios.get(`${import.meta.env.VITE_MY_API}user/get`);
         setUsers(res.data);
       } catch (error) {
         console.error("Error fetching users:", error);
