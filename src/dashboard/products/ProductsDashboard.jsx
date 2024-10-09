@@ -22,7 +22,7 @@ const ProductDashboard = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/products/`)
+      .get(`${import.meta.env.VITE_MY_API}products/`)
       .then((response) => {
         setProducts(response.data);
       })
