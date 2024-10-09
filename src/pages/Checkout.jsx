@@ -33,11 +33,12 @@ const Checkout = () => {
   const [orderID, setOrderID] = useState("");
   const [success, setSuccess] = useState(false);
   const [selectedDeliveryOption, setSelectedDeliveryOption] = useState("amana");
+  const [paymentMethod, setPaymentMethod] = useState("online");
+
   const navigate = useNavigate();
 
   let cartValue = cart.items[0];
   const userId = localStorage.getItem("id");
-  console.log("userId", userId);
   useEffect(() => {
     if (!isAuthenticated || cart.items.lenght == 0) {
       navigate("/cart");
@@ -105,6 +106,154 @@ const Checkout = () => {
     }
   };
 
+
+  const handleCOD = () => {
+    // Simulate COD confirmation logic here
+    alert("Order placed successfully with Cash on Delivery!");
+  };
+
+  // const loadRazorpay = async () => {
+  //   alert("inside")
+  //   // const options = {
+  //   //   key:"rzp_test_NYUPSveWybUfyq", // Replace with your Razorpay Key ID
+  //   //    amount: "5",
+  //   //    currency: "$",
+  //   //    name: "Restopeditic Furniture",
+  //   //    description: "Test Transaction",
+  //   //    order_id: "dsgfweilufbk1",
+  //   //    handler: function (response) {
+  //   //      console.log("Payment successful", response);
+  //   //      // Handle the successful payment here
+  //   //    },
+
+  //   //    prefill: {
+  //   //      name: "John Doe",
+  //   //      email: "johndoe@example.com",
+  //   //      contact: "9999999999",
+  //   //    },
+  //   //    notes: {
+  //   //      address: "Razorpay Corporate Office",
+  //   //    },
+  //   //    theme: {
+  //   //      color: "#61dafb",
+  //   //    },
+  //   //  };
+  //   const options = {
+  //     "key":"rzp_test_NYUPSveWybUfyq", // Enter the Key ID generated from the Dashboard
+  //      "currency":'INR',
+  //     //  "amount":data?.price*100,
+  //      "amount":100,
+  //     "name": "furniture Delivery",
+  //     // "image":logo,
+  //     "description":"address",
+  //      //This is a sample Order ID. Pass the id obtained in the response of Step 1
+  //     "handler": function (response){
+  //       PaymentHandler(response)
+  //     },
+  //     "prefill": {
+  //         "name":"Rajan",
+  //         "email":"abcd@gmail.com",
+  //         "contact":"123456789"
+  //     },
+      
+  //   };
+  //   try {
+  //     // const order = await axios.post("http://localhost:5000/create-order", {
+  //     //   amount: 500, // Amount in smallest currency unit (e.g., 500 paise = ₹5)
+  //     //   currency: "INR",
+  //     // });
+
+  //     // const { amount, id: order_id, currency } = order.data;
+
+  //       e.preventDefault()
+       
+  //       const res= await loadScripts('https://checkout.razorpay.com/v1/checkout.js');
+  //     if(!res){
+  //       alert('faild to load script')
+  //     }
+      
+       
+     
+
+  //     const paymentObject = new window.Razorpay(options);
+  //     paymentObject.open();
+  //   } catch (error) {
+  //     console.error("Error in loading Razorpay", error);
+  //   }
+  // };
+  const loadScripts = (src) => {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        reject(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+  const loadRazorpay = async (e) => {
+   // Prevent default button or form behavior
+    console.log("ln188")
+
+    // Ensure the Razorpay script is loaded
+    const res = await loadScripts('https://checkout.razorpay.com/v1/checkout.js');
+    if (!res) {
+      alert('Failed to load Razorpay SDK');
+      return;
+    }
+    console.log("ln1941")
+
+    // Razorpay payment options
+    const options = {
+      key: "rzp_test_NYUPSveWybUfyq", // Replace with your Razorpay Key ID
+      currency: 'INR',
+      amount: 100, // Amount in paise (100 paise = ₹1)
+      name: "Furniture Delivery",
+      description: "Payment for furniture",
+      handler: function (response) {
+        console.log("Payment successful", response);
+        PaymentHandler(response); // Trigger your payment success handler
+      },
+      prefill: {
+        name: "Rajan",
+        email: "abcd@gmail.com",
+        contact: "123456789",
+      },
+      theme: {
+        color: "#61dafb",
+      },
+    };
+  
+    // Check if Razorpay object is available
+    if (!window.Razorpay) {
+      alert("Razorpay SDK failed to load.");
+      return;
+    }
+  console.log("ln221")
+    // Open Razorpay checkout modal
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  };
+  
+
+
+const handlePaymentMethodChange = (e) => {
+  setPaymentMethod(e.target.value);
+};
+
+const handleSubmit = () => {
+  if (paymentMethod === "cod") {
+    handleCOD();
+    // createOrder()
+  } else {
+    alert("razhorpay")
+    loadRazorpay();
+    // createOrder()
+  }
+};
   const updateProductStock = async () => {
     try {
       for (const item of cart.items) {
@@ -257,6 +406,28 @@ const Checkout = () => {
                     onChange={(e) => setShippingAddress(e.target.value)}
                   />
                 </div>
+                <div>
+        <label>
+          <input
+            type="radio"
+            value="online"
+            checked={paymentMethod === "online"}
+            onChange={handlePaymentMethodChange}
+          />
+          Pay Online (Razorpay)
+        </label>
+      </div>
+      <div>
+        <label>
+          <input
+            type="radio"
+            value="cod"
+            checked={paymentMethod === "cod"}
+            onChange={handlePaymentMethodChange}
+          />
+          Cash on Delivery (COD)
+        </label>
+      </div>
               </form>
             </div>
             <div className="col-md-6">
@@ -329,7 +500,7 @@ const Checkout = () => {
                 <div className="card-footer text-center">
                   <Button
                     className="my-3 px-4"
-                    handleClick={createOrder}
+                    handleClick={handleSubmit}
                     disabled={!isFormValid()}
                   >
                     Place Order

@@ -13,7 +13,7 @@ export const getAllProducts = async (req, res) => {
     const allProduct = await Product.find();
 
     res.status(200).json(allProduct);
-  } catch {
+  } catch(error) {
     res.status(500).json({ message: error.message });
   }
 };

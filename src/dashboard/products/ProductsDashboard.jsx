@@ -17,9 +17,45 @@ const StyledProducts = styled.div`
 `;
 
 const ProductDashboard = () => {
-  // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
   const { users, orders, products, fetchData } = useContext(DashboardContext);
+  const deleteRecordFromAPI = async (id) => {
+    try {
+       await axios.delete(
+        `${import.meta.env.VITE_MY_API}products/delete/${id}`
+      ).then(()=>{
+        fetchUsersData();
 
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "User has been deleted successfully.",
+        });
+      })      
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "There was an error deleting the product. Please try again.",
+      });
+    }
+  };
+
+  const handleDelete = (record) => {
+    confirm({
+      title: `Are you sure you want to delete ?`,
+      icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,  
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        deleteRecordFromAPI(record._id);
+      },
+      onCancel() {
+        console.log("Delete cancelled");
+      },
+    });
+  };
   const columns = [
     {
       title: "ProductId",

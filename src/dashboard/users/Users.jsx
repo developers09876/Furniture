@@ -53,21 +53,17 @@ const Users = () => {
 
   const deleteRecordFromAPI = async (id) => {
     try {
-      const response = await axios.delete(
+       await axios.delete(
         `${import.meta.env.VITE_MY_API}user/delete/${id}`
-      );
-
-      if (response.status === 200) {
-        // Remove the user from the local state (filtered by _id from the API)
-        const updatedUsers = users.filter((user) => user._id !== id);
-        setUsers(updatedUsers);
+      ).then(()=>{
+        fetchUsersData();
 
         Swal.fire({
           icon: "success",
           title: "Deleted!",
           text: "User has been deleted successfully.",
         });
-      }
+      })      
     } catch (error) {
       console.error("Error deleting user:", error);
       Swal.fire({
@@ -90,7 +86,7 @@ const Users = () => {
         deleteRecordFromAPI(record._id); // Use the _id to call the API for deletion
       },
       onCancel() {
-        console.log("Deletion cancelled");
+        console.log("Delete cancelled");
       },
     });
   };
