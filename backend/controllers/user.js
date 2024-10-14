@@ -1,4 +1,5 @@
 import { User } from "../models/user.js";
+
 import {
   hashPassword,
   createToken,
@@ -6,6 +7,7 @@ import {
 } from "../utils/auth.js";
 import { HTTP_RESPONSE } from "../utils/config.js";
 import nodemailer from "nodemailer";
+
 import { google } from "googleapis";
 // create user without password=============================
 const createUserWithoutPass = async (user) => {
@@ -49,9 +51,11 @@ export const registerUser = async (req, res) => {
       const userWithoutpassword = await createUserWithoutPass(newUser);
       const token = await createToken({ id: userWithoutpassword.id });
 
-      return res
-        .status(HTTP_RESPONSE.OK.CODE)
-        .json({ data: userWithoutpassword, token , message: "User created Succesfully",});
+      return res.status(HTTP_RESPONSE.OK.CODE).json({
+        data: userWithoutpassword,
+        token,
+        message: "User created Succesfully",
+      });
     }
   } catch (err) {
     console.log("error inside register user!", err);
@@ -168,34 +172,6 @@ export const updateUser = async (req, res) => {
   }
 };
 
-// reset password
-
-export async function resetUser(req, res) {
-  try {
-    const data = req.body;
-    const existUser = await User.findOne({ email: data.email });
-    console.log("existUser", existUser);
-    if (!existUser) {
-      return res.status(400).json({
-        message: "User  NOt found",
-        status: "Failed",
-      });
-    }
-
-    return res.status(200).json({
-      message: "User found",
-      data: existUser,
-      status: "Successful",
-    });
-  } catch (err) {
-    console.error("Error during login:", err);
-    return res.status(500).json({
-      message: "An error occurred during reset",
-      status: "Failed",
-    });
-  }
-}
-
 //enquiry api
 
 export async function enquiryUser(req, res, next) {
@@ -222,7 +198,7 @@ export async function enquiryUser(req, res, next) {
     const mailOptions = {
       from: process.env.EMAIL,
       to: "ganeshgm3113@gmail.com",
-      // to: `${details.email}`,
+      // to: ${details.email},
       subject: "Furniture Enquiry",
       html: `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -251,3 +227,69 @@ export async function enquiryUser(req, res, next) {
     });
   }
 }
+
+// reset password
+
+export async function resetUsers(req, res) {
+  try {
+    const data = req.body;
+    const existUser = await User.findOne({ email: data.email });
+    console.log("existUser", existUser);
+    if (!existUser) {
+      return res.status(400).json({
+        message: "User  NOt found",
+        status: "Failed",
+      });
+    }
+
+    return res.status(200).json({
+      message: "User found",
+      data: existUser,
+      status: "Successful",
+    });
+  } catch (err) {
+    console.error("Error during login:", err);
+    return res.status(500).json({
+      message: "An error occurred during reset",
+      status: "Failed",
+    });
+  }
+}
+
+// Assuming you already have hashPassword defined somewhere in your project
+export async function resetUser(req, res) {
+  try {
+    const { email, newPassword } = req.body;
+    // Find user by email
+    const existUser = await User.findOne({ email });
+    console.log("existUser", existUser);
+
+    // Check if the user exists
+    if (!existUser) {
+      return res.status(400).json({
+        message: "User not found",
+        status: "Failed",
+      });
+    }
+
+    // Hash the new password
+    const passwordHashed = await hashPassword(newPassword);
+
+    // Update the user's password
+    existUser.password = passwordHashed;
+    await existUser.save();
+
+    // Respond with success
+    return res.status(200).json({
+      message: "Password reset successful",
+      status: "Successful",
+    });
+  } catch (err) {
+    console.error("Error during password reset:", err);
+    return res.status(500).json({
+      message: "An error occurred during reset",
+      status: "Failed",
+    });
+  }
+}
+

@@ -64,110 +64,102 @@ const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   // Fetch products from the backend
-  useEffect(() => {
-    fetchProducts();
-  }, []);
   const fetchProducts = async () => {
     try {
       const response = await axios.get(`http://localhost:5000/products/`);
       setProducts(response.data);
+
+
+      const productFilter = locationData
+        ? response.data.filter((product) => product.category === locationData)
+        : response.data;
+
+      setFilteredProducts(productFilter);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
 
+  // Handle search input change
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setQuery(query);
 
-  const productFilter = locationData
-    ? response.data.filter((product) => product.category === locationData)
-    : response.data;
 
-  setFilteredProducts(productFilter);
-} catch (error) {
-  console.error("Error fetching products:", error);
-}
+    let filtered = products;
+    if (locationData) {
+      filtered = products.filter((product) => product.category === locationData);
+    }
+
+    if (query) {
+      filtered = filtered.filter((product) =>
+        product.title.toLowerCase().includes(query)
+      );
+    }
+
+    setFilteredProducts(filtered);
   };
 
-// Handle search input change
-const handleSearch = (e) => {
-  const query = e.target.value.toLowerCase();
-  setQuery(query);
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
-  // Filter based on both category (locationData) and search query
-  let filtered = products;
-  if (locationData) {
-    filtered = products.filter((product) => product.category === locationData);
-  }
+  useEffect(() => {
+    fetchProducts();
+  }, [locationData]);
 
-
-  if (query) {
-    filtered = filtered.filter((product) =>
-      product.title.toLowerCase().includes(query)
-    );
-  }
-
-  setFilteredProducts(filtered);
-};
-
-useEffect(() => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-}, []);
-
-useEffect(() => {
-  fetchProducts();
-}, [locationData]);
-
-return (
-  <Container>
-    <Breadcrumb />
-    <Row>
-      <Col md={6} sm={12}>
-        <h3 style={{ textAlign: "end" }} className="mt-4">
-          All Products
-        </h3>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "end",
-            marginRight: "15px",
-          }}
-        >
+  return (
+    <Container>
+      <Breadcrumb />
+      <Row>
+        <Col md={6} sm={12}>
+          <h3 style={{ textAlign: "end" }} className="mt-4">
+            All Products
+          </h3>
           <div
             style={{
-              backgroundColor: `var(--button-hover)`,
-              padding: "1px 1px 3px 3px",
-              width: "20%",
               display: "flex",
-              flexDirection: "revert",
+              justifyContent: "end",
+              marginRight: "15px",
             }}
-          ></div>
-        </div>
-      </Col>
-      <Col md={6} sm={12}>
-        <SearchContainer className="my-4">
-          <StyledInput
-            type="text"
-            placeholder="Search products"
-            // value={query}
-            onChange={handleSearch}
-          />
-          <SearchIcon icon={faSearch} className="text-muted" />
-        </SearchContainer>
-      </Col>
-    </Row>
+          >
+            <div
+              style={{
+                backgroundColor: `var(--button-hover)`,
+                padding: "1px 1px 3px 3px",
+                width: "20%",
+                display: "flex",
+                flexDirection: "revert",
+              }}
+            ></div>
+          </div>
+        </Col>
+        <Col md={6} sm={12}>
+          <SearchContainer className="my-4">
+            <StyledInput
+              type="text"
+              placeholder="Search products"
+              value={query}
+              onChange={handleSearch}
+            />
+            <SearchIcon icon={faSearch} className="text-muted" />
+          </SearchContainer>
+        </Col>
+      </Row>
 
-    <ResultsSection>
-      {query && (
-        <h6>
-          Results For: <strong className="text-muted">{query}</strong>
-        </h6>
-      )}
-      <ProductsList products={filteredProducts} />
-    </ResultsSection>
-  </Container>
-);
+      <ResultsSection>
+        {query && (
+          <h6>
+            Results For: <strong className="text-muted">{query}</strong>
+          </h6>
+        )}
+        <ProductsList products={filteredProducts} />
+      </ResultsSection>
+    </Container>
+  );
 };
 
 export default Products;

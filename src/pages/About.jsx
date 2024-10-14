@@ -45,9 +45,9 @@ const About = () => {
             <h2>Our Journey</h2>
           </div>
           <p>
-            Welcome to 
-             {/* <Logo width={"115px"} fontSize={"30px"} /> */}
-             <span className="fw-bolder text-decoration-none" style={{color:"blue"}}>  Furniture </span>
+            Welcome to
+            {/* <Logo width={"115px"} fontSize={"30px"} /> */}
+            <span className="fw-bolder text-decoration-none" style={{ color: "blue" }}> Restopedic Furniture</span>
             , where our story is woven with the threads of passion, dedication, and a shared love for quality products. Our journey began with a simple yet profound idea — to create an online marketplace that goes beyond transactions; it's about building connections and delivering exceptional experiences.
           </p>
           <p>

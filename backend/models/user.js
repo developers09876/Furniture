@@ -15,3 +15,4 @@ const userSchema = new Schema({
   CreatedAt: { type: Date, default: Date.now },
 });
 export const User = mongoose.model("User", userSchema);
+

@@ -19,7 +19,7 @@ const Home = () => {
       <DeliveryPartners />
       <Review />
       {/* <Newsletter /> */}
-      <ScrollToTop smooth />
+      <ScrollToTop style={{ backgroundColor: 'grey' }} smooth />
     </>
   );
 };

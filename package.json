@@ -19,6 +19,7 @@
     "@react-three/fiber": "^8.10.1",
     "@react-three/xr": "^3.2.0",
     "antd": "^5.20.3",
+    "aos": "^2.3.4",
     "axios": "^1.6.2",
     "bootstrap": "^5.3.3",
     "emailjs-com": "^3.2.0",
