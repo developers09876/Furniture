@@ -79,6 +79,8 @@ const ProductDashboard = () => {
     const Data = {
       title: editingUser.title,
       description: editingUser.description,
+      price: editingUser.price,
+      category: editingUser.category,
     };
 
     try {
@@ -99,8 +101,6 @@ const ProductDashboard = () => {
         setEditModalVisible(false);
       }
     } catch (error) {
-      console.log("step2", error);
-
       console.error("Error updating record:", error);
 
       Swal.fire({
@@ -179,6 +179,24 @@ const ProductDashboard = () => {
             value={editingUser?.title}
             onChange={(e) =>
               setEditingUser({ ...editingUser, title: e.target.value })
+            }
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label>Price:</label>
+          <Input
+            value={editingUser?.price}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, price: e.target.value })
+            }
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label>Category:</label>
+          <Input
+            value={editingUser?.category}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, category: e.target.value })
             }
           />
         </div>
