@@ -2,22 +2,19 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import { Card } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
 import img1 from "../assets/sofa.jpg";
 import img2 from "../assets/chair.jpg";
 import img3 from "../assets/bed.jpg";
 import img4 from "../assets/chair.jpg";
 
-import { Card } from "antd";
-
-import '../Css-Pages/HomeCard.css'
+import "../Css-Pages/HomeCard.css";
 
 function ShopByCategory() {
   const navigate = useNavigate();
   // const location = useLocation();
   // const { category } = location.state || {};
-
 
   // useEffect(() => {
   //   if (category) {
@@ -28,7 +25,7 @@ function ShopByCategory() {
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 1,
   };
 
@@ -109,7 +106,7 @@ function ShopByCategory() {
           {datas.map((data, index) => (
             <div key={index}>
               <Row className="mt-3">
-                <Col sm={12} md={12}>
+                <Col sm={6} md={12}>
                   <Card
                     className="card-container"
                     style={{
@@ -124,9 +121,10 @@ function ShopByCategory() {
                         style={{ height: "31vh", borderRadius: "10px" }}
                       />
                     }
-                    onClick={() => navigate(`/products`, {
-                      state: { category: data.category },
-                    })
+                    onClick={() =>
+                      navigate(`/products`, {
+                        state: { category: data.category },
+                      })
                     }
                   >
                     <h6 style={{ textAlign: "center" }}>{data.title}</h6>

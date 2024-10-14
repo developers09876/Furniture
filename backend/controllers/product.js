@@ -3,6 +3,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { Product } from "../models/product.js"; // Adjust the path to your Product model
 import multer from "multer";
 const storage = multer.memoryStorage();
+import mongoose from "mongoose";
 const upload = multer({ storage });
 
 export const getAllProducts = async (req, res) => {
@@ -13,7 +14,7 @@ export const getAllProducts = async (req, res) => {
     const allProduct = await Product.find();
 
     res.status(200).json(allProduct);
-  } catch {
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
@@ -32,7 +33,6 @@ export const getOneProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 // export const createProduct = async (req, res) => {
 //   try {
@@ -163,7 +163,6 @@ export const createProduct = async (req, res) => {
   }
 };
 
-
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -178,11 +177,17 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
-
 //update api
+
 export const updateProduct = async (req, res) => {
+  console.log("req.body", req.body);
   try {
     const productId = req.params.id;
+    // Convert the productId to an ObjectId (if it's meant to match MongoDB's _id)
+    // if (!mongoose.Types.ObjectId.isValid(productId)) {
+    //   return res.status(400).json({ message: "Invalid product ID" });
+    // }
+
     const {
       title,
       price,
@@ -196,11 +201,10 @@ export const updateProduct = async (req, res) => {
       rating,
       review,
       offer,
-      images, // Now images is defined before being used
+      images,
       quantity_stock,
-      specifications, // Assuming specifications is part of req.body
+      specifications,
     } = req.body;
-
 
     let parsedSpecifications;
     if (typeof specifications === "string") {
@@ -212,12 +216,13 @@ export const updateProduct = async (req, res) => {
           .json({ message: '"specifications" is not valid JSON' });
       }
     } else {
-      parsedSpecifications = specifications; // If it's already an object
+      parsedSpecifications = specifications;
     }
 
-    // Find the product by ID and update the relevant fields
-    const updatedProduct = await Product.findByIdAndUpdate(
-      productId,
+    // Find the product by _id and update its fields
+
+    const updatedProduct = await Product.findOneAndUpdate(
+      productId, // Use the ObjectId for MongoDB's _id field
       {
         title,
         price,
@@ -233,7 +238,7 @@ export const updateProduct = async (req, res) => {
         offer,
         images,
         quantity_stock,
-        specifications: parsedSpecifications ? parsedSpecifications : [], // Parse specifications if necessary
+        specifications: parsedSpecifications || [],
       },
       { new: true } // Return the updated document
     );
@@ -242,25 +247,24 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    res
-      .status(200)
-      .json({ message: "Product updated successfully", product: updatedProduct });
+    res.status(200).json({
+      message: "Product updated successfully",
+      product: updatedProduct,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-
-
 //orders
 export const getAllOrder = async (req, res) => {
-  console.log("resss", req.body);
+  console.log("OrderDetail", req.body);
 
   try {
     const allorder = await order.find();
 
     res.status(200).json(allorder);
-  } catch (e){
+  } catch (e) {
     res.status(500).json({ message: e.message });
   }
 };

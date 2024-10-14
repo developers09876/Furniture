@@ -10,10 +10,7 @@ export const DashboardProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
 
-  // console.log('newOrder', newOrder.length, orders.length)
-
   useEffect(() => {
-
     fetchData();
   }, []);
 
@@ -51,8 +48,6 @@ export const DashboardProvider = ({ children }) => {
         `${import.meta.env.VITE_MY_API}products/order`
       );
       setOrders(res.data);
-
-
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -62,13 +57,9 @@ export const DashboardProvider = ({ children }) => {
         `${import.meta.env.VITE_MY_API}products/`
       );
       setProducts(response.data);
-
     } catch (error) {
       console.error("Error fetching products:", error);
     }
-
-
-
   };
 
   const showAlert = (icon, title, text) => {
@@ -299,7 +290,5 @@ export const DashboardProvider = ({ children }) => {
     >
       {children}
     </DashboardContext.Provider>
-
   );
 };
-

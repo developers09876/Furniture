@@ -121,9 +121,6 @@ export const createCart = async (req, res) => {
 };
 
 export const getAllUser = async (req, res) => {
-  console.log("resss", req.body);
-  // const token = req.headers.authorization;
-  console.log("triggerd");
   try {
     const allUser = await User.find();
 

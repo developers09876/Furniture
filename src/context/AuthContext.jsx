@@ -27,12 +27,14 @@ export const AuthProvider = ({ children }) => {
     }
 
     const storedUserID = Cookies.get("userID");
+    console.log("Stored userID from cookie:", storedUserID);
     if (storedUserID) {
       setUserIDState(storedUserID);
     }
   }, []);
 
   const setUserID = (id) => {
+    console.log("Setting userID:", id);
     setUserIDState(id);
     Cookies.set("userID", id, { expires: 1 });
   };

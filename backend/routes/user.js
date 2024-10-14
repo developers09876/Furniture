@@ -23,5 +23,5 @@ router.post("/update/:id", updateUser);
 router.post("/resetUser", resetUser);
 router.post("/createCart", createCart);
 router.delete("/delete/:id", deleteUser);
-router.post("/whistlist", whistlistUser);
+router.post("/whistlists", whistlistUser);
 export default router;
