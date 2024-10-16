@@ -17,6 +17,7 @@ import {
 
 // pages
 import Home from "./pages/Home";
+import Cards from "./pages/Cards";
 import About from "./pages/About";
 import Products from "./pages/Products";
 import Login from "./pages/Login";
@@ -69,6 +70,7 @@ const router = createBrowserRouter(
       <Route path="/bt" element={<ButtonAnimation />} />
       <Route path="/" element={<MainLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/card" element={<Cards />} />
         <Route path="/about" element={<About />} />
         <Route path="/products" element={<Products />} />
         <Route path="/contact" element={<Contact />} />
@@ -126,7 +128,7 @@ const router = createBrowserRouter(
       <Route path="/lamp2" element={<Model />} />
       <Route path="/kitchen1" element={<Model />} />
       <Route path="/elevator1" element={<Model />} />
-      <Route path="/ortholatex" element={<Ortholatex/>}/>
+      <Route path="/ortholatex" element={<Ortholatex />} />
     </Route>
   )
 );
