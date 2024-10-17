@@ -17,21 +17,17 @@ import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
 import NavBar1 from "./NavBar1";
 import { CgProfile } from "react-icons/cg";
+import { Input } from "antd"; // Ant Design Input
 import "./../Css-Pages/Navbr.css";
+
 // styles for links
 const StyledLink = styled(NavLink)`
   border-bottom: transparent solid 3px;
   transition: ${(props) => props.theme.transition};
 
   &:hover {
-    // border-bottom-color: ${(props) => props.theme.borderColor};
     border-bottom-color: var(--button-hover);
   }
-  // &.active {
-  //   // border-bottom-color: ${(props) => props.theme.borderColor};
-  //   border-bottom-color: var(--button-hover);
-
-  // }
 
   @media (max-width: 991.98px) {
     /* Medium screens and below */
@@ -49,14 +45,11 @@ const NavBar = () => {
   const { totalItems } = useContext(CartContext);
   const { total } = useContext(WishlistContext);
 
-  // State to hold the username
   const [username, setUsername] = useState("");
 
-  // Fetch the username from localStorage on component mount
   useEffect(() => {
     const storedUsername = localStorage.getItem("name");
     if (storedUsername) {
-      // Capitalize the first letter of the username
       const formattedUsername =
         storedUsername.charAt(0).toUpperCase() + storedUsername.slice(1);
       setUsername(formattedUsername);
@@ -82,6 +75,15 @@ const NavBar = () => {
               style={{ fontSize: "30px", width: "150px" }}
             />
           </h3>
+
+          <div style={{ marginLeft: "30px", flex: 1 }}>
+            <Input.Search
+              placeholder="Search products..."
+              onSearch={(value) => console.log(value)}
+              style={{ width: 250 }}
+            />
+          </div>
+
           <button
             className="navbar-toggler"
             type="button"
@@ -102,19 +104,16 @@ const NavBar = () => {
               </li>
               <li className="nav-item m-2">
                 <StyledLink className="nav-link" to="/about">
-                  {/* /about */}
                   About
                 </StyledLink>
               </li>
               <li className="nav-item m-2">
                 <StyledLink className="nav-link" to="/products ">
-                  {/* /products */}
                   Products
                 </StyledLink>
               </li>
               <li className="nav-item m-2">
                 <StyledLink className="nav-link" to="/contact">
-                  {/* /contact */}
                   Contact
                 </StyledLink>
               </li>
@@ -128,7 +127,7 @@ const NavBar = () => {
               {isUser && (
                 <li className="nav-item m-2">
                   <StyledLink className="nav-link" to="/user/orders">
-                    user Dashboard
+                    User Dashboard
                   </StyledLink>
                 </li>
               )}
@@ -161,7 +160,9 @@ const NavBar = () => {
                 </Button>
               )}
               <div>
-                <CgProfile style={{ width: '40px', height: '40px', marginLeft: '30px' }} />
+                <CgProfile
+                  style={{ width: "40px", height: "40px", marginLeft: "30px" }}
+                />
                 {isAuthenticated && username && (
                   <span
                     style={{
@@ -184,4 +185,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-

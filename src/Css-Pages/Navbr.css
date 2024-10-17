@@ -136,3 +136,12 @@ ul {
 .dropdown-menu li:hover {
   background-color: #f8f8f8;
 }
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block;
+}
+
+/* Adjust the style as necessary for hover effects */
+.dropdown-menu > li > .dropdown-item:hover,
+.dropdown-submenu:hover > .dropdown-item {
+  background-color: var(--bgColor);
+}

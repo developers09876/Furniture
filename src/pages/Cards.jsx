@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Typography, Space, Button } from 'antd';
-import { Carousel } from 'antd';
+import { Row, Col, Typography, Space } from 'antd';
 import styled from 'styled-components';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -13,6 +12,7 @@ import image5 from "../assets/Wakefit.png";
 import image6 from "../assets/Mega_sale.png";
 import image7 from "../assets/RBLBank-logo.png";
 import image8 from "../assets/idfc-logo.png";
+import '../Css-Pages/HomeCard.css';
 
 const { Text } = Typography;
 
@@ -98,9 +98,8 @@ const settings = {
     speed: 2000,
     autoplaySpeed: 1000,
     cssEase: "linear",
-
+    arrows: false,
 };
-
 
 const calculateTimeLeft = () => {
     let now = new Date();
@@ -172,13 +171,6 @@ const Sale = () => {
                                     </div>
                                 </Slider>
                             </div>
-                            {/* <div style={{ display: 'flex', flexDirection: "row-reverse", alignItems: "center", padding: '0 10px' }}>
-                                <Text style={{ fontSize: '18px', padding: "10px", color: 'green', fontWeight: 'bold' }}>up to 10%</Text>
-                                <img src={image7} style={{ width: '50px', padding: "10px" }} />
-                                <img src={image8} style={{ width: '50px', padding: "10px" }} />
-                            </div> */}
-
-
                         </SaleRight>
                     </SaleContainer>
                 </Col>
