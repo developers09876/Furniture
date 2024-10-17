@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCartShopping,
   faRightFromBracket,
+  faSearch,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
@@ -38,14 +39,47 @@ const StyledLink = styled(NavLink)`
     }
   }
 `;
+const SearchIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  left: 20px;
+  top: 13px;
+  color: ${(props) => props.theme.mutedTextColor};
+`;
 
 const NavBar = () => {
   const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
   const { totalItems } = useContext(CartContext);
   const { total } = useContext(WishlistContext);
 
   const [username, setUsername] = useState("");
+
+  const SearchContainer = styled.div`
+    width: 270px;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+  `;
+
+  const StyledInput = styled.input`
+    padding: 0.5rem 1rem 0.5rem 3rem;
+    // outline: 1px solid transparent;
+    // outline: 1px solid var(--button-hover);
+    // border: 1px solid ${(props) => props.theme.borderColor};
+    border: 1px solid var(--button-hover);
+    border-radius: ${(props) => props.theme.radius};
+    margin-right: 10px;
+    width: 130%;
+    border-radius: 5px;
+
+    &:focus {
+      // outline: 1px solid ${(props) => props.theme.borderColor};
+      outline: 1px solid var(--button-hover);
+      border-radius: ${(props) => props.theme.radius};
+    }
+  `;
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("name");
@@ -76,13 +110,22 @@ const NavBar = () => {
             />
           </h3>
 
-          <div style={{ marginLeft: "30px", flex: 1 }}>
+          {/* <div style={{ marginLeft: "30px", flex: 1 }}>
             <Input.Search
               placeholder="Search products..."
               onSearch={(value) => console.log(value)}
               style={{ width: 250 }}
             />
-          </div>
+          </div> */}
+          <SearchContainer className="my-4" style={{ marginLeft: "30px" }}>
+            <StyledInput
+              type="text"
+              placeholder="Search products"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <SearchIcon icon={faSearch} className="text-muted" />
+          </SearchContainer>
 
           <button
             className="navbar-toggler"

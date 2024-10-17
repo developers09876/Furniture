@@ -110,7 +110,7 @@ const NavBar1 = () => {
                             width: "100%",
                           }}
                         ></div> */}
-                        <ul>
+                        <ul style={{ paddingLeft: "10px" }}>
                           <li>
                             <Link href="#">Ortho premium Mattress</Link>
                           </li>
@@ -233,7 +233,7 @@ const NavBar1 = () => {
                         </ul>
                       </li>
                       <li>
-                        <DropMenuStyled to="">
+                        <DropMenuStyled className="dropdown-item" to="">
                           Kids & Foldable Series
                         </DropMenuStyled>
                         {/* <div
@@ -257,6 +257,43 @@ const NavBar1 = () => {
                             <Link to="">Baby Mattress plus Mattress</Link>
                           </li>
                         </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <StyledLink
+                      className="nav-link"
+                      to="#"
+                      id="mattressDropdown"
+                      role="button"
+                      aria-expanded="false"
+                    >
+                      Beds & Head Boards
+                    </StyledLink>
+                    <ul class="dropdown-menu">
+                      <li>
+                        {" "}
+                        <Link href="#" class="nav-link">
+                          Upholstered Beds
+                        </Link>
+                      </li>
+                      <li>
+                        {" "}
+                        <Link href="#" class="nav-link">
+                          Engineered Wood Beds
+                        </Link>
+                      </li>
+                      <li>
+                        {" "}
+                        <Link href="#" class="nav-link">
+                          Hydraulic Beds Bunker Beds
+                        </Link>
+                      </li>
+                      <li>
+                        {" "}
+                        <Link href="#" class="nav-link">
+                          Bunker Beds
+                        </Link>
                       </li>
                     </ul>
                   </li>
@@ -394,31 +431,76 @@ const NavBar1 = () => {
                       role="button"
                       aria-expanded="false"
                     >
-                      Beds & Head Boards
+                      Pillows & Cushions
                     </StyledLink>
                     <ul class="dropdown-menu">
                       <li>
-                        {" "}
+                        <DropMenuStyled href="#" class="nav-link">
+                          Sleeping Pillows
+                        </DropMenuStyled>
+                        {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                        <ul>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Fiber Pillows
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Memory foam Pillows
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Memory foam contour pillows
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Latex Pillows
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Latex contour pillows
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Cool Gel Memory foam Pillow
+                            </Link>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
                         <Link href="#" class="nav-link">
-                          Upholstered Beds
+                          Support Pillows
                         </Link>
                       </li>
                       <li>
-                        {" "}
                         <Link href="#" class="nav-link">
-                          Engineered Wood Beds
+                          Medicinal Pillows
                         </Link>
                       </li>
                       <li>
-                        {" "}
                         <Link href="#" class="nav-link">
-                          Hydraulic Beds Bunker Beds
+                          Maternity and Baby Pillows
                         </Link>
                       </li>
                       <li>
-                        {" "}
                         <Link href="#" class="nav-link">
-                          Bunker Beds
+                          Cushions and Bolsters
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="#" class="nav-link">
+                          Car Cushions
                         </Link>
                       </li>
                     </ul>
@@ -503,93 +585,11 @@ const NavBar1 = () => {
                       </li>
                     </ul>
                   </li>
-                  <li class="nav-item">
-                    <StyledLink
-                      className="nav-link"
-                      to="#"
-                      id="mattressDropdown"
-                      role="button"
-                      aria-expanded="false"
-                    >
-                      Pillows & Cushions
-                    </StyledLink>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <DropMenuStyled href="#" class="nav-link">
-                          Sleeping Pillows
-                        </DropMenuStyled>
-                        {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
-                        <ul>
-                          <li>
-                            <Link href="#" class="nav-link">
-                              Fiber Pillows
-                            </Link>
-                          </li>
-                          <li>
-                            <Link href="#" class="nav-link">
-                              Memory foam Pillows
-                            </Link>
-                          </li>
-                          <li>
-                            <Link href="#" class="nav-link">
-                              Memory foam contour pillows
-                            </Link>
-                          </li>
-                          <li>
-                            <Link href="#" class="nav-link">
-                              Latex Pillows
-                            </Link>
-                          </li>
-                          <li>
-                            <Link href="#" class="nav-link">
-                              Latex contour pillows
-                            </Link>
-                          </li>
-                          <li>
-                            <Link href="#" class="nav-link">
-                              Cool Gel Memory foam Pillow
-                            </Link>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <Link href="#" class="nav-link">
-                          Support Pillows
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="#" class="nav-link">
-                          Medicinal Pillows
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="#" class="nav-link">
-                          Maternity and Baby Pillows
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="#" class="nav-link">
-                          Cushions and Bolsters
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="#" class="nav-link">
-                          Car Cushions
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
                 </ul>
               </nav>
             </center>
           </ul>
-          <SearchContainer className="my-4">
+          {/* <SearchContainer className="my-4">
             <StyledInput
               type="text"
               placeholder="Search products"
@@ -597,7 +597,7 @@ const NavBar1 = () => {
               onChange={(e) => setQuery(e.target.value)}
             />
             <SearchIcon icon={faSearch} className="text-muted" />
-          </SearchContainer>
+          </SearchContainer> */}
         </div>
         {/* </Col>
         <Col md={4} sm={12}> */}
