@@ -316,3 +316,10 @@ hr {
 .custom-rate:hover {
   opacity: 1;
 }
+
+
+/*cards*/
+
+.container {
+  margin-top: 20px;
+}

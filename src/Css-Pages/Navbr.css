@@ -11,12 +11,12 @@
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-.dropdown-submenu:hover > .dropdown-menu {
+.dropdown-submenu:hover>.dropdown-menu {
   display: block;
 }
 
 /* Adjust the style as necessary for hover effects */
-.dropdown-menu > li > .dropdown-item:hover,
-.dropdown-submenu:hover > .dropdown-item {
+.dropdown-menu>li>.dropdown-item:hover,
+.dropdown-submenu:hover>.dropdown-item {
   background-color: var(--bgColor);
 }
