@@ -1,4 +1,6 @@
 // import Logo from "./Logo";
+import Logo1 from "../assets/Restopedic-logo.png";
+// C:\Users\TRIMATIS\Documents\furniture\Furniture\src\assets\Restopedic-logo.jpg
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -58,7 +60,12 @@ const NavBar = () => {
         </Link> */}
           <h3 href="#" alt="Home" className="fw-bolder text-decoration-none">
             {/* <Logo fontSize={30} width={150} /> */}
-            Restopedic
+            {/* Restopedic */}
+            <img
+              src={Logo1}
+              alt="Restropedic"
+              style={{ fontSize: "30px", width: "150px" }}
+            />
           </h3>
           <button
             className="navbar-toggler"

@@ -138,7 +138,7 @@ const Categories = () => {
   const columns = [
     {
       title: "Sno",
-      render: (index) => (
+      render: (text, record, index) => (
         <div>
           <p>{1 + index}</p>
         </div>

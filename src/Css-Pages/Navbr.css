@@ -1,22 +1,138 @@
-.dropdown-submenu {
+.navbar {
+  background-color: #f8f9fa;
+}
+
+.navbar-nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+}
+
+.nav-item {
+  position: relative;
+  margin-right: 20px;
+}
+
+.nav-link {
+  text-decoration: none;
+  padding: 10px 15px;
+  color: #333;
+  /* font-weight: 600; */
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background-color: rgb(182, 83, 83);
+
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+  /* min-width: 600px; Adjust width */
+  /* z-index: 1000; */
+  display: flex;
+  justify-content: space-around;
+}
+
+/* Submenu Columns Styling */
+.dropdown-menu li {
+}
+ol,
+ul {
+  padding-left: 0rem !important;
+  width: max-content;
+  /* gap: 10px; */
+}
+.dropdown-menu li a {
+  display: block;
+  text-decoration: none;
+  color: #333;
+}
+
+.dropdown-menu li a:hover {
+  color: red;
+}
+
+/* Show dropdown on hover */
+.nav-item:hover .dropdown-menu {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    flex-direction: column;
+  }
+
+  .dropdown-menu {
+    min-width: 100%;
+  }
+
+  .dropdown-menu li {
+    width: 100%;
+  }
+}
+
+.nav-item {
   position: relative;
 }
 
-.dropdown-submenu .dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -1px;
-  border-radius: 0;
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+.dropdown-menu {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally */
+  top: 100%; /* Make sure it is just below the nav */
+  /* z-index: 9999; Ensure it appears on top */
+  display: none; /* Hidden by default */
+  width: "100px";
 }
 
-.dropdown-submenu:hover > .dropdown-menu {
-  display: block;
+.nav-item:hover .dropdown-menu {
+  display: "flex";
 }
 
-/* Adjust the style as necessary for hover effects */
-.dropdown-menu > li > .dropdown-item:hover,
-.dropdown-submenu:hover > .dropdown-item {
-  background-color: var(--bgColor);
+/* Optional: Adjust background color and styling */
+.dropdown-menu {
+  background-color: white; /* Or any other background you prefer */
+  /* padding: 10px; */
+  --bs-dropdown-border-color: none !important;
+  /* border: 1px solid #661d1d; */
+  /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
+}
+
+/* Additional styling for dropdown items */
+.dropdown-menu li {
+  padding: 8px 10px;
+  list-style: none;
+  width: 200px;
+}
+
+.dropdown-menu li a {
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f8f8f8;
+}
+
+.nav-item:first-child .dropdown-menu {
+  left: 0;
+  transform: none;
+}
+
+.nav-item:last-child .dropdown-menu {
+  right: 0;
+  left: auto;
+  transform: none;
+}
+
+.dropdown-menu li a {
+  color: #333;
+  text-decoration: none;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f8f8f8;
 }
