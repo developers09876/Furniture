@@ -12,6 +12,7 @@
   position: relative;
   margin-left: 28vh;
 }
+
 .chair-card {
   float: left;
   background-color: gainsboro;
@@ -232,7 +233,8 @@ hr {
 /* Custom CSS file for styling */
 
 .custom-card {
-  color: black;
+  color: rgb(82, 182, 212);
+  background: linear-gradient(#93aabf4d, white);
   text-align: justify;
   padding: 20px;
   border-radius: 25px;
@@ -258,9 +260,9 @@ hr {
 
 .profile-pic {
   width: 150px;
-  height: 90px;
-  border-radius: 70%;
-  /* border: 3px solid rgb(118, 197, 228); */
+  height: 100px;
+  border-radius: 100%;
+  color: #93aabf4d;
   box-shadow: 0 0 10px rgba(123, 213, 224, 0.2);
 }
 
@@ -297,4 +299,14 @@ hr {
 .slick-prev:before,
 .slick-next:before {
   color: var(--button-hover);
+}
+
+.custom-rate {
+  opacity: 0.5;
+  transition: opacity 0.3s ease-in-out;
+  margin-left: 70px;
+}
+
+.custom-rate:hover {
+  opacity: 1;
 }

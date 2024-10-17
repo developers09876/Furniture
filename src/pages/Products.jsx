@@ -86,7 +86,6 @@ const Products = () => {
     const query = e.target.value.toLowerCase();
     setQuery(query);
 
-    // Filter based on both category (locationData) and search query
     let filtered = products;
     if (locationData) {
       filtered = products.filter(
@@ -145,7 +144,7 @@ const Products = () => {
             <StyledInput
               type="text"
               placeholder="Search products"
-              // value={query}
+              value={query}
               onChange={handleSearch}
             />
             <SearchIcon icon={faSearch} className="text-muted" />

@@ -17,6 +17,7 @@ import {
 
 // pages
 import Home from "./pages/Home";
+import Cards from "./pages/Cards";
 import About from "./pages/About";
 import Products from "./pages/Products";
 import Login from "./pages/Login";
@@ -65,6 +66,7 @@ const router = createBrowserRouter(
     <Route>
       <Route path="/" element={<MainLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/card" element={<Cards />} />
         <Route path="/about" element={<About />} />
         <Route path="/products" element={<Products />} />
         <Route path="/contact" element={<Contact />} />

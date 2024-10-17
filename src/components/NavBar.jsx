@@ -11,11 +11,12 @@ import {
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
 import NavBar1 from "./NavBar1";
+import { CgProfile } from "react-icons/cg";
 import "./../Css-Pages/Navbr.css";
 // styles for links
 const StyledLink = styled(NavLink)`
@@ -47,6 +48,20 @@ const NavBar = () => {
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
   const { totalItems } = useContext(CartContext);
   const { total } = useContext(WishlistContext);
+
+  // State to hold the username
+  const [username, setUsername] = useState("");
+
+  // Fetch the username from localStorage on component mount
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("name");
+    if (storedUsername) {
+      // Capitalize the first letter of the username
+      const formattedUsername =
+        storedUsername.charAt(0).toUpperCase() + storedUsername.slice(1);
+      setUsername(formattedUsername);
+    }
+  }, [isAuthenticated]);
 
   return (
     <>
@@ -145,6 +160,20 @@ const NavBar = () => {
                   Logout <FontAwesomeIcon icon={faRightFromBracket} />
                 </Button>
               )}
+              <div>
+                <CgProfile style={{ width: '40px', height: '40px', marginLeft: '30px' }} />
+                {isAuthenticated && username && (
+                  <span
+                    style={{
+                      marginLeft: "10px",
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Hi, {username}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -155,3 +184,4 @@ const NavBar = () => {
 };
 
 export default NavBar;
+

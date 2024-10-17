@@ -45,7 +45,7 @@ const UserLogin = () => {
 
     if (!validateEmail(email && password)) {
       try {
-        const success = await loginUser(email, password); // Awaiting the promise
+        const success = await loginUser(email, password);
 
         if (success) {
           // Display success message using SweetAlert

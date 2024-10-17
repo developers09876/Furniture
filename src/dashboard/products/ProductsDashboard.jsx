@@ -22,6 +22,7 @@ const ProductDashboard = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState([]);
 
+  // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
   const { users, orders, products, fetchData } = useContext(DashboardContext);
 
   const columns = [
