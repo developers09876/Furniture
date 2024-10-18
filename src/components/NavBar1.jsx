@@ -78,7 +78,7 @@ const NavBar1 = () => {
   const { total } = useContext(WishlistContext);
 
   return (
-    <nav className="navbar navbar-expand-lg p-0">
+    <nav className="navbar navbar-expand-lg p-0" style={{ height: "45px" }}>
       <div className="container lg-d-flex">
         {/* <Row>
       <Col md={8} sm={12}> */}
@@ -87,7 +87,7 @@ const NavBar1 = () => {
             {/* Mattress Dropdown */}
             <center>
               <nav class="navbar">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav mb-3">
                   <li class="nav-item">
                     <StyledLink
                       className="nav-link"
@@ -98,167 +98,169 @@ const NavBar1 = () => {
                     >
                       Mattresses
                     </StyledLink>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <DropMenuStyled className="dropdown-item" to="#">
-                          Orthopedic Series
-                        </DropMenuStyled>
-                        {/* <div
+                    <div>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <DropMenuStyled className="dropdown-item" to="#">
+                            Orthopedic Series
+                          </DropMenuStyled>
+                          {/* <div
                           style={{
                             backgroundColor: `var(--under-line)`,
                             padding: "1px 1px 1px 3px",
                             width: "100%",
                           }}
                         ></div> */}
-                        <ul style={{ paddingLeft: "10px" }}>
-                          <li>
-                            <Link href="#">Ortho premium Mattress</Link>
-                          </li>
-                          <li>
-                            <Link href="#">Ortho premium ET Mattress</Link>
-                          </li>
-                          <li>
-                            <Link href="#">Ortho spine therapy Mattress</Link>
-                          </li>
-                          <li>
-                            <Link href="#">
-                              Ortho Latex o pedic ET Mattress
-                            </Link>
-                          </li>
-                          <li>
-                            <Link href="#">
-                              Ortho Organic posture pedic dual top Mattress
-                            </Link>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <DropMenuStyled className="dropdown-item" to="">
-                          Pocket Spring Series
-                        </DropMenuStyled>
-                        {/* <div
+                          <ul style={{ paddingLeft: "10px" }}>
+                            <li>
+                              <Link href="#">Ortho premium Mattress</Link>
+                            </li>
+                            <li>
+                              <Link href="#">Ortho premium ET Mattress</Link>
+                            </li>
+                            <li>
+                              <Link href="#">Ortho spine therapy Mattress</Link>
+                            </li>
+                            <li>
+                              <Link href="#">
+                                Ortho Latex o pedic ET Mattress
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href="#">
+                                Ortho Organic posture pedic dual top Mattress
+                              </Link>
+                            </li>
+                          </ul>
+                        </li>
+                        <li>
+                          <DropMenuStyled className="dropdown-item" to="">
+                            Pocket Spring Series
+                          </DropMenuStyled>
+                          {/* <div
                           style={{
                             backgroundColor: `var(--under-line)`,
                             padding: "1px 1px 1px 3px",
                             width: "100%",
                           }}
                         ></div> */}
-                        <ul>
-                          <li>
-                            <Link to="">Supremo Mattress</Link>
-                          </li>
-                          <li>
-                            <Link to="">Supremo ET Mattress</Link>
-                          </li>
-                          <li>
-                            <Link to="">Sleeep in posture Mattress</Link>
-                          </li>
-                          <li>
-                            <Link to="">Latex o pedic plus Mattress</Link>
-                          </li>
-                          <li>
-                            <Link to="">
-                              Organic posture pedic dual top Mattress
-                            </Link>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <DropMenuStyled className="dropdown-item" to="#">
-                          Bonnel Spring Series
-                        </DropMenuStyled>
-                        {/* <div
+                          <ul>
+                            <li>
+                              <Link to="">Supremo Mattress</Link>
+                            </li>
+                            <li>
+                              <Link to="">Supremo ET Mattress</Link>
+                            </li>
+                            <li>
+                              <Link to="">Sleeep in posture Mattress</Link>
+                            </li>
+                            <li>
+                              <Link to="">Latex o pedic plus Mattress</Link>
+                            </li>
+                            <li>
+                              <Link to="">
+                                Organic posture pedic dual top Mattress
+                              </Link>
+                            </li>
+                          </ul>
+                        </li>
+                        <li>
+                          <DropMenuStyled className="dropdown-item" to="#">
+                            Bonnel Spring Series
+                          </DropMenuStyled>
+                          {/* <div
                           style={{
                             backgroundColor: `var(--under-line)`,
                             padding: "1px 1px 1px 3px",
                             width: "100%",
                           }}
                         ></div> */}
-                        <ul style={{ width: "max-content" }}>
-                          <li>
-                            <Link to="">Classio Mattress</Link>
-                          </li>
-                          <li>
-                            <Link to="">Classio ET Mattress</Link>
-                          </li>
-                          <li>
-                            <Link to="">Spine therapy Mattress</Link>
-                          </li>
-                          <li>
-                            <Link to="">Classio Latex o pedic Mattress</Link>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <DropMenuStyled className="dropdown-item" to="#">
-                          Foam Series
-                        </DropMenuStyled>
-                        {/* <div
+                          <ul style={{ width: "max-content" }}>
+                            <li>
+                              <Link to="">Classio Mattress</Link>
+                            </li>
+                            <li>
+                              <Link to="">Classio ET Mattress</Link>
+                            </li>
+                            <li>
+                              <Link to="">Spine therapy Mattress</Link>
+                            </li>
+                            <li>
+                              <Link to="">Classio Latex o pedic Mattress</Link>
+                            </li>
+                          </ul>
+                        </li>
+                        <li>
+                          <DropMenuStyled className="dropdown-item" to="#">
+                            Foam Series
+                          </DropMenuStyled>
+                          {/* <div
                           style={{
                             backgroundColor: `var(--under-line)`,
                             padding: "1px 1px 1px 3px",
                             width: "100%",
                           }}
                         ></div> */}
-                        <ul style={{ width: "max-content" }}>
-                          <li>
-                            <Link to="">Amenity Mattress</Link>
-                          </li>
-                          <li>
-                            <Link to="">Amenity ET Mattress</Link>
-                          </li>
-                          <li>
-                            <Link to="">Posture Infinity Mattress</Link>
-                          </li>
-                          <li>
-                            <Link to="">Leisure Sleep Mattress</Link>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <DropMenuStyled className="dropdown-item" to="#">
-                          Latex Series
-                        </DropMenuStyled>
-                        {/* <div
+                          <ul style={{ width: "max-content" }}>
+                            <li>
+                              <Link to="">Amenity Mattress</Link>
+                            </li>
+                            <li>
+                              <Link to="">Amenity ET Mattress</Link>
+                            </li>
+                            <li>
+                              <Link to="">Posture Infinity Mattress</Link>
+                            </li>
+                            <li>
+                              <Link to="">Leisure Sleep Mattress</Link>
+                            </li>
+                          </ul>
+                        </li>
+                        <li>
+                          <DropMenuStyled className="dropdown-item" to="#">
+                            Latex Series
+                          </DropMenuStyled>
+                          {/* <div
                           style={{
                             backgroundColor: `var(--under-line)`,
                             padding: "1px 1px 1px 3px",
                             width: "100%",
                           }}
                         ></div> */}
-                        <ul style={{ width: "max-content" }}>
-                          <li>
-                            <Link to="">Melody Mattress</Link>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <DropMenuStyled className="dropdown-item" to="">
-                          Kids & Foldable Series
-                        </DropMenuStyled>
-                        {/* <div
+                          <ul style={{ width: "max-content" }}>
+                            <li>
+                              <Link to="">Melody Mattress</Link>
+                            </li>
+                          </ul>
+                        </li>
+                        <li>
+                          <DropMenuStyled className="dropdown-item" to="">
+                            Kids & Foldable Series
+                          </DropMenuStyled>
+                          {/* <div
                           style={{
                             backgroundColor: `var(--under-line)`,
                             padding: "1px 1px 1px 3px",
                             width: "100%",
                           }}
                         ></div> */}
-                        <ul style={{ width: "max-content" }}>
-                          <li>
-                            <Link to="">Rollup Mattress Mattress</Link>
-                          </li>
-                          <li>
-                            <Link to="">Slim mattress Mattress</Link>
-                          </li>
-                          <li>
-                            <Link to="">Baby Mattress Mattress</Link>
-                          </li>
-                          <li>
-                            <Link to="">Baby Mattress plus Mattress</Link>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
+                          <ul style={{ width: "max-content" }}>
+                            <li>
+                              <Link to="">Rollup Mattress Mattress</Link>
+                            </li>
+                            <li>
+                              <Link to="">Slim mattress Mattress</Link>
+                            </li>
+                            <li>
+                              <Link to="">Baby Mattress Mattress</Link>
+                            </li>
+                            <li>
+                              <Link to="">Baby Mattress plus Mattress</Link>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
                   </li>
                   <li class="nav-item">
                     <StyledLink
@@ -270,7 +272,7 @@ const NavBar1 = () => {
                     >
                       Beds & Head Boards
                     </StyledLink>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style={{ marginLeft: "100px" }}>
                       <li>
                         {" "}
                         <Link href="#" class="nav-link">
@@ -308,7 +310,7 @@ const NavBar1 = () => {
                       Sofa & Recliners
                     </StyledLink>
 
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style={{ marginLeft: "190px" }}>
                       <li>
                         <DropMenuStyled to="">Stationary sofas</DropMenuStyled>
                         {/* <div
@@ -515,7 +517,7 @@ const NavBar1 = () => {
                     >
                       Beddings
                     </StyledLink>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style={{ marginLeft: "10px" }}>
                       <li>
                         {" "}
                         <Link href="#" class="nav-link">

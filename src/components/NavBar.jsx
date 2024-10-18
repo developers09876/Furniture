@@ -9,6 +9,7 @@ import {
   faSearch,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import { Avatar, Badge, Space } from "antd";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
@@ -71,7 +72,7 @@ const NavBar = () => {
     border: 1px solid var(--button-hover);
     border-radius: ${(props) => props.theme.radius};
     margin-right: 10px;
-    width: 130%;
+    width: 90%;
     border-radius: 5px;
 
     &:focus {
@@ -80,6 +81,11 @@ const NavBar = () => {
       border-radius: ${(props) => props.theme.radius};
     }
   `;
+
+  const navIconItem = {
+    width: "40px",
+    height: "22px",
+  };
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("name");
@@ -117,7 +123,7 @@ const NavBar = () => {
               style={{ width: 250 }}
             />
           </div> */}
-          <SearchContainer className="my-4" style={{ marginLeft: "30px" }}>
+          <SearchContainer className="my-4" style={{ marginLeft: "10px" }}>
             <StyledInput
               type="text"
               placeholder="Search products"
@@ -160,52 +166,69 @@ const NavBar = () => {
                   Contact
                 </StyledLink>
               </li>
-              {isAdmin && (
-                <li className="nav-item m-2">
-                  <StyledLink className="nav-link" to="/admin">
-                    Dashboard
-                  </StyledLink>
-                </li>
-              )}
-              {isUser && (
-                <li className="nav-item m-2">
-                  <StyledLink className="nav-link" to="/user/orders">
-                    User Dashboard
-                  </StyledLink>
-                </li>
-              )}
-            </ul>
-            <div className="d-flex align-items-center">
-              <Link
-                to="/cart"
-                style={{ color: "#1D1D1D", textDecoration: "none" }}
-              >
-                <FontAwesomeIcon icon={faCartShopping} className="me-1" /> (
-                {isAuthenticated ? totalItems : 0})
-              </Link>
-              <Link
-                to="/wishlist"
-                style={{ color: "#1D1D1D", textDecoration: "none" }}
-              >
-                <FontAwesomeIcon icon={faHeart} className="me-1 ms-3" /> (
-                {isAuthenticated ? total : 0})
-              </Link>
-              {!isAuthenticated ? (
-                <Button
-                  className="ms-3 me-2 my-1"
-                  handleClick={() => navigate("/userlogin")}
+              <li>
+                {isAdmin && (
+                  <li className="nav-item m-2">
+                    <StyledLink className="nav-link" to="/admin">
+                      Dashboard
+                    </StyledLink>
+                  </li>
+                )}
+                {isUser && (
+                  <li className="nav-item m-2">
+                    <StyledLink className="nav-link" to="/user/orders">
+                      {/* User Dashboard */}
+                      <CgProfile style={navIconItem} />
+                    </StyledLink>
+                  </li>
+                )}
+              </li>
+              <li className="nav-item ml-4 mt-3 pt-1">
+                <Link
+                  to="/cart"
+                  style={{ color: "#1D1D1D", textDecoration: "none" }}
                 >
-                  Login <FontAwesomeIcon icon={faUserPlus} />
-                </Button>
-              ) : (
-                <Button className="ms-3 me-2 my-3" handleClick={logout}>
-                  Logout <FontAwesomeIcon icon={faRightFromBracket} />
-                </Button>
-              )}
-              <div>
-                <CgProfile
-                  style={{ width: "40px", height: "40px", marginLeft: "30px" }}
-                />
+                  <Badge size="small" count={isAuthenticated ? totalItems : 0}>
+                    <FontAwesomeIcon
+                      style={{ height: "18px" }}
+                      icon={faCartShopping}
+                    />
+                  </Badge>
+
+                  {/* ({isAuthenticated ? totalItems : 0}) */}
+                </Link>
+              </li>
+              <li className="nav-item ml-4 mt-3  pt-1">
+                <Link
+                  to="/wishlist"
+                  style={{ color: "#1D1D1D", textDecoration: "none" }}
+                >
+                  {/* <FontAwesomeIcon icon={faHeart} className="me-1" /> (
+                  {isAuthenticated ? total : 0}) */}
+
+                  <Badge size="small" count={isAuthenticated ? total : 0}>
+                    <FontAwesomeIcon
+                      style={{ height: "18px" }}
+                      icon={faHeart}
+                    />
+                  </Badge>
+                </Link>
+              </li>
+              <li className="nav-item m-2">
+                {!isAuthenticated ? (
+                  <Button
+                    className="ms-3  my-1"
+                    handleClick={() => navigate("/userlogin")}
+                  >
+                    Login <FontAwesomeIcon icon={faUserPlus} />
+                  </Button>
+                ) : (
+                  <Button className="ms-3" handleClick={logout}>
+                    Logout <FontAwesomeIcon icon={faRightFromBracket} />
+                  </Button>
+                )}
+              </li>
+              {/* <div>
                 {isAuthenticated && username && (
                   <span
                     style={{
@@ -217,8 +240,8 @@ const NavBar = () => {
                     Hi, {username}
                   </span>
                 )}
-              </div>
-            </div>
+              </div> */}
+            </ul>
           </div>
         </div>
       </nav>

@@ -1,13 +1,3 @@
-.navbar {
-  background-color: #f8f9fa;
-}
-
-.navbar-nav {
-  display: flex;
-  list-style: none;
-  margin: 0;
-}
-
 .nav-item {
   position: relative;
   margin-right: 20px;
@@ -15,39 +5,37 @@
 
 .nav-link {
   text-decoration: none;
-  padding: 10px 15px;
   color: #333;
-  /* font-weight: 600; */
 }
-
+.navbar {
+  --bs-navbar-padding-x: none !important ;
+}
+.navbar-nav {
+  --bs-navbar-nav-link-padding-x: none !important;
+}
 /* Dropdown Menu Styling */
 .dropdown-menu {
   display: none;
   position: absolute;
-  left: 0;
   top: 100%;
   background-color: rgb(182, 83, 83);
-
-  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
-  /* min-width: 600px; Adjust width */
-  /* z-index: 1000; */
   display: flex;
   justify-content: space-around;
+  z-index: 1000; /* Ensure dropdown appears above other elements */
 }
 
 /* Submenu Columns Styling */
 .dropdown-menu li {
+  list-style: none;
+  padding: 8px 0;
+  width: 200px; /* Ensure consistent width */
 }
-ol,
-ul {
-  padding-left: 0rem !important;
-  width: max-content;
-  /* gap: 10px; */
-}
+
 .dropdown-menu li a {
   display: block;
   text-decoration: none;
   color: #333;
+  padding-left: 15px;
 }
 
 .dropdown-menu li a:hover {
@@ -59,6 +47,25 @@ ul {
   display: flex;
 }
 
+/* Align dropdown to the center of the menu item */
+.nav-item:not(:first-child) .dropdown-menu {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Align first and last items properly */
+.nav-item:first-child .dropdown-menu {
+  left: 0;
+  transform: none;
+}
+
+/* .nav-item:last-child .dropdown-menu {
+  left: 0;
+  right: auto;
+  transform: none;
+} */
+
+/* Media Queries for Mobile View */
 @media (max-width: 768px) {
   .navbar-nav {
     flex-direction: column;
@@ -73,75 +80,97 @@ ul {
   }
 }
 
-.nav-item {
-  position: relative;
+.dropdown-menu ul {
+  padding-left: 0px;
 }
 
-.dropdown-menu {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%); /* Center horizontally */
-  top: 100%; /* Make sure it is just below the nav */
-  /* z-index: 9999; Ensure it appears on top */
-  display: none; /* Hidden by default */
-  width: "100px";
+.Beds-head-boards-drop-down {
+  margin-left: 100px;
 }
 
-.nav-item:hover .dropdown-menu {
-  display: "flex";
-}
+/* Media Queries for Mobile View */
+@media (max-width: 768px) {
+  /* Stack navigation items vertically */
+  .navbar-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
 
-/* Optional: Adjust background color and styling */
-.dropdown-menu {
-  background-color: white; /* Or any other background you prefer */
-  /* padding: 10px; */
-  --bs-dropdown-border-color: none !important;
-  /* border: 1px solid #661d1d; */
-  /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
-}
+  /* Adjust navigation items to take full width */
+  .nav-item {
+    width: 100%;
+    margin-right: 0;
+  }
 
-/* Additional styling for dropdown items */
-.dropdown-menu li {
-  padding: 8px 10px;
-  list-style: none;
-  width: 200px;
-}
+  .nav-link {
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    color: #333;
+  }
 
-.dropdown-menu li a {
-  color: #333;
-  text-decoration: none;
-  font-size: 14px;
-}
+  /* Ensure dropdown menus are full width on mobile */
+  .dropdown-menu {
+    position: relative;
+    display: none; /* Hidden initially */
+    top: auto; /* Disable absolute positioning */
+    background-color: rgb(182, 83, 83);
+    flex-direction: column;
+    width: 100%; /* Take full width */
+    justify-content: flex-start;
+  }
 
-.dropdown-menu li:hover {
-  background-color: #f8f8f8;
-}
+  /* Adjust the submenu items to stack vertically */
+  .dropdown-menu li {
+    width: 100%;
+    padding: 10px 15px;
+  }
 
-.nav-item:first-child .dropdown-menu {
-  left: 0;
-  transform: none;
-}
+  /* Make dropdown links block level to take full width */
+  .dropdown-menu li a {
+    display: block;
+    width: 100%;
+    color: #333;
+    text-align: left;
+  }
 
-.nav-item:last-child .dropdown-menu {
-  right: 0;
-  left: auto;
-  transform: none;
-}
+  /* Show the dropdown menu on click instead of hover */
+  .nav-item:hover .dropdown-menu {
+    display: none; /* Disable hover interaction on mobile */
+  }
 
-.dropdown-menu li a {
-  color: #333;
-  text-decoration: none;
-}
+  /* Use this instead to toggle dropdown menu visibility on click */
+  .nav-item.active .dropdown-menu {
+    display: flex; /* Show dropdown when active */
+  }
 
-.dropdown-menu li:hover {
-  background-color: #f8f8f8;
-}
-.dropdown-submenu:hover > .dropdown-menu {
-  display: block;
-}
+  /* Optional: Make text more readable on mobile */
+  .nav-link,
+  .dropdown-menu li a {
+    font-size: 16px;
+  }
 
-/* Adjust the style as necessary for hover effects */
-.dropdown-menu > li > .dropdown-item:hover,
-.dropdown-submenu:hover > .dropdown-item {
-  background-color: var(--bgColor);
+  /* Optional: Adjust padding for a better mobile feel */
+  .nav-link,
+  .dropdown-menu li {
+    padding: 12px 20px;
+  }
+
+  /* Optional: Align first and last dropdown properly */
+  .nav-item:first-child .dropdown-menu,
+  .nav-item:last-child .dropdown-menu {
+    left: 0;
+    transform: none;
+  }
+
+  /* Ensure any dropdown-specific styles remain */
+  .dropdown-menu ul {
+    padding-left: 0;
+  }
+
+  /* Adjust custom classes like Beds-head-boards-drop-down */
+  .Beds-head-boards-drop-down {
+    margin-left: 0;
+  }
 }
