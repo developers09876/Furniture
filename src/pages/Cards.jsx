@@ -180,7 +180,9 @@ const Sale = () => {
                     <FeaturesContainer>
                         <IconWrapper>
                             <FeatureItem>
-                                <img src={image5} alt="Wakefit" style={{ width: '80px', height: '40px' }} />
+                                <Text style={{ fontSize: '18px', fontWeight: 'bold', color: '#AC5FC1', width: '110px', fontFamily: 'Cursive, sans-serif' }}>
+                                    Why Restopedic?
+                                </Text>
                             </FeatureItem>
                             <FeatureItem>
                                 <img src={image1} alt="25 Lakhs+ Customers" style={{ width: '40px' }} />
@@ -200,6 +202,7 @@ const Sale = () => {
                             </FeatureItem>
                         </IconWrapper>
                     </FeaturesContainer>
+
                 </Col>
             </Row>
         </div>
