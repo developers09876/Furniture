@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Button from "../components/Button";
 import axios from "axios";
-import { Form, Spinner, Alert } from "react-bootstrap";
+import { Container, Form, Spinner, Alert } from "react-bootstrap";
+import Password from "antd/es/input/Password";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const UserResetPassword = () => {

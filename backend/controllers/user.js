@@ -1,4 +1,5 @@
 import { User } from "../models/user.js";
+import { whistlist } from "../models/whistlist.js";
 
 import {
   hashPassword,
@@ -121,9 +122,6 @@ export const createCart = async (req, res) => {
 };
 
 export const getAllUser = async (req, res) => {
-  console.log("resss", req.body);
-  // const token = req.headers.authorization;
-  console.log("triggerd");
   try {
     const allUser = await User.find();
 
@@ -256,6 +254,18 @@ export async function resetUsers(req, res) {
   }
 }
 
+//whistlist
+
+export const whistlistUser = async (req, res) => {
+  try {
+    const newWhistlist = new whistlist(req.body);
+    console.log("first", newWhistlist);
+    const savedWhistlist = await newWhistlist.save();
+    res.status(200).json(savedWhistlist);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 // Assuming you already have hashPassword defined somewhere in your project
 export async function resetUser(req, res) {
   try {
@@ -292,4 +302,3 @@ export async function resetUser(req, res) {
     });
   }
 }
-

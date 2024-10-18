@@ -48,9 +48,7 @@ const SingleProductPage = () => {
   };
 
   const { productID } = useParams();
-  console.log("productID", productID);
   const [product, setProduct] = useState([]);
-  console.log("productz", product);
   if (
     product &&
     Array.isArray(product.specification) &&
@@ -81,7 +79,7 @@ const SingleProductPage = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/products/getOne/${productID}`
+          `${import.meta.env.VITE_MY_API}products/getOne/${productID}`
         );
         setProduct(response.data);
         setImages(response.data.images);
@@ -125,6 +123,11 @@ const SingleProductPage = () => {
     // setSelectedDimension("");
   };
 
+  const moveAr = () => {
+    navigate("/ortholatex");
+    window.location.reload(); // This will refresh the page after navigation
+  };
+
   const handleDimensionChange = (value) => {
     setSelectedDimension(value);
   };
@@ -142,6 +145,7 @@ const SingleProductPage = () => {
   };
 
   const handleConfirmVariant = () => {
+    setShow(false);
     console.log(
       "choose1",
       categorz,
@@ -306,7 +310,7 @@ const SingleProductPage = () => {
         <div className="col-md-6 col-sm-12 mb-3">
           <img
             src={selectedImage}
-            style={{cursor:"zoom-in"}}
+            style={{ cursor: "zoom-in" }}
             alt={title}
             className="product-image"
             onClick={() => handleShowPic()}
@@ -341,7 +345,7 @@ const SingleProductPage = () => {
             <span>Choose Mattress Dimensions</span>
             <br />
             <Row>
-              <Col md={5}>
+              <Col md={6}>
                 <button
                   className="chooseVarientButton mb-3 mt-3"
                   onClick={() => handleShow()}
@@ -368,7 +372,7 @@ const SingleProductPage = () => {
                     style={{ height: "70px", cursor: "pointer" }}
                     alt="360° Button"
                     onClick={() => {
-                      navigate(`/${path_view}`);
+                      moveAr();
                     }}
                   />
                 </div>
@@ -455,6 +459,10 @@ const SingleProductPage = () => {
                       quantity_stock,
                       quantity,
                       subTotal,
+                      unit,
+                      categorz,
+                      selectedDimension,
+                      thickness,
                     })
                   }
                 >

@@ -1,4 +1,5 @@
 import Logo from "../Logo";
+import Logo1 from "../../assets/Restopedic-logo.png";
 
 const CompanyOverview = () => {
   return (
@@ -6,7 +7,12 @@ const CompanyOverview = () => {
       <div className="mb-2">
         <a href="#" alt="Home" className="fw-bold text-decoration-none">
           {/* <Logo fontSize={30} width={150} /> */}
-          Restopedic
+          {/* Restopedic */}
+          <img
+            src={Logo1}
+            alt="Restropedic"
+            style={{ fontSize: "20px", width: "150px" }}
+          />
         </a>
       </div>
       <p>

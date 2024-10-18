@@ -230,11 +230,7 @@ hr {
   box-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
 }
 
-
 /* Custom CSS file for styling */
-
-
-
 
 .custom-card {
   color: rgb(82, 182, 212);
@@ -251,22 +247,16 @@ hr {
   /* opacity: 0.8; */
 }
 
-
-
-
 .custom-card:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
-
 .profile-container {
   display: flex;
   justify-content: center;
   margin-bottom: 15px;
-
 }
-
 
 .profile-pic {
   width: 150px;
@@ -281,7 +271,6 @@ hr {
   box-shadow: 0 8px 30px rgba(50, 194, 182, 0.15);
 }
 
-
 .custom-card h4 {
   font-weight: bold;
   color: #0f0e0e;
@@ -289,7 +278,6 @@ hr {
   font-size: 1.25rem;
   text-align: center;
 }
-
 
 .custom-card p {
   font-size: 14px;
@@ -299,12 +287,18 @@ hr {
 }
 
 /* shop by catergories */
+
 .card-container {
   transition: transform 0.3s ease-in-out;
 }
 
 .card-container:hover {
   transform: scale(0.9);
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: var(--button-hover);
 }
 
 .custom-rate {
@@ -316,7 +310,6 @@ hr {
 .custom-rate:hover {
   opacity: 1;
 }
-
 
 /*cards*/
 

@@ -47,7 +47,9 @@ const Categories = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:5000/Category");
+      const response = await fetch(
+        `${import.meta.env.VITE_MY_API}Category/get`
+      );
       const result = await response.json();
       setCategory(result);
     } catch (error) {
@@ -58,9 +60,9 @@ const Categories = () => {
   const deleteRecordFromAPI = async (id) => {
     try {
       await axios
-        .delete(`http://localhost:5000/Category/delete/${id}`)
+        .delete(`${import.meta.env.VITE_MY_API}Category/delete/${id}`)
         .then((res) => {
-          fetchCategoriesData();
+          fetchCategories();
           Swal.fire({
             icon: "success",
             title: "Deleted!",
@@ -77,7 +79,7 @@ const Categories = () => {
     }
   };
 
-  const handleDelete = (record, data, setData) => {
+  const handleDelete = (record) => {
     confirm({
       title: "Are you sure you want to delete this user?",
       icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,
@@ -102,19 +104,19 @@ const Categories = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/Category/update/${editingUser._id}`,
+        `${import.meta.env.VITE_MY_API}Category/update/${editingUser._id}`,
         Data
       );
 
       if (response.status === 200) {
-        fetchCategoriesData();
+        // fetchCategoriesData();
+        fetchCategories();
         Swal.fire({
           icon: "success",
           title: "Updated!",
           text: `User ${editingUser.name} has been updated successfully.`,
         });
 
-        updateData(editingUser);
         setEditModalVisible(false);
       }
     } catch (error) {
@@ -136,7 +138,7 @@ const Categories = () => {
   const columns = [
     {
       title: "Sno",
-      render: (i, record, index) => (
+      render: (text, record, index) => (
         <div>
           <p>{1 + index}</p>
         </div>
@@ -208,13 +210,16 @@ const Categories = () => {
     // setCategoriesModel(false)}
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/Category/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_MY_API}Category/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
@@ -254,20 +259,7 @@ const Categories = () => {
         centered
         open={modal2Open}
         onCancel={() => setCategoriesModel(false)}
-        footer={[
-          <Button type="primary" onClick={() => setCategoriesModel(false)}>
-            Cancel
-          </Button>,
-          <Button
-            // key="submit"
-            type="primary"
-            onClick={() => {
-              handleAddCategory();
-            }}
-          >
-            Add Category
-          </Button>,
-        ]}
+        footer={null}
       >
         <AddCategory closeModal={() => setCategoriesModel(false)} />
       </Modal>

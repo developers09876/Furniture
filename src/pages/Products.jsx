@@ -66,9 +66,10 @@ const Products = () => {
   // Fetch products from the backend
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/products/`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_MY_API}products/`
+      );
       setProducts(response.data);
-
 
       const productFilter = locationData
         ? response.data.filter((product) => product.category === locationData)
@@ -85,10 +86,11 @@ const Products = () => {
     const query = e.target.value.toLowerCase();
     setQuery(query);
 
-
     let filtered = products;
     if (locationData) {
-      filtered = products.filter((product) => product.category === locationData);
+      filtered = products.filter(
+        (product) => product.category === locationData
+      );
     }
 
     if (query) {

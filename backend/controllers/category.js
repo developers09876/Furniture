@@ -1,11 +1,13 @@
 import { Category } from "../models/category.js";
 
 export const getAllCategory = async (req, res) => {
+  console.log("object");
   try {
     const allProduct = await Category.find();
+    console.log("allProduct", allProduct);
     res.status(200).json(allProduct);
-  } catch {
-    res.status(500).json({ message: error.message });
+  } catch (e) {
+    res.status(500).json({ message: e.message });
   }
 };
 

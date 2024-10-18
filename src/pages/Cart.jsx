@@ -12,8 +12,6 @@ const Cart = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const { clearCart } = useContext(CartContext);
   const { totalItems } = useContext(CartContext);
-
-  console.log(totalItems);
   return (
     <>
       <Breadcrumb />

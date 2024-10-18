@@ -42,9 +42,7 @@ const CartTotal = () => {
               <p className="order-total-heading">Order Total :</p>
             </Col>
             <Col md={6}>
-              <span className="order-total-amount">
-                <FaIndianRupeeSign /> {total}
-              </span>
+              <div className="order-total-amount">₹&nbsp;{total}</div>
             </Col>
           </Row>
           <hr />

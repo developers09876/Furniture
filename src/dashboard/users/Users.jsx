@@ -41,7 +41,7 @@ const Users = () => {
   useEffect(() => {
     const fetchUsersData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/User/get");
+        const res = await axios.get(`${import.meta.env.VITE_MY_API}user/get`);
         setUsers(res.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -54,7 +54,7 @@ const Users = () => {
   const deleteRecordFromAPI = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/user/delete/${id}`
+        `${import.meta.env.VITE_MY_API}user/delete/${id}`
       );
 
       if (response.status === 200) {
@@ -121,7 +121,7 @@ const Users = () => {
   const editRecordFromAPI = async (id, record) => {
     try {
       await axios
-        .post(`http://localhost:5000/user/update/${id}`, record)
+        .post(`${import.meta.env.VITE_MY_API}user/update/${id}`, record)
         .then((res) => {
           Swal.fire({
             icon: "success",

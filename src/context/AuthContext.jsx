@@ -27,12 +27,14 @@ export const AuthProvider = ({ children }) => {
     }
 
     const storedUserID = Cookies.get("userID");
+    console.log("Stored userID from cookie:", storedUserID);
     if (storedUserID) {
       setUserIDState(storedUserID);
     }
   }, []);
 
   const setUserID = (id) => {
+    console.log("Setting userID:", id);
     setUserIDState(id);
     Cookies.set("userID", id, { expires: 1 });
   };
@@ -51,7 +53,7 @@ export const AuthProvider = ({ children }) => {
       //   () => "abcd@123" === email && 12345 === password
       // );
 
-      if (email && password) {
+      if (email == "rajan@gmail.com" && password == "12345") {
         // const res = await axios.post(
         //   'http://localhost:5000/admin/login',
         //   userData,
@@ -89,8 +91,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loginUser = async (email, password) => {
-    console.log("emailzzuser", email, password);
-
     const userData = {
       email: email,
       password: password,
@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }) => {
     try {
       if (email && password) {
         const res = await axios.post(
-          "http://localhost:5000/user/login",
+          `${import.meta.env.VITE_MY_API}user/login`,
           userData,
           {
             headers: {

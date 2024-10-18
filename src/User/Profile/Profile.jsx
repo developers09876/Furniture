@@ -76,9 +76,6 @@
 
 // export default Profile;
 
-
-
-
 import { Divider, Form, Input, Button, Modal } from "antd";
 import React, { useState } from "react";
 import { Row, Col } from "react-bootstrap";
@@ -110,12 +107,11 @@ function Profile() {
   const [data, setData] = useState(initialData);
   const [name, setName] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
-console.log('dataz', data)
+  console.log("dataz", data);
 
-const userId = localStorage.getItem("id")
+  const userId = localStorage.getItem("id");
 
   const handleUpdate = (values, key) => {
-    
     confirm({
       title: `Are you sure you want to update ${values.name}?`,
       content: `Phonenumber: ${values.phonenumber}`,
@@ -130,32 +126,28 @@ const userId = localStorage.getItem("id")
       },
     });
   };
- 
+
   const updateRecordFromAPI = async (id) => {
-   
-    const record1 ={
-      username:name , 
-      phoneNumber:phonenumber , 
-  
-    }
-    console.log('recordz', record1)
+    const record1 = {
+      username: name,
+      phoneNumber: phonenumber,
+    };
+    console.log("recordz", record1);
     try {
-      await axios.post(`http://localhost:5000/user/update/${userId}`, record1)
-      .then((res) => {
-        Swal.fire({
-          icon: "success",
-          title: "Updated!",
-          text: `User has been updated successfully.`,
+      await axios
+        .post(`${import.meta.env.VITE_MY_API}user/update/${userId}`, record1)
+        .then((res) => {
+          Swal.fire({
+            icon: "success",
+            title: "Updated!",
+            text: `User has been updated successfully.`,
+          });
         });
-    })
       const updatedData = data.map((user) =>
         user.id === id ? { ...user, ...record1 } : user
       );
       setData(updatedData);
-
-
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error updating user:", error);
       Swal.fire({
         icon: "error",
@@ -172,10 +164,10 @@ const userId = localStorage.getItem("id")
   return (
     <StyledProfile>
       <Divider style={{ fontSize: "30px" }}>Profile</Divider>
-     
+
       {data.map((user) => (
         <Form
-          style={{ marginLeft: '250px', width: '70%' }}
+          style={{ marginLeft: "250px", width: "70%" }}
           form={form}
           key={user.key}
           initialValues={user}
@@ -189,11 +181,7 @@ const userId = localStorage.getItem("id")
                 name="name"
                 rules={[{ required: true, message: "Please enter your name!" }]}
               >
-                <Input  
-               
-                onChange={(e) => setName(e.target.value)}
-                required
-                />
+                <Input onChange={(e) => setName(e.target.value)} required />
               </Form.Item>
             </Col>
 
@@ -209,12 +197,17 @@ const userId = localStorage.getItem("id")
               <Form.Item
                 label="Phonenumber"
                 name="phonenumber"
-                rules={[{ required: true, message: "Please enter your phone number!" }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter your phone number!",
+                  },
+                ]}
               >
-                <Input 
-                 
-                 onChange={(e) => setPhonenumber(e.target.value)}
-                 required/>
+                <Input
+                  onChange={(e) => setPhonenumber(e.target.value)}
+                  required
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -224,14 +217,11 @@ const userId = localStorage.getItem("id")
               <Button type="primary" htmlType="submit">
                 Update
               </Button>
-              <Button
-                style={{ marginLeft: "10px" }}
-                onClick={handleCancel}
-              >
+              <Button style={{ marginLeft: "10px" }} onClick={handleCancel}>
                 Cancel
               </Button>
             </Col>
-          </Row> 
+          </Row>
         </Form>
       ))}
     </StyledProfile>

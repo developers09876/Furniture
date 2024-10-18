@@ -30,7 +30,7 @@ const EditCategory = () => {
     const fetchCategoryDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/categories/${id}`
+          `${import.meta.env.VITE_MY_API}categories/${id}`
         );
         const productData = response.data;
 

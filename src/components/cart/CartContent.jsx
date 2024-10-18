@@ -16,6 +16,10 @@ const CartContent = () => {
             title={item.title}
             price={item.price}
             quantity={item.quantity}
+            unit={item.unit}
+            categorz={item.categorz}
+            selectedDimension={item.selectedDimension}
+            thickness={item.thickness}
           />
         );
       })}
