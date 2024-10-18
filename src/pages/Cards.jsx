@@ -13,6 +13,7 @@ import image6 from "../assets/Mega_sale.png";
 import image7 from "../assets/RBLBank-logo.png";
 import image8 from "../assets/idfc-logo.png";
 import '../Css-Pages/HomeCard.css';
+import { Container } from 'react-bootstrap';
 
 const { Text } = Typography;
 
@@ -131,6 +132,7 @@ const Sale = () => {
     return (
         <div className='container'>
             <Row gutter={[16, 16]} >
+
                 <Col xs={24} md={24} lg={12}>
                     <SaleContainer>
                         <SaleLeft>
@@ -138,17 +140,19 @@ const Sale = () => {
                                 width: '80px',
                                 //  height: 'auto' 
                             }} />
-                            <SaleEndsIn>
-                                <Space direction="vertical" size={0}>
-                                    <Text strong style={{ fontSize: '18px' }}>Sale Ends In</Text>
-                                    <TimerText>{`${timeLeft.hours} : ${timeLeft.minutes} : ${timeLeft.seconds}`}</TimerText>
-                                    <Space size="small">
-                                        <Text>Days</Text>
-                                        <Text>Hrs</Text>
-                                        <Text>Mins</Text>
+                            <div style={{ marginLeft: '50px' }}>
+                                <SaleEndsIn>
+                                    <Space direction="vertical" size={0}>
+                                        <Text strong style={{ fontSize: '18px' }}>Sale Ends In</Text>
+                                        <TimerText>{`${timeLeft.hours} : ${timeLeft.minutes} : ${timeLeft.seconds}`}</TimerText>
+                                        <Space size="small">
+                                            <Text>Days</Text>
+                                            <Text>Hrs</Text>
+                                            <Text>Mins</Text>
+                                        </Space>
                                     </Space>
-                                </Space>
-                            </SaleEndsIn>
+                                </SaleEndsIn>
+                            </div>
                         </SaleLeft>
                         <SaleRight>
 
@@ -158,15 +162,11 @@ const Sale = () => {
                                     <div>
                                         <div style={{ display: 'flex', flexDirection: "row-reverse", alignItems: "center", padding: '0 10px' }}>
                                             <Text style={{ fontSize: '18px', padding: "10px", color: 'green', fontWeight: 'bold' }}>up to 10%</Text>
-                                            {/* <img src={image7} style={{ width: '50px', padding: "10px" }} />
-                                            <img src={image8} style={{ width: '50px', padding: "10px" }} /> */}
                                         </div>
                                     </div>
                                     <div>
                                         <div style={{ display: 'flex', flexDirection: "row-reverse", alignItems: "center", padding: '0 10px' }}>
                                             <Text style={{ fontSize: '18px', padding: "10px", color: 'green', fontWeight: 'bold' }}>up to 10%</Text>
-                                            {/* <img src={image7} style={{ width: '50px', padding: "10px" }} />
-                                            <img src={image8} style={{ width: '50px', padding: "10px" }} /> */}
                                         </div>
                                     </div>
                                 </Slider>
