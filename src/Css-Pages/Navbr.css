@@ -22,12 +22,14 @@
   display: flex;
   justify-content: space-around;
   z-index: 1000; /* Ensure dropdown appears above other elements */
+  padding: 0px !important;
+  margin-top: -1px !important ;
 }
 
 /* Submenu Columns Styling */
 .dropdown-menu li {
   list-style: none;
-  padding: 8px 0;
+  padding: 8px 8px 8px 0px;
   width: 200px; /* Ensure consistent width */
 }
 
@@ -35,7 +37,8 @@
   display: block;
   text-decoration: none;
   color: #333;
-  padding-left: 15px;
+  padding-left: -0px !important;
+  margin-left: 8px;
 }
 
 .dropdown-menu li a:hover {
@@ -66,19 +69,6 @@
 } */
 
 /* Media Queries for Mobile View */
-@media (max-width: 768px) {
-  .navbar-nav {
-    flex-direction: column;
-  }
-
-  .dropdown-menu {
-    min-width: 100%;
-  }
-
-  .dropdown-menu li {
-    width: 100%;
-  }
-}
 
 .dropdown-menu ul {
   padding-left: 0px;
@@ -172,5 +162,110 @@
   /* Adjust custom classes like Beds-head-boards-drop-down */
   .Beds-head-boards-drop-down {
     margin-left: 0;
+  }
+}
+
+/* Mobile View Queries for Screen Widths up to 768px */
+@media (max-width: 768px) {
+  /* Stack navigation items vertically */
+  .navbar-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  /* Make nav items take full width and align to the left */
+  .nav-item {
+    width: 100%;
+    margin-right: 0;
+    position: relative;
+  }
+
+  /* Adjust the padding and alignment of nav links */
+  .nav-link {
+    padding: 15px;
+    width: 100%;
+    text-align: left;
+    color: #333;
+  }
+
+  /* Ensure dropdown menus are full width on mobile */
+  .dropdown-menu {
+    position: static; /* Remove absolute positioning */
+    display: none; /* Initially hidden */
+    background-color: rgb(182, 83, 83); /* Same background color */
+    flex-direction: column; /* Stack items vertically */
+    width: 100%; /* Take full width */
+    padding: 0; /* No padding for better alignment */
+    box-shadow: none; /* Remove any shadows */
+  }
+
+  /* Adjust the submenu items to stack vertically */
+  .dropdown-menu li {
+    width: 100%;
+    padding: 12px 20px;
+    box-sizing: border-box;
+  }
+
+  /* Make dropdown links block-level to take full width */
+  .dropdown-menu li a {
+    display: block;
+    width: 100%;
+    color: #333;
+    text-align: left;
+    padding: 12px 20px;
+  }
+
+  /* Ensure that the dropdown is displayed on click instead of hover */
+  .nav-item.active .dropdown-menu {
+    display: flex; /* Show dropdown when the parent is active */
+  }
+
+  /* Disable hover interaction for dropdowns on mobile */
+  .nav-item:hover .dropdown-menu {
+    display: none; /* Prevent hover-based dropdowns */
+  }
+
+  /* Show dropdown on click (use JS to toggle the 'active' class) */
+  .nav-item.active .dropdown-menu {
+    display: flex; /* Show dropdown when active */
+  }
+
+  /* Optional: Increase font size for readability */
+  .nav-link,
+  .dropdown-menu li a {
+    font-size: 16px;
+  }
+
+  /* Optional: Adjust padding for a more comfortable touch experience */
+  .nav-link,
+  .dropdown-menu li {
+    padding: 15px 20px;
+  }
+
+  /* First and last nav item adjustments */
+  .nav-item:first-child .dropdown-menu,
+  .nav-item:last-child .dropdown-menu {
+    left: 0;
+    transform: none;
+  }
+
+  /* Optional: Handle any custom classes (e.g., Beds-head-boards-drop-down) */
+  .Beds-head-boards-drop-down {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    flex-direction: column;
+  }
+
+  .dropdown-menu {
+    min-width: 100%;
+  }
+
+  .dropdown-menu li {
+    width: 100%;
   }
 }
