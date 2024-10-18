@@ -21,7 +21,7 @@ const Home = () => {
       <DeliveryPartners />
       <Review />
       {/* <Newsletter /> */}
-      <ScrollToTop style={{ backgroundColor: 'grey' }} smooth />
+      <ScrollToTop style={{ backgroundColor: '#93aabf4d', borderRadius: '300px', color: 'white' }} smooth />
     </>
   );
 };
