@@ -7,38 +7,49 @@
   text-decoration: none;
   color: #333;
 }
+
 .navbar {
-  --bs-navbar-padding-x: none !important ;
+  --bs-navbar-padding-x: none !important;
 }
+
 .navbar-nav {
   --bs-navbar-nav-link-padding-x: none !important;
 }
+
 /* Dropdown Menu Styling */
 .dropdown-menu {
   display: none;
   position: absolute;
   top: 100%;
-  background-color: rgb(182, 83, 83);
+  background: linear-gradient(#dce6ec, white) !important;
+  /* background-color: #93aabf4d !important; */
   display: flex;
   justify-content: space-around;
-  z-index: 1000; /* Ensure dropdown appears above other elements */
+  z-index: 1000;
+  /* Ensure dropdown appears above other elements */
   padding: 0px !important;
-  margin-top: -1px !important ;
+  margin-top: -1px !important;
+
 }
 
 /* Submenu Columns Styling */
 .dropdown-menu li {
   list-style: none;
   padding: 8px 8px 8px 0px;
-  width: 200px; /* Ensure consistent width */
+  width: 200px;
+  /* Ensure consistent width */
 }
 
 .dropdown-menu li a {
   display: block;
   text-decoration: none;
   color: #333;
+  font-size: small;
+
+  /* font-family: Arial, Helvetica, sans-serif;  */
   padding-left: -0px !important;
   margin-left: 8px;
+  /* font-weight: bold; */
 }
 
 .dropdown-menu li a:hover {
@@ -80,6 +91,7 @@
 
 /* Media Queries for Mobile View */
 @media (max-width: 768px) {
+
   /* Stack navigation items vertically */
   .navbar-nav {
     flex-direction: column;
@@ -103,11 +115,14 @@
   /* Ensure dropdown menus are full width on mobile */
   .dropdown-menu {
     position: relative;
-    display: none; /* Hidden initially */
-    top: auto; /* Disable absolute positioning */
+    display: none;
+    /* Hidden initially */
+    top: auto;
+    /* Disable absolute positioning */
     background-color: rgb(182, 83, 83);
     flex-direction: column;
-    width: 100%; /* Take full width */
+    width: 100%;
+    /* Take full width */
     justify-content: flex-start;
   }
 
@@ -127,12 +142,14 @@
 
   /* Show the dropdown menu on click instead of hover */
   .nav-item:hover .dropdown-menu {
-    display: none; /* Disable hover interaction on mobile */
+    display: none;
+    /* Disable hover interaction on mobile */
   }
 
   /* Use this instead to toggle dropdown menu visibility on click */
   .nav-item.active .dropdown-menu {
-    display: flex; /* Show dropdown when active */
+    display: flex;
+    /* Show dropdown when active */
   }
 
   /* Optional: Make text more readable on mobile */
@@ -167,6 +184,7 @@
 
 /* Mobile View Queries for Screen Widths up to 768px */
 @media (max-width: 768px) {
+
   /* Stack navigation items vertically */
   .navbar-nav {
     flex-direction: column;
@@ -191,13 +209,20 @@
 
   /* Ensure dropdown menus are full width on mobile */
   .dropdown-menu {
-    position: static; /* Remove absolute positioning */
-    display: none; /* Initially hidden */
-    background-color: rgb(182, 83, 83); /* Same background color */
-    flex-direction: column; /* Stack items vertically */
-    width: 100%; /* Take full width */
-    padding: 0; /* No padding for better alignment */
-    box-shadow: none; /* Remove any shadows */
+    position: static;
+    /* Remove absolute positioning */
+    display: none;
+    /* Initially hidden */
+    background-color: rgb(182, 83, 83);
+    /* Same background color */
+    flex-direction: column;
+    /* Stack items vertically */
+    width: 100%;
+    /* Take full width */
+    padding: 0;
+    /* No padding for better alignment */
+    box-shadow: none;
+    /* Remove any shadows */
   }
 
   /* Adjust the submenu items to stack vertically */
@@ -218,17 +243,20 @@
 
   /* Ensure that the dropdown is displayed on click instead of hover */
   .nav-item.active .dropdown-menu {
-    display: flex; /* Show dropdown when the parent is active */
+    display: flex;
+    /* Show dropdown when the parent is active */
   }
 
   /* Disable hover interaction for dropdowns on mobile */
   .nav-item:hover .dropdown-menu {
-    display: none; /* Prevent hover-based dropdowns */
+    display: none;
+    /* Prevent hover-based dropdowns */
   }
 
   /* Show dropdown on click (use JS to toggle the 'active' class) */
   .nav-item.active .dropdown-menu {
-    display: flex; /* Show dropdown when active */
+    display: flex;
+    /* Show dropdown when active */
   }
 
   /* Optional: Increase font size for readability */

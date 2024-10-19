@@ -4,15 +4,13 @@ import styled from 'styled-components';
 
 
 const TopOfferBar = styled.div`
-  background-color: white;
+  background-color: var( --heading-clr) !important;
   text-align: center;
   color: white;
   font-size: 14px;
   height:40px;
-  margin-top:10px;
+  margin:0;
   `;
-
-
 
 const StyledCarousel = styled(Carousel)`
   .slick-dots li button {
@@ -23,11 +21,11 @@ const StyledCarousel = styled(Carousel)`
 const TopBar = () => (
     <TopOfferBar>
         <StyledCarousel autoplay dots={false}>
-            <div>
-                Use code <span style={{ color: '#0000FF' }}>MEGAFEST (till 20th Oct)</span> to Get up to 75% off + Additional 10% off with bank offers
+            <div >
+                Use code <span style={{ color: 'white' }}>MEGAFEST</span> to Get up to 75% off + Additional 10% off with bank offers
             </div>
             <div>Special Offer! Free Shipping on All Orders Above $500</div>
-            <div>92+ Restopedic Furniture Stores across India. <span style={{ color: '#0000FF' }}>Come, Visit Us!</span></div>
+            <div>92+ Restopedic Furniture Stores across India. <span style={{ color: 'white' }}>Come, Visit Us!</span></div>
         </StyledCarousel>
     </TopOfferBar>
 );
