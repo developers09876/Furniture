@@ -34,6 +34,7 @@
 
 /* Dropdown Menu Styling */
 .dropdown-menu {
+  gap: 10px;
   display: none;
   position: absolute;
   top: 100%;
@@ -49,9 +50,12 @@
 
 .dropdown-menu li {
   list-style: none;
-  padding: 8px 8px 8px 0px;
-  width: 200px;
-  /* Ensure consistent width */
+  padding: 8px 0px 8px 0px;
+  width: auto;
+}
+
+.dropdown-item ul li a {
+  font-size: 20px !important; /* Adjust the font size as needed */
 }
 
 .dropdown-menu li a {
@@ -68,6 +72,10 @@
 
 .dropdown-menu li a:hover {
   color: red;
+  font-size: larger;
+}
+.dropdown-menu li a {
+  font-size: large;
 }
 
 .nav-item:hover .dropdown-menu {

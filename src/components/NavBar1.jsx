@@ -44,6 +44,7 @@ const DropMenuStyled = styled(Link)`
   font-size: 19px !important;
   font-weight: Bold;
   font-size: large;
+  width: max-content;
   // font-family: 'Times New Roman', Times, serif;
   pointer-events: none;
 
@@ -157,7 +158,10 @@ const NavBar1 = () => {
                       </li>
 
                       <li>
-                        <DropMenuStyled className="dropdown-item">
+                        <DropMenuStyled
+                          className="dropdown-item"
+                          style={{ width: "210px" }}
+                        >
                           Bonnel Spring Series
                         </DropMenuStyled>
                         {/* <div
@@ -329,44 +333,22 @@ const NavBar1 = () => {
                   <div>
                     <ul class="dropdown-menu">
                       <li>
-                        <Link to="">Stationary sofas</Link>
-                        {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
+                        <DropMenuStyled to="">
+                          <center> Sofa Varietys</center>{" "}
+                        </DropMenuStyled>
+
                         <ul>
                           <li>
+                            <Link to="">Stationary sofas</Link>
+                          </li>
+                          <li>
                             <Link to="">Motoion sofas</Link>
-                            {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
                           </li>
                           <li>
                             <Link to="">Sofa cum Beds</Link>
-                            {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
                           </li>
                           <li>
                             <Link to="">Armchiar & Puffee</Link>
-                            {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
                           </li>
                         </ul>
                       </li>
@@ -459,10 +441,16 @@ const NavBar1 = () => {
                   <div>
                     <ul class="dropdown-menu">
                       <li>
-                        <Link href="#" class="nav-link">
-                          Support Pillows
-                        </Link>
+                        <DropMenuStyled href="#">
+                          Pillows Variety
+                        </DropMenuStyled>
+
                         <ul>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Support Pillows
+                            </Link>
+                          </li>
                           <li>
                             <Link href="#" class="nav-link">
                               Medicinal Pillows
@@ -530,7 +518,8 @@ const NavBar1 = () => {
                   >
                     Beddings
                   </StyledLink>
-                  <ul class="dropdown-menu" style={{ marginLeft: "10px" }}>
+
+                  <ul class="dropdown-menu">
                     <li>
                       <ul>
                         <li>

@@ -18,7 +18,7 @@ const Wrapper = styled.section`
 `;
 const HomeHeader = () => (
   <Wrapper className="homeCarousel">
-    <Carousel autoplay style={{ marginTop: "700px" }}>
+    <Carousel autoplay>
       <div>
         <img
           style={contentStyle}
