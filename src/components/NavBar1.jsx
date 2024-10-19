@@ -262,27 +262,25 @@ const NavBar1 = () => {
                         ></div> */}
                         <ul style={{ paddingLeft: "1px" }}>
                           <li>
-                            <Link href="/products/4">
-                              Ortho premium Mattress
-                            </Link>
+                            <Link to="/products/4">Ortho premium Mattress</Link>
                           </li>
                           <li>
-                            <Link href="/products/5">
+                            <Link to="/products/5">
                               Ortho premium ET Mattress
                             </Link>
                           </li>
                           <li>
-                            <Link href="/products/6">
+                            <Link to="/products/6">
                               Ortho spine therapy Mattress
                             </Link>
                           </li>
                           <li>
-                            <Link href="/products/7">
+                            <Link to="/products/7">
                               Ortho Latex o pedic ET Mattress
                             </Link>
                           </li>
                           <li>
-                            <Link href="/products/8">
+                            <Link to="/products/8">
                               Ortho Organic posture pedic dual top Mattress
                             </Link>
                           </li>
