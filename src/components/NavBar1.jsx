@@ -13,11 +13,13 @@ import "./../Css-Pages/Navbr.css";
 
 const StyledLink = styled(NavLink)`
   // border-bottom: transparent solid 3px;
-
+  font-size: 20px;
+  border-radius: 7px;
   transition: ${(props) => props.theme.transition};
   color: black;
   padding: 8px !important;
   &:hover {
+    border-radius: 7px;
     // border-bottom-color: var(--button-hover);
     background-color: rgb(171, 133, 189);
     color: white !important ;
@@ -39,6 +41,7 @@ const StyledLink = styled(NavLink)`
 
 const DropMenuStyled = styled(Link)`
   color: var(--heading-clr) !important;
+  font-size: 19px !important;
   font-weight: Bold;
   font-size: large;
   // font-family: 'Times New Roman', Times, serif;

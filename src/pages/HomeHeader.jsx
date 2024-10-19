@@ -12,13 +12,13 @@ const contentStyle = {
 };
 
 const Wrapper = styled.section`
-  @media (max-width: 320px) {
+  @media (min-width: 320px) and (max-width: 480px) {
     margin-top: 700px;
   }
 `;
 const HomeHeader = () => (
   <Wrapper className="homeCarousel">
-    <Carousel autoplay>
+    <Carousel autoplay style={{ marginTop: "700px" }}>
       <div>
         <img
           style={contentStyle}
