@@ -4,7 +4,7 @@
   width: 350px;
   background-size: cover;
   margin-top: 5vh;
-  position: absolute;
+  position: relative;
 }
 
 .chair-card-content {
@@ -315,4 +315,16 @@ hr {
 
 .container {
   margin-top: 20px;
+}
+
+/* @media (min-width: 320px) and (max-width: 480px) {
+  .homeCarousel {
+    margin-top: 700px;
+  }
+} */
+
+@media (max-width: 480px) {
+  .homeCarousel {
+    margin-top: 700px; /* Adjust this value as needed */
+  }
 }

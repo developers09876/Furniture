@@ -13,12 +13,15 @@ import "./../Css-Pages/Navbr.css";
 
 const StyledLink = styled(NavLink)`
   // border-bottom: transparent solid 3px;
+
   transition: ${(props) => props.theme.transition};
   color: black;
+  padding: 8px !important;
   &:hover {
     // border-bottom-color: var(--button-hover);
-    background-color: rgb(156 116 174);
+    background-color: rgb(171, 133, 189);
     color: white !important ;
+    padding: 8px !important;
   }
   // &.active {
   //   border-bottom-color: var(--button-hover);
@@ -273,32 +276,34 @@ const NavBar1 = () => {
                   >
                     Beds & Head Boards
                   </StyledLink>
-                  <ul class="dropdown-menu" style={{ marginLeft: "20px" }}>
-                    <li>
-                      <ul>
-                        <li>
-                          <Link href="#" class="nav-link">
-                            Upholstered Beds
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="#" class="nav-link">
-                            Engineered Wood Beds
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="#" class="nav-link">
-                            Hydraulic Beds Bunker Beds
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="#" class="nav-link">
-                            Bunker Beds
-                          </Link>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                  <div>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <ul>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Upholstered Beds
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Engineered Wood Beds
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Hydraulic Beds Bunker Beds
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Bunker Beds
+                            </Link>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
                 <li class="nav-item">
                   <StyledLink
@@ -310,124 +315,125 @@ const NavBar1 = () => {
                   >
                     Sofa & Recliners
                   </StyledLink>
+                  <div>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <Link to="">Stationary sofas</Link>
+                        {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                        <ul>
+                          <li>
+                            <Link to="">Motoion sofas</Link>
+                            {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                          </li>
+                          <li>
+                            <Link to="">Sofa cum Beds</Link>
+                            {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                          </li>
+                          <li>
+                            <Link to="">Armchiar & Puffee</Link>
+                            {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                          </li>
+                        </ul>
+                      </li>
 
-                  <ul class="dropdown-menu" style={{ marginLeft: "80px" }}>
-                    <li>
-                      <Link to="">Stationary sofas</Link>
-                      {/* <div
+                      <li>
+                        <DropMenuStyled to="">Sectional sofas</DropMenuStyled>
+                        {/* <div
                           style={{
                             backgroundColor: `var(--under-line)`,
                             padding: "1px 1px 1px 3px",
                             width: "100%",
                           }}
                         ></div> */}
-                      <ul>
-                        <li>
-                          <Link to="">Motoion sofas</Link>
-                          {/* <div
+                        <ul>
+                          <li>
+                            <Link to="">LHS Sectional sofas</Link>
+                          </li>
+                          <li>
+                            <Link to="">RHS Sectional sofas</Link>
+                          </li>
+                          <li>
+                            <Link to="">Corner sofas</Link>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <DropMenuStyled to="">Recliners</DropMenuStyled>
+                        {/* <div
                           style={{
                             backgroundColor: `var(--under-line)`,
                             padding: "1px 1px 1px 3px",
                             width: "100%",
                           }}
                         ></div> */}
-                        </li>
-                        <li>
-                          <Link to="">Sofa cum Beds</Link>
-                          {/* <div
+                        <ul>
+                          <li>
+                            <Link to="">Manual Recliners</Link>
+                          </li>
+                          <li>
+                            <Link to="">Motorised Recliners</Link>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <DropMenuStyled to="">Manual Recliners</DropMenuStyled>
+                        {/* <div
                           style={{
                             backgroundColor: `var(--under-line)`,
                             padding: "1px 1px 1px 3px",
                             width: "100%",
                           }}
                         ></div> */}
-                        </li>
-                        <li>
-                          <Link to="">Armchiar & Puffee</Link>
-                          {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
-                        </li>
-                      </ul>
-                    </li>
+                        <ul>
+                          <li>
+                            <Link to="">Manual Recliners</Link>
+                          </li>
 
-                    <li>
-                      <DropMenuStyled to="">Sectional sofas</DropMenuStyled>
-                      {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
-                      <ul>
-                        <li>
-                          <Link to="">LHS Sectional sofas</Link>
-                        </li>
-                        <li>
-                          <Link to="">RHS Sectional sofas</Link>
-                        </li>
-                        <li>
-                          <Link to="">Corner sofas</Link>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <DropMenuStyled to="">Recliners</DropMenuStyled>
-                      {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
-                      <ul>
-                        <li>
-                          <Link to="">Manual Recliners</Link>
-                        </li>
-                        <li>
-                          <Link to="">Motorised Recliners</Link>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <DropMenuStyled to="">Manual Recliners</DropMenuStyled>
-                      {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
-                      <ul>
-                        <li>
-                          <Link to="">Manual Recliners</Link>
-                        </li>
+                          <li>
+                            <Link to="">
+                              1 seater Recliner Rocking Revolving & Recliner
+                            </Link>
+                          </li>
 
-                        <li>
-                          <Link to="">
-                            1 seater Recliner Rocking Revolving & Recliner
-                          </Link>
-                        </li>
+                          <li>
+                            <Link to="">2 seater Recliner </Link>
+                          </li>
 
-                        <li>
-                          <Link to="">2 seater Recliner </Link>
-                        </li>
+                          <li>
+                            <Link to="">3 seater Recliner </Link>
+                          </li>
 
-                        <li>
-                          <Link to="">3 seater Recliner </Link>
-                        </li>
-
-                        <li>
-                          <Link to="">Recliner Set</Link>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                          <li>
+                            <Link to="">Recliner Set</Link>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
                 <li class="nav-item">
                   <StyledLink
@@ -439,65 +445,69 @@ const NavBar1 = () => {
                   >
                     Pillows & Cushions
                   </StyledLink>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <Link href="#" class="nav-link">
-                        Support Pillows
-                      </Link>
-                      <ul>
-                        <li>
-                          <Link href="#" class="nav-link">
-                            Medicinal Pillows
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="#" class="nav-link">
-                            Maternity and Baby Pillows
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="#" class="nav-link">
-                            Cushions and Bolsters
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="#" class="nav-link">
-                            Car Cushions
-                          </Link>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <DropMenuStyled href="#">Sleeping Pillows</DropMenuStyled>
-                      {/* <div
+                  <div>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <Link href="#" class="nav-link">
+                          Support Pillows
+                        </Link>
+                        <ul>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Medicinal Pillows
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Maternity and Baby Pillows
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Cushions and Bolsters
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Car Cushions
+                            </Link>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <DropMenuStyled href="#">
+                          Sleeping Pillows
+                        </DropMenuStyled>
+                        {/* <div
                           style={{
                             backgroundColor: `var(--under-line)`,
                             padding: "1px 1px 1px 3px",
                             width: "100%",
                           }}
                         ></div> */}
-                      <ul>
-                        <li>
-                          <Link href="#">Fiber Pillows</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Memory foam Pillows</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Memory foam contour pillows</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Latex Pillows</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Latex contour pillows</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Cool Gel Memory foam Pillow</Link>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                        <ul>
+                          <li>
+                            <Link href="#">Fiber Pillows</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Memory foam Pillows</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Memory foam contour pillows</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Latex Pillows</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Latex contour pillows</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Cool Gel Memory foam Pillow</Link>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
                 <li class="nav-item">
                   <StyledLink
@@ -509,49 +519,51 @@ const NavBar1 = () => {
                   >
                     Beddings
                   </StyledLink>
-                  <ul class="dropdown-menu" style={{ marginLeft: "10px" }}>
-                    <li>
-                      <ul>
-                        <li>
-                          <Link href="#">Comforters</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Dohar</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Duvet</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Duvet Covers</Link>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <ul>
-                        <li>
-                          <Link href="#">Mattress Protectors</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Pillow Protectors</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Pillow Cover</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Blankets</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Flat Bedsheets</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Fitted Bedsheets</Link>
-                        </li>
-                        <li>
-                          <Link href="#">Kids Bedsheets</Link>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                  <div>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <ul>
+                          <li>
+                            <Link href="#">Comforters</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Dohar</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Duvet</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Duvet Covers</Link>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <ul>
+                          <li>
+                            <Link href="#">Mattress Protectors</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Pillow Protectors</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Pillow Cover</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Blankets</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Flat Bedsheets</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Fitted Bedsheets</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Kids Bedsheets</Link>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
               </ul>
             </nav>
