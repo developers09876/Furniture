@@ -18,6 +18,7 @@ import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
 import NavBar1 from "./NavBar1";
+import NavBar2 from "./NavBar2";
 import { CgProfile } from "react-icons/cg";
 import { Input } from "antd"; // Ant Design Input
 import "./../Css-Pages/Navbr.css";
@@ -98,6 +99,7 @@ const NavBar = () => {
 
   return (
     <>
+      <NavBar2 />
       <nav
         className="navbar navbar-expand-lg p-0"
         style={{ backgroundColor: "var(--bgColor)" }}
