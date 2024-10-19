@@ -317,14 +317,6 @@ hr {
   margin-top: 20px;
 }
 
-/* @media (min-width: 320px) and (max-width: 480px) {
-  .homeCarousel {
-    margin-top: 700px;
-  }
-} */
-
-@media (max-width: 480px) {
-  .homeCarousel {
-    margin-top: 700px; /* Adjust this value as needed */
-  }
+.homeCarousel {
+  margin-top: 10px !important;
 }

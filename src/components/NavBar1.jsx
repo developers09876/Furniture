@@ -90,7 +90,7 @@ const NavBar1 = () => {
   const { total } = useContext(WishlistContext);
 
   return (
-    <nav className="navbar navbar-expand-lg p-0" style={{ height: "45px" }}>
+    <nav className="navbar navbar-expand-lg p-0">
       <div className="container lg-d-flex">
         {/* <Row>
       <Col md={8} sm={12}> */}
