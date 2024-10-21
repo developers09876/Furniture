@@ -40,6 +40,7 @@
   position: absolute;
   top: 100%;
   background: linear-gradient(#dce6ec, white) !important;
+
   /* background-color: #93aabf4d !important; */
   display: flex;
   justify-content: space-around;
@@ -232,6 +233,7 @@
     /* No padding for better alignment */
     box-shadow: none;
     /* Remove any shadows */
+
   }
 
   /* Adjust the submenu items to stack vertically */
