@@ -90,7 +90,7 @@ const NavBar1 = () => {
   const { total } = useContext(WishlistContext);
 
   return (
-    <nav className="navbar navbar-expand-lg p-0" style={{ height: "45px" }}>
+    <nav className="navbar navbar-expand-lg p-0">
       <div className="container lg-d-flex">
         {/* <Row>
       <Col md={8} sm={12}> */}
@@ -143,16 +143,20 @@ const NavBar1 = () => {
                         ></div> */}
                         <ul style={{ width: "max-content" }}>
                           <li>
-                            <Link to="">Amenity Mattress</Link>
+                            <Link to="/products/9">Amenity Mattress</Link>
                           </li>
                           <li>
-                            <Link to="">Amenity ET Mattress</Link>
+                            <Link to="/products/10">Amenity ET Mattress</Link>
                           </li>
                           <li>
-                            <Link to="">Posture Infinity Mattress</Link>
+                            <Link to="/products/11">
+                              Posture Infinity Mattress
+                            </Link>
                           </li>
                           <li>
-                            <Link to="">Leisure Sleep Mattress</Link>
+                            <Link to="/products/12">
+                              Leisure Sleep Mattress
+                            </Link>
                           </li>
                         </ul>
                       </li>
@@ -258,21 +262,25 @@ const NavBar1 = () => {
                         ></div> */}
                         <ul style={{ paddingLeft: "1px" }}>
                           <li>
-                            <Link href="#">Ortho premium Mattress</Link>
+                            <Link to="/products/4">Ortho premium Mattress</Link>
                           </li>
                           <li>
-                            <Link href="#">Ortho premium ET Mattress</Link>
+                            <Link to="/products/5">
+                              Ortho premium ET Mattress
+                            </Link>
                           </li>
                           <li>
-                            <Link href="#">Ortho spine therapy Mattress</Link>
+                            <Link to="/products/6">
+                              Ortho spine therapy Mattress
+                            </Link>
                           </li>
                           <li>
-                            <Link href="#">
+                            <Link to="/products/7">
                               Ortho Latex o pedic ET Mattress
                             </Link>
                           </li>
                           <li>
-                            <Link href="#">
+                            <Link to="/products/8">
                               Ortho Organic posture pedic dual top Mattress
                             </Link>
                           </li>
