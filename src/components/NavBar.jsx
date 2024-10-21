@@ -22,6 +22,7 @@ import NavBar2 from "./NavBar2";
 import { CgProfile } from "react-icons/cg";
 import { Input } from "antd"; // Ant Design Input
 import "./../Css-Pages/Navbr.css";
+import axios from "axios";
 
 // styles for links
 const StyledLink = styled(NavLink)`
@@ -51,12 +52,51 @@ const SearchIcon = styled(FontAwesomeIcon)`
 const NavBar = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
-
+  const [products, setProducts] = useState([]);
+  console.log("products211", products);
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
   const { totalItems } = useContext(CartContext);
   const { total } = useContext(WishlistContext);
 
   const [username, setUsername] = useState("");
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_MY_API}products/`
+      );
+      setProducts(response.data);
+
+      // const productFilter = locationData
+      //   ? response.data.filter((product) => product.category === locationData)
+      //   : response.data;
+
+      setFilteredProducts(productFilter);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  // Handle search input change
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setQuery(query);
+
+    // let filtered = products;
+    // if (locationData) {
+    //   filtered = products.filter(
+    //     (product) => product.category === locationData
+    //   );
+    // }
+
+    if (query) {
+      filtered = filtered.filter((product) =>
+        product.title.toLowerCase().includes(query)
+      );
+    }
+
+    setFilteredProducts(filtered);
+  };
 
   const SearchContainer = styled.div`
     width: 270px;
@@ -130,7 +170,7 @@ const NavBar = () => {
               type="text"
               placeholder="Search products"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={handleSearch}
             />
             <SearchIcon icon={faSearch} className="text-muted" />
           </SearchContainer>

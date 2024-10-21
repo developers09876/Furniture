@@ -90,8 +90,8 @@ const NavBar1 = () => {
   const { total } = useContext(WishlistContext);
 
   return (
-    <nav className="navbar navbar-expand-lg p-0">
-      <div className="container lg-d-flex">
+    <nav className="navbar navbar-expand-lg p-0 mt-10">
+      <div className="container lg-d-flex m-auto">
         {/* <Row>
       <Col md={8} sm={12}> */}
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -99,7 +99,7 @@ const NavBar1 = () => {
             {/* Mattress Dropdown */}
 
             <nav class="navbar">
-              <ul class="navbar-nav mb-3">
+              <ul class="navbar-nav">
                 <li class="nav-item">
                   <StyledLink
                     className="nav-link"
@@ -111,7 +111,7 @@ const NavBar1 = () => {
                     Mattresses
                   </StyledLink>
                   <div>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu matress-item">
                       <li>
                         <DropMenuStyled className="dropdown-item">
                           Latex Series
