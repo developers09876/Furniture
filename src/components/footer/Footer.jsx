@@ -20,6 +20,7 @@ import { styled } from "styled-components";
 import CompanyOverview from "./CompanyOverview";
 import Copieright from "./Copyright";
 import { Link } from "react-router-dom";
+import "../../Css-Pages/WallBackground.css";
 
 // Styled components
 const SocialMediaSection = styled.section`
@@ -53,6 +54,7 @@ const FooterHeading = styled.h6`
 const SectionWrapper = styled.section`
   background-color: var(--bgColor);
 `;
+
 const Footer = () => {
   return (
     <>
@@ -150,16 +152,20 @@ const Footer = () => {
                     // icon={faLocationDot}
                     className="me-2"
                     style={{ fontSize: "17px" }}
-                  />{" "}
+                  />
                   <div class="address">
-                    <p>Register Office , Manufactur & Packer</p>
-                    <p>#192 , Sy no 124 , halagevaderahalli</p>
-                    <p></p>
-                    <p>Bangaluru</p>
-                    <p>Karnataka</p>
-                    <p>India</p>
-                    <p> </p>
+                    <p className="address-detail">
+                      Register Office , Manufactur & Packer
+                    </p>
+                    <p className="address-detail">
+                      #192 , Sy no 124 , halagevaderahalli
+                    </p>
 
+                    <p className="address-detail">
+                      Bangaluru , &nbsp; Karnataka
+                    </p>
+
+                    <p className="address-detail">India</p>
                     <p className="d-flex align-items-center justify-content-center justify-content-md-start">
                       <FontAwesomeIcon
                         icon={faPhone}
