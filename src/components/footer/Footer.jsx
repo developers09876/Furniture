@@ -182,7 +182,7 @@ const Footer = () => {
                     className="me-2"
                     style={{ fontSize: "17px" }}
                   />
-                  <small>abcd@gmail.com</small>
+                  <small>restonindia@gmail.com</small>
                 </p>
               </div>
             </div>
