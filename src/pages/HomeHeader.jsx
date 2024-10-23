@@ -1,6 +1,8 @@
 import { Carousel } from "antd";
+import { styled } from "styled-components";
 
 import "../CSS-Pages/HomeCard.css";
+import { NavLink } from "react-router-dom";
 const contentStyle = {
   width: "100%",
   height: "470px",

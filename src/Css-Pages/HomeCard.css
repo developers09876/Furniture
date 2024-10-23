@@ -4,7 +4,7 @@
   width: 350px;
   background-size: cover;
   margin-top: 5vh;
-  position: absolute;
+  position: relative;
 }
 
 .chair-card-content {
@@ -12,6 +12,7 @@
   position: relative;
   margin-left: 28vh;
 }
+
 .chair-card {
   float: left;
   background-color: gainsboro;
@@ -229,32 +230,27 @@ hr {
   box-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
 }
 
-
 /* Custom CSS file for styling */
 
-
-
-
 .custom-card {
-  color: black;
+  color: rgb(82, 182, 212);
+  background: linear-gradient(#93aabf4d, white);
   text-align: justify;
   padding: 20px;
   border-radius: 25px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
   position: relative;
-  min-height: 300px; 
+  min-height: 300px;
   margin-bottom: 40px;
   margin-top: 10px;
   /* opacity: 0.8; */
 }
 
-
 .custom-card:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
-
 
 .profile-container {
   display: flex;
@@ -262,20 +258,18 @@ hr {
   margin-bottom: 15px;
 }
 
-
 .profile-pic {
   width: 150px;
-  height: 90px;
-  border-radius: 70%;
-  /* border: 3px solid rgb(118, 197, 228); */
-  box-shadow: 0 0 10px rgba(123, 213, 224, 0.2); 
+  height: 100px;
+  border-radius: 100%;
+  color: #93aabf4d;
+  box-shadow: 0 0 10px rgba(123, 213, 224, 0.2);
 }
 
-.profile-pic:hover{
+.profile-pic:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 30px rgba(50, 194, 182, 0.15);
 }
-
 
 .custom-card h4 {
   font-weight: bold;
@@ -285,7 +279,6 @@ hr {
   text-align: center;
 }
 
-
 .custom-card p {
   font-size: 14px;
   color: #0e0d0d;
@@ -294,10 +287,36 @@ hr {
 }
 
 /* shop by catergories */
+
 .card-container {
   transition: transform 0.3s ease-in-out;
 }
 
 .card-container:hover {
-  transform: scale(0.9); 
+  transform: scale(0.9);
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: var(--button-hover);
+}
+
+.custom-rate {
+  opacity: 0.5;
+  transition: opacity 0.3s ease-in-out;
+  margin-left: 70px;
+}
+
+.custom-rate:hover {
+  opacity: 1;
+}
+
+/*cards*/
+
+.container {
+  margin-top: 20px;
+}
+
+.homeCarousel {
+  margin-top: 10px !important;
 }

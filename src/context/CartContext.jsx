@@ -39,6 +39,7 @@ export const CartProvider = ({ children }) => {
           ...cart,
           items: [...cart.items, { ...item }],
         };
+        console.log("firstcart", cart);
         console.log("updatedCart", updatedCart);
         // const response = await axios.put(`http://localhost:3000/carts/${userID}`, updatedCart);
         // const fetchedCart = response.data;

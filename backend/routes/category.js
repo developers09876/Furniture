@@ -10,7 +10,7 @@ import { isLoggedIn } from "../middleware.js";
 const router = Router();
 
 // router.get("/:productId", getOneProduct);
-router.get("/", getAllCategory);
+router.get("/get", getAllCategory);
 router.post("/create", createCategory);
 router.post("/update/:id", updateCategory);
 router.delete("/delete/:id", deleteCategory);

@@ -4,7 +4,17 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
 import { FaIndianRupeeSign } from "react-icons/fa6";
-const CartItem = ({ id, image, title, price, quantity }) => {
+const CartItem = ({
+  id,
+  image,
+  title,
+  price,
+  quantity,
+  unit,
+  thickness,
+  categorz,
+  selectedDimension,
+}) => {
   const { removeItem } = useContext(CartContext);
 
   return (
@@ -13,7 +23,7 @@ const CartItem = ({ id, image, title, price, quantity }) => {
         <img src={image} alt={title} /> <br className="d-block d-md-none" />
         <div style={{ width: "200px" }}>
           <h5 className="name">{title}</h5>
-          <h5 className="price d-block d-md-none">{price} MAD</h5>
+          <h5 className="price d-block d-md-none">{price} MADG</h5>
         </div>
       </div>
       <h5 className="price d-none d-md-block col">
@@ -26,6 +36,10 @@ const CartItem = ({ id, image, title, price, quantity }) => {
       <h5 className="subtotal col-4 col-md">
         <FaIndianRupeeSign />
         {price * quantity}
+        {/* {selectedDimension}
+        {categorz}
+        {thickness}
+        {unit} */}
       </h5>
       <button
         className="remove-btn col-4 col-md"

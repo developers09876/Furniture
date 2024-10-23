@@ -33,9 +33,9 @@ const Users = () => {
   const [EditUser, setEditUser] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [form] = Form.useForm();
-  // <<<<<<<<< Temporary merge branch
+
   // const [data, setData] = useState(initialData);
-  // =========
+
   const [users, setUsers] = useState([]);
 
   useEffect(() => {

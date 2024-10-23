@@ -47,7 +47,9 @@ const Categories = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_MY_API}Category`);
+      const response = await fetch(
+        `${import.meta.env.VITE_MY_API}Category/get`
+      );
       const result = await response.json();
       setCategory(result);
     } catch (error) {
@@ -60,7 +62,7 @@ const Categories = () => {
       await axios
         .delete(`${import.meta.env.VITE_MY_API}Category/delete/${id}`)
         .then((res) => {
-          fetchCategoriesData();
+          fetchCategories();
           Swal.fire({
             icon: "success",
             title: "Deleted!",
@@ -77,7 +79,7 @@ const Categories = () => {
     }
   };
 
-  const handleDelete = (record, data, setData) => {
+  const handleDelete = (record) => {
     confirm({
       title: "Are you sure you want to delete this user?",
       icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,
@@ -107,14 +109,14 @@ const Categories = () => {
       );
 
       if (response.status === 200) {
-        fetchCategoriesData();
+        // fetchCategoriesData();
+        fetchCategories();
         Swal.fire({
           icon: "success",
           title: "Updated!",
           text: `User ${editingUser.name} has been updated successfully.`,
         });
 
-        updateData(editingUser);
         setEditModalVisible(false);
       }
     } catch (error) {
@@ -136,7 +138,7 @@ const Categories = () => {
   const columns = [
     {
       title: "Sno",
-      render: (i, record, index) => (
+      render: (text, record, index) => (
         <div>
           <p>{1 + index}</p>
         </div>

@@ -12,10 +12,18 @@ import "./../Css-Pages/Navbr.css";
 // styles for links
 
 const StyledLink = styled(NavLink)`
-  border-bottom: transparent solid 3px;
+  // border-bottom: transparent solid 3px;
+  font-size: 20px;
+  border-radius: 7px;
   transition: ${(props) => props.theme.transition};
+  color: black;
+  padding: 8px !important;
   &:hover {
-    border-bottom-color: var(--button-hover);
+    border-radius: 7px;
+    // border-bottom-color: var(--button-hover);
+    background-color: rgb(171, 133, 189);
+    color: white !important ;
+    padding: 8px !important;
   }
   // &.active {
   //   border-bottom-color: var(--button-hover);
@@ -29,6 +37,20 @@ const StyledLink = styled(NavLink)`
       padding-left: 10px;
     }
   }
+`;
+
+const DropMenuStyled = styled(Link)`
+  color: var(--heading-clr) !important;
+  font-size: 19px !important;
+  font-weight: Bold;
+  font-size: large;
+  width: max-content;
+  // font-family: 'Times New Roman', Times, serif;
+  pointer-events: none;
+
+  //  &:hover {
+  //   color: violet!important;
+  //  }
 `;
 const SearchContainer = styled.div`
   width: 270px;
@@ -68,444 +90,489 @@ const NavBar1 = () => {
   const { total } = useContext(WishlistContext);
 
   return (
-    <nav className="navbar navbar-expand-lg p-0">
+    <nav className="navbar navbar-expand-lg p-0 mt-10">
       <div className="container lg-d-flex">
         {/* <Row>
       <Col md={8} sm={12}> */}
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mb-lg-0">
             {/* Mattress Dropdown */}
-            <li className="nav-item dropdown me-3">
-              <StyledLink
-                className="nav-link dropdown-toggle"
-                to="#"
-                id="mattressDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Mattresses
-              </StyledLink>
-              <ul className="dropdown-menu" aria-labelledby="mattressDropdown">
-                {/* Submenu Items */}
-                <li className="dropdown-submenu">
-                  <Link className="dropdown-item dropdown-toggle" to="#">
-                    Orthopedic Series
-                  </Link>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link className="dropdown-item" to="/products/4">
-                        Ortho premium Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/products/5">
-                        Ortho premium ET Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/products/6">
-                        Ortho spine therapy Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/products/7">
-                        Ortho Latex o pedic ET Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/products/8">
-                        Ortho Organic posture pedic dual top Mattress
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className="dropdown-submenu">
-                  <Link className="dropdown-item dropdown-toggle" to="#">
-                    Pocket Spring Series
-                  </Link>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Supremo Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Supremo ET Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Sleeep in posture Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Latex o pedic plus Mattress
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className="dropdown-submenu">
-                  <Link className="dropdown-item dropdown-toggle" to="#">
-                    Bonnel Spring Series
-                  </Link>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Classio Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Classio ET Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Spine therapy Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Classio Latex o pedic Mattress
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className="dropdown-submenu">
-                  <Link className="dropdown-item dropdown-toggle" to="#">
-                    Foam Series
-                  </Link>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link className="dropdown-item" to="/products/9">
-                        Amenity Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/products/10">
-                        Amenity ET Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/products/11">
-                        Posture Infinity Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/products/12">
-                        Leisure Sleep Mattress
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
 
-                <li className="dropdown-submenu">
-                  <Link className="dropdown-item dropdown-toggle" to="#">
-                    Latex Series{" "}
-                  </Link>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Melody Mattress
-                      </Link>
-                    </li>
-                  </ul>
+            <nav class="navbar">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <StyledLink
+                    className="nav-link"
+                    to="#"
+                    id="mattressDropdown"
+                    role="button"
+                    aria-expanded="false"
+                  >
+                    Mattresses
+                  </StyledLink>
+
+                  <div>
+                    <ul class="dropdown-menu matress-item">
+                      <li>
+                        <DropMenuStyled className="dropdown-item">
+                          Latex Series
+                        </DropMenuStyled>
+                        {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                        <ul style={{ width: "max-content" }}>
+                          <li>
+                            <Link to="">Melody Mattress</Link>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <DropMenuStyled className="dropdown-item">
+                          Foam Series
+                        </DropMenuStyled>
+                        {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                        <ul style={{ width: "max-content" }}>
+                          <li>
+                            <Link to="/products/9">Amenity Mattress</Link>
+                          </li>
+                          <li>
+                            <Link to="/products/10">Amenity ET Mattress</Link>
+                          </li>
+                          <li>
+                            <Link to="/products/11">
+                              Posture Infinity Mattress
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/products/12">
+                              Leisure Sleep Mattress
+                            </Link>
+                          </li>
+                        </ul>
+                      </li>
+
+                      <li>
+                        <DropMenuStyled
+                          className="dropdown-item"
+                          style={{ width: "210px" }}
+                        >
+                          Bonnel Spring Series
+                        </DropMenuStyled>
+                        {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                        <ul style={{ width: "max-content" }}>
+                          <li>
+                            <Link to="">Classio Mattress</Link>
+                          </li>
+                          <li>
+                            <Link to="">Classio ET Mattress</Link>
+                          </li>
+                          <li>
+                            <Link to="">Spine therapy Mattress</Link>
+                          </li>
+                          <li>
+                            <Link to="">Classio Latex o pedic Mattress</Link>
+                          </li>
+                        </ul>
+                      </li>
+
+                      <li>
+                        <DropMenuStyled className="dropdown-item">
+                          Kids & Foldable Series
+                        </DropMenuStyled>
+                        {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                        <ul style={{ width: "max-content" }}>
+                          <li>
+                            <Link to="">Rollup Mattress Mattress</Link>
+                          </li>
+                          <li>
+                            <Link to="">Slim mattress Mattress</Link>
+                          </li>
+                          <li>
+                            <Link to="">Baby Mattress Mattress</Link>
+                          </li>
+                          <li>
+                            <Link to="">Baby Mattress plus Mattress</Link>
+                          </li>
+                        </ul>
+                      </li>
+
+                      <li>
+                        <DropMenuStyled className="dropdown-item">
+                          Pocket Spring Series
+                        </DropMenuStyled>
+                        {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                        <ul>
+                          <li>
+                            <Link to="">Supremo Mattress</Link>
+                          </li>
+                          <li>
+                            <Link to="">Supremo ET Mattress</Link>
+                          </li>
+                          <li>
+                            <Link to="">Sleeep in posture Mattress</Link>
+                          </li>
+                          <li>
+                            <Link to="">Latex o pedic plus Mattress</Link>
+                          </li>
+                          <li>
+                            <Link to="">
+                              Organic posture pedic dual top Mattress
+                            </Link>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <DropMenuStyled className="dropdown-item">
+                          Orthopedic Series
+                        </DropMenuStyled>
+                        {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                        <ul style={{ paddingLeft: "1px" }}>
+                          <li>
+                            <Link to="/products/4">Ortho premium Mattress</Link>
+                          </li>
+                          <li>
+                            <Link to="/products/5">
+                              Ortho premium ET Mattress
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/products/6">
+                              Ortho spine therapy Mattress
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/products/7">
+                              Ortho Latex o pedic ET Mattress
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/products/8">
+                              Ortho Organic posture pedic dual top Mattress
+                            </Link>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
-                <li className="dropdown-submenu">
-                  <Link className="dropdown-item dropdown-toggle" to="#">
-                    Kids & Foldable Series
-                  </Link>
-                  <ul className="dropdown-menu">
+                <li class="nav-item">
+                  <StyledLink
+                    className="nav-link"
+                    to="#"
+                    id="mattressDropdown"
+                    role="button"
+                    aria-expanded="false"
+                  >
+                    Beds & Head Boards
+                  </StyledLink>
+                  <div>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <ul>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Upholstered Beds
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Engineered Wood Beds
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Hydraulic Beds Bunker Beds
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Bunker Beds
+                            </Link>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <StyledLink
+                    className="nav-link"
+                    to="#"
+                    id="mattressDropdown"
+                    role="button"
+                    aria-expanded="false"
+                  >
+                    Sofa & Recliners
+                  </StyledLink>
+                  <div>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <DropMenuStyled to="">
+                          <center> Sofa Varietys</center>{" "}
+                        </DropMenuStyled>
+
+                        <ul>
+                          <li>
+                            <Link to="">Stationary sofas</Link>
+                          </li>
+                          <li>
+                            <Link to="">Motoion sofas</Link>
+                          </li>
+                          <li>
+                            <Link to="">Sofa cum Beds</Link>
+                          </li>
+                          <li>
+                            <Link to="">Armchiar & Puffee</Link>
+                          </li>
+                        </ul>
+                      </li>
+
+                      <li>
+                        <DropMenuStyled to="">Sectional sofas</DropMenuStyled>
+                        {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                        <ul>
+                          <li>
+                            <Link to="">LHS Sectional sofas</Link>
+                          </li>
+                          <li>
+                            <Link to="">RHS Sectional sofas</Link>
+                          </li>
+                          <li>
+                            <Link to="">Corner sofas</Link>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <DropMenuStyled to="">Recliners</DropMenuStyled>
+                        {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                        <ul>
+                          <li>
+                            <Link to="">Manual Recliners</Link>
+                          </li>
+                          <li>
+                            <Link to="">Motorised Recliners</Link>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <DropMenuStyled to="">Manual Recliners</DropMenuStyled>
+                        {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                        <ul>
+                          <li>
+                            <Link to="">Manual Recliners</Link>
+                          </li>
+
+                          <li>
+                            <Link to="">
+                              1 seater Recliner Rocking Revolving & Recliner
+                            </Link>
+                          </li>
+
+                          <li>
+                            <Link to="">2 seater Recliner </Link>
+                          </li>
+
+                          <li>
+                            <Link to="">3 seater Recliner </Link>
+                          </li>
+
+                          <li>
+                            <Link to="">Recliner Set</Link>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <StyledLink
+                    className="nav-link"
+                    to="#"
+                    id="mattressDropdown"
+                    role="button"
+                    aria-expanded="false"
+                  >
+                    Pillows & Cushions
+                  </StyledLink>
+                  <div>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <DropMenuStyled href="#">
+                          Pillows Variety
+                        </DropMenuStyled>
+
+                        <ul>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Support Pillows
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Medicinal Pillows
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Maternity and Baby Pillows
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Cushions and Bolsters
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" class="nav-link">
+                              Car Cushions
+                            </Link>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <DropMenuStyled href="#">
+                          Sleeping Pillows
+                        </DropMenuStyled>
+                        {/* <div
+                          style={{
+                            backgroundColor: `var(--under-line)`,
+                            padding: "1px 1px 1px 3px",
+                            width: "100%",
+                          }}
+                        ></div> */}
+                        <ul>
+                          <li>
+                            <Link href="#">Fiber Pillows</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Memory foam Pillows</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Memory foam contour pillows</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Latex Pillows</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Latex contour pillows</Link>
+                          </li>
+                          <li>
+                            <Link href="#">Cool Gel Memory foam Pillow</Link>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <StyledLink
+                    className="nav-link"
+                    to="#"
+                    id="mattressDropdown"
+                    role="button"
+                    aria-expanded="false"
+                  >
+                    Beddings
+                  </StyledLink>
+
+                  <ul class="dropdown-menu">
                     <li>
-                      <Link className="dropdown-item" to="#">
-                        Rollup Mattress Mattress
-                      </Link>
+                      <ul>
+                        <li>
+                          <Link href="#">Comforters</Link>
+                        </li>
+                        <li>
+                          <Link href="#">Dohar</Link>
+                        </li>
+                        <li>
+                          <Link href="#">Duvet</Link>
+                        </li>
+                        <li>
+                          <Link href="#">Duvet Covers</Link>
+                        </li>
+                        <li>
+                          <Link href="#">Fitted Bedsheets</Link>
+                        </li>
+                        <li>
+                          <Link href="#">Kids Bedsheets</Link>
+                        </li>
+                      </ul>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="#">
-                        Slim mattress Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Baby Mattress Mattress
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Baby Mattress plus Mattress
-                      </Link>
+                      <ul>
+                        <li>
+                          <Link href="#">Mattress Protectors</Link>
+                        </li>
+                        <li>
+                          <Link href="#">Pillow Protectors</Link>
+                        </li>
+                        <li>
+                          <Link href="#">Pillow Cover</Link>
+                        </li>
+                        <li>
+                          <Link href="#">Blankets</Link>
+                        </li>
+                        <li>
+                          <Link href="#">Flat Bedsheets</Link>
+                        </li>
+                      </ul>
                     </li>
                   </ul>
                 </li>
               </ul>
-            </li>
-            {/* Other Navbar Items */}
-            <li className="nav-item dropdown me-3">
-              <StyledLink
-                className="nav-link dropdown-toggle"
-                to="#"
-                id="SofaDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Sofa & Recliners
-              </StyledLink>
-              <ul className="dropdown-menu" aria-labelledby="SofaDropdown">
-                {/* Submenu Items */}
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Stationary sofas
-                  </Link>
-                </li>
-                <li className="dropdown-submenu">
-                  <Link className="dropdown-item dropdown-toggle" to="#">
-                    Sectional sofas
-                  </Link>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        LHS Sectional sofas
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        RHS Sectional sofas
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Corner sofas
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className="dropdown-submenu">
-                  <Link className="dropdown-item" to="#">
-                    Motoion sofas
-                  </Link>
-                </li>
-                <li className="dropdown-submenu">
-                  <Link className="dropdown-item dropdown-toggle" to="#">
-                    Recliners
-                  </Link>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Manual Recliners
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Motorised Recliners
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Sofa cum Beds{" "}
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Armchiar & Puffee
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item dropdown me-3">
-              <StyledLink
-                className="nav-link dropdown-toggle"
-                to="#"
-                id="SofaDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Beds & Head Boards
-              </StyledLink>
-              <ul className="dropdown-menu" aria-labelledby="SofaDropdown">
-                {/* Submenu Items */}
-
-                <li className="dropdown-submenu">
-                  <Link className="dropdown-item" to="#">
-                    Upholstered Beds
-                  </Link>
-                </li>
-
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Engineered Wood Beds{" "}
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Hydraulic Beds
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Bunker Beds
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item dropdown me-3">
-              <StyledLink
-                className="nav-link dropdown-toggle"
-                to="#"
-                id="SofaDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Beddings
-              </StyledLink>
-              <ul className="dropdown-menu" aria-labelledby="SofaDropdown">
-                {/* Submenu Items */}
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Mattress Protectors
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Pillow Protectors
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Comforters
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Dohar
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Duvet
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Duvet Covers
-                  </Link>
-                </li>
-
-                <li className="dropdown-submenu">
-                  <Link className="dropdown-item" to="#">
-                    Fitted Bedsheets
-                  </Link>
-                </li>
-                <li className="dropdown-submenu">
-                  <Link className="dropdown-item" to="#">
-                    Flat Bedsheets
-                  </Link>
-                </li>
-
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Pillow Cover
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Kids Bedsheets
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Blankets
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item dropdown me-3">
-              <StyledLink
-                className="nav-link dropdown-toggle"
-                to="#"
-                id="SofaDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Pillow & Cushions
-              </StyledLink>
-              <ul className="dropdown-menu" aria-labelledby="SofaDropdown">
-                {/* Submenu Items */}
-                <li className="dropdown-submenu">
-                  <Link className="dropdown-item dropdown-toggle" to="#">
-                    Sleeping Pillows
-                  </Link>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Fiber Pillows
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Memory foam Pillows
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Memory foam contour pillows
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Latex Pillows
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Latex contour pillows
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="#">
-                        Cool Gel Memory foam Pillow
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Support Pillows
-                  </Link>
-                </li>
-
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Medicinal Pillows
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Maternity and Baby Pillows
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Cushions and Bolsters
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Car Cushions
-                  </Link>
-                </li>
-              </ul>
-            </li>
+            </nav>
           </ul>
           {/* <SearchContainer className="my-4">
             <StyledInput

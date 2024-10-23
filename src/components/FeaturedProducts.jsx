@@ -17,15 +17,23 @@ import { DashboardContext } from "../context/DashboardContext";
 import ScrollReveal from "scrollreveal";
 
 const FeaturedProducts = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { users, orders, products, fetchData } = useContext(DashboardContext);
-  console.log('products', products)
+  console.log("products", products);
   const settings = {
     infinite: true,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
-
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   // const [featuredProducts, setFeaturedProducts] = useState(products);
@@ -64,13 +72,12 @@ const FeaturedProducts = () => {
         <h1 className="my-4">
           Featured Products
           <center>
-
             <div
-              style={{
-                backgroundColor: `var(--button-hover)`,
-                padding: "1px 1px 3px 3px",
-                width: "25%",
-              }}
+            // style={{
+            //   backgroundColor: `var(--button-hover)`,
+            //   padding: "1px 1px 3px 3px",
+            //   width: "25%",
+            // }}
             ></div>
           </center>
         </h1>
@@ -84,7 +91,6 @@ const FeaturedProducts = () => {
                       key={product.productId}
                       className="col-lg-3 col-md-3 col-sm-12"
                     >
-
                       <ProductCard
                         image={product.images}
                         title={product.title}
@@ -99,13 +105,15 @@ const FeaturedProducts = () => {
                   ))}
                 </Slider>
               </div>
-              <div >
+              <div>
                 <Link
                   // to={"/products"}
                   className="link-underline link-underline-opacity-0 mb-5"
                   style={{ display: "flex", justifyContent: "end" }}
                 >
-                  <Button handleClick={() => navigate("/products")}>All Products</Button>
+                  <Button handleClick={() => navigate("/products")}>
+                    All Products
+                  </Button>
                 </Link>
               </div>
             </>
@@ -120,14 +128,14 @@ const FeaturedProducts = () => {
           <Row>
             <Col sm={12} md={4} className="hero-description">
               <div className="modern-image-card">
-                <img className="modern-image"
+                <img
+                  className="modern-image"
                   alt="chair"
                   src="https://images.pexels.com/photos/5806958/pexels-photo-5806958.jpeg?auto=compress&cs=tinysrgb&w=600"
-
                 />
               </div>
             </Col>
-            <Col className="modern-image-card hero-images" sm={12} md={8} >
+            <Col className="modern-image-card hero-images" sm={12} md={8}>
               <div className="chair-cnt">
                 <h2>Chair Collection!</h2>
                 <p>Launch Offer 15% Off!</p>
@@ -142,7 +150,11 @@ const FeaturedProducts = () => {
         <div style={{ padding: "20px" }}>
           <Container>
             <Row>
-              <Col className="modern-image-card hero-description" sm={12} md={8}>
+              <Col
+                className="modern-image-card hero-description"
+                sm={12}
+                md={8}
+              >
                 <div className="chair-cnt">
                   <h2>ALL Collection!</h2>
                   <p>New Session Stock</p>

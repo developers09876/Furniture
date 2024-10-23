@@ -1,5 +1,6 @@
 import { User } from "../models/user.js";
 import { whistlist } from "../models/whistlist.js";
+
 import {
   hashPassword,
   createToken,
@@ -121,9 +122,6 @@ export const createCart = async (req, res) => {
 };
 
 export const getAllUser = async (req, res) => {
-  console.log("resss", req.body);
-  // const token = req.headers.authorization;
-  console.log("triggerd");
   try {
     const allUser = await User.find();
 
@@ -198,7 +196,7 @@ export async function enquiryUser(req, res, next) {
     const mailOptions = {
       from: process.env.EMAIL,
       to: "ganeshgm3113@gmail.com",
-      // to: `${details.email}`,
+      // to: ${details.email},
       subject: "Furniture Enquiry",
       html: `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -230,7 +228,7 @@ export async function enquiryUser(req, res, next) {
 
 // reset password
 
-export async function resetUser(req, res) {
+export async function resetUsers(req, res) {
   try {
     const data = req.body;
     const existUser = await User.findOne({ email: data.email });
@@ -268,3 +266,39 @@ export const whistlistUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+// Assuming you already have hashPassword defined somewhere in your project
+export async function resetUser(req, res) {
+  try {
+    const { email, newPassword } = req.body;
+    // Find user by email
+    const existUser = await User.findOne({ email });
+    console.log("existUser", existUser);
+
+    // Check if the user exists
+    if (!existUser) {
+      return res.status(400).json({
+        message: "User not found",
+        status: "Failed",
+      });
+    }
+
+    // Hash the new password
+    const passwordHashed = await hashPassword(newPassword);
+
+    // Update the user's password
+    existUser.password = passwordHashed;
+    await existUser.save();
+
+    // Respond with success
+    return res.status(200).json({
+      message: "Password reset successful",
+      status: "Successful",
+    });
+  } catch (err) {
+    console.error("Error during password reset:", err);
+    return res.status(500).json({
+      message: "An error occurred during reset",
+      status: "Failed",
+    });
+  }
+}

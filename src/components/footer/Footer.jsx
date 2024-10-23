@@ -56,8 +56,7 @@ const SectionWrapper = styled.section`
 const Footer = () => {
   return (
     <>
-   
-        <footer className="text-center text-lg-start  text-muted ">
+      <footer className="text-center text-lg-start  text-muted " style={{}}>
         <SectionWrapper>
           <SocialMediaSection className="d-flex justify-content-center justify-content-lg-between px-4 py-3 border-bottom">
             <div className="me-5 d-none d-lg-block">
@@ -142,13 +141,34 @@ const Footer = () => {
                 <FooterHeading className="text-uppercase fw-bold mb-2">
                   Contact
                 </FooterHeading>
-                <p className="d-flex align-items-center justify-content-center justify-content-md-start">
+
+                <p
+                  className="d-flex align-items-center justify-content-center justify-content-md-start"
+                  style={{ width: "max-content" }}
+                >
                   <FontAwesomeIcon
-                    icon={faLocationDot}
+                    // icon={faLocationDot}
                     className="me-2"
                     style={{ fontSize: "17px" }}
                   />{" "}
-                  Tamil Nadu, MA
+                  <div class="address">
+                    <p>Register Office , Manufactur & Packer</p>
+                    <p>#192 , Sy no 124 , halagevaderahalli</p>
+                    <p></p>
+                    <p>Bangaluru</p>
+                    <p>Karnataka</p>
+                    <p>India</p>
+                    <p> </p>
+
+                    <p className="d-flex align-items-center justify-content-center justify-content-md-start">
+                      <FontAwesomeIcon
+                        icon={faPhone}
+                        className="me-2"
+                        style={{ fontSize: "17px" }}
+                      />{" "}
+                      +91 910 855 9999
+                    </p>
+                  </div>
                 </p>
                 <p className="d-flex align-items-center justify-content-center justify-content-md-start">
                   <FontAwesomeIcon
@@ -158,22 +178,12 @@ const Footer = () => {
                   />
                   <small>abcd@gmail.com</small>
                 </p>
-                <p className="d-flex align-items-center justify-content-center justify-content-md-start">
-                  <FontAwesomeIcon
-                    icon={faPhone}
-                    className="me-2"
-                    style={{ fontSize: "17px" }}
-                  />{" "}
-                  + 123 456 789
-                </p>
               </div>
             </div>
           </div>
-
-          </SectionWrapper>
-          <Copieright />
-        </footer>
-      
+        </SectionWrapper>
+        <Copieright />
+      </footer>
     </>
   );
 };
