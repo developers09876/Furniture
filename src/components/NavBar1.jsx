@@ -9,6 +9,7 @@ import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import "./../Css-Pages/Navbr.css";
+import Underline from "./Underline";
 // styles for links
 
 const StyledLink = styled(NavLink)`
@@ -120,13 +121,7 @@ const NavBar1 = () => {
                         <DropMenuStyled className="dropdown-item">
                           Orthopedic Series
                         </DropMenuStyled>
-                        {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
+                        <Underline />
                         <ul style={{ paddingLeft: "1px" }}>
                           <li>
                             <Link to="/products/4"> Premium Mattress</Link>
@@ -153,13 +148,8 @@ const NavBar1 = () => {
                         <DropMenuStyled className="dropdown-item">
                           Pocket Spring Series
                         </DropMenuStyled>
-                        {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
+                        <Underline />
+
                         <ul>
                           <li>
                             <Link to="">Supremo Mattress</Link>
@@ -184,13 +174,7 @@ const NavBar1 = () => {
                         <DropMenuStyled className="dropdown-item">
                           Foam Series
                         </DropMenuStyled>
-                        {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
+                        <Underline />
                         <ul style={{ width: "max-content" }}>
                           <li>
                             <Link to="/products/9">Amenity Mattress</Link>
@@ -218,13 +202,7 @@ const NavBar1 = () => {
                         >
                           Bonnel Spring Series
                         </DropMenuStyled>
-                        {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
+                        <Underline />
                         <ul style={{ width: "max-content" }}>
                           <li>
                             <Link to="">Classio Mattress</Link>
@@ -245,13 +223,7 @@ const NavBar1 = () => {
                         <DropMenuStyled className="dropdown-item">
                           Kids & Foldable Series
                         </DropMenuStyled>
-                        {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
+                        <Underline />
                         <ul style={{ width: "max-content" }}>
                           <li>
                             <Link to="">Rollup Mattress</Link>
@@ -272,13 +244,7 @@ const NavBar1 = () => {
                         <DropMenuStyled className="dropdown-item">
                           Latex Series
                         </DropMenuStyled>
-                        {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
+                        <Underline />
                         <ul style={{ width: "max-content" }}>
                           <li>
                             <Link to="">Melody Mattress</Link>
@@ -332,13 +298,7 @@ const NavBar1 = () => {
                     <ul class="dropdown-menu Sofa-recliners">
                       <li>
                         <DropMenuStyled to="">Manual Recliners</DropMenuStyled>
-                        {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
+                        <Underline />
                         <ul>
                           <li>
                             <Link to="">Manual Recliners</Link>
@@ -364,10 +324,8 @@ const NavBar1 = () => {
                         </ul>
                       </li>
                       <li>
-                        <DropMenuStyled to="">
-                          <center> Sofa Varietys</center>{" "}
-                        </DropMenuStyled>
-
+                        <DropMenuStyled to="">Sofa Varietys</DropMenuStyled>
+                        <Underline />
                         <ul>
                           <li>
                             <Link to="">Stationary sofas</Link>
@@ -386,13 +344,7 @@ const NavBar1 = () => {
 
                       <li>
                         <DropMenuStyled to="">Sectional sofas</DropMenuStyled>
-                        {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
+                        <Underline />
                         <ul>
                           <li>
                             <Link to="">LHS Sectional sofas</Link>
@@ -408,13 +360,7 @@ const NavBar1 = () => {
 
                       <li>
                         <DropMenuStyled to="">Recliners</DropMenuStyled>
-                        {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
+                        <Underline />
                         <ul>
                           <li>
                             <Link to="">Manual Recliners</Link>
@@ -440,67 +386,47 @@ const NavBar1 = () => {
                   <div>
                     <ul class="dropdown-menu  Pillows-Cushions">
                       <li>
-                        <DropMenuStyled href="#">
-                          Pillows Variety
-                        </DropMenuStyled>
-
+                        <DropMenuStyled to="">Pillows Variety</DropMenuStyled>
+                        <Underline />
                         <ul>
                           <li>
-                            <Link href="#" class="nav-link">
-                              Support Pillows
-                            </Link>
+                            <Link to="">Support Pillows</Link>
                           </li>
                           <li>
-                            <Link href="#" class="nav-link">
-                              Medicinal Pillows
-                            </Link>
+                            <Link to="">Medicinal Pillows</Link>
                           </li>
                           <li>
-                            <Link href="#" class="nav-link">
-                              Maternity and Baby Pillows
-                            </Link>
+                            <Link to="">Maternity and Baby Pillows</Link>
                           </li>
                           <li>
-                            <Link href="#" class="nav-link">
-                              Cushions and Bolsters
-                            </Link>
+                            <Link to="">Cushions and Bolsters</Link>
                           </li>
                           <li>
-                            <Link href="#" class="nav-link">
-                              Car Cushions
-                            </Link>
+                            <Link to="">Car Cushions</Link>
                           </li>
                         </ul>
                       </li>
                       <li>
-                        <DropMenuStyled href="#">
-                          Sleeping Pillows
-                        </DropMenuStyled>
-                        {/* <div
-                          style={{
-                            backgroundColor: `var(--under-line)`,
-                            padding: "1px 1px 1px 3px",
-                            width: "100%",
-                          }}
-                        ></div> */}
+                        <DropMenuStyled to="">Sleeping Pillows</DropMenuStyled>
+                        <Underline />
                         <ul>
                           <li>
-                            <Link href="#">Fiber Pillows</Link>
+                            <Link to="">Fiber Pillows</Link>
                           </li>
                           <li>
-                            <Link href="#">Memory foam Pillows</Link>
+                            <Link to="">Memory foam Pillows</Link>
                           </li>
                           <li>
-                            <Link href="#">Memory foam contour pillows</Link>
+                            <Link to="">Memory foam contour pillows</Link>
                           </li>
                           <li>
-                            <Link href="#">Latex Pillows</Link>
+                            <Link to="">Latex Pillows</Link>
                           </li>
                           <li>
-                            <Link href="#">Latex contour pillows</Link>
+                            <Link to="">Latex contour pillows</Link>
                           </li>
                           <li>
-                            <Link href="#">Cool Gel Memory foam Pillow</Link>
+                            <Link to="">Cool Gel Memory foam Pillow</Link>
                           </li>
                         </ul>
                       </li>
@@ -522,22 +448,22 @@ const NavBar1 = () => {
                     <li>
                       <ul>
                         <li>
-                          <Link href="#">Comforters</Link>
+                          <Link to="">Comforters</Link>
                         </li>
                         <li>
-                          <Link href="#">Dohar</Link>
+                          <Link to="">Dohar</Link>
                         </li>
                         <li>
-                          <Link href="#">Duvet</Link>
+                          <Link to="">Duvet</Link>
                         </li>
                         <li>
-                          <Link href="#">Duvet Covers</Link>
+                          <Link to="">Duvet Covers</Link>
                         </li>
                         <li>
-                          <Link href="#">Fitted Bedsheets</Link>
+                          <Link to="">Fitted Bedsheets</Link>
                         </li>
                         <li>
-                          <Link href="#">Kids Bedsheets</Link>
+                          <Link to="">Kids Bedsheets</Link>
                         </li>
                       </ul>
                     </li>
@@ -545,19 +471,19 @@ const NavBar1 = () => {
                     <li>
                       <ul>
                         <li>
-                          <Link href="#">Mattress Protectors</Link>
+                          <Link to="">Mattress Protectors</Link>
                         </li>
                         <li>
-                          <Link href="#">Pillow Protectors</Link>
+                          <Link to="">Pillow Protectors</Link>
                         </li>
                         <li>
-                          <Link href="#">Pillow Cover</Link>
+                          <Link to="">Pillow Cover</Link>
                         </li>
                         <li>
-                          <Link href="#">Blankets</Link>
+                          <Link to="">Blankets</Link>
                         </li>
                         <li>
-                          <Link href="#">Flat Bedsheets</Link>
+                          <Link to="">Flat Bedsheets</Link>
                         </li>
                       </ul>
                     </li>

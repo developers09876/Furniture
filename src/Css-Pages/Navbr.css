@@ -49,6 +49,7 @@
 }
 
 .dropdown-menu li a {
+  width: 160px;
   display: block;
   text-decoration: none;
   color: #333;
@@ -73,16 +74,29 @@
 }
 
 .Sofa-recliners {
-  transform: translate(-32%);
+  transform: translate(-35%);
 }
 .Pillows-Cushions {
-  transform: translate(-19%);
+  transform: translate(-30%);
 }
 .Beddings {
-  transform: translate(-56%);
+  transform: translate(-40%);
 }
 @media (max-width: 1024px) {
   .matress-item {
+    transform: translate(0) !important;
+  }
+
+  .Beds-Boards {
+    transform: translate(0) !important;
+  }
+  .Sofa-recliners {
+    transform: translate(0) !important;
+  }
+  .Pillows-Cushions {
+    transform: translate(0) !important;
+  }
+  .Beddings {
     transform: translate(0) !important;
   }
 }

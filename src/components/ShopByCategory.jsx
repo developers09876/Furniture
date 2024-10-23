@@ -97,7 +97,7 @@ function ShopByCategory() {
 
   return (
     <Container className="mt-5">
-      <h2 style={{ textAlign: "center" }}>
+      <h4 style={{ textAlign: "center", fontSize: "32px" }}>
         Shop By Categories
         <center>
           <div
@@ -110,7 +110,7 @@ function ShopByCategory() {
             }
           ></div>
         </center>
-      </h2>
+      </h4>
 
       <div className="slider-container container">
         <Slider {...settings}>

@@ -51,17 +51,7 @@ const ReviewCards = () => {
     <Container>
       {/* data-aos="zoom-out"  */}
       <Row className="g-4">
-        <h2
-          style={{ textAlign: "center" }}
-          // style={{
-          // textAlign: "center",
-          //   textDecorationLine: "underline",
-          //   textDecorationColor: "#7FAFEB",
-          //   padding: "1px 1px 3px 3px",
-          // }}
-        >
-          Testimonial
-        </h2>
+        <h4 style={{ textAlign: "center", fontSize: "32px" }}>Testimonial</h4>
         {reviews.map((review) => (
           <Col lg={4} md={6} sm={12} key={review.id}>
             <Card className="custom-card" hoverable>
