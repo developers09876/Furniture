@@ -8,12 +8,13 @@ export const WishlistContext = createContext();
 
 // Wishlist Provider component
 export const WishlistProvider = ({ children }) => {
+  console.log('children', children)
   const [wishlist, setWishlist] = useState({ id: "", user_id: "", items: [] });
   const { isAuthenticated, userID } = useContext(AuthContext); // Use userID from AuthContext directly
   const [total, setTotal] = useState(0);
 
-  console.log(wishlist);
-  console.log(userID);
+  console.log("wishlist",wishlist);
+  console.log("userid",userID);
 
   // Function to fetch the user's wishlist from the API
   const fetchWishlist = async (userId) => {
@@ -35,10 +36,13 @@ export const WishlistProvider = ({ children }) => {
 
   // Function to add item to the wishlist
   const addToWishlist = async (item) => {
+    console.log('itemwhislist', item)
     try {
       if (isAuthenticated) {
         const itemExists = wishlist.items.some(
-          (wishlistItem) => wishlistItem.id === item.id
+          (wishlistItem) => wishlistItem.id === item.
+          productId
+          
         );
 
         if (itemExists) {
