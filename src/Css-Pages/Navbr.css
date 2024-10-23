@@ -67,3 +67,9 @@
 .matress-item {
   transform: translate(-8%);
 }
+
+@media (max-width: 1024px) {
+  .matress-item {
+    transform: translate(0) !important;
+  }
+}

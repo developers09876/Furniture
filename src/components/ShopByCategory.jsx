@@ -101,11 +101,13 @@ function ShopByCategory() {
         Shop By Categories
         <center>
           <div
-            style={{
-              backgroundColor: `var(--button-hover)`,
-              padding: "1px 1px 3px 3px",
-              width: "25%",
-            }}
+            style={
+              {
+                // backgroundColor: `var(--button-hover)`,
+                // padding: "1px 1px 3px 3px",
+                // width: "25%",
+              }
+            }
           ></div>
         </center>
       </h2>

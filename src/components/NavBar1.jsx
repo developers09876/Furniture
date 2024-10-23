@@ -91,7 +91,7 @@ const NavBar1 = () => {
 
   return (
     <nav className="navbar navbar-expand-lg p-0 mt-10">
-      <div className="container lg-d-flex m-auto">
+      <div className="container lg-d-flex">
         {/* <Row>
       <Col md={8} sm={12}> */}
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -110,6 +110,7 @@ const NavBar1 = () => {
                   >
                     Mattresses
                   </StyledLink>
+
                   <div>
                     <ul class="dropdown-menu matress-item">
                       <li>
@@ -129,7 +130,6 @@ const NavBar1 = () => {
                           </li>
                         </ul>
                       </li>
-
                       <li>
                         <DropMenuStyled className="dropdown-item">
                           Foam Series

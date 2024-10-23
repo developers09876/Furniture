@@ -23,6 +23,8 @@ import { CgProfile } from "react-icons/cg";
 import { Input } from "antd"; // Ant Design Input
 import "./../Css-Pages/Navbr.css";
 import axios from "axios";
+import { log } from "three/webgpu";
+import { DashboardContext } from "../context/DashboardContext";
 
 // styles for links
 const StyledLink = styled(NavLink)`
@@ -50,10 +52,15 @@ const SearchIcon = styled(FontAwesomeIcon)`
 `;
 
 const NavBar = () => {
+  const { products, fetchData } = useContext(DashboardContext);
+
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
-  const [products, setProducts] = useState([]);
-  console.log("products211", products);
+  // const [products, setProducts] = useState([]);
+
+  const [filteredProducts, setFilteredProducts] = useState("");
+  console.log("filteredProducts", filteredProducts);
+
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
   const { totalItems } = useContext(CartContext);
   const { total } = useContext(WishlistContext);
@@ -65,8 +72,8 @@ const NavBar = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_MY_API}products/`
       );
-      setProducts(response.data);
 
+      setProducts(response.data);
       // const productFilter = locationData
       //   ? response.data.filter((product) => product.category === locationData)
       //   : response.data;
@@ -90,7 +97,7 @@ const NavBar = () => {
     // }
 
     if (query) {
-      filtered = filtered.filter((product) =>
+      const filtered = query.filter((product) =>
         product.title.toLowerCase().includes(query)
       );
     }
@@ -127,6 +134,20 @@ const NavBar = () => {
     width: "40px",
     height: "22px",
   };
+
+  const [search, setsearch] = useState("");
+
+  const handleChange = (e) => {
+    setsearch(e.target.value);
+  };
+
+  // useEffect(() => {
+  //   if (query !== "") {
+  //     fetch(`${import.meta.env.VITE_MY_API}products/${query}`).then((res) =>
+  //       res.json().then((res) => console.log("check1", res))
+  //     );
+  //   }
+  // });
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("name");
@@ -165,16 +186,17 @@ const NavBar = () => {
               style={{ width: 250 }}
             />
           </div> */}
-          <SearchContainer className="my-4" style={{ marginLeft: "10px" }}>
-            <StyledInput
-              type="text"
-              placeholder="Search products"
-              value={query}
-              onChange={handleSearch}
-            />
-            <SearchIcon icon={faSearch} className="text-muted" />
-          </SearchContainer>
-
+          <div>
+            <SearchContainer className="my-4" style={{ marginLeft: "10px" }}>
+              <StyledInput
+                type="text"
+                placeholder="Search products"
+                value={query}
+                onChange={handleSearch}
+              />
+              <SearchIcon icon={faSearch} className="text-muted" />
+            </SearchContainer>
+          </div>
           <button
             className="navbar-toggler"
             type="button"
