@@ -12,7 +12,7 @@ const CartContent = () => {
           <CartItem
             key={item.id}
             id={item.id}
-            image={item.image}
+            image={item.images[0]}
             title={item.title}
             price={item.price}
             quantity={item.quantity}
