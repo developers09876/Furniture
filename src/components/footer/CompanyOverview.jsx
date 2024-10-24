@@ -13,14 +13,12 @@ const CompanyOverview = () => {
         >
           {/* <Logo fontSize={30} width={150} /> */}
           {/* Restopedic */}
-          <center>
-            {" "}
-            <img
-              src={Logo1}
-              alt="Restropedic"
-              style={{ fontSize: "20px", width: "150px" }}
-            />
-          </center>
+
+          <img
+            src={Logo1}
+            alt="Restropedic"
+            style={{ fontSize: "20px", width: "150px" }}
+          />
         </a>
       </div>
       <p style={{ textAlign: "justify" }}>

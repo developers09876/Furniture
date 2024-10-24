@@ -5,7 +5,9 @@ import styled from "styled-components";
 const ServicesSection = () => {
   return (
     <SectionWrapper className="py-4 my-5">
-      <h1 className="text-center mb-5">Our Services</h1>
+      <h4 className="text-center mb-5" style={{ fontSize: "32px" }}>
+        Our Services
+      </h4>
       <ServiceContainer className="container">
         <div className="row">
           <ServiceItem className="col-md-4 mb-4">

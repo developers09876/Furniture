@@ -49,11 +49,12 @@
 }
 
 .dropdown-menu li a {
+  width: 160px;
   display: block;
   text-decoration: none;
   color: #333;
   font-size: small;
-  font-size: 16px !important;
+  font-size: 14px !important; /* font size for submenu */
   font-size: large;
   padding-left: -0px !important;
   margin-left: 8px;
@@ -65,11 +66,37 @@
 }
 
 .matress-item {
-  transform: translate(-8%);
+  transform: translate(-15%);
 }
 
+.Beds-Boards {
+  padding: 0px !important;
+}
+
+.Sofa-recliners {
+  transform: translate(-35%);
+}
+.Pillows-Cushions {
+  transform: translate(-30%);
+}
+.Beddings {
+  transform: translate(-40%);
+}
 @media (max-width: 1024px) {
   .matress-item {
+    transform: translate(0) !important;
+  }
+
+  .Beds-Boards {
+    transform: translate(0) !important;
+  }
+  .Sofa-recliners {
+    transform: translate(0) !important;
+  }
+  .Pillows-Cushions {
+    transform: translate(0) !important;
+  }
+  .Beddings {
     transform: translate(0) !important;
   }
 }

@@ -22,6 +22,21 @@ function ShopByCategory() {
   //   }
   // }, []);
 
+  // const settings = {
+  //   infinite: true,
+  //   speed: 500,
+  //   slidesToShow: 4,
+  //   slidesToScroll: 1,
+  //   responsive: [
+  //     {
+  //       breakpoint: 768,
+  //       settings: {
+  //         slidesToShow: 2,
+  //         slidesToScroll: 1,
+  //       },
+  //     },
+  //   ],
+  // };
   const settings = {
     infinite: true,
     speed: 500,
@@ -29,7 +44,7 @@ function ShopByCategory() {
     slidesToScroll: 1,
     responsive: [
       {
-        breakpoint: 768,
+        breakpoint: 1024,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
@@ -97,7 +112,7 @@ function ShopByCategory() {
 
   return (
     <Container className="mt-5">
-      <h2 style={{ textAlign: "center" }}>
+      <h4 style={{ textAlign: "center", fontSize: "32px" }}>
         Shop By Categories
         <center>
           <div
@@ -110,7 +125,7 @@ function ShopByCategory() {
             }
           ></div>
         </center>
-      </h2>
+      </h4>
 
       <div className="slider-container container">
         <Slider {...settings}>
