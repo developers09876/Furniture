@@ -510,8 +510,7 @@ const SingleProductPage = () => {
                         </Col>
                         <Col sm={12} md={10}>
                           <div>
-                            {" "}
-                            <b>Mattress Feel: </b>{" "}
+                            <b>Mattress Feel: </b>
                           </div>
 
                           <p>
@@ -534,8 +533,7 @@ const SingleProductPage = () => {
                         </Col>
                         <Col sm={12} md={10}>
                           <div>
-                            {" "}
-                            <b>Mattress Material: </b>{" "}
+                            <b>Mattress Material: </b>
                           </div>
                           <div>
                             <p>
@@ -561,8 +559,7 @@ const SingleProductPage = () => {
                         </Col>
                         <Col sm={12} md={10}>
                           <div>
-                            {" "}
-                            <b>Cover Material:</b>{" "}
+                            <b>Cover Material:</b>
                           </div>
                           <div>
                             <p>
@@ -586,7 +583,6 @@ const SingleProductPage = () => {
                         </Col>
                         <Col sm={12} md={10}>
                           <div>
-                            {" "}
                             <b>Mattress Usability:</b>{" "}
                           </div>
                           <div>
@@ -613,8 +609,7 @@ const SingleProductPage = () => {
                         </Col>
                         <Col sm={12} md={10}>
                           <div>
-                            {" "}
-                            <b>Cover Type: </b>{" "}
+                            <b>Cover Type: </b>
                           </div>
 
                           <p>
@@ -627,67 +622,103 @@ const SingleProductPage = () => {
                           </p>
                         </Col>
                       </Row>
-                      <Row></Row>
                     </Col>
                     <Col sm={12} md={12}>
-                      <h5>Rebounded Foam Core</h5>
+                      {product &&
+                      Array.isArray(product.specifications) &&
+                      product.specifications.length > 0
+                        ? product.specifications[0]?.product_Details?.dynamicFields?.map(
+                            (fields) => (
+                              <Col sm={12} md={12}>
+                                <h5>{fields?.title || "N/A"}</h5>
+                                <p>{fields.description || "N/A"}</p>
+                              </Col>
+                            )
+                          ) || "N/A"
+                        : "specifications is not available"}
+
+                      {/* <p>
+                        {product &&
+                        Array.isArray(product.specifications) &&
+                        product.specifications.length > 0
+                          ? product.specifications[0]?.product_Details?.dynamicFields?.map(
+                              (fields) => fields.description
+                            ) || "N/A"
+                          : "specifications is not available"}
+                      </p> */}
+                    </Col>
+                    {/* <Col sm={12} md={12}>
+                      <h5>
+                        {product &&
+                        Array.isArray(product.specifications) &&
+                        product.specifications.length > 0
+                          ? product.specifications[0]?.product_Details
+                              ?.dynamicFields[1]?.title || "N/A"
+                          : "specifications is not available"}
+                      </h5>
                       <p>
-                        At the foundation of our mattress is a durable layer of
-                        rebounded foam. This material is engineered for
-                        long-lasting performance, maintaining its shape and
-                        firmness even after years of use. The rebounded foam
-                        ensures a stable and supportive base, ideal for all
-                        sleeping positions and body types.
+                        {product &&
+                        Array.isArray(product.specifications) &&
+                        product.specifications.length > 0
+                          ? product.specifications[0]?.product_Details
+                              ?.dynamicFields[1]?.description || "N/A"
+                          : "specifications is not available"}
                       </p>
                     </Col>
                     <Col sm={12} md={12}>
-                      <h5>High-Resilience (HR) Foam Layers</h5>
+                      <h5>
+                        {product &&
+                        Array.isArray(product.specifications) &&
+                        product.specifications.length > 0
+                          ? product.specifications[0]?.product_Details
+                              ?.dynamicFields[2]?.title || "N/A"
+                          : "specifications is not available"}
+                      </h5>
                       <p>
-                        Our mattress features dual layers of high-resilience
-                        (HR) foam, each 40mm thick. These layers are
-                        strategically placed to maximize comfort and support.
-                        The HR foam is known for its superior elasticity and
-                        responsiveness, contouring to your body&#39;s unique
-                        shape and providing excellent pressure relief. This
-                        adaptive support ensures a restful and rejuvenating
-                        sleep.
-                      </p>{" "}
-                    </Col>
-                    <Col sm={12} md={12}>
-                      <h5>Euro Top with Additional HR Foam</h5>
-                      <p>
-                        Enhancing the comfort level is the Euro top design,
-                        incorporating another 40mm layer of HR foam. This added
-                        layer creates a plush yet supportive surface, elevating
-                        your sleeping experience. The Euro top design not only
-                        improves comfort but also adds a touch of elegance and
-                        sophistication to the mattress.
+                        {product &&
+                        Array.isArray(product.specifications) &&
+                        product.specifications.length > 0
+                          ? product.specifications[0]?.product_Details
+                              ?.dynamicFields[2]?.description || "N/A"
+                          : "specifications is not available"}
                       </p>
                     </Col>
                     <Col sm={12} md={12}>
-                      <h5>Quilted Fabric with Memory Foam</h5>
+                      <h5>
+                        {product &&
+                        Array.isArray(product.specifications) &&
+                        product.specifications.length > 0
+                          ? product.specifications[0]?.product_Details
+                              ?.dynamicFields[3]?.title || "N/A"
+                          : "specifications is not available"}
+                      </h5>
                       <p>
-                        The top of our mattress features high-quality fabric
-                        quilted with a 30mm layer of memory foam. This
-                        combination delivers a plush, luxurious feel and
-                        superior comfort. Memory foam is renowned for its
-                        ability to conform to your body, providing personalized
-                        support and reducing pressure points. The quilted fabric
-                        enhances breathability and adds a soft, inviting touch.
+                        {product &&
+                        Array.isArray(product.specifications) &&
+                        product.specifications.length > 0
+                          ? product.specifications[0]?.product_Details
+                              ?.dynamicFields[3]?.description || "N/A"
+                          : "specifications is not available"}
                       </p>
                     </Col>
                     <Col sm={12} md={12}>
-                      <h5>Quilted Border and Bottom</h5>
+                      <h5>
+                        {product &&
+                        Array.isArray(product.specifications) &&
+                        product.specifications.length > 0
+                          ? product.specifications[0]?.product_Details
+                              ?.dynamicFields[4]?.title || "N/A"
+                          : "specifications is not available"}
+                      </h5>
                       <p>
-                        Attention to detail extends to the mattress’s borders
-                        and bottom. A 10mm layer of foam, quilted with fabric,
-                        envelops the entire mattress. This thoughtful design
-                        reinforces the mattress’s structure, enhances its
-                        aesthetic appeal, and ensures a seamless, uniform look.
-                        The quilted border and bottom contribute to the overall
-                        comfort and durability of the mattress.
+                        {product &&
+                        Array.isArray(product.specifications) &&
+                        product.specifications.length > 0
+                          ? product.specifications[0]?.product_Details
+                              ?.dynamicFields[4]?.description || "N/A"
+                          : "specifications is not available"}
                       </p>
-                    </Col>
+                    </Col> */}
                   </Row>
                 </div>
               ),

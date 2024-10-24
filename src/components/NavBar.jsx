@@ -22,6 +22,9 @@ import NavBar2 from "./NavBar2";
 import { CgProfile } from "react-icons/cg";
 import { Input } from "antd"; // Ant Design Input
 import "./../Css-Pages/Navbr.css";
+import axios from "axios";
+import { log } from "three/webgpu";
+import { DashboardContext } from "../context/DashboardContext";
 
 // styles for links
 const StyledLink = styled(NavLink)`
@@ -49,14 +52,58 @@ const SearchIcon = styled(FontAwesomeIcon)`
 `;
 
 const NavBar = () => {
+  const { products, fetchData } = useContext(DashboardContext);
+
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
+  // const [products, setProducts] = useState([]);
+
+  const [filteredProducts, setFilteredProducts] = useState("");
+  console.log("filteredProducts", filteredProducts);
 
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
   const { totalItems } = useContext(CartContext);
   const { total } = useContext(WishlistContext);
 
   const [username, setUsername] = useState("");
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_MY_API}products/`
+      );
+
+      setProducts(response.data);
+      // const productFilter = locationData
+      //   ? response.data.filter((product) => product.category === locationData)
+      //   : response.data;
+
+      setFilteredProducts(productFilter);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  // Handle search input change
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setQuery(query);
+
+    // let filtered = products;
+    // if (locationData) {
+    //   filtered = products.filter(
+    //     (product) => product.category === locationData
+    //   );
+    // }
+
+    if (query) {
+      const filtered = query.filter((product) =>
+        product.title.toLowerCase().includes(query)
+      );
+    }
+
+    setFilteredProducts(filtered);
+  };
 
   const SearchContainer = styled.div`
     width: 270px;
@@ -87,6 +134,20 @@ const NavBar = () => {
     width: "40px",
     height: "22px",
   };
+
+  const [search, setsearch] = useState("");
+
+  const handleChange = (e) => {
+    setsearch(e.target.value);
+  };
+
+  // useEffect(() => {
+  //   if (query !== "") {
+  //     fetch(`${import.meta.env.VITE_MY_API}products/${query}`).then((res) =>
+  //       res.json().then((res) => console.log("check1", res))
+  //     );
+  //   }
+  // });
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("name");
@@ -125,16 +186,17 @@ const NavBar = () => {
               style={{ width: 250 }}
             />
           </div> */}
-          <SearchContainer className="my-4" style={{ marginLeft: "10px" }}>
-            <StyledInput
-              type="text"
-              placeholder="Search products"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            <SearchIcon icon={faSearch} className="text-muted" />
-          </SearchContainer>
-
+          <div>
+            <SearchContainer className="my-4" style={{ marginLeft: "10px" }}>
+              <StyledInput
+                type="text"
+                placeholder="Search products"
+                value={query}
+                onChange={handleSearch}
+              />
+              <SearchIcon icon={faSearch} className="text-muted" />
+            </SearchContainer>
+          </div>
           <button
             className="navbar-toggler"
             type="button"

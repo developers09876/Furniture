@@ -13,9 +13,15 @@ import "../Css-Pages/HomeCard.css";
 
 function ShopByCategory() {
   const navigate = useNavigate();
+  // const location = useLocation();
+  // const { category } = location.state || {};
 
-  // Slick slider settings
-  // Slick slider settings
+  // useEffect(() => {
+  //   if (category) {
+  //     console.log("Category:", category);
+  //   }
+  // }, []);
+
   const settings = {
     infinite: true,
     speed: 500,
@@ -23,21 +29,7 @@ function ShopByCategory() {
     slidesToScroll: 1,
     responsive: [
       {
-        breakpoint: 1024, // For tablets
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 768, // For smaller tablets
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 576, // For mobile devices
+        breakpoint: 768,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
@@ -107,18 +99,20 @@ function ShopByCategory() {
 
   return (
     <Container className="mt-5">
-      <h2 style={{ textAlign: "center" }}>
+      <h4 style={{ textAlign: "center", fontSize: "32px" }}>
         Shop By Categories
         <center>
           <div
-            style={{
-              backgroundColor: `var(--button-hover)`,
-              padding: "1px 1px 3px 3px",
-              width: "25%",
-            }}
+            style={
+              {
+                // backgroundColor: `var(--button-hover)`,
+                // padding: "1px 1px 3px 3px",
+                // width: "25%",
+              }
+            }
           ></div>
         </center>
-      </h2>
+      </h4>
 
       <div className="slider-container container">
         <Slider {...settings}>
