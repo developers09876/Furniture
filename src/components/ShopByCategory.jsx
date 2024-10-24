@@ -1,7 +1,7 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Card } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
 import img1 from "../assets/sofa.jpg";
@@ -13,15 +13,9 @@ import "../Css-Pages/HomeCard.css";
 
 function ShopByCategory() {
   const navigate = useNavigate();
-  // const location = useLocation();
-  // const { category } = location.state || {};
 
-  // useEffect(() => {
-  //   if (category) {
-  //     console.log("Category:", category);
-  //   }
-  // }, []);
-
+  // Slick slider settings
+  // Slick slider settings
   const settings = {
     infinite: true,
     speed: 500,
@@ -29,7 +23,21 @@ function ShopByCategory() {
     slidesToScroll: 1,
     responsive: [
       {
-        breakpoint: 768,
+        breakpoint: 1024, // For tablets
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768, // For smaller tablets
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 576, // For mobile devices
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
@@ -38,6 +46,8 @@ function ShopByCategory() {
     ],
   };
 
+
+  // Data for the categories
   const datas = [
     {
       image: img1,

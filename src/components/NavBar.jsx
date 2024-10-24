@@ -230,7 +230,7 @@ const NavBar = () => {
                   </Button>
                 )}
               </li>
-              {/* <div>
+              <div>
                 {isAuthenticated && username && (
                   <span
                     style={{
@@ -242,7 +242,7 @@ const NavBar = () => {
                     Hi, {username}
                   </span>
                 )}
-              </div> */}
+              </div>
             </ul>
           </div>
         </div>

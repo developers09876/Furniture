@@ -11,6 +11,7 @@ import {
   // getUserById,
   resetUsers,
   resetUser,
+  // wishlist,
   // whistlistUser,
 } from "../controllers/user.js";
 import { isLoggedIn } from "../middleware.js";
@@ -26,5 +27,6 @@ router.post("/resetUsers", resetUsers);
 
 router.post("/createCart", createCart);
 router.delete("/delete/:id", deleteUser);
-// router.post("/whistlist", whistlistUser);
+// router.get("/whistlist", wishlist);
+// router.put("whistlistUser", whistlistUser);
 export default router;

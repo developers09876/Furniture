@@ -311,6 +311,51 @@ hr {
   opacity: 1;
 }
 
+/* Mobile view adjustments */
+@media (max-width: 768px) {
+  .slider-container {
+    width: 100%;
+    padding: 0;
+  }
+
+  .card-container {
+    padding: 5px !important;
+  }
+
+  .card-container h6 {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .card-container img {
+    height: 28vh;
+    /* Adjust image height for mobile */
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 576px) {
+  .slider-container {
+    width: 100%;
+    padding: 0;
+  }
+
+  .card-container {
+    padding: 5px !important;
+  }
+
+  .card-container h6 {
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .card-container img {
+    height: 25vh;
+    border-radius: 8px;
+  }
+}
+
+
 /*cards*/
 
 .container {

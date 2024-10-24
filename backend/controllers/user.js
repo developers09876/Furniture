@@ -1,5 +1,5 @@
 import { User } from "../models/user.js";
-import { whistlist } from "../models/whistlist.js";
+// import { whistlists } from "../models/whistlist.js";
 
 import {
   hashPassword,
@@ -256,16 +256,50 @@ export async function resetUsers(req, res) {
 
 //whistlist
 
-export const whistlistUser = async (req, res) => {
-  try {
-    const newWhistlist = new whistlist(req.body);
-    console.log("first", newWhistlist);
-    const savedWhistlist = await newWhistlist.save();
-    res.status(200).json(savedWhistlist);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+// export const whistlistUser = async (req, res) => {
+//   try {
+//     const newWhistlist = new whistlists(req.body);
+//     console.log("first", newWhistlist);
+//     const savedWhistlist = await newWhistlist.save();
+//     res.status(200).json(savedWhistlist);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+// export const updateWishlist = async (req, res) => {
+//   try {
+//     const { id } = req.params; // Extract the wishlist ID from the URL params
+
+//     // Validate the request body (optional but recommended)
+//     if (!req.body || Object.keys(req.body).length === 0) {
+//       return res.status(400).json({ message: "Invalid request. Data is missing." });
+//     }
+
+//     // Find the wishlist by ID and update it with new data from the request body
+//     const updatedWishlist = await whistlists.findByIdAndUpdate(id, req.body, {
+//       new: true, // Return the updated document
+//       runValidators: true, // Ensure the update respects the schema validation
+//     });
+
+//     // If the wishlist with the given ID was not found
+//     if (!updatedWishlist) {
+//       return res.status(404).json({ message: "Wishlist not found" });
+//     }
+
+//     // Return the updated wishlist as a successful response
+//     res.status(200).json(updatedWishlist);
+//   } catch (error) {
+//     console.error("Error updating wishlist:", error.message);
+
+//     // Return a 500 status with the error message
+//     res.status(500).json({ message: "Failed to update wishlist. " + error.message });
+//   }
+// };
+
+
+
+
 // Assuming you already have hashPassword defined somewhere in your project
 export async function resetUser(req, res) {
   try {
