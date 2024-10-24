@@ -4,7 +4,6 @@ import CartItem from "./CartItem";
 
 const CartContent = () => {
   const { cart } = useContext(CartContext);
-  console.log(cart.items);
   return (
     <>
       {cart.items.map((item) => {

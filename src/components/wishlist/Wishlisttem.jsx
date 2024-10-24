@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import Button from '../Button';
 import { WishlistContext } from '../../context/WishlistContext';
 import { useNavigate } from 'react-router-dom';
-
+import { FaIndianRupeeSign } from "react-icons/fa6";
 const WishlistItem = ({ id, image, title, price }) => {
 
   const { removeItem } = useContext(WishlistContext)
@@ -17,12 +17,12 @@ const WishlistItem = ({ id, image, title, price }) => {
         <img src={image} alt={title} /> <br className='d-block d-md-none' />
         <div style={{ width: '200px' }}>
           <h5 className="name">{title}</h5>
-          <h5 className="price d-block d-md-none">{price.toFixed(2)} MAD</h5>
+          {/* <h5 className="price d-block d-md-none">{price.toFixed(2)} MAD</h5> */}
         </div>
       </div>
-      <h5 className="price d-none d-md-block col">{price.toFixed(2)} MAD</h5>
+      <h5 className="price d-none d-md-block col">   <FaIndianRupeeSign />{price} </h5>
       <div className="addToCart d-md-block col">
-          <Button className="col-2 col-md w-75" handleClick={() => navigate(`/products/${id}`)}>
+          <Button className="col-1 col-md w-75" handleClick={() => navigate(`/products/${id}`)}>
             More Details
           </Button>
       </div>

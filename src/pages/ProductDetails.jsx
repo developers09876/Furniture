@@ -475,8 +475,13 @@ productId,
               )}
               <Button
                 handleClick={() => addToWishlist({ 
-                  productId
-                  , images, title, price })}
+                  productId,
+                  images,
+                  title,
+                  price,
+                  quantity_stock,
+                  quantity,
+                  subTotal,})}
               >
                 <FontAwesomeIcon icon={faHeart} />
               </Button>
