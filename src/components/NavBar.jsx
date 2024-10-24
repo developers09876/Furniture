@@ -284,7 +284,8 @@ const NavBar = () => {
                     className="ms-3  my-1"
                     handleClick={() => navigate("/userlogin")}
                   >
-                    Login <FontAwesomeIcon icon={faUserPlus} />
+                    Login
+                     {/* <FontAwesomeIcon icon={faUserPlus} /> */}
                   </Button>
                 ) : (
                   <Button className="ms-3" handleClick={logout}>

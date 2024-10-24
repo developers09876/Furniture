@@ -67,7 +67,8 @@ const UserOrders = () => {
   //     : orders.filter((order) => order.order_status === selectedStatus);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [dataFilter, setDataFilter] = useState([]);
+  const [
+    dataFilter, setDataFilter] = useState([]);
   const [isOrderModel, setOrderModel] = useState(false);
   const [userOrder, setUserOrder] = useState([]);
   const orderModel = (e) => {
@@ -126,7 +127,7 @@ const UserOrders = () => {
       dataIndex: "created_at",
     },
     {
-      title: "Order Total",
+      title: "Total Amount",
       dataIndex: "order_total",
     },
 
@@ -178,7 +179,6 @@ const UserOrders = () => {
   });
   return (
     <StyledOrders>
-      <h2 className="mb-4">All Orders</h2>
 
       <StyledSelectWrapper>
         <label htmlFor="orderStatusFilter" className="me-2">
