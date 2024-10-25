@@ -17,12 +17,23 @@ const Title = styled.h1`
 `;
 
 const Checkout = () => {
+  // const isFormValid = () => {
+  //   return (
+  //     name.trim() !== "" && phone.trim() !== "" && shippingAddress.trim() !== ""
+  //   );
+  // };
+
+  // const isFormValid = () => {
+  //   return (
+  //     name.trim() !== "" && phone.trim() !== "" && shippingAddress.trim() !== ""
+  //   );
+  // };
+
   const isFormValid = () => {
     return (
       name.trim() !== "" && phone.trim() !== "" && shippingAddress.trim() !== ""
     );
   };
-
   const onSubmit = (data) => console.log(data);
 
   const { cart, clearCart } = useContext(CartContext);

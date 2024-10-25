@@ -9,7 +9,7 @@ import {
   faSearch,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { Avatar, Badge, Space } from "antd";
+import { Avatar, Badge, Space, Tooltip } from "antd";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
@@ -53,11 +53,10 @@ const SearchIcon = styled(FontAwesomeIcon)`
 
 const NavBar = () => {
   const { products, fetchData } = useContext(DashboardContext);
-
+  console.log("products12", products.title);
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
-  // const [products, setProducts] = useState([]);
-
+  console.log("query", query);
   const [filteredProducts, setFilteredProducts] = useState("");
   console.log("filteredProducts", filteredProducts);
 
@@ -67,43 +66,42 @@ const NavBar = () => {
 
   const [username, setUsername] = useState("");
 
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_MY_API}products/`
-      );
+  // const fetchProducts = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${import.meta.env.VITE_MY_API}products/`
+  //     );
 
-      setProducts(response.data);
-      // const productFilter = locationData
-      //   ? response.data.filter((product) => product.category === locationData)
-      //   : response.data;
+  //     setProducts(response.data);
+  //     // const productFilter = locationData
+  //     //   ? response.data.filter((product) => product.category === locationData)
+  //     //   : response.data;
 
-      setFilteredProducts(productFilter);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
+  //     setFilteredProducts(productFilter);
+  //   } catch (error) {
+  //     console.error("Error fetching products:", error);
+  //   }
+  // };
 
-  // Handle search input change
-  const handleSearch = (e) => {
-    const query = e.target.value.toLowerCase();
-    setQuery(query);
+  // const handleSearch = (e) => {
+  //   const query = e.target.value;
+  //   setQuery(query);
 
-    // let filtered = products;
-    // if (locationData) {
-    //   filtered = products.filter(
-    //     (product) => product.category === locationData
-    //   );
-    // }
+  // let filtered = products;
+  // if (locationData) {
+  //   filtered = products.filter(
+  //     (product) => product.category === locationData
+  //   );
+  // }
 
-    if (query) {
-      const filtered = query.filter((product) =>
-        product.title.toLowerCase().includes(query)
-      );
-    }
+  // if (query) {
+  //   const filtered = query.filter((product) =>
+  //     product.title.toLowerCase().includes(query)
+  //   );
+  // }
 
-    setFilteredProducts(filtered);
-  };
+  // setFilteredProducts(filtered);
+  // };
 
   const SearchContainer = styled.div`
     width: 270px;
@@ -140,6 +138,12 @@ const NavBar = () => {
   const handleChange = (e) => {
     setsearch(e.target.value);
   };
+
+  useEffect(() => {
+    if (search !== "") {
+      fetch(products);
+    }
+  }, [search]);
 
   // useEffect(() => {
   //   if (query !== "") {
@@ -187,15 +191,19 @@ const NavBar = () => {
             />
           </div> */}
           <div>
-            <SearchContainer className="my-4" style={{ marginLeft: "10px" }}>
-              <StyledInput
-                type="text"
-                placeholder="Search products"
-                value={query}
-                onChange={handleSearch}
-              />
-              <SearchIcon icon={faSearch} className="text-muted" />
-            </SearchContainer>
+            {/* <SearchContainer className="my-4" style={{ marginLeft: "10px" }}> */}
+            <input
+              type="text"
+              placeholder="Search products"
+              value={search} // Controlled input value
+              // onChange={(e) => {
+              //   setQuery(e.target.value); // Updates state when typing
+              // }}
+              onChange={handleChange}
+            />
+
+            <SearchIcon icon={faSearch} className="text-muted" />
+            {/* </SearchContainer> */}
           </div>
           <button
             className="navbar-toggler"
@@ -247,7 +255,7 @@ const NavBar = () => {
                   </li>
                 )}
               </li>
-              <li className="nav-item ml-4 mt-3 pt-1">
+              <li className="nav-item ms-2  mt-3 pt-1">
                 <Link
                   to="/cart"
                   style={{ color: "#1D1D1D", textDecoration: "none" }}
@@ -262,7 +270,7 @@ const NavBar = () => {
                   {/* ({isAuthenticated ? totalItems : 0}) */}
                 </Link>
               </li>
-              <li className="nav-item ml-4 mt-3  pt-1">
+              <li className="nav-item ms-2 mt-3  pt-1">
                 <Link
                   to="/wishlist"
                   style={{ color: "#1D1D1D", textDecoration: "none" }}
@@ -278,18 +286,23 @@ const NavBar = () => {
                   </Badge>
                 </Link>
               </li>
-              <li className="nav-item m-2">
+              <li className="nav-item m-2  mt-3" style={{ cursor: "pointer" }}>
                 {!isAuthenticated ? (
-                  <Button
-                    className="ms-3  my-1"
-                    handleClick={() => navigate("/userlogin")}
-                  >
-                    Login <FontAwesomeIcon icon={faUserPlus} />
-                  </Button>
+                  <Tooltip title="Login">
+                    <FontAwesomeIcon
+                      className=" my-1"
+                      icon={faUserPlus}
+                      onClick={() => navigate("/userlogin")}
+                    />
+                  </Tooltip>
                 ) : (
-                  <Button className="ms-3" handleClick={logout}>
-                    Logout <FontAwesomeIcon icon={faRightFromBracket} />
-                  </Button>
+                  <Tooltip title="Logout">
+                    <FontAwesomeIcon
+                      className="my-1"
+                      icon={faRightFromBracket}
+                      onClick={logout}
+                    />
+                  </Tooltip>
                 )}
               </li>
               {/* <div>

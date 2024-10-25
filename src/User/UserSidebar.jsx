@@ -78,10 +78,10 @@ const UserSidebar = () => {
         <Icon icon={faBox} />
         Profile
       </SidebarLink>
-      <SidebarLink to="/user/whistlist">
+      {/* <SidebarLink to="/user/whistlist">
         <Icon icon={faBox} />
         Whistlist
-      </SidebarLink>
+      </SidebarLink> */}
 
       <Footer className="mt-auto">
         <Button className="me-2 my-3" handleClick={logout}>

@@ -71,15 +71,7 @@ const FeaturedProducts = () => {
       <div className="container text-center">
         <h4 className="my-4" style={{ fontSize: "32px" }}>
           Featured Products
-          <center>
-            <div
-            // style={{
-            //   backgroundColor: `var(--button-hover)`,
-            //   padding: "1px 1px 3px 3px",
-            //   width: "25%",
-            // }}
-            ></div>
-          </center>
+          <center></center>
         </h4>
         <>
           {products.length > 0 ? (

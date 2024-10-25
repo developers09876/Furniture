@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import Logo1 from "../../assets/Restopedic-logo.png";
 
 const Copieright = () => {
   const StyledCopieright = styled.section`
@@ -7,18 +8,19 @@ const Copieright = () => {
 
   return (
     <StyledCopieright className="text-center p-3">
-      <a
-        className="text-reset fw-bold text-decoration-none ms-1"
-        href="https://github.com/Moslihbadr"
-        rel="noreferrer"
-        target="_blank"
-      >
-        © &nbsp;{new Date().getFullYear()} &nbsp;Napzy All Rights Reserved
+      <a className="text-reset fw-bold text-decoration-none ms-1">
+        © &nbsp;{new Date().getFullYear()} &nbsp;Resdopedic All Rights Reserved
         &nbsp;|
       </a>
       <a style={{ justifyContent: "center" }}>
-        &nbsp; Napzy name and logo are registered trademarks owner by Restopedic
-        Mattresses co.
+        &nbsp;{" "}
+        <img
+          className="mb-2"
+          src={Logo1}
+          alt="Restropedic"
+          style={{ fontSize: "26px", width: "150px" }}
+        />
+        registered trademarks owner by Restopedic Mattresses co.
       </a>
     </StyledCopieright>
   );

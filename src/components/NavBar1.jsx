@@ -25,10 +25,11 @@ const StyledLink = styled(NavLink)`
     background-color: rgb(171, 133, 189);
     color: white !important ;
     padding: 8px !important;
+    &:active {
+      // background-color: rgb(171, 133, 189);
+      // background-color: black;
+    }
   }
-  // &.active {
-  //   border-bottom-color: var(--button-hover);
-  // }
 
   @media (max-width: 991.98px) {
     /* Medium screens and below */

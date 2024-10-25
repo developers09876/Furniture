@@ -60,6 +60,7 @@ const Products = () => {
   const location = useLocation();
   const locationData = location?.state?.category || "";
   const [query, setQuery] = useState("");
+  console.log("queryquery", query);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -87,6 +88,7 @@ const Products = () => {
     setQuery(query);
 
     let filtered = products;
+
     if (locationData) {
       filtered = products.filter(
         (product) => product.category === locationData
@@ -98,7 +100,6 @@ const Products = () => {
         product.title.toLowerCase().includes(query)
       );
     }
-
     setFilteredProducts(filtered);
   };
 

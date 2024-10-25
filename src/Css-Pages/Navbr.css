@@ -63,6 +63,12 @@
 .dropdown-menu li a:hover {
   color: red;
   font-size: larger;
+  /* .nav-link:hover {
+    background-color: rgb(171, 133, 189);
+  } */
+}
+.dropdown-menu li a:hover .nav-link {
+  background-color: rgb(171, 133, 189);
 }
 
 .matress-item {

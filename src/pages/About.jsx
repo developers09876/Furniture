@@ -44,7 +44,10 @@ const About = () => {
         />
         <article className="hero-description">
           <div className="title">
-            <h2>Our Journey</h2>
+            <h4 className="my-4" style={{ fontSize: "32px" }}>
+              Our Journey
+              <center></center>
+            </h4>
           </div>
           <p>
             Welcome to

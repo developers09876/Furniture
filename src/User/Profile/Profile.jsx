@@ -82,6 +82,7 @@ import { Row, Col } from "react-bootstrap";
 import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useEffect } from "react";
 
 const { confirm } = Modal;
 
@@ -105,11 +106,13 @@ const initialData = [
 function Profile() {
   const [form] = Form.useForm();
   const [data, setData] = useState(initialData);
+  const [initialDatas, setInitialDatas] = useState();
   const [name, setName] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
-  console.log("dataz", data);
+  const [username, setUsername] = useState("");
+  const [UserData, setUserData] = useState("");
 
-  const userId = localStorage.getItem("id");
+  console.log("UserData", UserData);
 
   const handleUpdate = (values, key) => {
     confirm({
@@ -132,10 +135,14 @@ function Profile() {
       username: name,
       phoneNumber: phonenumber,
     };
-    console.log("recordz", record1);
     try {
-      await axios
-        .post(`${import.meta.env.VITE_MY_API}user/update/${userId}`, record1)
+      await axios.post(
+        `${import.meta.env.VITE_MY_API}user/update/${userId}`,
+        record1
+      );
+
+      const updatedData = data
+        .map((user) => (user.id === id ? { ...user, ...record1 } : user))
         .then((res) => {
           Swal.fire({
             icon: "success",
@@ -143,9 +150,6 @@ function Profile() {
             text: `User has been updated successfully.`,
           });
         });
-      const updatedData = data.map((user) =>
-        user.id === id ? { ...user, ...record1 } : user
-      );
       setData(updatedData);
     } catch (error) {
       console.error("Error updating user:", error);
@@ -161,6 +165,17 @@ function Profile() {
     form.resetFields();
   };
 
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_MY_API}/user/get`
+      );
+      setUserData(response.data);
+    } catch (error) {
+      handleOperationError("product", "adding");
+    }
+  };
+
   return (
     <StyledProfile>
       <Divider style={{ fontSize: "30px" }}>Profile</Divider>
@@ -170,7 +185,8 @@ function Profile() {
           style={{ marginLeft: "250px", width: "70%" }}
           form={form}
           key={user.key}
-          initialValues={user}
+          // initialValues={{ name: user.name, phonenumber: user.phonenumber }}
+          initialValues={{ name: user.name, phonenumber: user.phonenumber }}
           onFinish={(values) => handleUpdate(values, user.key)}
           layout="vertical"
         >
@@ -180,8 +196,13 @@ function Profile() {
                 label="Name"
                 name="name"
                 rules={[{ required: true, message: "Please enter your name!" }]}
+                // initialValue={name}
               >
-                <Input onChange={(e) => setName(e.target.value)} required />
+                <Input
+                  value={username}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
               </Form.Item>
             </Col>
 
