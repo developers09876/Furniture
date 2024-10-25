@@ -4,6 +4,7 @@ import {
   registerUser,
   loginUser,
   createCart,
+  getOneUser,
   getAllUser,
   deleteUser,
   updateUser,
@@ -19,6 +20,7 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/enquiry", enquiryUser);
 // router.get("/:id", getUserById);
+router.get("/getUser", getOneUser);
 router.get("/get", getAllUser);
 router.post("/update/:id", updateUser);
 router.put("/resetUser", resetUser);

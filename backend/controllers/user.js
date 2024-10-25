@@ -253,7 +253,29 @@ export async function resetUsers(req, res) {
     });
   }
 }
+// get User by Id
 
+export async function getOneUser(req, res) {
+  try {
+    const data = req.body;
+    const existUser = await User.findOne({ email: data.email });
+    console.log("existUser", existUser);
+    if (!existUser) {
+      return res.status(400).json({
+        message: "User  NOt found",
+        status: "Failed",
+      });
+    }
+
+    return res.status(200).json({
+      message: "User found",
+      data: existUser,
+      status: "Successful",
+    });
+  } catch (err) {
+    console.error("Error during login:", err);
+  }
+}
 //whistlist
 
 export const whistlistUser = async (req, res) => {

@@ -9,8 +9,13 @@ import {
   faSearch,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { Avatar, Badge, Space, Tooltip } from "antd";
+
+import { DownOutlined } from "@ant-design/icons";
+
+import { Avatar, Badge, Space, Tooltip, Dropdown, Menu, Input } from "antd";
+
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { useContext, useEffect, useState } from "react";
@@ -20,17 +25,17 @@ import { WishlistContext } from "../context/WishlistContext";
 import NavBar1 from "./NavBar1";
 import NavBar2 from "./NavBar2";
 import { CgProfile } from "react-icons/cg";
-import { Input } from "antd"; // Ant Design Input
 import "./../Css-Pages/Navbr.css";
 import axios from "axios";
+import { SearchOutlined } from "@ant-design/icons";
 import { log } from "three/webgpu";
 import { DashboardContext } from "../context/DashboardContext";
+import Products from "../pages/Products";
 
 // styles for links
 const StyledLink = styled(NavLink)`
   border-bottom: transparent solid 3px;
   transition: ${(props) => props.theme.transition};
-
   &:hover {
     border-bottom-color: var(--button-hover);
   }
@@ -52,12 +57,10 @@ const SearchIcon = styled(FontAwesomeIcon)`
 `;
 
 const NavBar = () => {
-  const { products, fetchData } = useContext(DashboardContext);
-  console.log("products12", products.title);
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   console.log("query", query);
-  const [filteredProducts, setFilteredProducts] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
   console.log("filteredProducts", filteredProducts);
 
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
@@ -65,6 +68,8 @@ const NavBar = () => {
   const { total } = useContext(WishlistContext);
 
   const [username, setUsername] = useState("");
+  const [products, setProducts] = useState("");
+  console.log("products12", products);
 
   // const fetchProducts = async () => {
   //   try {
@@ -135,15 +140,73 @@ const NavBar = () => {
 
   const [search, setsearch] = useState("");
 
-  const handleChange = (e) => {
-    setsearch(e.target.value);
+  // const handleChange = (e) => {
+  //   setsearch(e.target.value);
+  // };
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_MY_API}products/`
+      );
+      setProducts(response.data);
+
+      // const productFilter = locationData
+      //   ? response.data.filter((product) => product.category === locationData)
+      //   : response.data;
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
   };
 
-  useEffect(() => {
-    if (search !== "") {
-      fetch(products);
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setQuery(query);
+
+    let filtered = products;
+    if (query) {
+      filtered = filtered.filter((search) =>
+        search.title.toLowerCase().includes(query)
+      );
+    } else {
+      filtered = [];
     }
-  }, [search]);
+    setFilteredProducts(filtered);
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const menuItems = (products) => (
+    <Menu>
+      {filteredProducts.map((product) => (
+        <Menu.Item key={product.id}>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <img
+              src={product.image} // Product image URL
+              alt={product.title}
+              style={{ width: 50, marginRight: 10 }} // Adjust size as needed
+            />
+            <div>
+              <span style={{ fontWeight: "bold", color: "#008000" }}>
+                {product.category}
+              </span>
+              <br />
+              <span>{product.title}</span>
+              <br />
+              <span style={{ textDecoration: "line-through", color: "gray" }}>
+                ₹{product.originalPrice}
+              </span>
+              <span style={{ color: "red", fontWeight: "bold" }}>
+                {" "}
+                ₹{product.discountedPrice}
+              </span>
+            </div>
+          </div>
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
 
   // useEffect(() => {
   //   if (query !== "") {
@@ -191,19 +254,50 @@ const NavBar = () => {
             />
           </div> */}
           <div>
-            {/* <SearchContainer className="my-4" style={{ marginLeft: "10px" }}> */}
-            <input
-              type="text"
-              placeholder="Search products"
-              value={search} // Controlled input value
-              // onChange={(e) => {
-              //   setQuery(e.target.value); // Updates state when typing
-              // }}
-              onChange={handleChange}
-            />
+            {/* <div>
+              <input
+                type="text"
+                placeholder="Search products"
+                value={query}
+                onChange={handleSearch}
+              />
 
-            <SearchIcon icon={faSearch} className="text-muted" />
-            {/* </SearchContainer> */}
+              <SearchIcon icon={faSearch} className="text-muted" />
+            </div> */}
+
+            <div>
+              {/* {filteredProducts.map((suggestion) => {
+             
+                const items = [
+                  {
+                    key: "1",
+                    label: suggestion.title, 
+                  },
+          
+                ];
+
+                return (
+                  <div key={suggestion.id}>
+                    <Dropdown
+                      menu={{
+                        items,
+                      }}
+                    >
+                      <a onClick={(e) => e.preventDefault()}>
+                        <Space>{suggestion.title}</Space>
+                      </a>
+                    </Dropdown>
+                  </div>
+                );
+              })} */}
+              <Dropdown overlay={menuItems(Products)} trigger={["click"]}>
+                <Input
+                  prefix={<SearchOutlined />}
+                  placeholder="Search products"
+                  style={{ width: 300 }}
+                />
+              </Dropdown>
+            </div>
           </div>
           <button
             className="navbar-toggler"
