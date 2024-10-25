@@ -14,7 +14,7 @@ import Underline from "./Underline";
 
 const StyledLink = styled(NavLink)`
   // border-bottom: transparent solid 3px;
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 7px 7px 0px 0px;
   transition: ${(props) => props.theme.transition};
   color: black;
@@ -43,7 +43,7 @@ const StyledLink = styled(NavLink)`
 
 const DropMenuStyled = styled(Link)`
   color: var(--heading-clr) !important;
-  font-size: 15px !important;
+  font-size: 13px !important;
   font-weight: Bold;
   font-size: large;
   width: max-content;
