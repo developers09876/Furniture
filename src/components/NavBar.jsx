@@ -30,7 +30,7 @@ import axios from "axios";
 import { SearchOutlined } from "@ant-design/icons";
 import { log } from "three/webgpu";
 import { DashboardContext } from "../context/DashboardContext";
-import Products from "../pages/Products";
+// import Products from "../pages/Products";
 
 // styles for links
 const StyledLink = styled(NavLink)`
@@ -59,162 +59,71 @@ const SearchIcon = styled(FontAwesomeIcon)`
 const NavBar = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
-  console.log("query", query);
   const [filteredProducts, setFilteredProducts] = useState([]);
   console.log("filteredProducts", filteredProducts);
-
+  const { products } = useContext(DashboardContext);
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
   const { totalItems } = useContext(CartContext);
   const { total } = useContext(WishlistContext);
 
   const [username, setUsername] = useState("");
-  const [products, setProducts] = useState("");
-  console.log("products12", products);
-
-  // const fetchProducts = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${import.meta.env.VITE_MY_API}products/`
-  //     );
-
-  //     setProducts(response.data);
-  //     // const productFilter = locationData
-  //     //   ? response.data.filter((product) => product.category === locationData)
-  //     //   : response.data;
-
-  //     setFilteredProducts(productFilter);
-  //   } catch (error) {
-  //     console.error("Error fetching products:", error);
-  //   }
-  // };
-
-  // const handleSearch = (e) => {
-  //   const query = e.target.value;
-  //   setQuery(query);
-
-  // let filtered = products;
-  // if (locationData) {
-  //   filtered = products.filter(
-  //     (product) => product.category === locationData
-  //   );
-  // }
-
-  // if (query) {
-  //   const filtered = query.filter((product) =>
-  //     product.title.toLowerCase().includes(query)
-  //   );
-  // }
-
-  // setFilteredProducts(filtered);
-  // };
-
-  const SearchContainer = styled.div`
-    width: 270px;
-    margin: 0 auto;
-    position: relative;
-    text-align: center;
-  `;
-
-  const StyledInput = styled.input`
-    padding: 0.5rem 1rem 0.5rem 3rem;
-    // outline: 1px solid transparent;
-    // outline: 1px solid var(--button-hover);
-    // border: 1px solid ${(props) => props.theme.borderColor};
-    border: 1px solid var(--button-hover);
-    border-radius: ${(props) => props.theme.radius};
-    margin-right: 10px;
-    width: 90%;
-    border-radius: 5px;
-
-    &:focus {
-      // outline: 1px solid ${(props) => props.theme.borderColor};
-      outline: 1px solid var(--button-hover);
-      border-radius: ${(props) => props.theme.radius};
-    }
-  `;
 
   const navIconItem = {
     width: "40px",
     height: "22px",
   };
 
-  const [search, setsearch] = useState("");
-
-  // const handleChange = (e) => {
-  //   setsearch(e.target.value);
-  // };
-
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_MY_API}products/`
-      );
-      setProducts(response.data);
-
-      // const productFilter = locationData
-      //   ? response.data.filter((product) => product.category === locationData)
-      //   : response.data;
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
-
   const handleSearch = (e) => {
-    const query = e.target.value.toLowerCase();
-    setQuery(query);
-
-    let filtered = products;
-    if (query) {
-      filtered = filtered.filter((search) =>
-        search.title.toLowerCase().includes(query)
+    if (e) {
+      const valuesfilt = products.filter((search) =>
+        search.category.toLowerCase().includes(query)
       );
-    } else {
-      filtered = [];
+      setFilteredProducts(valuesfilt);
     }
-    setFilteredProducts(filtered);
   };
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
-  const menuItems = (products) => (
+  const onSearchChange = (e) => {
+    const query = e.target.value;
+    setQuery(query);
+    handleSearch(query);
+  };
+
+  const menuItems = (filteredProducts) => (
     <Menu>
-      {filteredProducts.map((product) => (
-        <Menu.Item key={product.id}>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <img
-              src={product.image} // Product image URL
-              alt={product.title}
-              style={{ width: 50, marginRight: 10 }} // Adjust size as needed
-            />
-            <div>
-              <span style={{ fontWeight: "bold", color: "#008000" }}>
-                {product.category}
-              </span>
-              <br />
-              <span>{product.title}</span>
-              <br />
-              <span style={{ textDecoration: "line-through", color: "gray" }}>
-                ₹{product.originalPrice}
-              </span>
-              <span style={{ color: "red", fontWeight: "bold" }}>
-                {" "}
-                ₹{product.discountedPrice}
-              </span>
+      {filteredProducts.length > 0 ? (
+        filteredProducts.map((product) => (
+          <Menu.Item key={product.id}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <img
+                src={product.images[0]}
+                alt={product.title}
+                style={{ width: 50, marginRight: 10 }}
+              />
+              <div>
+                <span style={{ fontWeight: "bold", color: "#008000" }}>
+                  {product.title}
+                </span>
+                <br />
+                <span>{product.category}</span>
+                <br />
+                <span style={{ textDecoration: "line-through", color: "gray" }}>
+                  ₹{product.price}
+                </span>
+                <span style={{ color: "red", fontWeight: "bold" }}>
+                  {" "}
+                  ₹{product.discountPrice}
+                </span>
+              </div>
             </div>
-          </div>
+          </Menu.Item>
+        ))
+      ) : (
+        <Menu.Item disabled>
+          <span>No results found</span>
         </Menu.Item>
-      ))}
+      )}
     </Menu>
   );
-
-  // useEffect(() => {
-  //   if (query !== "") {
-  //     fetch(`${import.meta.env.VITE_MY_API}products/${query}`).then((res) =>
-  //       res.json().then((res) => console.log("check1", res))
-  //     );
-  //   }
-  // });
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("name");
@@ -224,7 +133,6 @@ const NavBar = () => {
       setUsername(formattedUsername);
     }
   }, [isAuthenticated]);
-
   return (
     <>
       <NavBar2 />
@@ -233,9 +141,6 @@ const NavBar = () => {
         style={{ backgroundColor: "var(--bgColor)" }}
       >
         <div className="container lg-d-flex justify-content-center">
-          {/* <Link className="navbar-brand me-auto" to="/">
-          <Logo fontSize={40} width={150} />
-        </Link> */}
           <h3 href="#" alt="Home" className="fw-bolder text-decoration-none">
             {/* <Logo fontSize={30} width={150} /> */}
             {/* Restopedic */}
@@ -246,55 +151,18 @@ const NavBar = () => {
             />
           </h3>
 
-          {/* <div style={{ marginLeft: "30px", flex: 1 }}>
-            <Input.Search
-              placeholder="Search products..."
-              onSearch={(value) => console.log(value)}
-              style={{ width: 250 }}
-            />
-          </div> */}
           <div>
-            {/* <div>
-              <input
-                type="text"
-                placeholder="Search products"
-                value={query}
-                onChange={handleSearch}
-              />
-
-              <SearchIcon icon={faSearch} className="text-muted" />
-            </div> */}
-
             <div>
-              {/* {filteredProducts.map((suggestion) => {
-             
-                const items = [
-                  {
-                    key: "1",
-                    label: suggestion.title, 
-                  },
-          
-                ];
-
-                return (
-                  <div key={suggestion.id}>
-                    <Dropdown
-                      menu={{
-                        items,
-                      }}
-                    >
-                      <a onClick={(e) => e.preventDefault()}>
-                        <Space>{suggestion.title}</Space>
-                      </a>
-                    </Dropdown>
-                  </div>
-                );
-              })} */}
-              <Dropdown overlay={menuItems(Products)} trigger={["click"]}>
+              <Dropdown
+                overlay={menuItems(filteredProducts)}
+                trigger={["click"]}
+                visible={query.length > 0}
+              >
                 <Input
                   prefix={<SearchOutlined />}
                   placeholder="Search products"
                   style={{ width: 300 }}
+                  onChange={onSearchChange}
                 />
               </Dropdown>
             </div>

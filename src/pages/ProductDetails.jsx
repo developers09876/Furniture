@@ -49,20 +49,17 @@ const SingleProductPage = () => {
 
   const { productID } = useParams();
   const [product, setProduct] = useState([]);
-  console.log('product', product)
   if (
     product &&
     Array.isArray(product.specification) &&
     product.specification.length > 0
   ) {
-    console.log("meala", product.specification[0]);
   } else {
     console.log("Specification is not available");
   }
   const [selectedImage, setSelectedImage] = useState(null);
   // const [images, setImages] = useState([img1, img2, img3, Amenity, Amenity_ET]);
   const [images, setImages] = useState([]);
-  console.log("imagesz", images);
   const [show, setShow] = useState(false);
   const [showPic, setShowPic] = useState(false);
 
@@ -270,8 +267,7 @@ const SingleProductPage = () => {
   }
 
   const {
-    
-productId,
+    productId,
     // images,
     title,
     price,
@@ -455,8 +451,7 @@ productId,
                 <Button
                   handleClick={() =>
                     addToCart({
-                      
-productId,
+                      productId,
                       images,
                       title,
                       price,
@@ -474,14 +469,17 @@ productId,
                 </Button>
               )}
               <Button
-                handleClick={() => addToWishlist({ 
-                  productId,
-                  images,
-                  title,
-                  price,
-                  quantity_stock,
-                  quantity,
-                  subTotal,})}
+                handleClick={() =>
+                  addToWishlist({
+                    productId,
+                    images,
+                    title,
+                    price,
+                    quantity_stock,
+                    quantity,
+                    subTotal,
+                  })
+                }
               >
                 <FontAwesomeIcon icon={faHeart} />
               </Button>

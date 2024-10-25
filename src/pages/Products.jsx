@@ -60,11 +60,10 @@ const Products = () => {
   const location = useLocation();
   const locationData = location?.state?.category || "";
   const [query, setQuery] = useState("");
-  console.log("queryquery", query);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  // Fetch products from the backend
 
+  // Fetch products from the backend
   const fetchProducts = async () => {
     try {
       const response = await axios.get(
@@ -72,9 +71,9 @@ const Products = () => {
       );
       setProducts(response.data);
 
-      // const productFilter = locationData
-      //   ? response.data.filter((product) => product.category === locationData)
-      //   : response.data;
+      const productFilter = locationData
+        ? response.data.filter((product) => product.category === locationData)
+        : response.data;
 
       setFilteredProducts(productFilter);
     } catch (error) {

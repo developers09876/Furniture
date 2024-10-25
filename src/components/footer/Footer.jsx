@@ -150,10 +150,9 @@ const Footer = () => {
                     <p className="address-detail">
                       Register Office , Manufactur & Packer ,<br /> #192 , Sy no
                       124 , halagevaderahalli , <br />
-                      Bangaluru , &nbsp; Karnataka
+                      Bangaluru , &nbsp; Karnataka <br /> India.
                     </p>
 
-                    <p className="address-detail">India</p>
                     <p className="d-flex align-items-center justify-content-center justify-content-md-start">
                       <FontAwesomeIcon
                         icon={faPhone}
@@ -170,7 +169,7 @@ const Footer = () => {
                     // className="me-2"
                     // style={{ fontSize: "17px" }}
                   />
-                  <small>restonindia@gmail.com</small>
+                  &nbsp; restonindia@gmail.com
                 </p>
               </div>
             </div>

@@ -9,7 +9,7 @@ const Copieright = () => {
   return (
     <StyledCopieright className="text-center p-3">
       <a className="text-reset fw-bold text-decoration-none ms-1">
-        © &nbsp;{new Date().getFullYear()} &nbsp;Resdopedic All Rights Reserved
+        © &nbsp;{new Date().getFullYear()} &nbsp;NAPCY All Rights Reserved
         &nbsp;|
       </a>
       <a style={{ justifyContent: "center" }}>
