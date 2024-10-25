@@ -8,37 +8,41 @@ export const WishlistContext = createContext();
 
 // Wishlist Provider component
 export const WishlistProvider = ({ children }) => {
+  console.log('children', children)
   const [wishlist, setWishlist] = useState({ id: "", user_id: "", items: [] });
   const { isAuthenticated, userID } = useContext(AuthContext); // Use userID from AuthContext directly
   const [total, setTotal] = useState(0);
 
-  console.log(wishlist);
-  console.log(userID);
+  console.log("wishlist",wishlist);
+  console.log("userid",userID);
 
   // Function to fetch the user's wishlist from the API
-  const fetchWishlist = async (userId) => {
-    try {
-      if (isAuthenticated) {
-        const response = await axios.get(
-          `${import.meta.env.VITE_MY_API}wishlists?user_id=${userId}`
-        );
-        const fetchedWishlist = response.data[0];
-        setWishlist(fetchedWishlist);
-        setTotal(fetchedWishlist.items.length);
-      }
-    } catch (error) {
-      console.error("Error fetching wishlist:", error);
-      setWishlist({ id: "", user_id: "", items: [] });
-      setTotal(0);
-    }
-  };
+  // const fetchWishlist = async (userId) => {
+  //   try {
+  //     if (isAuthenticated) {
+  //       const response = await axios.get(
+  //         `${import.meta.env.VITE_MY_API}wishlists?user_id=${userId}`
+  //       );
+  //       const fetchedWishlist = response.data[0];
+  //       setWishlist(fetchedWishlist);
+  //       setTotal(fetchedWishlist.items.length);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching wishlist:", error);
+  //     setWishlist({ id: "", user_id: "", items: [] });
+  //     setTotal(0);
+  //   }
+  // };
 
   // Function to add item to the wishlist
   const addToWishlist = async (item) => {
+    console.log('itemwhislist', item)
     try {
       if (isAuthenticated) {
         const itemExists = wishlist.items.some(
-          (wishlistItem) => wishlistItem.id === item.id
+          (wishlistItem) => wishlistItem.id === item.
+          productId
+          
         );
 
         if (itemExists) {
@@ -55,14 +59,15 @@ export const WishlistProvider = ({ children }) => {
             items: [...wishlist.items, { ...item }],
           };
 
-          const response = await axios.put(
-            `${import.meta.env.VITE_MY_API}wishlists/${userID}`,
-            updatedWishlist
-          );
-          const fetchedWishlist = response.data;
-          setWishlist(fetchedWishlist);
-          setTotal(fetchedWishlist.items.length);
-
+          // const response = await axios.put(
+          //   `${import.meta.env.VITE_MY_API}wishlists/${userID}`,
+          //   updatedWishlist
+          // );
+          // const fetchedWishlist = response.data;
+          // setWishlist(fetchedWishlist);
+          // setTotal(fetchedWishlist.items.length);
+ setWishlist(updatedWishlist);
+          setTotal(updatedWishlist.items.length);
           Swal.fire({
             icon: "success",
             title: "Item added to wishlist",
@@ -133,7 +138,7 @@ export const WishlistProvider = ({ children }) => {
   // Fetch the user's wishlist on component mount and when userID changes
   useEffect(() => {
     if (userID && isAuthenticated) {
-      fetchWishlist(userID);
+      // fetchWishlist(userID);
     } else {
       setWishlist({ id: "", user_id: "", items: [] });
     }

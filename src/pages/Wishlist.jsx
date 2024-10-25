@@ -25,8 +25,8 @@ const Wishlist = () => {
               <div className="content row px-3 d-md-flex d-none">
                 <h6 className="col-3">Item</h6>
                 <h6 className="col">Price</h6>
-                <h6 className="col"></h6>
-                <h6 className="col"></h6>
+                {/* <h6 className="col">Quantity</h6> */}
+                {/* <h6 className="col">Subtotal</h6> */}
               </div>
             )}
             <hr />

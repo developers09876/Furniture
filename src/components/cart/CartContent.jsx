@@ -4,7 +4,6 @@ import CartItem from "./CartItem";
 
 const CartContent = () => {
   const { cart } = useContext(CartContext);
-  console.log(cart.items);
   return (
     <>
       {cart.items.map((item) => {
@@ -12,7 +11,7 @@ const CartContent = () => {
           <CartItem
             key={item.id}
             id={item.id}
-            image={item.image}
+            image={item.images[0]}
             title={item.title}
             price={item.price}
             quantity={item.quantity}

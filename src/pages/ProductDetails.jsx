@@ -49,6 +49,7 @@ const SingleProductPage = () => {
 
   const { productID } = useParams();
   const [product, setProduct] = useState([]);
+  console.log('product', product)
   if (
     product &&
     Array.isArray(product.specification) &&
@@ -83,6 +84,7 @@ const SingleProductPage = () => {
         );
         setProduct(response.data);
         setImages(response.data.images);
+
         setSelectedImage(response.data.images[0]);
       } catch (error) {
         console.error("Error fetching product details:", error);
@@ -268,7 +270,8 @@ const SingleProductPage = () => {
   }
 
   const {
-    id,
+    
+productId,
     // images,
     title,
     price,
@@ -452,7 +455,8 @@ const SingleProductPage = () => {
                 <Button
                   handleClick={() =>
                     addToCart({
-                      id,
+                      
+productId,
                       images,
                       title,
                       price,
@@ -470,7 +474,14 @@ const SingleProductPage = () => {
                 </Button>
               )}
               <Button
-                handleClick={() => addToWishlist({ id, image, title, price })}
+                handleClick={() => addToWishlist({ 
+                  productId,
+                  images,
+                  title,
+                  price,
+                  quantity_stock,
+                  quantity,
+                  subTotal,})}
               >
                 <FontAwesomeIcon icon={faHeart} />
               </Button>
