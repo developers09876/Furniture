@@ -242,7 +242,7 @@ const SingleProductPage = () => {
   const { addToWishlist } = useContext(WishlistContext);
   const { isAuthenticated } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  console.log("addToWishlist", addToWishlist);
   const navigate = useNavigate();
   const handleImageClick = (image) => {
     setSelectedImage(image);

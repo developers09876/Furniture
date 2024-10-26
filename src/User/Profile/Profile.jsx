@@ -106,20 +106,17 @@ const initialData = [
 function Profile() {
   const [form] = Form.useForm();
   const [data, setData] = useState(initialData);
-  const [initialDatas, setInitialDatas] = useState();
   const [name, setName] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
-  const [username, setUsername] = useState("");
   const [UserData, setUserData] = useState("");
-
-  console.log("UserData", UserData);
+  const userId = localStorage.getItem("id");
 
   const handleUpdate = (values, key) => {
     confirm({
-      title: `Are you sure you want to update ${values.name}?`,
-      content: `Phonenumber: ${values.phonenumber}`,
+      title: `Want to update ${values.name}?`,
+      // content: `Phonenumber: ${values.phonenumber}`,
       okText: "Yes",
-      okType: "danger",
+      // noType: "danger",
       cancelText: "No",
       onOk() {
         updateRecordFromAPI(key, values);
@@ -130,27 +127,29 @@ function Profile() {
     });
   };
 
-  const updateRecordFromAPI = async (id) => {
-    const record1 = {
-      username: name,
-      phoneNumber: phonenumber,
-    };
+  const updateRecordFromAPI = async (id, updatedValues) => {
     try {
-      await axios.post(
+      const response = await axios.post(
         `${import.meta.env.VITE_MY_API}user/update/${userId}`,
-        record1
+        updatedValues
       );
 
-      const updatedData = data
-        .map((user) => (user.id === id ? { ...user, ...record1 } : user))
-        .then((res) => {
-          Swal.fire({
-            icon: "success",
-            title: "Updated!",
-            text: `User has been updated successfully.`,
-          });
-        });
+      // Assuming the API returns the updated user data
+      const updatedUser = response.data;
+
+      // Update the state with the new user data
+      const updatedData = data.map((user) =>
+        user.key === id ? { ...user, ...updatedUser } : user
+      );
+
       setData(updatedData);
+
+      // Show success alert
+      Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: `User has been updated successfully.`,
+      });
     } catch (error) {
       console.error("Error updating user:", error);
       Swal.fire({
@@ -167,14 +166,24 @@ function Profile() {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_MY_API}/user/get`
+      const response = await axios.post(
+        `${import.meta.env.VITE_MY_API}user/getUser`,
+        { id: userId }
       );
-      setUserData(response.data);
+      setUserData(response.data.data);
+      form.setFieldsValue({
+        name: response.data.data.username,
+        email: response.data.data.email,
+        phonenumber: response.data.data.phoneNumber,
+      });
     } catch (error) {
       handleOperationError("product", "adding");
     }
   };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <StyledProfile>
@@ -185,7 +194,6 @@ function Profile() {
           style={{ marginLeft: "250px", width: "70%" }}
           form={form}
           key={user.key}
-          // initialValues={{ name: user.name, phonenumber: user.phonenumber }}
           initialValues={{ name: user.name, phonenumber: user.phonenumber }}
           onFinish={(values) => handleUpdate(values, user.key)}
           layout="vertical"
@@ -199,8 +207,11 @@ function Profile() {
                 // initialValue={name}
               >
                 <Input
-                  value={username}
-                  onChange={(e) => setName(e.target.value)}
+                  // value={UserData.username}
+                  // onChange={(e) => setName(e.target.value)}
+                  onChange={(e) =>
+                    setUserData({ ...UserData, username: e.target.value })
+                  }
                   required
                 />
               </Form.Item>
@@ -226,7 +237,10 @@ function Profile() {
                 ]}
               >
                 <Input
-                  onChange={(e) => setPhonenumber(e.target.value)}
+                  // onChange={(e) => setPhonenumber(e.target.value)}
+                  onChange={(e) =>
+                    setUserData({ ...UserData, phoneNumber: e.target.value })
+                  }
                   required
                 />
               </Form.Item>

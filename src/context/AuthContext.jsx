@@ -108,6 +108,7 @@ export const AuthProvider = ({ children }) => {
           }
         );
         if (res) {
+          console.log("resqwe", res);
           setIsAuthenticated(true);
           setUserID(res.data.data._id);
           Cookies.set("isLoggedIn", "true", { expires: 1 });
@@ -145,7 +146,6 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove("userID");
     localStorage.removeItem("token");
     localStorage.removeItem("id");
-
     localStorage.removeItem("name");
 
     Swal.fire({

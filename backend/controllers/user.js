@@ -148,24 +148,28 @@ export const deleteUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
+  console.log("Request Body:", req.body);
   try {
     const { id } = req.params;
-    const { username, phoneNumber } = req.body;
-    const users = await User.findById(id);
+    console.log("User ID:", id);
+    const { name, phonenumber } = req.body;
 
-    if (!users) {
+    // Update user document
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { username: name, phoneNumber: phonenumber }, // Ensure this matches your schema
+      { new: true, runValidators: true } // Options to return updated document and run validators
+    );
+
+    console.log("Updated User:", updatedUser); // Log the updated user
+
+    if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
+    } else {
+      res.status(200).json(updatedUser); // Return the updated user data
     }
-
-    if (username) users.username = username;
-    if (phoneNumber) users.phoneNumber = phoneNumber;
-    const updatedCategory = await users.save();
-    res.status(200).json(updatedCategory);
   } catch (error) {
-    if (error.kind === "ObjectId") {
-      return res.status(400).json({ message: "Invalid User ID" });
-    }
-
+    console.error("Error updating user:", error);
     res.status(500).json({ message: "Server Error: " + error.message });
   }
 };
@@ -231,6 +235,7 @@ export async function enquiryUser(req, res, next) {
 export async function resetUsers(req, res) {
   try {
     const data = req.body;
+    console.log("data", data);
     const existUser = await User.findOne({ email: data.email });
     console.log("existUser", existUser);
     if (!existUser) {
@@ -258,9 +263,11 @@ export async function resetUsers(req, res) {
 export async function getOneUser(req, res) {
   try {
     const data = req.body;
-    const existUser = await User.findOne({ email: data.email });
-    console.log("existUser", existUser);
-    if (!existUser) {
+    const user = await User.findOne({
+      id: data._id,
+    });
+    console.log("user", user);
+    if (!user) {
       return res.status(400).json({
         message: "User  NOt found",
         status: "Failed",
@@ -269,13 +276,14 @@ export async function getOneUser(req, res) {
 
     return res.status(200).json({
       message: "User found",
-      data: existUser,
+      data: user,
       status: "Successful",
     });
   } catch (err) {
     console.error("Error during login:", err);
   }
 }
+
 //whistlist
 
 export const whistlistUser = async (req, res) => {

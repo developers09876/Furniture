@@ -67,8 +67,7 @@ const UserOrders = () => {
   //     : orders.filter((order) => order.order_status === selectedStatus);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [
-    dataFilter, setDataFilter] = useState([]);
+  const [dataFilter, setDataFilter] = useState([]);
   const [isOrderModel, setOrderModel] = useState(false);
   const [userOrder, setUserOrder] = useState([]);
   const orderModel = (e) => {
@@ -152,6 +151,7 @@ const UserOrders = () => {
   ];
   useEffect(() => {
     const id = localStorage.getItem("id");
+    console.log("idor", id);
 
     axios
       .get(`${import.meta.env.VITE_MY_API}products/getOrder/${id}`)
@@ -179,7 +179,6 @@ const UserOrders = () => {
   });
   return (
     <StyledOrders>
-
       <StyledSelectWrapper>
         <label htmlFor="orderStatusFilter" className="me-2">
           Filter by Status :
