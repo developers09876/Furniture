@@ -180,29 +180,29 @@ const NavBar = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
-              <li className="nav-item m-2">
+              <li className="nav-item m-2 mx-3">
                 <StyledLink className="nav-link" to="/">
                   Home
                 </StyledLink>
               </li>
-              <li className="nav-item m-2">
+              <li className="nav-item m-2 mx-3">
                 <StyledLink className="nav-link" to="/about">
                   About
                 </StyledLink>
               </li>
-              <li className="nav-item m-2">
+              <li className="nav-item m-2 mx-3">
                 <StyledLink className="nav-link" to="/products ">
                   Products
                 </StyledLink>
               </li>
-              <li className="nav-item m-2">
+              <li className="nav-item m-2 mx-3">
                 <StyledLink className="nav-link" to="/contact">
                   Contact
                 </StyledLink>
               </li>
               <li>
                 {isAdmin && (
-                  <li className="nav-item m-2">
+                  <li className="nav-item m-2 mx-3">
                     <StyledLink className="nav-link" to="/admin">
                       Dashboard
                     </StyledLink>

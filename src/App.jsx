@@ -101,7 +101,7 @@ const router = createBrowserRouter(
       <Route path="/user" element={<UserDashboardLayout />}>
         {/* <Route path="/user" element={<UserDashboard />} /> */}
         <Route path="/user/orders" element={<UserOrders />} />
-        <Route path="/user/orders/:id" element={<UserOrderDetails />} />
+        {/* <Route path="/user/orders/:id" element={<UserOrderDetails />} /> */}
         <Route path="/user/profile" element={<Profile />} />
         <Route path="/user/whistlist" element={<Whistlist />} />
       </Route>

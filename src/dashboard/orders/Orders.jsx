@@ -1,14 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { DashboardContext } from "../../context/DashboardContext";
 import Button from "../../components/Button";
 import { Divider, Modal, Table, Select } from "antd";
 import { Col, Row } from "react-bootstrap";
 import axios from "axios";
 import { IoEyeOutline } from "react-icons/io5";
+import Swal from "sweetalert2";
 // styled components
 
 const data = [
@@ -95,18 +93,44 @@ const UserOrders = () => {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [isOrderModel, setOrderModel] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState([]);
+  const [status, setStatus] = useState("");
+  console.log("status", status);
+  const [orderId, setOrderId] = useState(null);
 
-  const orderModel = (e) => {
-    setOrderModel(true);
-    setSelectedOrder(e.items);
-  };
-  const handleOk = () => {
-    setOrderModel(false);
-  };
-  const handleCancel = () => {
-    setOrderModel(false);
-    // setSelectedOrder(null);
-  };
+  const [data, setData] = useState([]);
+  console.log("data", data);
+  const [loading, setLoading] = useState(true);
+
+  const viewOrder = [
+    {
+      title: "Sno",
+      render: (i, record, index) => (
+        <div>
+          <p>{1 + index}</p>
+        </div>
+      ),
+    },
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+    {
+      title: "Sub Total",
+      dataIndex: "subTotal",
+      key: "subTotal",
+    },
+  ];
 
   const orderDetail = [
     {
@@ -150,40 +174,26 @@ const UserOrders = () => {
     {
       title: "Change Status",
       dataIndex: "changeStatus",
-      render: (text, record) => (
-        <Select
-          defaultValue={record.status}
-          onChange={(value) => handleStatusChange(record.key, value)}
-          style={{ width: 120 }}
-        >
-          <Option value="Pending">Pending</Option>
-          <Option value="Inprogress">In Progress</Option>
-          <Option value="Delivered">Delivered</Option>
-          <Option value="Initial">Initial</Option>
-        </Select>
+      render: (record, e) => (
+        <div onClick={() => getId(e)}>
+          <Select
+            defaultValue={e.order_status}
+            // value={status}
+            onChange={(status) => {
+              setStatus(status); // Update the status
+              orderdata(status);
+            }}
+            style={{ width: 120 }}
+          >
+            <Option value="Pending">Pending</Option>
+            <Option value="Inprogress">In Progress</Option>
+            <Option value="Delivered">Delivered</Option>
+            <Option value="Initial">Initial</Option>
+          </Select>
+        </div>
       ),
     },
 
-    // {
-    //   title: "Action",
-    //   key: "Action",
-    //   render: (_, record) => (
-    //     <div>
-    //       <Row>
-    //         <Col md={3}>
-    //           <a>
-    //             <MdEdit style={{ fontSize: "20px" }} />
-    //           </a>
-    //         </Col>
-    //         <Col md={3}>
-    //           <a>
-    //             <MdDelete style={{ fontSize: "20px" }} />
-    //           </a>
-    //         </Col>
-    //       </Row>
-    //     </div>
-    //   ),
-    // },
     {
       title: "View",
       key: "Action",
@@ -212,47 +222,23 @@ const UserOrders = () => {
     },
   ];
 
-  const viewOrder = [
-    {
-      title: "Sno",
-      render: (i, record, index) => (
-        <div>
-          <p>{1 + index}</p>
-        </div>
-      ),
-    },
-    {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-    },
-    {
-      title: "Quantity",
-      dataIndex: "quantity",
-      key: "quantity",
-    },
-    {
-      title: "Sub Total",
-      dataIndex: "subTotal",
-      key: "subTotal",
-    },
-  ];
-  const handleStatusChange = (orderId, status) => {
-    updateOrderStatus(orderId, status);
+  const orderModel = (e) => {
+    setOrderModel(true);
+    setSelectedOrder(e.items);
+  };
+  const handleOk = () => {
+    setOrderModel(false);
+  };
+  const handleCancel = () => {
+    setOrderModel(false);
+    // setSelectedOrder(null);
   };
 
-  // const filteredOrders =
-  //   selectedStatus === "all"
-  //     ? orders
-  //     : orders.filter((order) => order.order_status === selectedStatus);
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+  const getId = async (e) => {
+    console.log("recorzd", e);
+    const orderGetId = e._id;
+    setOrderId(orderGetId);
+  };
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_MY_API}products/order`)
@@ -266,6 +252,53 @@ const UserOrders = () => {
         setLoading(false);
       });
   }, []);
+
+  const orderdata = async (status) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_MY_API}products/updateorder/${orderId}`,
+        { order_status: status }
+      );
+      // const updatedData = Array.isArray(response.data)
+      //   ? response.data
+      //   : [response.data];
+
+      // setData(updatedData);
+      // setData(response.data);
+      const updatedOrder = response.data;
+      setData((prevData) =>
+        prevData.map((order) =>
+          order._id === orderId
+            ? { ...order, order_status: updatedOrder.order_status }
+            : order
+        )
+      );
+      Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: `Order has been updated successfully.`,
+      });
+    } catch (error) {
+      console.error("Error updating Order:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "There was an error updating the Order. Please try again.",
+      });
+    }
+  };
+
+  const handleStatusChange = (orderId, status) => {
+    updateOrderStatus(orderId, status);
+  };
+
+  // const filteredOrders =
+  //   selectedStatus === "all"
+  //     ? orders
+  //     : orders.filter((order) => order.order_status === selectedStatus);
+  // useEffect(() => {
+  //   orderdata();
+  // }, []);
 
   return (
     <StyledOrders>

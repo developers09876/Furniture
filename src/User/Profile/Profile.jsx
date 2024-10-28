@@ -111,7 +111,7 @@ function Profile() {
   const [UserData, setUserData] = useState("");
   const userId = localStorage.getItem("id");
 
-  const handleUpdate = (values, key) => {
+  const handleUpdate = (values) => {
     confirm({
       title: `Want to update ${values.name}?`,
       // content: `Phonenumber: ${values.phonenumber}`,
@@ -119,7 +119,7 @@ function Profile() {
       // noType: "danger",
       cancelText: "No",
       onOk() {
-        updateRecordFromAPI(key, values);
+        updateRecordFromAPI();
       },
       onCancel() {
         console.log("Update cancelled");
@@ -127,24 +127,14 @@ function Profile() {
     });
   };
 
-  const updateRecordFromAPI = async (id, updatedValues) => {
+  const updateRecordFromAPI = async () => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_MY_API}user/update/${userId}`,
-        updatedValues
+        UserData
       );
 
-      // Assuming the API returns the updated user data
-      const updatedUser = response.data;
-
-      // Update the state with the new user data
-      const updatedData = data.map((user) =>
-        user.key === id ? { ...user, ...updatedUser } : user
-      );
-
-      setData(updatedData);
-
-      // Show success alert
+      setData(response.data);
       Swal.fire({
         icon: "success",
         title: "Updated!",
@@ -189,76 +179,65 @@ function Profile() {
     <StyledProfile>
       <Divider style={{ fontSize: "30px" }}>Profile</Divider>
 
-      {data.map((user) => (
-        <Form
-          style={{ marginLeft: "250px", width: "70%" }}
-          form={form}
-          key={user.key}
-          initialValues={{ name: user.name, phonenumber: user.phonenumber }}
-          onFinish={(values) => handleUpdate(values, user.key)}
-          layout="vertical"
-        >
-          <Row>
-            <Col xs={12} sm={6}>
-              <Form.Item
-                label="Name"
-                name="name"
-                rules={[{ required: true, message: "Please enter your name!" }]}
-                // initialValue={name}
-              >
-                <Input
-                  // value={UserData.username}
-                  // onChange={(e) => setName(e.target.value)}
-                  onChange={(e) =>
-                    setUserData({ ...UserData, username: e.target.value })
-                  }
-                  required
-                />
-              </Form.Item>
-            </Col>
+      <Form
+        style={{ marginLeft: "250px", width: "70%" }}
+        form={form}
+        layout="vertical"
+      >
+        <Row>
+          <Col xs={12} sm={6}>
+            <Form.Item
+              label="Name"
+              name="name"
+              rules={[{ required: true, message: "Please enter your name!" }]}
+              // initialValue={name}
+            >
+              <Input
+                onChange={(e) =>
+                  setUserData({ ...UserData, username: e.target.value })
+                }
+                required
+              />
+            </Form.Item>
+          </Col>
 
-            <Col xs={12} sm={6}>
-              <Form.Item label="Email" name="email">
-                <Input disabled />
-              </Form.Item>
-            </Col>
-          </Row>
+          <Col xs={12} sm={6}>
+            <Form.Item label="Email" name="email">
+              <Input disabled />
+            </Form.Item>
+          </Col>
+        </Row>
 
-          <Row>
-            <Col xs={12} sm={6}>
-              <Form.Item
-                label="Phonenumber"
-                name="phonenumber"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter your phone number!",
-                  },
-                ]}
-              >
-                <Input
-                  // onChange={(e) => setPhonenumber(e.target.value)}
-                  onChange={(e) =>
-                    setUserData({ ...UserData, phoneNumber: e.target.value })
-                  }
-                  required
-                />
-              </Form.Item>
-            </Col>
-          </Row>
+        <Row>
+          <Col xs={12} sm={6}>
+            <Form.Item
+              label="Phonenumber"
+              name="phonenumber"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your phone number!",
+                },
+              ]}
+            >
+              <Input
+                onChange={(e) =>
+                  setUserData({ ...UserData, phoneNumber: e.target.value })
+                }
+                required
+              />
+            </Form.Item>
+          </Col>
+        </Row>
 
-          <Row>
-            <Col xs={12}>
-              <Button type="primary" htmlType="submit">
-                Update
-              </Button>
-              <Button style={{ marginLeft: "10px" }} onClick={handleCancel}>
-                Cancel
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-      ))}
+        <Row>
+          <Col xs={12}>
+            <Button type="primary" onClick={(values) => handleUpdate(values)}>
+              Update
+            </Button>
+          </Col>
+        </Row>
+      </Form>
     </StyledProfile>
   );
 }

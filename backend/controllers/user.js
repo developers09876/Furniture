@@ -151,17 +151,17 @@ export const updateUser = async (req, res) => {
   console.log("Request Body:", req.body);
   try {
     const { id } = req.params;
-    console.log("User ID:", id);
-    const { name, phonenumber } = req.body;
+    console.log("User", id);
+    const { username, phoneNumber } = req.body;
 
     // Update user document
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { username: name, phoneNumber: phonenumber }, // Ensure this matches your schema
+      { username: username, phoneNumber: phoneNumber }, // Ensure this matches your schema
       { new: true, runValidators: true } // Options to return updated document and run validators
     );
 
-    console.log("Updated User:", updatedUser); // Log the updated user
+    // console.log("Updated User:", updatedUser); // Log the updated user
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
@@ -261,12 +261,13 @@ export async function resetUsers(req, res) {
 // get User by Id
 
 export async function getOneUser(req, res) {
+  console.log("reqa", req);
   try {
     const data = req.body;
     const user = await User.findOne({
       id: data._id,
     });
-    console.log("user", user);
+    console.log("oneuser", user);
     if (!user) {
       return res.status(400).json({
         message: "User  NOt found",

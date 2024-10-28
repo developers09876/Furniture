@@ -25,7 +25,7 @@ router.post("/edit/:id", updateProduct);
 router.get("/order", getAllOrder);
 router.get("/getOrder/:productId", getOneOrder);
 router.post("/createorder", createOrder);
-router.post("/updateorder", updateOrder);
+router.post("/updateorder/:id", updateOrder);
 router.delete("/deleteorder/:id", deleteOrder);
 
 export default router;
