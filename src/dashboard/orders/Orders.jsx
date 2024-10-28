@@ -7,6 +7,7 @@ import { Col, Row } from "react-bootstrap";
 import axios from "axios";
 import { IoEyeOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
+import "../../Css-Pages/WallBackground.css";
 // styled components
 
 const data = [
