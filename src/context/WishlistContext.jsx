@@ -10,11 +10,15 @@ export const WishlistContext = createContext();
 export const WishlistProvider = ({ children }) => {
   console.log("children", children);
   const [wishlist, setWishlist] = useState({ id: "", user_id: "", items: [] });
-  const { isAuthenticated, userID } = useContext(AuthContext); // Use userID from AuthContext directly
+  const {
+    isAuthenticated,
+    // , userID
+  } = useContext(AuthContext); // Use userID from AuthContext directly
   const [total, setTotal] = useState(0);
+  const userID = localStorage.getItem("id");
+  console.log("ganesh", userID);
 
   console.log("wishlist", wishlist);
-  console.log("userid", userID);
 
   // Function to fetch the user's wishlist from the API
   // const fetchWishlist = async (userId) => {
