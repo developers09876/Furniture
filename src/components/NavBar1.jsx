@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { useContext, useState } from "react";
@@ -48,7 +49,6 @@ const DropMenuStyled = styled(Link)`
   width: max-content;
   // font-family: 'Times New Roman', Times, serif;
   pointer-events: none;
-   text-decoration: underline;
 
   //  &:hover {
   //   color: violet!important;
