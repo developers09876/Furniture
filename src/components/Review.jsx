@@ -1,80 +1,124 @@
-import React from "react";
-import { Card, Rate } from "antd";
-import { Container, Row, Col } from "react-bootstrap";
-// import AOS from 'aos';
-import "../Css-Pages/HomeCard.css";
+import { Carousel } from "react-bootstrap";
+import styled from "styled-components";
 
-const reviews = [
+
+const CarouselContainer = styled.div`
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%; 
+    transform: translateY(-50%); 
+    opacity: 0.8;
+  }
+
+  .carousel-control-prev {
+    left: 200px; 
+  }
+
+  .carousel-control-next {
+    right: 200px; 
+  }
+`;
+
+const contentStyle = {
+  width: "100%",
+  height: "500px",
+  color: "#000",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  fontSize: "1.5rem",
+  backgroundColor: "#white",
+  textAlign: "center",
+};
+
+const Title = styled.h2`
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  margin-left: 50px;
+  font-weight: unbold;
+  margin-bottom: 50px;
+`;
+
+const Description = styled.p`
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  max-width: 80%;
+  text-align: center;
+  justifyContent: center,
+ 
+`;
+
+const Position = styled.h4`
+  color: #AC5FC1;
+  font-size: 1.1rem;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  text-align: center;
+`;
+
+const AdditionalInfo = styled.p`
+  color: #555;
+  font-size: 1rem;
+  text-align: center;
+`;
+
+const testimonials = [
   {
-    id: 1,
-    name: "John",
-    content:
-      "The services provided by the officials was smooth and satisfactory.Products and goods delivered were up to satisfaction and compared to market price.",
-    rating: 4,
-    profilePic:
-      "https://img.freepik.com/premium-photo/stylish-man-flat-vector-profile-picture-ai-generated_606187-310.jpg",
-    bgImage:
-      "https://media.istockphoto.com/id/1398999936/vector/illustration-of-light-blue-dots-and-striped-circles-pattern-background.jpg?s=612x612&w=0&k=20&c=4277V1AOFLZoU4qsrM99_JrimDq5Cbg6Bxc7Fk7yUJY=",
+    title: "TESTIMONIALS",
+    description: "I’m a testimonial,Click to edit me and add text that says something nice about you and your services.",
+    position: "Marketing Director",
+    additionalInfo: "Rajan",
   },
   {
-    id: 2,
-    name: "Rajan",
-    content:
-      "Have become a regular customer in a very short span of time. Very approachable staff, service and delivery on time.Satisfied with products,Timely delivery.",
-    rating: 5,
-    profilePic:
-      "https://img.freepik.com/premium-photo/stylish-man-flat-vector-profile-picture-ai-generated_606187-310.jpg",
-    bgImage:
-      "https://media.istockphoto.com/id/1398999936/vector/illustration-of-light-blue-dots-and-striped-circles-pattern-background.jpg?s=612x612&w=0&k=20&c=4277V1AOFLZoU4qsrM99_JrimDq5Cbg6Bxc7Fk7yUJY=",
+    title: "TESTIMONIALS",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    position: "Product Manager",
+    additionalInfo: "Ajith",
   },
   {
-    id: 3,
-    name: "pooja",
-    content:
-      "We purchased so many products from durian and we would recommend Durian Furniture to everyone who needs quality and decent looking furniture.",
-    rating: 5,
-    profilePic:
-      "https://img.freepik.com/premium-photo/stylish-man-flat-vector-profile-picture-ai-generated_606187-310.jpg",
-    bgImage:
-      "https://media.istockphoto.com/id/1398999936/vector/illustration-of-light-blue-dots-and-striped-circles-pattern-background.jpg?s=612x612&w=0&k=20&c=4277V1AOFLZoU4qsrM99_JrimDq5Cbg6Bxc7Fk7yUJY=",
+    title: "TESTIMONIALS",
+    description: "Vivamus luctus urna sed urna ultricies ac tempor dui sagittis",
+    position: "CEO",
+    additionalInfo: "Gowtham",
+  },
+  {
+    title: "TESTIMONIALS",
+    description: "Pellentesque habitant morbi tristique senectus et netus et malesuada fames",
+    position: "Developer",
+    additionalInfo: "Ganesh",
   },
 ];
 
-// useEffect(() => {
-//   AOS.init({
-//     duration: 1000,
-//   });
-// }, []);
+const HomeHeader = () => (
+  <CarouselContainer>
+    <Carousel slide={true} interval={3000}>
+      {testimonials.map((testimonial, index) => (
+        <Carousel.Item key={index}>
+          <div style={contentStyle}>
+            <Title>{testimonial.title}</Title>
+            <Description>
+              {testimonial.description.split(",")[0]}
+              <br />
+              {testimonial.description.split(",")[1]}
+            </Description>
+            <Position>{testimonial.position}</Position>
+            <AdditionalInfo>{testimonial.additionalInfo}</AdditionalInfo>
+          </div>
+        </Carousel.Item>
+      ))}
+    </Carousel>
+  </CarouselContainer>
+);
 
-const ReviewCards = () => {
-  return (
-    <Container>
-      {/* data-aos="zoom-out"  */}
-      <Row className="g-4">
-        <h4 style={{ textAlign: "center", fontSize: "32px" }}>Testimonial</h4>
-        {reviews.map((review) => (
-          <Col lg={4} md={6} sm={12} key={review.id}>
-            <Card className="custom-card" hoverable>
-              <div className="profile-container">
-                <img
-                  src={review.profilePic}
-                  alt={review.name}
-                  className="profile-pic"
-                />
-              </div>
-              <h4>{review.name}</h4>
-              <p>{review.content}</p>
-              <Rate
-                className="custom-rate"
-                disabled
-                defaultValue={review.rating}
-              />
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
-  );
-};
-
-export default ReviewCards;
+export default HomeHeader;
