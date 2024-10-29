@@ -34,6 +34,23 @@ export const WishlistProvider = ({ children }) => {
   //   }
   // };
 
+  const updateWishlist = async (userId) => {
+    try {
+      if (isAuthenticated) {
+        const response = await axios.put(
+          `${import.meta.env.VITE_MY_API}wishlists?user_id=${userId}`
+        );
+        const fetchedWishlist = response.data[0];
+        setWishlist(fetchedWishlist);
+        setTotal(fetchedWishlist.items.length);
+      }
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+      setWishlist({ id: "", user_id: "", items: [] });
+      setTotal(0);
+    }
+  };
+
   // Function to add item to the wishlist
   const addToWishlist = async (item) => {
     console.log("itemwhislist", item);
@@ -150,3 +167,4 @@ export const WishlistProvider = ({ children }) => {
     </WishlistContext.Provider>
   );
 };
+
