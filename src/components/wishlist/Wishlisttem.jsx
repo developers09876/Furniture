@@ -1,33 +1,42 @@
-import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useContext } from 'react';
-import Button from '../Button';
-import { WishlistContext } from '../../context/WishlistContext';
-import { useNavigate } from 'react-router-dom';
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useContext } from "react";
+import Button from "../Button";
+import { WishlistContext } from "../../context/WishlistContext";
+import { useNavigate } from "react-router-dom";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 const WishlistItem = ({ id, image, title, price }) => {
-
-  const { removeItem } = useContext(WishlistContext)
-  const navigate = useNavigate()
+  const { removeItem } = useContext(WishlistContext);
+  const navigate = useNavigate();
 
   return (
-    <Wrapper className='row'>
+    <Wrapper className="row">
       <div className="title col-md-3 col-4 ">
-        <img src={image} alt={title} /> <br className='d-block d-md-none' />
-        <div style={{ width: '200px' }}>
+        <img src={image} alt={title} /> <br className="d-block d-md-none" />
+        <div style={{ width: "200px" }}>
           <h5 className="name">{title}</h5>
           {/* <h5 className="price d-block d-md-none">{price.toFixed(2)} MAD</h5> */}
         </div>
       </div>
-      <h5 className="price d-none d-md-block col">   <FaIndianRupeeSign />{price} </h5>
+      <h5 className="price d-none d-md-block col">
+        {" "}
+        <FaIndianRupeeSign />
+        {price}{" "}
+      </h5>
       <div className="addToCart d-md-block col">
-          <Button className="col-1 col-md w-75" handleClick={() => navigate(`/products/${id}`)}>
-            More Details
-          </Button>
+        <Button
+          className="col-1 col-md w-75"
+          handleClick={() => navigate(`/products/${id}`)}
+        >
+          More Details
+        </Button>
       </div>
-      <button className="remove-btn col-2 col-md-2" onClick={() => removeItem(id)}>
-        <FontAwesomeIcon className='text-danger' icon={faTrash} />
+      <button
+        className="remove-btn col-2 col-md-2"
+        onClick={() => removeItem(id)}
+      >
+        {/* <FontAwesomeIcon className='text-danger' icon={faTrash} /> */}
       </button>
     </Wrapper>
   );
@@ -52,7 +61,7 @@ const Wrapper = styled.article`
     width: 100%;
     height: 100%;
     display: block;
-    border-radius: ${props => props.theme.raduis};
+    border-radius: ${(props) => props.theme.raduis};
     object-fit: cover;
   }
 
@@ -63,7 +72,7 @@ const Wrapper = styled.article`
 
   .price {
     width: 110%;
-    color: ${props => props.theme.mainColorLight};
+    color: ${(props) => props.theme.mainColorLight};
   }
 
   .addToCart {
