@@ -8,13 +8,13 @@ export const WishlistContext = createContext();
 
 // Wishlist Provider component
 export const WishlistProvider = ({ children }) => {
-  console.log('children', children)
+  console.log("children", children);
   const [wishlist, setWishlist] = useState({ id: "", user_id: "", items: [] });
   const { isAuthenticated, userID } = useContext(AuthContext); // Use userID from AuthContext directly
   const [total, setTotal] = useState(0);
 
-  console.log("wishlist",wishlist);
-  console.log("userid",userID);
+  console.log("wishlist", wishlist);
+  console.log("userid", userID);
 
   // Function to fetch the user's wishlist from the API
   // const fetchWishlist = async (userId) => {
@@ -36,13 +36,11 @@ export const WishlistProvider = ({ children }) => {
 
   // Function to add item to the wishlist
   const addToWishlist = async (item) => {
-    console.log('itemwhislist', item)
+    console.log("itemwhislist", item);
     try {
       if (isAuthenticated) {
         const itemExists = wishlist.items.some(
-          (wishlistItem) => wishlistItem.id === item.
-          productId
-          
+          (wishlistItem) => wishlistItem.id === item.productId
         );
 
         if (itemExists) {
@@ -59,14 +57,14 @@ export const WishlistProvider = ({ children }) => {
             items: [...wishlist.items, { ...item }],
           };
 
-          // const response = await axios.put(
-          //   `${import.meta.env.VITE_MY_API}wishlists/${userID}`,
-          //   updatedWishlist
-          // );
-          // const fetchedWishlist = response.data;
-          // setWishlist(fetchedWishlist);
-          // setTotal(fetchedWishlist.items.length);
- setWishlist(updatedWishlist);
+          const response = await axios.put(
+            `${import.meta.env.VITE_MY_API}wishlists/${userID}`,
+            updatedWishlist
+          );
+          const fetchedWishlist = response.data;
+          setWishlist(fetchedWishlist);
+          setTotal(fetchedWishlist.items.length);
+          setWishlist(updatedWishlist);
           setTotal(updatedWishlist.items.length);
           Swal.fire({
             icon: "success",
