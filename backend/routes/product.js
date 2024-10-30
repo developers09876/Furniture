@@ -6,6 +6,7 @@ import {
   createProduct,
   getAllOrder,
   createOrder,
+  updateOrder,
   deleteOrder,
   getOneOrder,
   updateProduct,
@@ -24,7 +25,7 @@ router.post("/edit/:id", updateProduct);
 router.get("/order", getAllOrder);
 router.get("/getOrder/:productId", getOneOrder);
 router.post("/createorder", createOrder);
-// router.post('/create', upload.array('images', 5), createOrder);
+router.post("/updateorder/:id", updateOrder);
 router.delete("/deleteorder/:id", deleteOrder);
 
 export default router;

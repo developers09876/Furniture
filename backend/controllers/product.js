@@ -279,6 +279,27 @@ export const createOrder = async (req, res) => {
   }
 };
 
+export const updateOrder = async (req, res) => {
+  const orderId = req.params.id;
+  try {
+    const { order_status } = req.body;
+    const updateOrder = await order.findByIdAndUpdate(
+      orderId,
+      { order_status },
+      { new: true, runValidators: true } // Options to return updated document and run validators
+    );
+
+    if (!updateOrder) {
+      return res.status(404).json({ message: "Order not found" });
+    } else {
+      res.status(200).json(updateOrder); // Return the updated user data
+    }
+  } catch (error) {
+    console.error("Error updating Order:", error);
+    res.status(500).json({ message: "Server Error: " + error.message });
+  }
+};
+
 export const deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;

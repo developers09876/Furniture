@@ -87,6 +87,7 @@ const Products = () => {
     setQuery(query);
 
     let filtered = products;
+
     if (locationData) {
       filtered = products.filter(
         (product) => product.category === locationData
@@ -98,7 +99,6 @@ const Products = () => {
         product.title.toLowerCase().includes(query)
       );
     }
-
     setFilteredProducts(filtered);
   };
 

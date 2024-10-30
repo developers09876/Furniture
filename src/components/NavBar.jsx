@@ -9,8 +9,13 @@ import {
   faSearch,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { Avatar, Badge, Space } from "antd";
+
+import { DownOutlined } from "@ant-design/icons";
+
+import { Avatar, Badge, Space, Tooltip, Dropdown, Menu, Input } from "antd";
+
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { useContext, useEffect, useState } from "react";
@@ -20,17 +25,17 @@ import { WishlistContext } from "../context/WishlistContext";
 import NavBar1 from "./NavBar1";
 import NavBar2 from "./NavBar2";
 import { CgProfile } from "react-icons/cg";
-import { Input } from "antd"; // Ant Design Input
 import "./../Css-Pages/Navbr.css";
 import axios from "axios";
+import { SearchOutlined } from "@ant-design/icons";
 import { log } from "three/webgpu";
 import { DashboardContext } from "../context/DashboardContext";
+// import Products from "../pages/Products";
 
 // styles for links
 const StyledLink = styled(NavLink)`
   border-bottom: transparent solid 3px;
   transition: ${(props) => props.theme.transition};
-
   &:hover {
     border-bottom-color: var(--button-hover);
   }
@@ -52,102 +57,73 @@ const SearchIcon = styled(FontAwesomeIcon)`
 `;
 
 const NavBar = () => {
-  const { products, fetchData } = useContext(DashboardContext);
-
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
-  // const [products, setProducts] = useState([]);
-
-  const [filteredProducts, setFilteredProducts] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
   console.log("filteredProducts", filteredProducts);
-
+  const { products } = useContext(DashboardContext);
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
   const { totalItems } = useContext(CartContext);
   const { total } = useContext(WishlistContext);
 
   const [username, setUsername] = useState("");
 
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_MY_API}products/`
-      );
-
-      setProducts(response.data);
-      // const productFilter = locationData
-      //   ? response.data.filter((product) => product.category === locationData)
-      //   : response.data;
-
-      setFilteredProducts(productFilter);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
-
-  // Handle search input change
-  const handleSearch = (e) => {
-    const query = e.target.value.toLowerCase();
-    setQuery(query);
-
-    // let filtered = products;
-    // if (locationData) {
-    //   filtered = products.filter(
-    //     (product) => product.category === locationData
-    //   );
-    // }
-
-    if (query) {
-      const filtered = query.filter((product) =>
-        product.title.toLowerCase().includes(query)
-      );
-    }
-
-    setFilteredProducts(filtered);
-  };
-
-  const SearchContainer = styled.div`
-    width: 270px;
-    margin: 0 auto;
-    position: relative;
-    text-align: center;
-  `;
-
-  const StyledInput = styled.input`
-    padding: 0.5rem 1rem 0.5rem 3rem;
-    // outline: 1px solid transparent;
-    // outline: 1px solid var(--button-hover);
-    // border: 1px solid ${(props) => props.theme.borderColor};
-    border: 1px solid var(--button-hover);
-    border-radius: ${(props) => props.theme.radius};
-    margin-right: 10px;
-    width: 90%;
-    border-radius: 5px;
-
-    &:focus {
-      // outline: 1px solid ${(props) => props.theme.borderColor};
-      outline: 1px solid var(--button-hover);
-      border-radius: ${(props) => props.theme.radius};
-    }
-  `;
-
   const navIconItem = {
     width: "40px",
     height: "22px",
   };
 
-  const [search, setsearch] = useState("");
-
-  const handleChange = (e) => {
-    setsearch(e.target.value);
+  const handleSearch = (e) => {
+    if (e) {
+      const valuesfilt = products.filter((search) =>
+        search.category.toLowerCase().includes(query)
+      );
+      setFilteredProducts(valuesfilt);
+    }
   };
 
-  // useEffect(() => {
-  //   if (query !== "") {
-  //     fetch(`${import.meta.env.VITE_MY_API}products/${query}`).then((res) =>
-  //       res.json().then((res) => console.log("check1", res))
-  //     );
-  //   }
-  // });
+  const onSearchChange = (e) => {
+    const query = e.target.value;
+    setQuery(query);
+    handleSearch(query);
+  };
+
+  const menuItems = (filteredProducts) => (
+    <Menu>
+      {filteredProducts.length > 0 ? (
+        filteredProducts.map((product) => (
+          <Menu.Item key={product.id}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <img
+                src={product.images[0]}
+                alt={product.title}
+                style={{ width: 50, marginRight: 10 }}
+              />
+              <div>
+                <span style={{ fontWeight: "bold", color: "#008000" }}>
+                  {product.title}
+                </span>
+                <br />
+                <span>{product.category}</span>
+                <br />
+                <span style={{ textDecoration: "line-through", color: "gray" }}>
+                  ₹{product.price}
+                </span>
+                <span style={{ color: "red", fontWeight: "bold" }}>
+                  {" "}
+                  ₹{product.discountPrice}
+                </span>
+              </div>
+            </div>
+          </Menu.Item>
+        ))
+      ) : (
+        <Menu.Item disabled>
+          <span>No results found</span>
+        </Menu.Item>
+      )}
+    </Menu>
+  );
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("name");
@@ -157,7 +133,6 @@ const NavBar = () => {
       setUsername(formattedUsername);
     }
   }, [isAuthenticated]);
-
   return (
     <>
       <NavBar2 />
@@ -166,9 +141,6 @@ const NavBar = () => {
         style={{ backgroundColor: "var(--bgColor)" }}
       >
         <div className="container lg-d-flex justify-content-center">
-          {/* <Link className="navbar-brand me-auto" to="/">
-          <Logo fontSize={40} width={150} />
-        </Link> */}
           <h3 href="#" alt="Home" className="fw-bolder text-decoration-none">
             {/* <Logo fontSize={30} width={150} /> */}
             {/* Restopedic */}
@@ -179,23 +151,21 @@ const NavBar = () => {
             />
           </h3>
 
-          {/* <div style={{ marginLeft: "30px", flex: 1 }}>
-            <Input.Search
-              placeholder="Search products..."
-              onSearch={(value) => console.log(value)}
-              style={{ width: 250 }}
-            />
-          </div> */}
           <div>
-            <SearchContainer className="my-4" style={{ marginLeft: "10px" }}>
-              <StyledInput
-                type="text"
-                placeholder="Search products"
-                value={query}
-                onChange={handleSearch}
-              />
-              <SearchIcon icon={faSearch} className="text-muted" />
-            </SearchContainer>
+            <div>
+              <Dropdown
+                overlay={menuItems(filteredProducts)}
+                trigger={["click"]}
+                visible={query.length > 0}
+              >
+                <Input
+                  prefix={<SearchOutlined />}
+                  placeholder="Search products"
+                  style={{ width: 300 }}
+                  onChange={onSearchChange}
+                />
+              </Dropdown>
+            </div>
           </div>
           <button
             className="navbar-toggler"
@@ -210,29 +180,29 @@ const NavBar = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
-              <li className="nav-item m-2">
+              <li className="nav-item m-2 mx-3">
                 <StyledLink className="nav-link" to="/">
                   Home
                 </StyledLink>
               </li>
-              <li className="nav-item m-2">
+              <li className="nav-item m-2 mx-3">
                 <StyledLink className="nav-link" to="/about">
                   About
                 </StyledLink>
               </li>
-              <li className="nav-item m-2">
+              <li className="nav-item m-2 mx-3">
                 <StyledLink className="nav-link" to="/products ">
                   Products
                 </StyledLink>
               </li>
-              <li className="nav-item m-2">
+              <li className="nav-item m-2 mx-3">
                 <StyledLink className="nav-link" to="/contact">
                   Contact
                 </StyledLink>
               </li>
               <li>
                 {isAdmin && (
-                  <li className="nav-item m-2">
+                  <li className="nav-item m-2 mx-3">
                     <StyledLink className="nav-link" to="/admin">
                       Dashboard
                     </StyledLink>
@@ -247,7 +217,7 @@ const NavBar = () => {
                   </li>
                 )}
               </li>
-              <li className="nav-item ml-4 mt-3 pt-1">
+              <li className="nav-item ms-2  mt-3 pt-1">
                 <Link
                   to="/cart"
                   style={{ color: "#1D1D1D", textDecoration: "none" }}
@@ -262,7 +232,7 @@ const NavBar = () => {
                   {/* ({isAuthenticated ? totalItems : 0}) */}
                 </Link>
               </li>
-              <li className="nav-item ml-4 mt-3  pt-1">
+              <li className="nav-item ms-2 mt-3  pt-1">
                 <Link
                   to="/wishlist"
                   style={{ color: "#1D1D1D", textDecoration: "none" }}
@@ -278,21 +248,26 @@ const NavBar = () => {
                   </Badge>
                 </Link>
               </li>
-              <li className="nav-item m-2">
+              <li className="nav-item m-2  mt-3" style={{ cursor: "pointer" }}>
                 {!isAuthenticated ? (
-                  <Button
-                    className="ms-3  my-1"
-                    handleClick={() => navigate("/userlogin")}
-                  >
-                    Login <FontAwesomeIcon icon={faUserPlus} />
-                  </Button>
+                  <Tooltip title="Login">
+                    <FontAwesomeIcon
+                      className=" my-1"
+                      icon={faUserPlus}
+                      onClick={() => navigate("/userlogin")}
+                    />
+                  </Tooltip>
                 ) : (
-                  <Button className="ms-3" handleClick={logout}>
-                    Logout <FontAwesomeIcon icon={faRightFromBracket} />
-                  </Button>
+                  <Tooltip title="Logout">
+                    <FontAwesomeIcon
+                      className="my-1"
+                      icon={faRightFromBracket}
+                      onClick={logout}
+                    />
+                  </Tooltip>
                 )}
               </li>
-              <div>
+              {/* <div>
                 {isAuthenticated && username && (
                   <span
                     style={{
@@ -304,7 +279,7 @@ const NavBar = () => {
                     Hi, {username}
                   </span>
                 )}
-              </div>
+              </div> */}
             </ul>
           </div>
         </div>

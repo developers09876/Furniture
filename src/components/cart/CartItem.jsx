@@ -23,7 +23,7 @@ const CartItem = ({
         <img src={image} alt={title} /> <br className="d-block d-md-none" />
         <div style={{ width: "200px" }}>
           <h5 className="name">{title}</h5>
-          <h5 className="price d-block d-md-none">{price} MADG</h5>
+          {/* <h5 className="price d-block d-md-none">{price} MADG</h5> */}
         </div>
       </div>
       <h5 className="price d-none d-md-block col">

@@ -54,14 +54,12 @@ const SingleProductPage = () => {
     Array.isArray(product.specification) &&
     product.specification.length > 0
   ) {
-    console.log("meala", product.specification[0]);
   } else {
     console.log("Specification is not available");
   }
   const [selectedImage, setSelectedImage] = useState(null);
   // const [images, setImages] = useState([img1, img2, img3, Amenity, Amenity_ET]);
   const [images, setImages] = useState([]);
-  console.log("imagesz", images);
   const [show, setShow] = useState(false);
   const [showPic, setShowPic] = useState(false);
 
@@ -83,6 +81,7 @@ const SingleProductPage = () => {
         );
         setProduct(response.data);
         setImages(response.data.images);
+
         setSelectedImage(response.data.images[0]);
       } catch (error) {
         console.error("Error fetching product details:", error);
@@ -243,7 +242,7 @@ const SingleProductPage = () => {
   const { addToWishlist } = useContext(WishlistContext);
   const { isAuthenticated } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  console.log("addToWishlist", addToWishlist);
   const navigate = useNavigate();
   const handleImageClick = (image) => {
     setSelectedImage(image);
@@ -268,7 +267,7 @@ const SingleProductPage = () => {
   }
 
   const {
-    id,
+    productId,
     // images,
     title,
     price,
@@ -452,7 +451,7 @@ const SingleProductPage = () => {
                 <Button
                   handleClick={() =>
                     addToCart({
-                      id,
+                      productId,
                       images,
                       title,
                       price,
@@ -470,7 +469,17 @@ const SingleProductPage = () => {
                 </Button>
               )}
               <Button
-                handleClick={() => addToWishlist({ id, image, title, price })}
+                handleClick={() =>
+                  addToWishlist({
+                    productId,
+                    images,
+                    title,
+                    price,
+                    quantity_stock,
+                    quantity,
+                    subTotal,
+                  })
+                }
               >
                 <FontAwesomeIcon icon={faHeart} />
               </Button>

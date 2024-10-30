@@ -38,3 +38,11 @@
 .address-detail {
   margin-bottom: 8px !important;
 }
+
+.eLVJKp:before {
+  background: rgb(179 156 193) !important;
+}
+
+:where(.css-dev-only-do-not-override-11lehqq) a:hover {
+  color: beige !important;
+}

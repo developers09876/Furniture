@@ -5,13 +5,18 @@ import { WishlistContext } from "../../context/WishlistContext"
 const WishlistContent = () => {
 
   const {wishlist} = useContext(WishlistContext)
-  console.log(wishlist.items);
+  console.log("wishlistzzzz",wishlist.items);
   return (
     <>
       {
         wishlist.items.map(item => {
           return (
-            <WishlistItem key={item.id} id={item.id} image={item.image} title={item.title} price={item.price} />
+            <WishlistItem  key={item.id}
+            id={item.id}
+            image={item.images[0]}
+            title={item.title}
+            price={item.price}
+            quantity={item.quantity} />
           )
         })
       }

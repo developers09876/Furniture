@@ -1,5 +1,5 @@
 import { User } from "../models/user.js";
-// import { whistlists } from "../models/whistlist.js";
+import { whistlist } from "../models/whistlist.js";
 
 import {
   hashPassword,
@@ -148,24 +148,28 @@ export const deleteUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
+  console.log("Request Body:", req.body);
   try {
     const { id } = req.params;
+    console.log("User", id);
     const { username, phoneNumber } = req.body;
-    const users = await User.findById(id);
 
-    if (!users) {
+    // Update user document
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { username: username, phoneNumber: phoneNumber }, // Ensure this matches your schema
+      { new: true, runValidators: true } // Options to return updated document and run validators
+    );
+
+    // console.log("Updated User:", updatedUser); // Log the updated user
+
+    if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
+    } else {
+      res.status(200).json(updatedUser); // Return the updated user data
     }
-
-    if (username) users.username = username;
-    if (phoneNumber) users.phoneNumber = phoneNumber;
-    const updatedCategory = await users.save();
-    res.status(200).json(updatedCategory);
   } catch (error) {
-    if (error.kind === "ObjectId") {
-      return res.status(400).json({ message: "Invalid User ID" });
-    }
-
+    console.error("Error updating user:", error);
     res.status(500).json({ message: "Server Error: " + error.message });
   }
 };
@@ -231,6 +235,7 @@ export async function enquiryUser(req, res, next) {
 export async function resetUsers(req, res) {
   try {
     const data = req.body;
+    console.log("data", data);
     const existUser = await User.findOne({ email: data.email });
     console.log("existUser", existUser);
     if (!existUser) {
@@ -253,53 +258,45 @@ export async function resetUsers(req, res) {
     });
   }
 }
+// get User by Id
+
+export async function getOneUser(req, res) {
+  console.log("reqa", req);
+  try {
+    const data = req.body;
+    const user = await User.findOne({
+      id: data._id,
+    });
+    console.log("oneuser", user);
+    if (!user) {
+      return res.status(400).json({
+        message: "User  NOt found",
+        status: "Failed",
+      });
+    }
+
+    return res.status(200).json({
+      message: "User found",
+      data: user,
+      status: "Successful",
+    });
+  } catch (err) {
+    console.error("Error during login:", err);
+  }
+}
 
 //whistlist
 
-// export const whistlistUser = async (req, res) => {
-//   try {
-//     const newWhistlist = new whistlists(req.body);
-//     console.log("first", newWhistlist);
-//     const savedWhistlist = await newWhistlist.save();
-//     res.status(200).json(savedWhistlist);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-// export const updateWishlist = async (req, res) => {
-//   try {
-//     const { id } = req.params; // Extract the wishlist ID from the URL params
-
-//     // Validate the request body (optional but recommended)
-//     if (!req.body || Object.keys(req.body).length === 0) {
-//       return res.status(400).json({ message: "Invalid request. Data is missing." });
-//     }
-
-//     // Find the wishlist by ID and update it with new data from the request body
-//     const updatedWishlist = await whistlists.findByIdAndUpdate(id, req.body, {
-//       new: true, // Return the updated document
-//       runValidators: true, // Ensure the update respects the schema validation
-//     });
-
-//     // If the wishlist with the given ID was not found
-//     if (!updatedWishlist) {
-//       return res.status(404).json({ message: "Wishlist not found" });
-//     }
-
-//     // Return the updated wishlist as a successful response
-//     res.status(200).json(updatedWishlist);
-//   } catch (error) {
-//     console.error("Error updating wishlist:", error.message);
-
-//     // Return a 500 status with the error message
-//     res.status(500).json({ message: "Failed to update wishlist. " + error.message });
-//   }
-// };
-
-
-
-
+export const whistlistUser = async (req, res) => {
+  try {
+    const newWhistlist = new whistlist(req.body);
+    console.log("first", newWhistlist);
+    const savedWhistlist = await newWhistlist.save();
+    res.status(200).json(savedWhistlist);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 // Assuming you already have hashPassword defined somewhere in your project
 export async function resetUser(req, res) {
   try {

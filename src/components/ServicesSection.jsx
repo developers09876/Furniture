@@ -4,8 +4,8 @@ import styled from "styled-components";
 
 const ServicesSection = () => {
   return (
-    <SectionWrapper className="py-4 my-5">
-      <h4 className="text-center mb-5" style={{ fontSize: "32px" }}>
+    <SectionWrapper className="py-4 my-2">
+      <h4 className="text-center" style={{ fontSize: "32px" }}>
         Our Services
       </h4>
       <ServiceContainer className="container">
@@ -63,12 +63,13 @@ const ServiceIcon = styled(FontAwesomeIcon)`
 `;
 
 const ServiceTitle = styled.h3`
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin-bottom: 15px;
   color: ${(props) => props.theme.headingColor};
 `;
 
 const ServiceDescription = styled.p`
+  font-size: 0.9rem;
   color: ${(props) => props.theme.textColor};
 `;
 

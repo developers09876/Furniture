@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { useContext, useState } from "react";
@@ -13,7 +14,7 @@ import Underline from "./Underline";
 
 const StyledLink = styled(NavLink)`
   // border-bottom: transparent solid 3px;
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 7px 7px 0px 0px;
   transition: ${(props) => props.theme.transition};
   color: black;
@@ -24,10 +25,11 @@ const StyledLink = styled(NavLink)`
     background-color: rgb(171, 133, 189);
     color: white !important ;
     padding: 8px !important;
+    &:active {
+      // background-color: rgb(171, 133, 189);
+      // background-color: black;
+    }
   }
-  // &.active {
-  //   border-bottom-color: var(--button-hover);
-  // }
 
   @media (max-width: 991.98px) {
     /* Medium screens and below */
@@ -41,13 +43,12 @@ const StyledLink = styled(NavLink)`
 
 const DropMenuStyled = styled(Link)`
   color: var(--heading-clr) !important;
-  font-size: 15px !important;
+  font-size: 13px !important;
   font-weight: Bold;
   font-size: large;
   width: max-content;
   // font-family: 'Times New Roman', Times, serif;
   pointer-events: none;
-   text-decoration: underline;
 
   //  &:hover {
   //   color: violet!important;

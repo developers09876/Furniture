@@ -1,10 +1,8 @@
 // font awesome icons
 import {
   faFacebookF,
-  faGithub,
   faInstagram,
-  faLinkedin,
-  faTwitter,
+  faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 import {
   faEnvelope,
@@ -58,7 +56,7 @@ const SectionWrapper = styled.section`
 const Footer = () => {
   return (
     <>
-      <footer className="text-center text-lg-start  text-muted " style={{}}>
+      <footer className="text-center text-lg-start  text-muted ">
         <SectionWrapper>
           <SocialMediaSection className="d-flex justify-content-center justify-content-lg-between px-4 py-3 border-bottom">
             <div className="me-5 d-none d-lg-block">
@@ -68,26 +66,21 @@ const Footer = () => {
               <SocialMediaLink href="#" className="me-4 text-reset">
                 <FontAwesomeIcon icon={faFacebookF} />
               </SocialMediaLink>
-              <SocialMediaLink href="#" className="me-4 text-reset">
-                <FontAwesomeIcon icon={faTwitter} />
-              </SocialMediaLink>
-              <SocialMediaLink href="#" className="me-4 text-reset">
-                <FontAwesomeIcon icon={faLinkedin} />
-              </SocialMediaLink>
+
               <SocialMediaLink href="#" className="me-4 text-reset">
                 <FontAwesomeIcon icon={faInstagram} />
               </SocialMediaLink>
               <SocialMediaLink href="#" className="me-4 text-reset">
-                <FontAwesomeIcon icon={faGithub} />
+                <FontAwesomeIcon icon={faYoutube} />
               </SocialMediaLink>
             </div>
           </SocialMediaSection>
 
-          <div className="container text-center text-md-start mt-3">
+          <div className="container text-center text-md-start ">
             <div className="row">
               <CompanyOverview />
 
-              <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mt-4">
+              <div className="col-md-2 col-xl-2 mx-auto mt-4">
                 <FooterHeading className="text-uppercase fw-bold mb-2">
                   Pages
                 </FooterHeading>
@@ -117,7 +110,7 @@ const Footer = () => {
                 </p>
               </div>
 
-              <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-4">
+              <div className="col-md-2  col-xl-2 mx-auto mt-4">
                 <FooterHeading className="text-uppercase fw-bold mb-2">
                   Company
                 </FooterHeading>
@@ -139,7 +132,7 @@ const Footer = () => {
                 </p>
               </div>
 
-              <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mt-4 text-center text-md-start">
+              <div className="col-md-4 col-xl-3 mx-auto mb-md-0 mt-4 text-center text-md-start">
                 <FooterHeading className="text-uppercase fw-bold mb-2">
                   Contact
                 </FooterHeading>
@@ -155,22 +148,16 @@ const Footer = () => {
                   />
                   <div class="address">
                     <p className="address-detail">
-                      Register Office , Manufactur & Packer
-                    </p>
-                    <p className="address-detail">
-                      #192 , Sy no 124 , halagevaderahalli
-                    </p>
-
-                    <p className="address-detail">
-                      Bangaluru , &nbsp; Karnataka
+                      Register Office , Manufactur & Packer ,<br /> #192 , Sy no
+                      124 , halagevaderahalli , <br />
+                      Bangaluru , &nbsp; Karnataka <br /> India.
                     </p>
 
-                    <p className="address-detail">India</p>
                     <p className="d-flex align-items-center justify-content-center justify-content-md-start">
                       <FontAwesomeIcon
                         icon={faPhone}
-                        className="me-2"
-                        style={{ fontSize: "17px" }}
+                        // className="me-2"
+                        // style={{ fontSize: "17px" }}
                       />{" "}
                       +91 910 855 9999
                     </p>
@@ -179,10 +166,10 @@ const Footer = () => {
                 <p className="d-flex align-items-center justify-content-center justify-content-md-start">
                   <FontAwesomeIcon
                     icon={faEnvelope}
-                    className="me-2"
-                    style={{ fontSize: "17px" }}
+                    // className="me-2"
+                    // style={{ fontSize: "17px" }}
                   />
-                  <small>restonindia@gmail.com</small>
+                  &nbsp; restonindia@gmail.com
                 </p>
               </div>
             </div>

@@ -5,7 +5,7 @@ import "../CSS-Pages/HomeCard.css";
 import { NavLink } from "react-router-dom";
 const contentStyle = {
   width: "100%",
-  height: "470px",
+  height: "430px",
   color: "#fff",
   lineHeight: "3000px",
   textAlign: "center",

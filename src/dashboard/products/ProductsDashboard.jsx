@@ -24,6 +24,28 @@ const ProductDashboard = () => {
 
   // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
   const { users, orders, products, fetchData } = useContext(DashboardContext);
+  const deleteRecordFromAPI = async (id) => {
+    try {
+       await axios.delete(
+        `${import.meta.env.VITE_MY_API}products/delete/${id}`
+      ).then(()=>{
+        fetchUsersData();
+
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "User has been deleted successfully.",
+        });
+      })      
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "There was an error deleting the product. Please try again.",
+      });
+    }
+  };
 
   const columns = [
     {
@@ -131,30 +153,6 @@ const ProductDashboard = () => {
     });
   };
 
-  const deleteRecordFromAPI = async (id) => {
-    console.log("id", id);
-    try {
-      const response = await axios.delete(
-        `${import.meta.env.VITE_MY_API}products/delete/${id}`
-      );
-
-      if (response.status === 200) {
-        fetchData();
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: `Product has been deleted successfully.`,
-        });
-      }
-    } catch (error) {
-      console.error("Error deleting record:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "There was an error deleting the Product. Please try again.",
-      });
-    }
-  };
 
   return (
     <StyledProducts>
