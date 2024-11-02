@@ -320,3 +320,25 @@ hr {
 .homeCarousel {
   margin-top: 10px !important;
 }
+
+/*product details img css/*
+/* Basic styling for album thumbnails */
+.image-album .album-thumbnail {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Hover effect */
+.image-album .album-thumbnail:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+
+/* Styling for active thumbnail */
+.image-album .album-thumbnail.active {
+  border: 2px solid #007bff;
+  transform: scale(1.05);
+
+}
