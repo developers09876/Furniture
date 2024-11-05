@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 import { FaIndianRupeeSign } from "react-icons/fa6";
+import axios from "axios";
 const CartItem = ({
   id,
   image,
@@ -16,6 +17,31 @@ const CartItem = ({
   selectedDimension,
 }) => {
   const { removeItem } = useContext(CartContext);
+  // useEffect(() => {
+  //   axios.get(`${import.meta.env.VITE_MY_APP}user/`);
+  //   setGetCart(response.data);
+  //   alert("hi");
+  // });
+
+  const [cartData, setCartData] = useState([]);
+  console.log("firstcartDataX", cartData);
+
+  useEffect(() => {
+    const userId = localStorage.getItem("id");
+    const fetchCartData = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_MY_APP}user/getCart/${userId}`
+        );
+        setCartData(response.data); // Set the fetched cart data to state
+        console.log("Cartdata:", response.data);
+      } catch (error) {
+        console.error("Error fetching cart data:", error);
+      }
+    };
+
+    fetchCartData(); // Call the function to fetch data
+  }, [id]);
 
   return (
     <Wrapper className="row">

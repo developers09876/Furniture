@@ -4,6 +4,8 @@ import {
   registerUser,
   loginUser,
   createCart,
+  getCart,
+  createWhishlist,
   getOneUser,
   getAllUser,
   deleteUser,
@@ -26,6 +28,9 @@ router.post("/update/:id", updateUser);
 router.put("/resetUser", resetUser);
 router.post("/resetUsers", resetUsers);
 router.post("/createCart", createCart);
+router.post("/createWhishlist", createWhishlist);
+router.get("/getCard/:userId", getCart);
 router.delete("/delete/:id", deleteUser);
+// router.post("/addtocard/:id" , addToCard )
 // router.post("/whistlist", whistlistUser);
 export default router;

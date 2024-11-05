@@ -14,7 +14,6 @@ export const CartProvider = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
   const [total, setTotal] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
-
   // Function to fetch the user's cart from the API
   // const fetchCart = async (userId) => {
   //   try {
@@ -32,18 +31,65 @@ export const CartProvider = ({ children }) => {
   // };
 
   // Function to add item to the cart
+
+  // const addToCart = async (item) => {
+  //   try {
+  //     if (isAuthenticated) {
+  //       const updatedCart = {
+  //         ...cart,
+  //         items: [...cart.items, { ...item }],
+  //       };
+  //       const response = await axios.put(
+  //         `${import.meta.env.VITE_MY_API}carts/${userID}`,
+  //         updatedCart
+  //       );
+  //       const fetchedCart = response.data;
+  //       setCart(updatedCart);
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Item added to cart",
+  //         showConfirmButton: false,
+  //         timer: 1500,
+  //       });
+  //     } else {
+  //       console.error("User cart is not available");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding item to cart:", error);
+  //   }
+  // };
+
   const addToCart = async (item) => {
+    const userID = localStorage.getItem("id");
+
     try {
       if (isAuthenticated) {
-        const updatedCart = {
-          ...cart,
-          items: [...cart.items, { ...item }],
-        };
-        console.log("firstcart", cart);
-        console.log("updatedCart", updatedCart);
-        // const response = await axios.put(`http://localhost:3000/carts/${userID}`, updatedCart);
-        // const fetchedCart = response.data;
-        setCart(updatedCart);
+        const response = await axios.post(
+          `${import.meta.env.VITE_MY_API}user/createCart`,
+          {
+            id: userID,
+            cartItem: {
+              productId: item.productId,
+              images: item.images,
+              title: item.title,
+              price: item.price,
+              quantity_stock: item.quantity_stock,
+              quantity: item.quantity,
+              subTotal: item.subTotal,
+              unit: item.unit,
+              category: item.category,
+              selectedDimension: item.selectedDimension,
+              thickness: item.thickness,
+            },
+          }
+        );
+
+        const fetchedCart = response.data.user.Carts;
+        setCart((prevCart) => ({
+          ...prevCart,
+          items: fetchedCart,
+        }));
+
         Swal.fire({
           icon: "success",
           title: "Item added to cart",

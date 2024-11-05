@@ -100,24 +100,84 @@ export const loginUser = async (req, res) => {
   }
 };
 
+// export const createCart = async (req, res) => {
+//   try {
+//     const { id, cartItem } = req.body; // Expect email and cartItem in the request body
+
+//     // Find the user by email (or you can use another unique identifier)
+//     const user = await User.findOne({ id });
+
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     user.Carts.push(cartItem);
+
+//     await user.save();
+
+//     res.status(200).json({ message: "Cart updated successfully", user });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error updating cart", error });
+//   }
+// };
+
 export const createCart = async (req, res) => {
   try {
-    const { id, cartItem } = req.body; // Expect email and cartItem in the request body
+    const { id, cartItem } = req.body; // id from the request body
+    console.log("caetItem", cartItem);
 
-    // Find the user by email (or you can use another unique identifier)
-    const user = await User.findOne({ id });
+    // Search by _id if you're using MongoDB's default unique identifier
+    const user = await User.findById(id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Add the item to the cart array
     user.Carts.push(cartItem);
-
     await user.save();
 
     res.status(200).json({ message: "Cart updated successfully", user });
   } catch (error) {
     res.status(500).json({ message: "Error updating cart", error });
+  }
+};
+export const createWhishlist = async (req, res) => {
+  try {
+    const { id, whistItem } = req.body; // id from the request body
+
+    // Search by _id if you're using MongoDB's default unique identifier
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "Whishlist not found" });
+    }
+
+    // Add the item to the cart array
+    user.Whishlist.push(whistItem);
+    await user.save();
+
+    res.status(200).json({ message: "Whishlist updated successfully", user });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating Whishlist", error });
+  }
+};
+export const getCart = async (req, res) => {
+  try {
+    const { id } = req.params; // Extract userId from request parameters
+
+    // Find the user by their ID and get their cart
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Cart retrieved successfully", cart: user.Carts });
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving cart", error });
   }
 };
 
@@ -185,7 +245,7 @@ export async function enquiryUser(req, res, next) {
       email: data.email,
       message: data.message,
     };
-    console.log("details", details);
+    console.log("details", details.email);
     console.log("process.env.EMAIL", process.env.EMAIL);
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -198,10 +258,11 @@ export async function enquiryUser(req, res, next) {
     });
 
     const mailOptions = {
-      from: process.env.EMAIL,
-      to: "ganeshgm3113@gmail.com",
-      // to: ${details.email},
-      subject: "Furniture Enquiry",
+      // from: `${details.email}`,
+      from: "ganeshgm3113@gmil.com",
+      to: process.env.EMAIL,
+
+      subject: "Restropedic Mattress",
       html: `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
       <h2 style="color: #007bff;">New Enquiry</h2>
@@ -210,10 +271,11 @@ export async function enquiryUser(req, res, next) {
       <p><strong>Message:</strong> ${details.message}</p>
       <hr style="border: 1px solid #ddd;" />
       <p>Thank you for reaching out to us!</p>
-      <p style="color: #007bff;">Furniture Team</p>
+      <p style="color: #007bff;">Restropedic Team</p>
     </div>
   `,
     };
+    console.log("emailx", details.email);
 
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent: " + info.response);
@@ -229,7 +291,6 @@ export async function enquiryUser(req, res, next) {
     });
   }
 }
-
 // reset password
 
 export async function resetUsers(req, res) {

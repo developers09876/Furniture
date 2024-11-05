@@ -12,72 +12,165 @@ export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState({ id: "", user_id: "", items: [] });
   const { isAuthenticated, userID } = useContext(AuthContext); // Use userID from AuthContext directly
   const [total, setTotal] = useState(0);
-
+  const [Whistlist, setWhistlist] = useState();
   console.log("wishlist", wishlist);
-  console.log("userid", userID);
 
   // Function to fetch the user's wishlist from the API
-  // const fetchWishlist = async (userId) => {
+  const fetchWishlist = async (userId) => {
+    try {
+      if (isAuthenticated) {
+        const response = await axios.get(
+          `${import.meta.env.VITE_MY_API}wishlists?user_id=${userId}`
+        );
+        const fetchedWishlist = response.data[0];
+        setWishlist(fetchedWishlist);
+        setTotal(fetchedWishlist.items.length);
+      }
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+      setWishlist({ id: "", user_id: "", items: [] });
+      setTotal(0);
+    }
+  };
+
+  // Function to add item to the wishlist
+  // const addToWishlist = async (item) => {
+  //   console.log("Adding to wishlist:", item);
+
+  //   if (!isAuthenticated) {
+  //     console.error("User is not authenticated");
+  //     return;
+  //   }
+
   //   try {
-  //     if (isAuthenticated) {
-  //       const response = await axios.get(
-  //         `${import.meta.env.VITE_MY_API}wishlists?user_id=${userId}`
-  //       );
-  //       const fetchedWishlist = response.data[0];
-  //       setWishlist(fetchedWishlist);
-  //       setTotal(fetchedWishlist.items.length);
+  //     const itemExists = wishlist.items.some(
+  //       (wishlistItem) => wishlistItem.productId === item.productId
+  //     );
+
+  //     if (itemExists) {
+  //       Swal.fire({
+  //         icon: "info",
+  //         title: "Item already in wishlist",
+  //         showConfirmButton: false,
+  //         timer: 1500,
+  //       });
+  //       return;
   //     }
+
+  //     const updatedWishlist = {
+  //       ...wishlist,
+  //       user_id: userID,
+  //       items: [...wishlist.items, item],
+  //     };
+  //     // const userID = localStorage.getItem("id");
+  //     const response = await axios.put(
+  //       `${import.meta.env.VITE_MY_API}user/wishlists/${userID}`,
+  //       updatedWishlist
+  //     );
+
+  //     setWishlist(updatedWishlist);
+  //     setTotal(updatedWishlist.items.length);
+
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "Item added to wishlist",
+  //       showConfirmButton: false,
+  //       timer: 1500,
+  //     });
   //   } catch (error) {
-  //     console.error("Error fetching wishlist:", error);
-  //     setWishlist({ id: "", user_id: "", items: [] });
-  //     setTotal(0);
+  //     console.error("Error adding item to wishlist:", error.message || error);
+  //   }
+  // };
+  // const addToWishlist = async (item) => {
+  //   console.log("Adding to wishlist:", item);
+
+  //   if (!isAuthenticated) {
+  //     console.error("User is not authenticated");
+  //     return;
+  //   }
+
+  //   try {
+  //     const itemExists = wishlist.items.some(
+  //       (wishlistItem) => wishlistItem.productId === item.productId
+  //     );
+
+  //     if (itemExists) {
+  //       Swal.fire({
+  //         icon: "info",
+  //         title: "Item already in wishlist",
+  //         showConfirmButton: false,
+  //         timer: 1500,
+  //       });
+  //       return;
+  //     }
+
+  //     const updatedWishlist = {
+  //       ...wishlist,
+  //       user_id: userID,
+  //       items: [...wishlist.items, item],
+  //     };
+
+  //     const response = await axios.put(
+  //       `${import.meta.env.VITE_MY_API}user/wishlists/${userID}`,
+  //       updatedWishlist
+  //     );
+
+  //     setWishlist(updatedWishlist);
+  //     setTotal(updatedWishlist.items.length);
+
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "Item added to wishlist",
+  //       showConfirmButton: false,
+  //       timer: 1500,
+  //     });
+  //   } catch (error) {
+  //     console.error("Error adding item to wishlist:", error.message || error);
   //   }
   // };
 
-  // Function to add item to the wishlist
   const addToWishlist = async (item) => {
-    console.log("itemwhislist", item);
+    const userID = localStorage.getItem("id");
+
     try {
       if (isAuthenticated) {
-        const itemExists = wishlist.items.some(
-          (wishlistItem) => wishlistItem.id === item.productId
+        const response = await axios.post(
+          `${import.meta.env.VITE_MY_API}user/createWhishlist`,
+          {
+            id: userID,
+            whistItem: {
+              productId: item.productId,
+              images: item.images,
+              title: item.title,
+              price: item.price,
+              quantity_stock: item.quantity_stock,
+              quantity: item.quantity,
+              subTotal: item.subTotal,
+              unit: item.unit,
+              category: item.category,
+              selectedDimension: item.selectedDimension,
+              thickness: item.thickness,
+            },
+          }
         );
 
-        if (itemExists) {
-          Swal.fire({
-            icon: "info",
-            title: "Item already in wishlist",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        } else {
-          const updatedWishlist = {
-            ...wishlist,
-            user_id: userID,
-            items: [...wishlist.items, { ...item }],
-          };
+        const fetchedCart = response.data.user.Carts;
+        setWhistlist((prevCart) => ({
+          ...prevCart,
+          items: fetchedCart,
+        }));
 
-          // const response = await axios.put(
-          //   `${import.meta.env.VITE_MY_API}wishlists/${userID}`,
-          //   updatedWishlist
-          // );
-          // const fetchedWishlist = response.data;
-          // setWishlist(fetchedWishlist);
-          // setTotal(fetchedWishlist.items.length);
-          setWishlist(updatedWishlist);
-          setTotal(updatedWishlist.items.length);
-          Swal.fire({
-            icon: "success",
-            title: "Item added to wishlist",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
+        Swal.fire({
+          icon: "success",
+          title: "Item added to Whishlist",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       } else {
-        console.error("User wishlist is not available");
+        console.error("User Whishlist is not available");
       }
     } catch (error) {
-      console.error("Error adding item to wishlist:", error);
+      console.error("Error adding item to Whishlist:", error);
     }
   };
 
@@ -144,7 +237,13 @@ export const WishlistProvider = ({ children }) => {
 
   return (
     <WishlistContext.Provider
-      value={{ wishlist, total, addToWishlist, clearWishlist, removeItem }}
+      value={{
+        // wishlist,
+        total,
+        addToWishlist,
+        clearWishlist,
+        removeItem,
+      }}
     >
       {children}
     </WishlistContext.Provider>
