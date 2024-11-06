@@ -23,26 +23,6 @@ const CartItem = ({
   //   alert("hi");
   // });
 
-  const [cartData, setCartData] = useState([]);
-  console.log("firstcartDataX", cartData);
-
-  useEffect(() => {
-    const userId = localStorage.getItem("id");
-    const fetchCartData = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_MY_APP}user/getCart/${userId}`
-        );
-        setCartData(response.data); // Set the fetched cart data to state
-        console.log("Cartdata:", response.data);
-      } catch (error) {
-        console.error("Error fetching cart data:", error);
-      }
-    };
-
-    fetchCartData(); // Call the function to fetch data
-  }, [id]);
-
   return (
     <Wrapper className="row">
       <div className="title col-md-3 col-4 ">

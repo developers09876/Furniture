@@ -162,20 +162,40 @@ export const createWhishlist = async (req, res) => {
     res.status(500).json({ message: "Error updating Whishlist", error });
   }
 };
+// export const getCart = async (req, res) => {
+//   try {
+//     const { id } = req.params; // Extract userId from request parameters
+
+//     // Find the user by their ID and get their cart
+//     const user = await User.findById(id);
+
+//     if (!user) {
+//       return res.status(404).json({ message: "Cart not found" });
+//     }
+
+//     res
+//       .status(200)
+//       .json({ message: "Cart retrieved successfully", cart: user.Carts });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error retrieving cart", error });
+//   }
+// };
+
 export const getCart = async (req, res) => {
   try {
-    const { id } = req.params; // Extract userId from request parameters
-
-    // Find the user by their ID and get their cart
+    const { id } = req.params; // Extract user ID from request parameters
+    console.log("firstz", id);
+    // Find the user by their ID and retrieve the cart
     const user = await User.findById(id);
 
     if (!user) {
-      return res.status(404).json({ message: "Cart not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
+    // Send the cart data back to the client
     res
       .status(200)
-      .json({ message: "Cart retrieved successfully", cart: user.Carts });
+      .json({ message: "Cart retrieved successfully", items: user.Carts });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving cart", error });
   }

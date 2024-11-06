@@ -9,6 +9,7 @@ import { FaIndianRupeeSign } from "react-icons/fa6";
 const WishlistItem = ({ id, image, title, price }) => {
   const { removeItem } = useContext(WishlistContext);
   const navigate = useNavigate();
+  const title1 = { ganesh };
 
   return (
     <Wrapper className="row">
@@ -22,7 +23,7 @@ const WishlistItem = ({ id, image, title, price }) => {
       <h5 className="price d-none d-md-block col">
         {" "}
         <FaIndianRupeeSign />
-        {price}{" "}
+        {title1}{" "}
       </h5>
       <div className="addToCart d-md-block col">
         <Button

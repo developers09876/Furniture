@@ -63,10 +63,20 @@ const NavBar = () => {
   console.log("filteredProducts", filteredProducts);
   const { products } = useContext(DashboardContext);
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
-  const { totalItems } = useContext(CartContext);
   const { total } = useContext(WishlistContext);
+  const { cartdata } = useContext(DashboardContext);
+  const [totalItems, setTotalItems] = useState("");
 
   const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const totalItems = cartdata.items.reduce((sum, item) => {
+      return sum + Number(item.quantity);
+    }, 0);
+    console.log("totalItems", totalItems);
+
+    setTotalItems(totalItems);
+  }, [cartdata]);
 
   const navIconItem = {
     width: "40px",

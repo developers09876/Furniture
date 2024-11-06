@@ -399,10 +399,8 @@ const SingleProductPage = () => {
               <h6>Category : {category}</h6>
             </span>
           </p>
-          <h5 className="price me-2 d-inline">₹{price}</h5>
-          {discountPrice && (
-            <h6 className="old-price d-inline">₹{discountPrice} </h6>
-          )}
+          <h5 className="price me-2 d-inline">₹{discountPrice}</h5>
+          {discountPrice && <h6 className="old-price d-inline">₹{price} </h6>}
           {/* <p className="desc my-1">{description}</p> */}
           <div className="info ">
             <p>

@@ -29,7 +29,7 @@ router.put("/resetUser", resetUser);
 router.post("/resetUsers", resetUsers);
 router.post("/createCart", createCart);
 router.post("/createWhishlist", createWhishlist);
-router.get("/getCard/:userId", getCart);
+router.get("/getCart/:id", getCart);
 router.delete("/delete/:id", deleteUser);
 // router.post("/addtocard/:id" , addToCard )
 // router.post("/whistlist", whistlistUser);
