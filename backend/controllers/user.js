@@ -10,6 +10,7 @@ import { HTTP_RESPONSE } from "../utils/config.js";
 import nodemailer from "nodemailer";
 
 import { google } from "googleapis";
+import { message } from "antd";
 // create user without password=============================
 const createUserWithoutPass = async (user) => {
   const newUser = {
@@ -142,6 +143,48 @@ export const createCart = async (req, res) => {
     res.status(500).json({ message: "Error updating cart", error });
   }
 };
+
+export const deleteCartItem = async (req, res) => {
+  const { userID, productId } = req.params;
+  console.log("UserID:", userID);
+  console.log("ProductID:", productId);
+
+  try {
+    const user = await User.findById(userID);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.Carts = user.Carts.filter((item) => item.productId !== productId);
+
+    await user.save();
+
+    return res
+      .status(200)
+      .json({ message: "Item removed from cart", cart: user.Carts });
+  } catch (error) {
+    console.error("Error removing item from cart:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const clearCartItem = async (req, res) => {
+  const userID = req.params.userID;
+  try {
+    const user = await User.findById(userID);
+    if (!user) {
+      return res.status(400).json({ message: "user Not Found" });
+    }
+    user.Carts = [];
+    await user.save();
+    return res.status(200).json({ message: "Cart cleared successfully" });
+  } catch (error) {
+    console.log("Error clearing cart:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
 export const createWhishlist = async (req, res) => {
   try {
     const { id, whistItem } = req.body; // id from the request body

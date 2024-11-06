@@ -3,6 +3,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { AuthContext } from "./AuthContext";
 import Swal from "sweetalert2";
+import { DashboardContext } from "../context/DashboardContext";
+import { useNavigate } from "react-router-dom";
 
 // Create the Cart Context
 export const CartContext = createContext();
@@ -14,146 +16,119 @@ export const CartProvider = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
   const [total, setTotal] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
-  // Function to fetch the user's cart from the API
-  // const fetchCart = async (userId) => {
-  //   try {
-  //     if (isAuthenticated) {
-  //       const response = await axios.get(
-  //         `http://localhost:3000/carts?user_id=${userId}`
-  //       );
-  //       const fetchedCart = response.data[0];
-  //       setCart(fetchedCart);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching cart:", error);
-  //     setCart({ id: "", user_id: "", items: [] });
-  //   }
-  // };
-
-  // Function to add item to the cart
-
-  // const addToCart = async (item) => {
-  //   try {
-  //     if (isAuthenticated) {
-  //       const updatedCart = {
-  //         ...cart,
-  //         items: [...cart.items, { ...item }],
-  //       };
-  //       const response = await axios.put(
-  //         `${import.meta.env.VITE_MY_API}carts/${userID}`,
-  //         updatedCart
-  //       );
-  //       const fetchedCart = response.data;
-  //       setCart(updatedCart);
-  //       Swal.fire({
-  //         icon: "success",
-  //         title: "Item added to cart",
-  //         showConfirmButton: false,
-  //         timer: 1500,
-  //       });
-  //     } else {
-  //       console.error("User cart is not available");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error adding item to cart:", error);
-  //   }
-  // };
-
+  const { fetchCart } = useContext(DashboardContext);
   const addToCart = async (item) => {
     const userID = localStorage.getItem("id");
 
-    try {
-      if (isAuthenticated) {
-        const response = await axios.post(
-          `${import.meta.env.VITE_MY_API}user/createCart`,
-          {
-            id: userID,
-            cartItem: {
-              productId: item.productId,
-              images: item.images,
-              title: item.title,
-              price: item.price,
-              quantity_stock: item.quantity_stock,
-              quantity: item.quantity,
-              subTotal: item.subTotal,
-              unit: item.unit,
-              category: item.category,
-              selectedDimension: item.selectedDimension,
-              thickness: item.thickness,
-            },
-          }
-        );
-
-        const fetchedCart = response.data.user.Carts;
-        setCart((prevCart) => ({
-          ...prevCart,
-          items: fetchedCart,
-        }));
-
-        Swal.fire({
-          icon: "success",
-          title: "Item added to cart",
-          showConfirmButton: false,
-          timer: 1500,
+    if (isAuthenticated) {
+      axios
+        .post(`${import.meta.env.VITE_MY_API}user/createCart`, {
+          id: userID,
+          cartItem: {
+            productId: item.productId,
+            images: item.images,
+            title: item.title,
+            price: item.price,
+            quantity_stock: item.quantity_stock,
+            quantity: item.quantity,
+            subTotal: item.subTotal,
+            unit: item.unit,
+            category: item.category,
+            selectedDimension: item.selectedDimension,
+            thickness: item.thickness,
+          },
+        })
+        .then((res) => {
+          const fetchedCart = res.data.user.Carts;
+          setCart((prevCart) => ({
+            ...prevCart,
+            items: fetchedCart,
+          }));
+        })
+        .catch((error) => {
+          console.error("Error adding item to cart:", error);
         });
-      } else {
-        console.error("User cart is not available");
-      }
-    } catch (error) {
-      console.error("Error adding item to cart:", error);
+
+      Swal.fire({
+        icon: "success",
+        title: "Item added to cart",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      fetchCart();
+      // Delay the navigation to match the Swal timer
+    } else {
+      console.error("User cart is not available");
     }
   };
 
-  // Function to clear the cart
   const clearCart = async () => {
-    try {
-      if (isAuthenticated) {
-        const updatedCart = {
-          ...cart,
-          items: [],
-        };
+    if (isAuthenticated) {
+      const updatedCart = {
+        ...cart,
+        items: [], // Reset cart items to an empty array
+      };
+      9;
+      const userID = localStorage.getItem("id");
+      axios
+        .delete(`${import.meta.env.VITE_MY_API}user/clearCart/${userID}`)
+        .then((res) => {
+          setCart(updatedCart);
+          Swal.fire({
+            icon: "success",
+            title: "Cart cleared",
+            showConfirmButton: false,
+            timer: 1500,
+          });
 
-        // await axios.put(`http://localhost:3000/carts/${userID}`, updatedCart);
-        setCart(updatedCart);
-        Swal.fire({
-          icon: "success",
-          title: "Cart cleared",
-          showConfirmButton: false,
-          timer: 1500,
+          fetchCart();
+        })
+        .catch((error) => {
+          console.error("Error clearing cart:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Could not clear the cart. Please try again.",
+          });
         });
-      }
-    } catch (error) {
-      console.error("Error clearing cart:", error);
+    } else {
+      console.error("User not authenticated");
     }
   };
 
-  // Function to remove a specific item from the cart
   const removeItem = async (productId) => {
-    try {
-      if (isAuthenticated) {
-        const updatedCart = {
-          ...cart,
-          items: cart.items.filter((cartItem) => cartItem.id !== productId),
-        };
+    const userID = localStorage.getItem("id");
+    console.log("userID:", userID);
+    console.log("productId:", productId);
 
-        await axios.put(
-          `${import.meta.env.VITE_MY_API}carts/${userID}`,
-          updatedCart
-        );
-        setCart(updatedCart);
+    axios
+      .delete(
+        `${import.meta.env.VITE_MY_API}user/deleteCart/${userID}/${productId}`
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          Swal.fire({
+            icon: "success",
+            title: "Item removed from cart",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          fetchCart();
+        }
+      })
+
+      // Show success alert
+      .catch((error) => {
+        console.error("Error removing item from cart:", error);
         Swal.fire({
-          icon: "success",
-          title: "Item removed from cart",
-          showConfirmButton: false,
-          timer: 1500,
+          icon: "error",
+          title: "Error",
+          text: "Could not remove item from cart. Please try again.",
         });
-      }
-    } catch (error) {
-      console.error("Error removing item from cart:", error);
-    }
+      });
   };
 
-  // Fetch the user's cart on component mount and when userID changes
   useEffect(() => {
     const userID = Cookies.get("userID");
     setUserID(userID);

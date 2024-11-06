@@ -15,6 +15,9 @@ export const DashboardProvider = ({ children }) => {
   useEffect(() => {
     fetchData();
   }, []);
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
   const fetchData = async () => {
     // try {
@@ -39,16 +42,7 @@ export const DashboardProvider = ({ children }) => {
 
     // Fetch the cart data once on component mount
     //cart
-    axios
-      .get(`${import.meta.env.VITE_MY_API}user/getCart/${userID}`)
-      .then((res) => {
-        const fetchedCart = res.data;
-        setCartdata(fetchedCart || { items: [] });
-      })
-      .catch((error) => {
-        console.error("Error fetching cart:", error);
-        setCartdata({ items: [] });
-      });
+
     //user
     axios
       .get(`${import.meta.env.VITE_MY_API}user/get`)
@@ -78,6 +72,18 @@ export const DashboardProvider = ({ children }) => {
 
       .catch((error) => {
         console.error("Error fetching products:", error);
+      });
+  };
+  const fetchCart = async () => {
+    axios
+      .get(`${import.meta.env.VITE_MY_API}user/getCart/${userID}`)
+      .then((res) => {
+        const fetchedCart = res.data;
+        setCartdata(fetchedCart || { items: [] });
+      })
+      .catch((error) => {
+        console.error("Error fetching cart:", error);
+        setCartdata({ items: [] });
       });
   };
   const showAlert = (icon, title, text) => {
@@ -302,6 +308,7 @@ export const DashboardProvider = ({ children }) => {
     <DashboardContext.Provider
       value={{
         fetchData,
+        fetchCart,
         users,
         addUser,
         deleteUser,

@@ -53,17 +53,17 @@ const Users = () => {
 
   const deleteRecordFromAPI = async (id) => {
     try {
-       await axios.delete(
-        `${import.meta.env.VITE_MY_API}user/delete/${id}`
-      ).then(()=>{
-        fetchUsersData();
+      await axios
+        .delete(`${import.meta.env.VITE_MY_API}user/delete/${id}`)
+        .then(() => {
+          fetchUsersData();
 
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: "User has been deleted successfully.",
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: "User has been deleted successfully.",
+          });
         });
-      })      
     } catch (error) {
       console.error("Error deleting user:", error);
       Swal.fire({
