@@ -69,6 +69,24 @@ const Cart = () => {
       },
     });
   };
+
+  const handleClear = (item) => {
+    console.log("itemx", item);
+    confirm({
+      title: `Ready to Clear All Product?`,
+      icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,
+
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        clearCart();
+      },
+      onCancel() {
+        console.log("Clear cancelled");
+      },
+    });
+  };
   return (
     <>
       <Breadcrumb />
@@ -131,7 +149,7 @@ const Cart = () => {
               Continue Shopping
             </Button>
             {cd.length > 0 && (
-              <Button handleClick={() => clearCart()}>Clear Cart</Button>
+              <Button handleClick={() => handleClear()}>Clear Cart</Button>
             )}
           </div>
           {cd.length > 0 && <CartTotal total={total} />}
