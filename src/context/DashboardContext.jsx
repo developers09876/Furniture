@@ -11,12 +11,15 @@ export const DashboardProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const userID = localStorage.getItem("id");
   const [cartdata, setCartdata] = useState({ items: [] });
+  const [whishlistData, setwhishlistData] = useState({ items: [] });
   console.log("cartdata dash", cartdata);
+  console.log("whishlistData dash", whishlistData);
   useEffect(() => {
     fetchData();
   }, []);
   useEffect(() => {
     fetchCart();
+    fetchWhishlist();
   }, []);
 
   const fetchData = async () => {
@@ -74,6 +77,7 @@ export const DashboardProvider = ({ children }) => {
         console.error("Error fetching products:", error);
       });
   };
+
   const fetchCart = async () => {
     axios
       .get(`${import.meta.env.VITE_MY_API}user/getCart/${userID}`)
@@ -86,6 +90,19 @@ export const DashboardProvider = ({ children }) => {
         setCartdata({ items: [] });
       });
   };
+  const fetchWhishlist = async () => {
+    axios
+      .get(`${import.meta.env.VITE_MY_API}user/getWhishlist/${userID}`)
+      .then((res) => {
+        const fetchedWhishlist = res.data;
+        setwhishlistData(fetchedWhishlist || { items: [] });
+      })
+      .catch((error) => {
+        console.error("Error fetching Whishlist:", error);
+        setwhishlistData({ items: [] });
+      });
+  };
+
   const showAlert = (icon, title, text) => {
     Swal.fire({
       icon,
@@ -309,11 +326,13 @@ export const DashboardProvider = ({ children }) => {
       value={{
         fetchData,
         fetchCart,
+        fetchWhishlist,
         users,
         addUser,
         deleteUser,
         // newOrder,
         cartdata,
+        whishlistData,
         orders,
         updateOrderStatus,
         categories,

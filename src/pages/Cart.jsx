@@ -29,11 +29,14 @@ const Cart = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const { clearCart } = useContext(CartContext);
   const { cartdata } = useContext(DashboardContext);
+  const { whishlistData } = useContext(DashboardContext);
+
   const [cd, setCd] = useState([]);
   const [total, setTotal] = useState(0);
   const [totalItems, setTotalItems] = useState("");
   const { removeItem } = useContext(CartContext);
-  console.log("cd", cd);
+
+  console.log("whishlistData", whishlistData);
   useEffect(() => {
     if (cartdata) {
       setCd(cartdata.items);
@@ -52,8 +55,8 @@ const Cart = () => {
 
     setTotalItems(totalItems);
   }, [cartdata]);
+
   const handleDelete = (item) => {
-    console.log("itemx", item);
     confirm({
       title: `Ready to remove ${item.title}?`,
       icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,

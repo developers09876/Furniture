@@ -57,7 +57,6 @@ export const CartProvider = ({ children }) => {
       });
 
       fetchCart();
-      // Delay the navigation to match the Swal timer
     } else {
       console.error("User cart is not available");
     }
@@ -107,15 +106,13 @@ export const CartProvider = ({ children }) => {
         `${import.meta.env.VITE_MY_API}user/deleteCart/${userID}/${productId}`
       )
       .then((res) => {
-        if (res.status === 200) {
-          Swal.fire({
-            icon: "success",
-            title: "Item removed from cart",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          fetchCart();
-        }
+        Swal.fire({
+          icon: "success",
+          title: "Item removed from cart",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        fetchCart();
       })
 
       // Show success alert

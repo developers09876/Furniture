@@ -101,27 +101,6 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// export const createCart = async (req, res) => {
-//   try {
-//     const { id, cartItem } = req.body; // Expect email and cartItem in the request body
-
-//     // Find the user by email (or you can use another unique identifier)
-//     const user = await User.findOne({ id });
-
-//     if (!user) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-
-//     user.Carts.push(cartItem);
-
-//     await user.save();
-
-//     res.status(200).json({ message: "Cart updated successfully", user });
-//   } catch (error) {
-//     res.status(500).json({ message: "Error updating cart", error });
-//   }
-// };
-
 export const createCart = async (req, res) => {
   try {
     const { id, cartItem } = req.body; // id from the request body
@@ -141,6 +120,23 @@ export const createCart = async (req, res) => {
     res.status(200).json({ message: "Cart updated successfully", user });
   } catch (error) {
     res.status(500).json({ message: "Error updating cart", error });
+  }
+};
+
+export const getCart = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "cart not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Cart retrieved successfully", items: user.Carts });
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving cart", error });
   }
 };
 
@@ -185,6 +181,25 @@ export const clearCartItem = async (req, res) => {
   }
 };
 
+export const clearWhishlist = async (req, res) => {
+  const userId = req.params.userId;
+  console.log("userIdz", userId);
+  try {
+    const user = await User.findById(userId);
+    if (!userId) {
+      return res.status(404).json({ message: "user Not Found" });
+    }
+    user.Whishlist = [];
+    await user.save();
+    return res
+      .status(200)
+      .json({ message: "Whishlist Cleared successfully  " });
+  } catch (error) {
+    console.error("Error Clear Whishlist :", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
 export const createWhishlist = async (req, res) => {
   try {
     const { id, whistItem } = req.body; // id from the request body
@@ -206,20 +221,43 @@ export const createWhishlist = async (req, res) => {
   }
 };
 
-export const getCart = async (req, res) => {
+export const getWhishlist = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
 
     if (!user) {
+      return res.status(404).json({ message: "Whishlist not found" });
+    }
+
+    res.status(200).json({
+      message: "Whishlist retrieved successfully",
+      items: user.Whishlist,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving Whishlist", error });
+  }
+};
+
+export const deleteWhishItem = async (req, res) => {
+  const { userId, productId } = req.params;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res
-      .status(200)
-      .json({ message: "Cart retrieved successfully", items: user.Carts });
+    user.Whishlist = user.Whishlist.filter(
+      (item) => item.productId !== productId
+    );
+    await user.save();
+    return res.status(200).json({
+      message: "Item removed from wishlist",
+      Whishlist: user.Whishlist,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving cart", error });
+    console.error("Error Removing item from wishlist:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 

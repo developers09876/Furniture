@@ -1,19 +1,120 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import WishlistContent from "../components/wishlist/WishlistContent";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import CartTotal from "../components/cart/CartTotal";
 import { WishlistContext } from "../context/WishlistContext";
 import Breadcrumb from "../components/Breadcrumb";
+import { DashboardContext } from "../context/DashboardContext";
+import styled from "styled-components";
+import { FaIndianRupeeSign } from "react-icons/fa6";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { Modal } from "antd";
+import { MdDelete } from "react-icons/md";
+const { confirm } = Modal;
 
 const Wishlist = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useContext(AuthContext);
-  const { clearWishlist } = useContext(WishlistContext);
   const { total } = useContext(WishlistContext);
+  const { isAuthenticated } = useContext(AuthContext);
+  const { clearWishlist, removeItem } = useContext(WishlistContext);
 
-  console.log(total);
+  const { whishlistData } = useContext(DashboardContext);
+  const [whishlistCnt, setWhishlist] = useState([]);
+
+  useEffect(() => {
+    if (whishlistData) {
+      setWhishlist(whishlistData.items);
+    }
+  }, [whishlistData]);
+
+  const Wrapper = styled.article`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0;
+
+    .title {
+      grid-template-rows: 75px;
+      display: grid;
+      grid-template-columns: 75px 125px;
+      align-items: center;
+      text-align: left;
+      gap: 1rem;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: ${(props) => props.theme.raduis};
+      object-fit: cover;
+    }
+
+    h5 {
+      font-size: 1rem;
+      margin-bottom: 0;
+    }
+
+    .price {
+      width: 110%;
+      color: ${(props) => props.theme.mainColorLight};
+    }
+
+    .addToCart {
+      width: 75px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .remove-btn {
+      border: transparent;
+      background-color: transparent;
+      width: 1.5rem;
+      height: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  `;
+
+  const handleDelete = (item) => {
+    console.log("itemx", item);
+    confirm({
+      title: `Ready to remove ${item.title}?`,
+      icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        removeItem(item.productId); // Use the _id to call the API for deletio
+      },
+      onCancel() {
+        console.log("Delete cancelled");
+      },
+    });
+  };
+
+  const handleClear = (item) => {
+    confirm({
+      title: `Ready to remove ${item.title}?`,
+      icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        clearWishlist(item.productId); // Use the _id to call the API for deletio
+      },
+      onCancel() {
+        console.log("Delete cancelled");
+      },
+    });
+  };
   return (
     <>
       <Breadcrumb />
@@ -21,7 +122,7 @@ const Wishlist = () => {
         <>
           <div className="container">
             <h4 className="ms-3 mb-5">My Wishlist</h4>
-            {total > 0 && (
+            {whishlistCnt.length > 0 && (
               <div className="content row px-3 d-md-flex d-none">
                 <h6 className="col-3">Item</h6>
                 <h6 className="col">Price</h6>
@@ -30,8 +131,49 @@ const Wishlist = () => {
               </div>
             )}
             <hr />
-            {total > 0 ? (
-              <WishlistContent />
+            {whishlistCnt.length > 0 ? (
+              whishlistCnt.map((items) => {
+                return (
+                  <Wrapper className="row">
+                    <div className="title col-md-3 col-4 ">
+                      <img src={items.image} alt={items.title} />{" "}
+                      <br className="d-block d-md-none" />
+                      <div style={{ width: "200px" }}>
+                        <h5 className="name">{items.title}</h5>
+                        {/* <h5 className="price d-block d-md-none">{price.toFixed(2)} MAD</h5> */}
+                      </div>
+                    </div>
+                    <h5 className="price d-none d-md-block col">
+                      {" "}
+                      <FaIndianRupeeSign />
+                      {items.price}{" "}
+                    </h5>
+                    <div
+                      style={{ cursor: "pointer" }}
+                      className="remove-btn col-4 col-md"
+                      onClick={() => handleDelete(items)}
+                    >
+                      <FontAwesomeIcon className="text-danger" icon={faTrash} />
+                    </div>
+                    <div className="addToCart d-md-block col">
+                      <Button
+                        className="col-1 col-md w-75"
+                        handleClick={() =>
+                          navigate(`/products/${whishlistCnt.id}`)
+                        }
+                      >
+                        More Details
+                      </Button>
+                    </div>
+                    <button
+                      className="remove-btn col-2 col-md-2"
+                      onClick={() => removeItem(id)}
+                    >
+                      {/* <FontAwesomeIcon className='text-danger' icon={faTrash} /> */}
+                    </button>
+                  </Wrapper>
+                );
+              })
             ) : (
               <h5 className="text-warning d-flex justify-content-center">
                 Your Wishlist is Empty!
@@ -42,8 +184,8 @@ const Wishlist = () => {
               <Button handleClick={() => navigate("/products")}>
                 Continue Shopping
               </Button>
-              {total > 0 && (
-                <Button handleClick={() => clearWishlist()}>
+              {whishlistCnt.length > 0 && (
+                <Button handleClick={() => handleClear(whishlistCnt)}>
                   Clear Wishlist
                 </Button>
               )}

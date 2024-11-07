@@ -64,19 +64,26 @@ const NavBar = () => {
   const { products } = useContext(DashboardContext);
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
   const { total } = useContext(WishlistContext);
-  const { cartdata } = useContext(DashboardContext);
+  const { cartdata, whishlistData } = useContext(DashboardContext);
   const [totalItems, setTotalItems] = useState("");
-
+  const [totalWhish, setTotalWhish] = useState("");
   const [username, setUsername] = useState("");
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   useEffect(() => {
     const totalItems = cartdata.items.reduce((sum, item) => {
       return sum + Number(item.quantity);
     }, 0);
-    console.log("totalItems", totalItems);
 
     setTotalItems(totalItems);
   }, [cartdata]);
+
+  useEffect(() => {
+    const totalWhishItems = whishlistData.items.reduce((sum, item) => {
+      return sum + Number(item.quantity);
+    }, 0);
+    setTotalWhish(totalWhishItems);
+  }, [whishlistData]);
 
   const navIconItem = {
     width: "40px",
@@ -102,7 +109,13 @@ const NavBar = () => {
     <Menu>
       {filteredProducts.length > 0 ? (
         filteredProducts.map((product) => (
-          <Menu.Item key={product.id}>
+          <Menu.Item
+            key={product.id}
+            onClick={() => {
+              navigate(`/products/${product.productId} `);
+              handleProductClick();
+            }}
+          >
             <div style={{ display: "flex", alignItems: "center" }}>
               <img
                 src={product.images[0]}
@@ -112,6 +125,7 @@ const NavBar = () => {
               <div>
                 <span style={{ fontWeight: "bold", color: "#008000" }}>
                   {product.title}
+                  {/* {product.productId} */}
                 </span>
                 <br />
                 <span>{product.category}</span>
@@ -134,6 +148,9 @@ const NavBar = () => {
       )}
     </Menu>
   );
+  const handleProductClick = () => {
+    window.location.reload();
+  };
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("name");
@@ -250,7 +267,7 @@ const NavBar = () => {
                   {/* <FontAwesomeIcon icon={faHeart} className="me-1" /> (
                   {isAuthenticated ? total : 0}) */}
 
-                  <Badge size="small" count={isAuthenticated ? total : 0}>
+                  <Badge size="small" count={isAuthenticated ? totalWhish : 0}>
                     <FontAwesomeIcon
                       style={{ height: "18px" }}
                       icon={faHeart}
