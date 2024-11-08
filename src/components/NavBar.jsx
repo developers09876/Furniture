@@ -30,6 +30,8 @@ import axios from "axios";
 import { SearchOutlined } from "@ant-design/icons";
 import { log } from "three/webgpu";
 import { DashboardContext } from "../context/DashboardContext";
+import { faHeart as faHeartEmpty } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartFilled } from "@fortawesome/free-solid-svg-icons";
 // import Products from "../pages/Products";
 
 // styles for links
@@ -55,7 +57,10 @@ const SearchIcon = styled(FontAwesomeIcon)`
   top: 13px;
   color: ${(props) => props.theme.mutedTextColor};
 `;
-
+const WishlistIcon = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+  const { total } = useContext(WishlistContext);
+}
 const NavBar = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
@@ -232,18 +237,16 @@ const NavBar = () => {
                   {/* ({isAuthenticated ? totalItems : 0}) */}
                 </Link>
               </li>
-              <li className="nav-item ms-2 mt-3  pt-1">
-                <Link
-                  to="/wishlist"
-                  style={{ color: "#1D1D1D", textDecoration: "none" }}
-                >
-                  {/* <FontAwesomeIcon icon={faHeart} className="me-1" /> (
-                  {isAuthenticated ? total : 0}) */}
-
+              <li className="nav-item ms-2 mt-3 pt-1">
+                <Link to="/wishlist" style={{ color: "#1D1D1D", textDecoration: "none" }}>
                   <Badge size="small" count={isAuthenticated ? total : 0}>
                     <FontAwesomeIcon
-                      style={{ height: "18px" }}
-                      icon={faHeart}
+                      icon={total > 0 ? faHeartFilled : faHeartEmpty}
+                      style={{
+                        height: "18px",
+                        color: total > 0 ? "red" : "#1D1D1D",
+                        transition: "color 0.3s ease",
+                      }}
                     />
                   </Badge>
                 </Link>

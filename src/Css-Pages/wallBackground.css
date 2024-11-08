@@ -40,9 +40,13 @@
 }
 
 .eLVJKp:before {
-  background: rgb(179 156 193) !important;
+  background: rgb(218, 199, 230) !important;
 }
 
 :where(.css-dev-only-do-not-override-11lehqq) a:hover {
   color: beige !important;
+}
+
+a.sc-egkSDF.eLVJKp {
+  color: #ff5921 !important;
 }

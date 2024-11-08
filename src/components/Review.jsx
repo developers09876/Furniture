@@ -100,7 +100,7 @@ const testimonials = [
   },
 ];
 
-const HomeHeader = () => (
+const Review = () => (
   <CarouselContainer>
     <Carousel slide={true} interval={3000}>
       {testimonials.map((testimonial, index) => (
@@ -121,4 +121,4 @@ const HomeHeader = () => (
   </CarouselContainer>
 );
 
-export default HomeHeader;
+export default Review;
