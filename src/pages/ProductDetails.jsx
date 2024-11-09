@@ -37,6 +37,8 @@ import { ImYoutube } from "react-icons/im";
 import { IoIosArrowForward } from "react-icons/io";
 const { Group: RadioGroup, Button: RadioButton } = Radio;
 import "../Css-Pages/HomeCard.css";
+import { faHeart as faHeartEmpty } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartFilled } from "@fortawesome/free-solid-svg-icons";
 // import "../Css-Pages/WallBackground.css";
 
 const SingleProductPage = () => {
@@ -72,6 +74,8 @@ const SingleProductPage = () => {
   const [customBreadth, setCustomBreadth] = useState("");
   const [hover, setHover] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
+  const { total } = useContext(WishlistContext);
+
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -234,13 +238,26 @@ const SingleProductPage = () => {
   const card_help = {
     width: "100%",
     backgroundColor: "var(--bgColor)",
-  };
 
+  };
+  // const [isInWishlist, setIsInWishlist] = useState(false);
+  // const checkWishlist = async () => {
+  //   try {
+  //     const response = await axios.get(`http://localhost:5000/wishlist/check/${userId}/${product.id}`);
+  //     setIsInWishlist(response.data.isInWishlist);
+  //   } catch (error) {
+  //     console.error("Error checking wishlist status:", error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   checkWishlist();  // Check wishlist status when component mounts
+  // }, [product.id, userId]);
 
   const [quantity, setQuantity] = useState(1);
   const [subTotal, setSubTotal] = useState(0);
   const { addToCart } = useContext(CartContext);
   const { addToWishlist } = useContext(WishlistContext);
+  const [orders, setOrders] = useState([]);
   const { isAuthenticated } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   console.log("addToWishlist", addToWishlist);
@@ -266,7 +283,6 @@ const SingleProductPage = () => {
   if (!product) {
     return <Spinner />;
   }
-
   const {
     productId,
     // images,
@@ -481,7 +497,15 @@ const SingleProductPage = () => {
                   })
                 }
               >
-                <FontAwesomeIcon icon={faHeart} />
+                <FontAwesomeIcon
+                  icon={total > 0 ? faHeartFilled : faHeartEmpty}
+                  style={{
+                    height: "18px",
+                    color: total > 0 ? "red" : "#1D1D1D",
+                    transition: "color 0.3s ease",
+                  }}
+                />
+
               </Button>
             </div>
           ) : (
@@ -897,6 +921,7 @@ const SingleProductPage = () => {
               <Card
                 style={card_help}
                 className="d-flex align-items-center justify-content-center"
+                onClick={() => navigate("/products")}
               >
                 <Row className="w-100">
                   <Col md={9} style={{ marginTop: "3%" }}>
@@ -915,6 +940,7 @@ const SingleProductPage = () => {
               <Card
                 style={card_help}
                 className="d-flex align-items-center justify-content-center"
+                onClick={() => navigate("/contact")}
               >
                 <Row className="w-100">
                   <Col md={9} style={{ marginTop: "9%" }}>
@@ -935,6 +961,7 @@ const SingleProductPage = () => {
               <Card
                 style={card_help}
                 className="d-flex align-items-center justify-content-center"
+                onClick={() => navigate("/")}
               >
                 <Row className="w-100">
                   <Col md={9} style={{ marginTop: "9%" }}>
@@ -1170,13 +1197,7 @@ const Wrapper = styled.main`
   position: relative;
   overflow: hidden;
 }
-
-
-
-
-
-
-  .content {
+.content {
     h2 {
       color: ${(props) => props.theme.mainColor};
     }
