@@ -8,6 +8,7 @@ import { Table, Modal, Form, Input, Button } from "antd";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { DashboardContext } from "../../context/DashboardContext";
 import AddProduct from "./AddProduct";
+const { TextArea } = Input;
 
 const { confirm } = Modal;
 
@@ -21,14 +22,17 @@ const StyledProducts = styled.div`
 const ProductDashboard = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState([]);
+  const [product, setProduct] = useState([]);
+  console.log("editingUser", editingUser)
+
 
   // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
   const { users, orders, products, fetchData } = useContext(DashboardContext);
   const deleteRecordFromAPI = async (id) => {
     try {
-       await axios.delete(
+      await axios.delete(
         `${import.meta.env.VITE_MY_API}products/delete/${id}`
-      ).then(()=>{
+      ).then(() => {
         fetchUsersData();
 
         Swal.fire({
@@ -36,7 +40,7 @@ const ProductDashboard = () => {
           title: "Deleted!",
           text: "User has been deleted successfully.",
         });
-      })      
+      })
     } catch (error) {
       console.error("Error deleting product:", error);
       Swal.fire({
@@ -117,9 +121,8 @@ const ProductDashboard = () => {
         Swal.fire({
           icon: "success",
           title: "Updated!",
-          text: `Product ${
-            editingUser.name || "Product"
-          } has been updated successfully.`,
+          text: `Product ${editingUser.name || "Product"
+            } has been updated successfully.`,
         });
         setEditModalVisible(false);
       }
@@ -166,7 +169,7 @@ const ProductDashboard = () => {
       <Table dataSource={products} columns={columns} />
 
       <Modal
-        title="Edit User"
+        title="Edit Product"
         centered
         open={editModalVisible}
         onOk={() => handleEditSubmit(editingUser)}
@@ -208,6 +211,209 @@ const ProductDashboard = () => {
             }
           />
         </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Long Description:</label>
+          <TextArea
+            value={editingUser?.LongDesc}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, LongDesc: e.target.value })
+            }
+            rows={4} // Adjust the number of rows as needed
+            placeholder="Enter the long description"
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label>Discount Price:</label>
+          <Input
+            type="number"
+            value={editingUser?.discountPrice}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, discountPrice: e.target.value })
+            }
+            placeholder="Enter the discount price"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Quantity in Stock:</label>
+          <Input
+            type="number"
+            value={editingUser?.quantity_stock}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, quantity_stock: e.target.value })
+            }
+            placeholder="Enter the quantity in stock"
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label>Feel</label>
+          <Input
+            type="text"
+            value={editingUser?.specifications?.[0]?.product_Details?.feel || ''}
+            onChange={(e) =>
+              setEditingUser({
+                ...editingUser,
+                specifications: [
+                  {
+                    ...editingUser.specifications[0],
+                    product_Details: {
+                      ...editingUser.specifications[0]?.product_Details,
+                      feel: e.target.value,
+                    },
+                  },
+                ],
+              })
+            }
+            placeholder="Enter the feel"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Cover Type:</label>
+          <Input
+            value={editingUser?.cover_Type}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, cover_Type: e.target.value })
+            }
+            placeholder="Enter the cover type"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Cover Material:</label>
+          <Input
+            value={editingUser?.cover_Material}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, cover_Material: e.target.value })
+            }
+            placeholder="Enter the cover material"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Mattress Type:</label>
+          <Input
+            value={editingUser?.
+              matress_Type}
+            onChange={(e) =>
+              setEditingUser({
+                ...editingUser,
+                matress_Type: e.target.value
+              })
+            }
+            placeholder="Enter the mattress type"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Usability:</label>
+          <Input
+            value={editingUser?.Usability}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, Usability: e.target.value })
+            }
+            placeholder="Enter the usability"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Title:</label>
+          <Input
+            value={editingUser?.title}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, title: e.target.value })
+            }
+            placeholder="Enter the title"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Description:</label>
+          <Input
+            value={editingUser?.description}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, description: e.target.value })
+            }
+            placeholder="Enter the description"
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label>Thickness:</label>
+          <Input
+            value={editingUser?.thickness}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, thickness: e.target.value })
+            }
+            placeholder="Enter the thickness"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Dimensions:</label>
+          <Input
+            value={editingUser?.dimensions}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, dimensions: e.target.value })
+            }
+            placeholder="Enter the dimensions"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Warranty:</label>
+          <Input
+            value={editingUser?.Warranty}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, Warranty: e.target.value })
+            }
+            placeholder="Enter the warranty details"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Shipping:</label>
+          <Input
+            value={editingUser?.Shipping}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, Shipping: e.target.value })
+            }
+            placeholder="Enter the shipping details"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Trial:</label>
+          <Input
+            value={editingUser?.trial}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, trial: e.target.value })
+            }
+            placeholder="Enter the trial details"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Available Offers:</label>
+          <Input
+            value={editingUser?.available_Offers}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, available_Offers: e.target.value })
+            }
+            placeholder="Enter available offers"
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label>Trial:</label>
+          <Input
+            value={editingUser?.trial}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, trial: e.target.value })
+            }
+            placeholder="Enter trial details"
+          />
+        </div>
+
       </Modal>
     </StyledProducts>
   );

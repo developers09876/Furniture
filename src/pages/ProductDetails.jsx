@@ -40,6 +40,8 @@ import { IoIosArrowForward } from "react-icons/io";
 const { Group: RadioGroup, Button: RadioButton } = Radio;
 import "../Css-Pages/HomeCard.css";
 import { DashboardContext } from "../context/DashboardContext";
+import { faHeart as faHeartEmpty } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartFilled } from "@fortawesome/free-solid-svg-icons";
 // import "../Css-Pages/WallBackground.css";
 
 const SingleProductPage = () => {
@@ -60,10 +62,12 @@ const SingleProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [subTotal, setSubTotal] = useState(0);
   const { addToCart, removeItem } = useContext(CartContext);
+  const [orders, setOrders] = useState([]);
   const { addToWishlist } = useContext(WishlistContext);
   const { isAuthenticated } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const { total } = useContext(WishlistContext);
 
   const handleShowVideo = () => setVideoVisible(true);
   const handleCloseVideo = () => setVideoVisible(false); // Hide video
@@ -242,6 +246,18 @@ const SingleProductPage = () => {
     width: "100%",
     backgroundColor: "var(--bgColor)",
   };
+  // const [isInWishlist, setIsInWishlist] = useState(false);
+  // const checkWishlist = async () => {
+  //   try {
+  //     const response = await axios.get(`http://localhost:5000/wishlist/check/${userId}/${product.id}`);
+  //     setIsInWishlist(response.data.isInWishlist);
+  //   } catch (error) {
+  //     console.error("Error checking wishlist status:", error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   checkWishlist();  // Check wishlist status when component mounts
+  // }, [product.id, userId]);
 
   console.log("addToWishlist", addToWishlist);
   const handleImageClick = (image) => {
@@ -310,7 +326,6 @@ const SingleProductPage = () => {
   if (!product) {
     return <Spinner />;
   }
-
   const {
     productId,
     // images,
@@ -1040,6 +1055,7 @@ const SingleProductPage = () => {
               <Card
                 style={card_help}
                 className="d-flex align-items-center justify-content-center"
+                onClick={() => navigate("/products")}
               >
                 <Row className="w-100">
                   <Col md={9} style={{ marginTop: "3%" }}>
@@ -1058,6 +1074,7 @@ const SingleProductPage = () => {
               <Card
                 style={card_help}
                 className="d-flex align-items-center justify-content-center"
+                onClick={() => navigate("/contact")}
               >
                 <Row className="w-100">
                   <Col md={9} style={{ marginTop: "9%" }}>
@@ -1078,6 +1095,7 @@ const SingleProductPage = () => {
               <Card
                 style={card_help}
                 className="d-flex align-items-center justify-content-center"
+                onClick={() => navigate("/")}
               >
                 <Row className="w-100">
                   <Col md={9} style={{ marginTop: "9%" }}>
@@ -1306,9 +1324,15 @@ const Wrapper = styled.main`
     height: auto;
     border: 1px solid ${(props) => props.theme.borderColor};
     border-radius: 15px;
+      transition: transform 0.3s ease;
   }
-
-  .content {
+      .product-image:hover {
+  transform: scale(1.1);
+  .product-container {
+  position: relative;
+  overflow: hidden;
+}
+.content {
     h2 {
       color: ${(props) => props.theme.mainColor};
     }

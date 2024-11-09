@@ -6,6 +6,7 @@ import { currentDate, generateUUID } from "../../utils/helpers";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Form } from "antd";
 
 // styled components
 const StyledCategories = styled.div`
@@ -80,7 +81,7 @@ const AddCategory = () => {
     try {
       const res = await axios.get(`${import.meta.env.VITE_MY_API}Category/`);
       category(res.data);
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleAddCategory = async (e) => {
     e.preventDefault();
@@ -147,6 +148,7 @@ const AddCategory = () => {
             </Button> */}
 
             <Button type="submit">Add Category</Button>
+
           </div>
         </div>
       </form>

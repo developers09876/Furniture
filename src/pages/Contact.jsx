@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import Breadcrumb from "../components/Breadcrumb";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "../components/Button";
 import emailjs from "emailjs-com";
 import axios from "axios";
@@ -132,7 +132,16 @@ const Contact = () => {
         });
       });
   };
+<<<<<<< HEAD
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
+=======
 
+>>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
   return (
     <>
       <Breadcrumb />
