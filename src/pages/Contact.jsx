@@ -106,7 +106,7 @@ const Contact = () => {
       email: formData.email,
       message: formData.message,
     };
-
+    console.log("details", details);
     await axios
       .post(`${import.meta.env.VITE_MY_API}User/enquiry`, details)
       .then((response) => {
@@ -132,12 +132,16 @@ const Contact = () => {
         });
       });
   };
+<<<<<<< HEAD
   useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   }, []);
+=======
+
+>>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
   return (
     <>
       <Breadcrumb />
@@ -189,8 +193,9 @@ const Contact = () => {
                 <TextArea
                   name="message"
                   value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
+                  onChange={
+                    (e) => setFormData({ ...formData, message: e.target.value })
+                    // console.log("edaww", e.target.value)
                   }
                   placeholder="Message"
                   required

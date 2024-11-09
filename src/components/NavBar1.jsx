@@ -90,6 +90,9 @@ const NavBar1 = () => {
   const { isAdmin, isAuthenticated, logout } = useContext(AuthContext);
   const { totalItems } = useContext(CartContext);
   const { total } = useContext(WishlistContext);
+  const handleProductClick = () => {
+    window.location.reload();
+  };
 
   return (
     <nav
@@ -125,16 +128,18 @@ const NavBar1 = () => {
                         <Underline />
                         <ul style={{ paddingLeft: "1px" }}>
                           <li>
-                            <Link to="/products/4"> Premium Mattress</Link>
+                            <Link to="/products/32"> Premium Mattress</Link>
                           </li>
                           <li>
-                            <Link to="/products/5">Premium ET Mattress</Link>
+                            <Link to="/products/33">Premium ET Mattress</Link>
                           </li>
                           <li>
-                            <Link to="/products/6">Spine Therapy Mattress</Link>
+                            <Link to="/products/34">
+                              Spine Therapy Mattress
+                            </Link>
                           </li>
                           <li>
-                            <Link to="/products/7">
+                            <Link to="/products/35">
                               Latex O Pedic ET Mattress
                             </Link>
                           </li>

@@ -10,6 +10,7 @@ import { HTTP_RESPONSE } from "../utils/config.js";
 import nodemailer from "nodemailer";
 
 import { google } from "googleapis";
+import { message } from "antd";
 // create user without password=============================
 const createUserWithoutPass = async (user) => {
   const newUser = {
@@ -102,22 +103,161 @@ export const loginUser = async (req, res) => {
 
 export const createCart = async (req, res) => {
   try {
-    const { id, cartItem } = req.body; // Expect email and cartItem in the request body
+    const { id, cartItem } = req.body; // id from the request body
+    console.log("caetItem", cartItem);
 
-    // Find the user by email (or you can use another unique identifier)
-    const user = await User.findOne({ id });
+    // Search by _id if you're using MongoDB's default unique identifier
+    const user = await User.findById(id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Add the item to the cart array
     user.Carts.push(cartItem);
-
     await user.save();
 
     res.status(200).json({ message: "Cart updated successfully", user });
   } catch (error) {
     res.status(500).json({ message: "Error updating cart", error });
+  }
+};
+
+export const getCart = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "cart not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Cart retrieved successfully", items: user.Carts });
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving cart", error });
+  }
+};
+
+export const deleteCartItem = async (req, res) => {
+  const { userID, productId } = req.params;
+  console.log("UserID:", userID);
+  console.log("ProductID:", productId);
+
+  try {
+    const user = await User.findById(userID);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.Carts = user.Carts.filter((item) => item.productId !== productId);
+
+    await user.save();
+
+    return res
+      .status(200)
+      .json({ message: "Item removed from cart", cart: user.Carts });
+  } catch (error) {
+    console.error("Error removing item from cart:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const clearCartItem = async (req, res) => {
+  const userID = req.params.userID;
+  try {
+    const user = await User.findById(userID);
+    if (!user) {
+      return res.status(400).json({ message: "user Not Found" });
+    }
+    user.Carts = [];
+    await user.save();
+    return res.status(200).json({ message: "Cart cleared successfully" });
+  } catch (error) {
+    console.log("Error clearing cart:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const clearWhishlist = async (req, res) => {
+  const userId = req.params.userId;
+  console.log("userIdz", userId);
+  try {
+    const user = await User.findById(userId);
+    if (!userId) {
+      return res.status(404).json({ message: "user Not Found" });
+    }
+    user.Whishlist = [];
+    await user.save();
+    return res
+      .status(200)
+      .json({ message: "Whishlist Cleared successfully  " });
+  } catch (error) {
+    console.error("Error Clear Whishlist :", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const createWhishlist = async (req, res) => {
+  try {
+    const { id, whistItem } = req.body; // id from the request body
+
+    // Search by _id if you're using MongoDB's default unique identifier
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "Whishlist not found" });
+    }
+
+    // Add the item to the cart array
+    user.Whishlist.push(whistItem);
+    await user.save();
+
+    res.status(200).json({ message: "Whishlist updated successfully", user });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating Whishlist", error });
+  }
+};
+
+export const getWhishlist = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "Whishlist not found" });
+    }
+
+    res.status(200).json({
+      message: "Whishlist retrieved successfully",
+      items: user.Whishlist,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving Whishlist", error });
+  }
+};
+
+export const deleteWhishItem = async (req, res) => {
+  const { userId, productId } = req.params;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.Whishlist = user.Whishlist.filter(
+      (item) => item.productId !== productId
+    );
+    await user.save();
+    return res.status(200).json({
+      message: "Item removed from wishlist",
+      Whishlist: user.Whishlist,
+    });
+  } catch (error) {
+    console.error("Error Removing item from wishlist:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -185,7 +325,7 @@ export async function enquiryUser(req, res, next) {
       email: data.email,
       message: data.message,
     };
-    console.log("details", details);
+    console.log("details", details.email);
     console.log("process.env.EMAIL", process.env.EMAIL);
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -198,10 +338,11 @@ export async function enquiryUser(req, res, next) {
     });
 
     const mailOptions = {
-      from: process.env.EMAIL,
-      to: "ganeshgm3113@gmail.com",
-      // to: ${details.email},
-      subject: "Furniture Enquiry",
+      // from: `${details.email}`,
+      from: "ganeshgm3113@gmil.com",
+      to: process.env.EMAIL,
+
+      subject: "Restropedic Mattress",
       html: `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
       <h2 style="color: #007bff;">New Enquiry</h2>
@@ -210,10 +351,11 @@ export async function enquiryUser(req, res, next) {
       <p><strong>Message:</strong> ${details.message}</p>
       <hr style="border: 1px solid #ddd;" />
       <p>Thank you for reaching out to us!</p>
-      <p style="color: #007bff;">Furniture Team</p>
+      <p style="color: #007bff;">Restropedic Team</p>
     </div>
   `,
     };
+    console.log("emailx", details.email);
 
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent: " + info.response);
@@ -229,7 +371,6 @@ export async function enquiryUser(req, res, next) {
     });
   }
 }
-
 // reset password
 
 export async function resetUsers(req, res) {

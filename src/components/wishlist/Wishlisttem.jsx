@@ -1,14 +1,26 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Button from "../Button";
 import { WishlistContext } from "../../context/WishlistContext";
 import { useNavigate } from "react-router-dom";
 import { FaIndianRupeeSign } from "react-icons/fa6";
+import { DashboardContext } from "../../context/DashboardContext";
+
 const WishlistItem = ({ id, image, title, price }) => {
   const { removeItem } = useContext(WishlistContext);
+  const { whishlistData } = useContext(DashboardContext);
+  const [whishlist, setWhishlist] = useState(second);
+  console.log("jhg", whishlist);
   const navigate = useNavigate();
+  const title1 = { ganesh };
+
+  useEffect(() => {
+    if (whishlistData) {
+      setWhishlist(whishlistData);
+    }
+  });
 
   return (
     <Wrapper className="row">
@@ -22,7 +34,7 @@ const WishlistItem = ({ id, image, title, price }) => {
       <h5 className="price d-none d-md-block col">
         {" "}
         <FaIndianRupeeSign />
-        {price}{" "}
+        {title1}{" "}
       </h5>
       <div className="addToCart d-md-block col">
         <Button

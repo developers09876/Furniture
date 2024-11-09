@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 import { FaIndianRupeeSign } from "react-icons/fa6";
+import axios from "axios";
 const CartItem = ({
   id,
   image,
@@ -16,6 +17,11 @@ const CartItem = ({
   selectedDimension,
 }) => {
   const { removeItem } = useContext(CartContext);
+  // useEffect(() => {
+  //   axios.get(`${import.meta.env.VITE_MY_APP}user/`);
+  //   setGetCart(response.data);
+  //   alert("hi");
+  // });
 
   return (
     <Wrapper className="row">
