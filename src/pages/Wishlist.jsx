@@ -136,7 +136,7 @@ const Wishlist = () => {
                 return (
                   <Wrapper className="row">
                     <div className="title col-md-3 col-4 ">
-                      <img src={items.image} alt={items.title} />{" "}
+                      <img src={items.images[0]} alt={items.title} />{" "}
                       <br className="d-block d-md-none" />
                       <div style={{ width: "200px" }}>
                         <h5 className="name">{items.title}</h5>

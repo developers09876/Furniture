@@ -7,6 +7,7 @@ import {
   deleteCartItem,
   clearCartItem,
   getCart,
+  updateQuantity,
   createWhishlist,
   getWhishlist,
   deleteWhishItem,
@@ -34,6 +35,7 @@ router.put("/resetUser", resetUser);
 router.post("/resetUsers", resetUsers);
 router.post("/createCart", createCart);
 router.get("/getCart/:id", getCart);
+router.put("/updateQuantity/:userId/:productId", updateQuantity);
 router.delete("/deleteCart/:userID/:productId", deleteCartItem);
 router.delete("/clearCart/:userID", clearCartItem);
 router.post("/createWhishlist", createWhishlist);

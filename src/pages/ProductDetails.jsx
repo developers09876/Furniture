@@ -5,6 +5,7 @@ import axios from "axios";
 import Spinner from "../components/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { IoMdClose } from "react-icons/io";
 import { FaChevronDown } from "react-icons/fa";
@@ -13,6 +14,7 @@ import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
 import { WishlistContext } from "../context/WishlistContext";
 import Breadcrumb from "../components/Breadcrumb";
+import { FaHeartCircleCheck } from "react-icons/fa6";
 import img1 from "../assets/sofa.jpg";
 import img2 from "../assets/chair.jpg";
 import img3 from "../assets/bed.jpg";
@@ -37,32 +39,15 @@ import { ImYoutube } from "react-icons/im";
 import { IoIosArrowForward } from "react-icons/io";
 const { Group: RadioGroup, Button: RadioButton } = Radio;
 import "../Css-Pages/HomeCard.css";
+import { DashboardContext } from "../context/DashboardContext";
 // import "../Css-Pages/WallBackground.css";
 
 const SingleProductPage = () => {
-  const settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-  };
-
-  const { productID } = useParams();
-  const [product, setProduct] = useState([]);
-  if (
-    product &&
-    Array.isArray(product.specification) &&
-    product.specification.length > 0
-  ) {
-  } else {
-    console.log("Specification is not available");
-  }
   const [selectedImage, setSelectedImage] = useState(null);
   // const [images, setImages] = useState([img1, img2, img3, Amenity, Amenity_ET]);
   const [images, setImages] = useState([]);
   const [show, setShow] = useState(false);
   const [showPic, setShowPic] = useState(false);
-
   const [showVideo, setShowVideo] = useState(false);
   const [unit, setUnit] = useState("in");
   const [categorz, setCategory] = useState("Single");
@@ -72,7 +57,32 @@ const SingleProductPage = () => {
   const [customBreadth, setCustomBreadth] = useState("");
   const [hover, setHover] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const [subTotal, setSubTotal] = useState(0);
+  const { addToCart, removeItem } = useContext(CartContext);
+  const { addToWishlist } = useContext(WishlistContext);
+  const { isAuthenticated } = useContext(AuthContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
+  const handleShowVideo = () => setVideoVisible(true);
+  const handleCloseVideo = () => setVideoVisible(false); // Hide video
+  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setShow(false);
+    resetFilters();
+  };
+  const handleShowPic = () => setShowPic(true);
+  const handleClosePic = () => {
+    setShowPic(false);
+    resetFilters();
+  };
+  const { productID } = useParams();
+  const { cartdata, whishlistData } = useContext(DashboardContext);
+  console.log("cartdatax", cartdata.items);
+
+  const [product, setProduct] = useState([]);
+  console.log("productzx", product);
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -90,28 +100,26 @@ const SingleProductPage = () => {
     // Ensure productID is passed here
     fetchProduct();
   }, [productID]);
-  const handleShow = () => setShow(true);
-  const handleClose = () => {
-    setShow(false);
-    resetFilters();
-  };
-  const handleShowPic = () => setShowPic(true);
-  const handleClosePic = () => {
-    setShowPic(false);
-    resetFilters();
+
+  useEffect(() => {
+    setSubTotal(quantity * product?.price);
+  }, [quantity, product]);
+
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
   };
 
-  const handleShowVideo = () => setVideoVisible(true);
-  const handleCloseVideo = () => setVideoVisible(false); // Hide video
-  // const resetFilters = () => {
-  //   // setCategory("");
-  //   setUnit("in");
-  //   setSelectedDimension("");
-  //   setCustomLength("");
-  //   setCustomBreadth("");
-  //   setThickness("");
-  // };
-
+  if (
+    product &&
+    Array.isArray(product.specification) &&
+    product.specification.length > 0
+  ) {
+  } else {
+    console.log("Specification is not available");
+  }
   const handleUnitChange = (e) => {
     setUnit(e.target.value);
     // setSelectedDimension("");
@@ -119,12 +127,11 @@ const SingleProductPage = () => {
 
   const handleCategoryChange = (value) => {
     setCategory(value);
-    // setSelectedDimension("");
   };
 
   const moveAr = () => {
     navigate("/ortholatex");
-    window.location.reload(); // This will refresh the page after navigation
+    window.location.reload();
   };
 
   const handleDimensionChange = (value) => {
@@ -236,25 +243,63 @@ const SingleProductPage = () => {
     backgroundColor: "var(--bgColor)",
   };
 
-  const [quantity, setQuantity] = useState(1);
-  const [subTotal, setSubTotal] = useState(0);
-  const { addToCart } = useContext(CartContext);
-  const { addToWishlist } = useContext(WishlistContext);
-  const { isAuthenticated } = useContext(AuthContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   console.log("addToWishlist", addToWishlist);
-  const navigate = useNavigate();
   const handleImageClick = (image) => {
     setSelectedImage(image);
   };
 
-  useEffect(() => {
-    setSubTotal(quantity * product?.price);
-  }, [quantity, product]);
-
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
   };
+  // const addItems = async (product, userId) => {
+  //   try {
+  //     // Increment product quantity by 1
+  //     const quantity = product.quantity + 1;
+
+  //     // Make an API call to update quantity
+  //     const updateQuantity = await axios.post(
+  //       `${import.meta.env.VITE_MY_API}user/updateCart/${userId}/${product.id}`,
+  //       {
+  //         id: product.id,
+  //         quantity,
+  //       }
+  //     );
+
+  //     console.log("Quantity updated successfully:", updateQuantity);
+  //     triggerCartUpdate();
+  //   } catch (error) {
+  //     console.error("Error updating quantity", error);
+  //   }
+  // };
+
+  // const removeItemCart = async (product, userId) => {
+  //   try {
+  //     // Decrement product quantity by 1
+  //     const newQuantity = product.quantity - 1;
+
+  //     if (newQuantity <= 0) {
+  //       // Call the delete item function if quantity is 0
+  //       await removeItem(product.id, userId);
+  //     } else {
+  //       // Update cart with new quantity
+  //       const updateQuantity = await axios.post(
+  //         `${import.meta.env.VITE_MY_API}user/updateCart/${userId}/${
+  //           product.id
+  //         }`,
+  //         {
+  //           id: product.id,
+  //           quantity: newQuantity,
+  //         }
+  //       );
+
+  //       console.log("Quantity updated successfully:", updateQuantity);
+  //       triggerCartUpdate();
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating quantity", error);
+  //   }
+  // };
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -509,18 +554,65 @@ const SingleProductPage = () => {
             </button>
             <span>{quantity}</span>
             <button
-              disabled={quantity_stock <= quantity}
               onClick={() => handleQuantityChange(quantity + 1)}
+              disabled={quantity_stock <= quantity}
             >
               +
             </button>
           </div>
           {isAuthenticated ? (
             <div className="buttons">
-              {quantity_stock > 0 && (
+              {cartdata?.items?.find(
+                (item) => Number(item.productId) === Number(product?.productId)
+              ) ? (
+                <Button>
+                  <Link
+                    to="/cart"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    In Cart &nbsp;
+                    <FontAwesomeIcon icon={faCartPlus} />
+                  </Link>
+                </Button>
+              ) : (
+                quantity_stock > 0 && (
+                  <Button
+                    handleClick={() =>
+                      addToCart({
+                        productId,
+                        images,
+                        title,
+                        price,
+                        quantity_stock,
+                        quantity,
+                        subTotal,
+                        unit,
+                        categorz,
+                        selectedDimension,
+                        thickness,
+                      })
+                    }
+                  >
+                    Add to Cart
+                  </Button>
+                )
+              )}
+              {whishlistData?.items?.find(
+                (item) => Number(item.productId) === Number(product?.productId)
+              ) ? (
+                <Button>
+                  <Link
+                    style={{ textDecoration: "none", color: "inherit" }}
+                    to="/wishlist"
+                  >
+                    <FaHeartCircleCheck />
+                  </Link>
+                </Button>
+              ) : (
+                // <p>In Whishlist</p>
                 <Button
                   handleClick={() =>
-                    addToCart({
+                    addToWishlist({
                       productId,
                       images,
                       title,
@@ -528,31 +620,12 @@ const SingleProductPage = () => {
                       quantity_stock,
                       quantity,
                       subTotal,
-                      unit,
-                      categorz,
-                      selectedDimension,
-                      thickness,
                     })
                   }
                 >
-                  Add to Cart
+                  <FontAwesomeIcon icon={faHeart} />
                 </Button>
               )}
-              <Button
-                handleClick={() =>
-                  addToWishlist({
-                    productId,
-                    images,
-                    title,
-                    price,
-                    quantity_stock,
-                    quantity,
-                    subTotal,
-                  })
-                }
-              >
-                <FontAwesomeIcon icon={faHeart} />
-              </Button>
             </div>
           ) : (
             <Button className="my-3" handleClick={() => navigate("/userlogin")}>

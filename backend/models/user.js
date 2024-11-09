@@ -18,18 +18,21 @@ const userSchema = new Schema({
   Carts: [
     {
       productId: { type: String },
+      images: { type: [String], default: [] },
       title: { type: String, required: true },
       price: { type: String, required: true },
-      quantity: { type: String },
+      quantity: { type: Number },
       subTotal: { type: String },
+      quantity_stock: { type: String, required: true },
     },
   ],
   Whishlist: [
     {
       productId: { type: String },
+      images: { type: [String], default: [] },
       title: { type: String, required: true },
       price: { type: String, required: true },
-      quantity: { type: String },
+      quantity: { type: Number },
       subTotal: { type: String },
     },
   ],

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import CartContent from "../components/cart/CartContent";
 import { useContext, useEffect, useState } from "react";
@@ -8,12 +8,12 @@ import CartTotal from "../components/cart/CartTotal";
 import Breadcrumb from "../components/Breadcrumb";
 import styled from "styled-components";
 import { DashboardContext } from "../context/DashboardContext";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { Modal } from "antd";
+import axios from "axios";
 const { confirm } = Modal;
 
 const Wrapper = styled.article`
@@ -27,16 +27,16 @@ const Wrapper = styled.article`
 const Cart = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useContext(AuthContext);
-  const { clearCart } = useContext(CartContext);
+  const { clearCart, removeItem } = useContext(CartContext);
   const { cartdata } = useContext(DashboardContext);
-  const { whishlistData } = useContext(DashboardContext);
 
   const [cd, setCd] = useState([]);
   const [total, setTotal] = useState(0);
   const [totalItems, setTotalItems] = useState("");
-  const { removeItem } = useContext(CartContext);
-
-  console.log("whishlistData", whishlistData);
+  const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = useState([]);
+  const [cartdata1, setCartdata] = useState("");
+  console.log("productxz", cd);
   useEffect(() => {
     if (cartdata) {
       setCd(cartdata.items);
@@ -90,6 +90,118 @@ const Cart = () => {
       },
     });
   };
+
+  // const handleQuantityChange = (newQuantity) => {
+  //   setQuantity(newQuantity);
+  // };
+  // const handleQuantityChange = async (item, newQuantity) => {
+  //   if (newQuantity > 0 && newQuantity <= item.quantity_stock) {
+  //     setCd((prevCd) =>
+  //       prevCd.map((cartItem) =>
+  //         cartItem.productId === item.productId
+  //           ? { ...cartItem, quantity: newQuantity }
+  //           : cartItem
+  //       )
+  //     );
+  //     const userId = localStorage.getItem("id");
+  //     await axios
+  //       .post(
+  //         `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${
+  //           item.productId
+  //         }`,
+  //         {
+  //           quantity: newQuantity,
+  //         }
+  //       )
+  //       .then((res) => {
+  //         Swal.fire({
+  //           icon: "success",
+  //           title: "Item Update ",
+  //           showConfirmButton: false,
+  //           timer: 1500,
+  //         });
+  //         console.log("Quantity updated on backend");
+  //       })
+
+  //       .catch((error) => {
+  //         console.error("Error updating quantity on backend:", error);
+  //       });
+  //   }
+  // };
+
+  const handleQuantityChange = async (item, newQuantity) => {
+    if (newQuantity > 0 && newQuantity <= item.quantity_stock) {
+      try {
+        setCd((prevCd) =>
+          prevCd.map((cartItem) =>
+            cartItem.productId === item.productId
+              ? { ...cartItem, quantity: newQuantity }
+              : cartItem
+          )
+        );
+
+        const userId = localStorage.getItem("id");
+        console.log(
+          "Sending request to:",
+          `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${
+            item.productId
+          }`
+        );
+
+        const response = await axios.put(
+          `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${
+            item.productId
+          }`,
+          { quantity: newQuantity },
+          { timeout: 5000 }
+        );
+
+        console.log("response", response);
+
+        Swal.fire({
+          icon: "success",
+          title: "Item Updated",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        console.log("Quantity updated on backend:", response.data);
+      } catch (error) {
+        console.error("Error updating quantity on backend:", error);
+      }
+    }
+  };
+
+  const Wrapper = styled.main`
+    .quantity-toggle {
+      display: flex;
+      align-items: center;
+
+      button {
+        padding: 0.5rem 1rem;
+        margin: 0 0.25rem;
+        font-size: 1rem;
+        cursor: pointer;
+        background-color: ${(props) => props.theme.mainColor};
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        outline: none;
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+
+      span {
+        margin: 0 0.5 rem;
+        font-weight: bold;
+        font-size: 20px;
+        justify-content: center !important;
+      }
+    }
+  `;
+
   return (
     <>
       <Breadcrumb />
@@ -107,37 +219,56 @@ const Cart = () => {
           )}
           <hr />
           {cd.length > 0 ? (
-            cd.map((item) => (
-              <Wrapper className="row">
-                <div className="title col-md-3 col-4 ">
-                  <img src={item.image} alt={item.title} />{" "}
-                  <br className="d-block d-md-none" />
-                  <div style={{ width: "200px" }}>
-                    <h5 className="name">{item.title}</h5>
-                    {/* <h5 className="price d-block d-md-none">{price} MADG</h5> */}
+            cd.map((item, index) => (
+              <Wrapper className="row" key={index}>
+                <div className="title col-md-3 col-4 d-flex align-items-center">
+                  <img
+                    src={item.images[0]}
+                    alt={item.title}
+                    style={{ width: "100px" }}
+                  />
+                  <div style={{ width: "200px", textAlign: "center" }}>
+                    <h6 className="name">{item.title}</h6>
                   </div>
                 </div>
-                <h5 className="price d-none d-md-block col">
+                <h7 className="price d-none d-md-block col align-content-center">
                   <FaIndianRupeeSign />
                   {item.price}
-                </h5>
-                <div className="amount d-none d-md-block col">
-                  <h5 className="quantity ms-4">{item.quantity}</h5>
+                </h7>
+                <div className="amount d-none d-md-block col align-content-center">
+                  <div className="quantity-toggle">
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item, item.quantity - 1)
+                      }
+                      disabled={item.quantity === 1}
+                    >
+                      -
+                    </button>
+                    <center>
+                      {" "}
+                      <span className="quantity m-2">{item.quantity}</span>
+                    </center>
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item, item.quantity + 1)
+                      }
+                      disabled={item.quantity_stock <= item.quantity}
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
-                <h5 className="subtotal col-4 col-md">
+                <h7 className="subtotal col-4 col-md align-content-center">
                   <FaIndianRupeeSign />
                   {item.price * item.quantity}
-                  {/* {selectedDimension}
-        {categorz}
-        {thickness}
-        {unit} */}
-                </h5>
+                </h7>
                 <div
+                  className="remove-btn col-4 col-md text-danger align-content-center"
                   style={{ cursor: "pointer" }}
-                  className="remove-btn col-4 col-md"
                   onClick={() => handleDelete(item)}
                 >
-                  <FontAwesomeIcon className="text-danger" icon={faTrash} />
+                  <FontAwesomeIcon icon={faTrash} />
                 </div>
               </Wrapper>
             ))
@@ -146,6 +277,7 @@ const Cart = () => {
               Your Cart is Empty!
             </h5>
           )}
+
           <hr />
           <div className="d-flex justify-content-between">
             <Button handleClick={() => navigate("/products")}>
