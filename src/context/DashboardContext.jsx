@@ -9,6 +9,8 @@ export const DashboardProvider = ({ children }) => {
   // const [neworder, setnewOrder] = useState([]);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+  console.log("productszs", products);
+
   const userID = localStorage.getItem("id");
   const [cartdata, setCartdata] = useState({ items: [] });
   const [whishlistData, setwhishlistData] = useState({ items: [] });
