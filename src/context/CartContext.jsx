@@ -5,6 +5,7 @@ import { AuthContext } from "./AuthContext";
 import Swal from "sweetalert2";
 import { DashboardContext } from "../context/DashboardContext";
 import { useNavigate } from "react-router-dom";
+import { message } from "antd";
 
 // Create the Cart Context
 export const CartContext = createContext();
@@ -16,7 +17,11 @@ export const CartProvider = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
   const [total, setTotal] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
-  const { fetchCart } = useContext(DashboardContext);
+  const { fetchCart, cartdata } = useContext(DashboardContext);
+  console.log("cartdata", cartdata);
+  const [currentCart, setCurrentCart] = useState([]);
+  console.log("currentCarzt", currentCart);
+
   const addToCart = async (item) => {
     const userID = localStorage.getItem("id");
 
@@ -38,6 +43,7 @@ export const CartProvider = ({ children }) => {
             thickness: item.thickness,
           },
         })
+
         .then((res) => {
           const fetchedCart = res.data.user.Carts;
           setCart((prevCart) => ({
@@ -137,6 +143,7 @@ export const CartProvider = ({ children }) => {
   }, [userID, isAuthenticated]);
 
   // Calculate total
+
   useEffect(() => {
     const total = cart.items.reduce((sum, item) => {
       return sum + item.price * item.quantity;

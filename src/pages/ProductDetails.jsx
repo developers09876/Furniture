@@ -5,6 +5,7 @@ import axios from "axios";
 import Spinner from "../components/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { IoMdClose } from "react-icons/io";
 import { FaChevronDown } from "react-icons/fa";
@@ -13,6 +14,7 @@ import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
 import { WishlistContext } from "../context/WishlistContext";
 import Breadcrumb from "../components/Breadcrumb";
+import { FaHeartCircleCheck } from "react-icons/fa6";
 import img1 from "../assets/sofa.jpg";
 import img2 from "../assets/chair.jpg";
 import img3 from "../assets/bed.jpg";
@@ -37,34 +39,17 @@ import { ImYoutube } from "react-icons/im";
 import { IoIosArrowForward } from "react-icons/io";
 const { Group: RadioGroup, Button: RadioButton } = Radio;
 import "../Css-Pages/HomeCard.css";
+import { DashboardContext } from "../context/DashboardContext";
 import { faHeart as faHeartEmpty } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as faHeartFilled } from "@fortawesome/free-solid-svg-icons";
 // import "../Css-Pages/WallBackground.css";
 
 const SingleProductPage = () => {
-  const settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-  };
-
-  const { productID } = useParams();
-  const [product, setProduct] = useState([]);
-  if (
-    product &&
-    Array.isArray(product.specification) &&
-    product.specification.length > 0
-  ) {
-  } else {
-    console.log("Specification is not available");
-  }
   const [selectedImage, setSelectedImage] = useState(null);
   // const [images, setImages] = useState([img1, img2, img3, Amenity, Amenity_ET]);
   const [images, setImages] = useState([]);
   const [show, setShow] = useState(false);
   const [showPic, setShowPic] = useState(false);
-
   const [showVideo, setShowVideo] = useState(false);
   const [unit, setUnit] = useState("in");
   const [categorz, setCategory] = useState("Single");
@@ -74,9 +59,34 @@ const SingleProductPage = () => {
   const [customBreadth, setCustomBreadth] = useState("");
   const [hover, setHover] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const [subTotal, setSubTotal] = useState(0);
+  const { addToCart, removeItem } = useContext(CartContext);
+  const [orders, setOrders] = useState([]);
+  const { addToWishlist } = useContext(WishlistContext);
+  const { isAuthenticated } = useContext(AuthContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
   const { total } = useContext(WishlistContext);
 
+  const handleShowVideo = () => setVideoVisible(true);
+  const handleCloseVideo = () => setVideoVisible(false); // Hide video
+  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setShow(false);
+    resetFilters();
+  };
+  const handleShowPic = () => setShowPic(true);
+  const handleClosePic = () => {
+    setShowPic(false);
+    resetFilters();
+  };
+  const { productID } = useParams();
+  const { cartdata, whishlistData } = useContext(DashboardContext);
+  console.log("cartdatax", cartdata.items);
 
+  const [product, setProduct] = useState([]);
+  console.log("productzx", product);
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -94,28 +104,26 @@ const SingleProductPage = () => {
     // Ensure productID is passed here
     fetchProduct();
   }, [productID]);
-  const handleShow = () => setShow(true);
-  const handleClose = () => {
-    setShow(false);
-    resetFilters();
-  };
-  const handleShowPic = () => setShowPic(true);
-  const handleClosePic = () => {
-    setShowPic(false);
-    resetFilters();
+
+  useEffect(() => {
+    setSubTotal(quantity * product?.price);
+  }, [quantity, product]);
+
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
   };
 
-  const handleShowVideo = () => setVideoVisible(true);
-  const handleCloseVideo = () => setVideoVisible(false); // Hide video
-  // const resetFilters = () => {
-  //   // setCategory("");
-  //   setUnit("in");
-  //   setSelectedDimension("");
-  //   setCustomLength("");
-  //   setCustomBreadth("");
-  //   setThickness("");
-  // };
-
+  if (
+    product &&
+    Array.isArray(product.specification) &&
+    product.specification.length > 0
+  ) {
+  } else {
+    console.log("Specification is not available");
+  }
   const handleUnitChange = (e) => {
     setUnit(e.target.value);
     // setSelectedDimension("");
@@ -123,12 +131,11 @@ const SingleProductPage = () => {
 
   const handleCategoryChange = (value) => {
     setCategory(value);
-    // setSelectedDimension("");
   };
 
   const moveAr = () => {
     navigate("/ortholatex");
-    window.location.reload(); // This will refresh the page after navigation
+    window.location.reload();
   };
 
   const handleDimensionChange = (value) => {
@@ -238,7 +245,6 @@ const SingleProductPage = () => {
   const card_help = {
     width: "100%",
     backgroundColor: "var(--bgColor)",
-
   };
   // const [isInWishlist, setIsInWishlist] = useState(false);
   // const checkWishlist = async () => {
@@ -253,26 +259,63 @@ const SingleProductPage = () => {
   //   checkWishlist();  // Check wishlist status when component mounts
   // }, [product.id, userId]);
 
-  const [quantity, setQuantity] = useState(1);
-  const [subTotal, setSubTotal] = useState(0);
-  const { addToCart } = useContext(CartContext);
-  const { addToWishlist } = useContext(WishlistContext);
-  const [orders, setOrders] = useState([]);
-  const { isAuthenticated } = useContext(AuthContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   console.log("addToWishlist", addToWishlist);
-  const navigate = useNavigate();
   const handleImageClick = (image) => {
     setSelectedImage(image);
   };
 
-  useEffect(() => {
-    setSubTotal(quantity * product?.price);
-  }, [quantity, product]);
-
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
   };
+  // const addItems = async (product, userId) => {
+  //   try {
+  //     // Increment product quantity by 1
+  //     const quantity = product.quantity + 1;
+
+  //     // Make an API call to update quantity
+  //     const updateQuantity = await axios.post(
+  //       `${import.meta.env.VITE_MY_API}user/updateCart/${userId}/${product.id}`,
+  //       {
+  //         id: product.id,
+  //         quantity,
+  //       }
+  //     );
+
+  //     console.log("Quantity updated successfully:", updateQuantity);
+  //     triggerCartUpdate();
+  //   } catch (error) {
+  //     console.error("Error updating quantity", error);
+  //   }
+  // };
+
+  // const removeItemCart = async (product, userId) => {
+  //   try {
+  //     // Decrement product quantity by 1
+  //     const newQuantity = product.quantity - 1;
+
+  //     if (newQuantity <= 0) {
+  //       // Call the delete item function if quantity is 0
+  //       await removeItem(product.id, userId);
+  //     } else {
+  //       // Update cart with new quantity
+  //       const updateQuantity = await axios.post(
+  //         `${import.meta.env.VITE_MY_API}user/updateCart/${userId}/${
+  //           product.id
+  //         }`,
+  //         {
+  //           id: product.id,
+  //           quantity: newQuantity,
+  //         }
+  //       );
+
+  //       console.log("Quantity updated successfully:", updateQuantity);
+  //       triggerCartUpdate();
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating quantity", error);
+  //   }
+  // };
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -296,77 +339,6 @@ const SingleProductPage = () => {
     quantity_stock,
   } = product;
 
-  // const addToWishlist = async (item) => {
-  //   console.log("itemwhislist", item);
-  //   try {
-  //     if (isAuthenticated) {
-  //       const response = await axios.post(
-  //         `${import.meta.env.VITE_MY_API}user/createWhishlist`,
-  //         {
-  //           id: userID,
-  //           cartItem: {
-  //             productId: item.productId,
-  //             images: item.images,
-  //             title: item.title,
-  //             price: item.price,
-  //             quantity_stock: item.quantity_stock,
-  //             quantity: item.quantity,
-  //             subTotal: item.subTotal,
-  //             unit: item.unit,
-  //             category: item.category,
-  //             selectedDimension: item.selectedDimension,
-  //             thickness: item.thickness,
-  //           },
-  //         }
-  //       );
-  //       const fetchedCart = response.data.user.Carts;
-  //       setCart((prevCart) => ({
-  //         ...prevCart,
-  //         items: fetchedCart,
-  //       }));
-
-  //       const itemExists = wishlist.items.some(
-  //         (wishlistItem) => wishlistItem.id === item.productId
-  //       );
-
-  //       if (itemExists) {
-  //         Swal.fire({
-  //           icon: "info",
-  //           title: "Item already in wishlist",
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         });
-  //       } else {
-  //         const updatedWishlist = {
-  //           ...wishlist,
-  //           user_id: userID,
-  //           items: [...wishlist.items, { ...item }],
-  //         };
-
-  //         const response = await axios.put(
-  //           `${import.meta.env.VITE_MY_API}wishlists/${userID}`,
-  //           updatedWishlist
-  //         );
-  //         const fetchedWishlist = response.data;
-  //         // setWishlist(fetchedWishlist);
-  //         // setTotal(fetchedWishlist.items.length);
-  //         setWishlist(updatedWishlist);
-  //         setTotal(updatedWishlist.items.length);
-  //         Swal.fire({
-  //           icon: "success",
-  //           title: "Item added to wishlist",
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         });
-  //       }
-  //     } else {
-  //       console.error("User wishlist is not available");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error adding item to wishlist:", error);
-  //   }
-  // };
-
   return (
     <Wrapper className="container section-center page">
       <Breadcrumb />
@@ -388,8 +360,9 @@ const SingleProductPage = () => {
                 alt={title}
                 width="100%"
                 onClick={() => handleImageClick(img)}
-                className={`album-thumbnail ${img === selectedImage ? "active" : ""
-                  } mb-2`}
+                className={`album-thumbnail ${
+                  img === selectedImage ? "active" : ""
+                } mb-2`}
               />
             ))}
           </div>
@@ -517,26 +490,75 @@ const SingleProductPage = () => {
             )}
           </div>
           <div className="quantity-toggle">
-            <button
+            <Button
               onClick={() => handleQuantityChange(quantity - 1)}
               disabled={quantity === 1}
             >
               -
-            </button>
+            </Button>
             <span>{quantity}</span>
             <button
-              disabled={quantity_stock <= quantity}
               onClick={() => handleQuantityChange(quantity + 1)}
+              disabled={quantity_stock <= quantity}
             >
               +
             </button>
           </div>
           {isAuthenticated ? (
             <div className="buttons">
-              {quantity_stock > 0 && (
+              {cartdata?.items?.find(
+                (item) => Number(item.productId) === Number(product?.productId)
+              ) ? (
+                <Button>
+                  <Link
+                    to="/cart"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    In Cart &nbsp;
+                    <FontAwesomeIcon icon={faCartPlus} />
+                  </Link>
+                </Button>
+              ) : (
+                quantity_stock > 0 && (
+                  <Button
+                    className="m-1"
+                    handleClick={() =>
+                      addToCart({
+                        productId,
+                        images,
+                        title,
+                        price,
+                        quantity_stock,
+                        quantity,
+                        subTotal,
+                        unit,
+                        categorz,
+                        selectedDimension,
+                        thickness,
+                      })
+                    }
+                  >
+                    Add to Cart
+                  </Button>
+                )
+              )}
+              {whishlistData?.items?.find(
+                (item) => Number(item.productId) === Number(product?.productId)
+              ) ? (
+                <Button className="m-3">
+                  <Link
+                    style={{ textDecoration: "none", color: "inherit" }}
+                    to="/wishlist"
+                  >
+                    <FaHeartCircleCheck />
+                  </Link>
+                </Button>
+              ) : (
+                // <p>In Whishlist</p>
                 <Button
+                  className="m-3"
                   handleClick={() =>
-                    addToCart({
+                    addToWishlist({
                       productId,
                       images,
                       title,
@@ -544,39 +566,12 @@ const SingleProductPage = () => {
                       quantity_stock,
                       quantity,
                       subTotal,
-                      unit,
-                      categorz,
-                      selectedDimension,
-                      thickness,
                     })
                   }
                 >
-                  Add to Cart
+                  <FontAwesomeIcon icon={faHeart} />
                 </Button>
               )}
-              <Button
-                handleClick={() =>
-                  addToWishlist({
-                    productId,
-                    images,
-                    title,
-                    price,
-                    quantity_stock,
-                    quantity,
-                    subTotal,
-                  })
-                }
-              >
-                <FontAwesomeIcon
-                  icon={total > 0 ? faHeartFilled : faHeartEmpty}
-                  style={{
-                    height: "18px",
-                    color: total > 0 ? "red" : "#1D1D1D",
-                    transition: "color 0.3s ease",
-                  }}
-                />
-
-              </Button>
             </div>
           ) : (
             <Button className="my-3" handleClick={() => navigate("/userlogin")}>
@@ -618,10 +613,10 @@ const SingleProductPage = () => {
 
                           <p>
                             {product &&
-                              Array.isArray(product.specifications) &&
-                              product.specifications.length > 0
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
                               ? product.specifications[0]?.product_Details
-                                ?.feel || "N/A"
+                                  ?.feel || "N/A"
                               : "Specification is not available"}
                           </p>
                         </Col>
@@ -641,10 +636,10 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {product &&
-                                Array.isArray(product.specifications) &&
-                                product.specifications.length > 0
+                              Array.isArray(product.specifications) &&
+                              product.specifications.length > 0
                                 ? product.specifications[0]?.product_Details
-                                  ?.cover_Type || "N/A"
+                                    ?.cover_Type || "N/A"
                                 : "specifications is not available"}
                             </p>
                           </div>
@@ -667,10 +662,10 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {product &&
-                                Array.isArray(product.specifications) &&
-                                product.specifications.length > 0
+                              Array.isArray(product.specifications) &&
+                              product.specifications.length > 0
                                 ? product.specifications[0]?.product_Details
-                                  ?.cover_Material || "N/A"
+                                    ?.cover_Material || "N/A"
                                 : "specifications is not available"}
                             </p>
                           </div>
@@ -691,10 +686,10 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {product &&
-                                Array.isArray(product.specifications) &&
-                                product.specifications.length > 0
+                              Array.isArray(product.specifications) &&
+                              product.specifications.length > 0
                                 ? product.specifications[0]?.product_Details
-                                  ?.Usability || "N/A"
+                                    ?.Usability || "N/A"
                                 : "specifications is not available"}
                             </p>
                           </div>
@@ -717,10 +712,10 @@ const SingleProductPage = () => {
 
                           <p>
                             {product &&
-                              Array.isArray(product.specifications) &&
-                              product.specifications.length > 0
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
                               ? product.specifications[0]?.product_Details
-                                ?.cover_Type || "N/A"
+                                  ?.cover_Type || "N/A"
                               : "specifications is not available"}
                           </p>
                         </Col>
@@ -728,16 +723,16 @@ const SingleProductPage = () => {
                     </Col>
                     <Col sm={12} md={12}>
                       {product &&
-                        Array.isArray(product.specifications) &&
-                        product.specifications.length > 0
+                      Array.isArray(product.specifications) &&
+                      product.specifications.length > 0
                         ? product.specifications[0]?.product_Details?.dynamicFields?.map(
-                          (fields) => (
-                            <Col sm={12} md={12}>
-                              <h5>{fields?.title || "N/A"}</h5>
-                              <p>{fields.description || "N/A"}</p>
-                            </Col>
-                          )
-                        ) || "N/A"
+                            (fields) => (
+                              <Col sm={12} md={12}>
+                                <h5>{fields?.title || "N/A"}</h5>
+                                <p>{fields.description || "N/A"}</p>
+                              </Col>
+                            )
+                          ) || "N/A"
                         : "specifications is not available"}
 
                       {/* <p>
@@ -849,10 +844,10 @@ const SingleProductPage = () => {
 
                           <p>
                             {product &&
-                              Array.isArray(product.specifications) &&
-                              product.specifications.length > 0
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
                               ? product.specifications[0]?.product_Dimension
-                                ?.thickness || "N/A"
+                                  ?.thickness || "N/A"
                               : "specifications is not available"}
                           </p>
                         </Col>
@@ -875,10 +870,10 @@ const SingleProductPage = () => {
                           </div>
                           <p>
                             {product &&
-                              Array.isArray(product.specifications) &&
-                              product.specifications.length > 0
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
                               ? product.specifications[0]?.product_Dimension
-                                ?.dimensions || "N/A"
+                                  ?.dimensions || "N/A"
                               : "specifications is not available"}
                           </p>
                         </Col>
@@ -910,10 +905,10 @@ const SingleProductPage = () => {
                           </div>
                           <p>
                             {product &&
-                              Array.isArray(product.specifications) &&
-                              product.specifications.length > 0
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
                               ? product.specifications[0]?.product_Policies
-                                ?.Warranty || "N/A"
+                                  ?.Warranty || "N/A"
                               : "specifications is not available"}
                           </p>
                         </Col>
@@ -935,10 +930,10 @@ const SingleProductPage = () => {
                           </div>
                           <p>
                             {product &&
-                              Array.isArray(product.specifications) &&
-                              product.specifications.length > 0
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
                               ? product.specifications[0]?.product_Policies
-                                ?.Shipping || "N/A"
+                                  ?.Shipping || "N/A"
                               : "specifications is not available"}
                           </p>
                         </Col>
@@ -964,10 +959,10 @@ const SingleProductPage = () => {
 
                           <p>
                             {product &&
-                              Array.isArray(product.specifications) &&
-                              product.specifications.length > 0
+                            Array.isArray(product.specifications) &&
+                            product.specifications.length > 0
                               ? product.specifications[0]?.product_Policies
-                                ?.trial || "N/A"
+                                  ?.trial || "N/A"
                               : "specifications is not available"}
                           </p>
                         </Col>
@@ -1089,8 +1084,9 @@ const SingleProductPage = () => {
                         alt={title}
                         width="100%"
                         onClick={() => handleImageClick(img)}
-                        className={` ${img === selectedImage ? "active" : ""
-                          } mb-2`}
+                        className={` ${
+                          img === selectedImage ? "active" : ""
+                        } mb-2`}
                       />
                     </Col>
                   </>
@@ -1227,8 +1223,8 @@ const SingleProductPage = () => {
               <button
                 onClick={handleConfirmVariant}
                 style={buttonStyle}
-              // onMouseEnter={() => setHover(true)}
-              // onMouseLeave={() => setHover(false)}
+                // onMouseEnter={() => setHover(true)}
+                // onMouseLeave={() => setHover(false)}
               >
                 Confirm Variant
               </button>
@@ -1259,15 +1255,10 @@ const Wrapper = styled.main`
     height: auto;
     border: 1px solid ${(props) => props.theme.borderColor};
     border-radius: 15px;
-      transition: transform 0.3s ease;
+    transition: transform 0.3s ease;
   }
-      .product-image:hover {
-  transform: scale(1.1);
-  .product-container {
-  position: relative;
-  overflow: hidden;
-}
-.content {
+
+  .content {
     h2 {
       color: ${(props) => props.theme.mainColor};
     }
@@ -1295,12 +1286,6 @@ const Wrapper = styled.main`
         color: ${(props) => props.theme.textColor};
       }
     }
-
-    .buttons {
-      margin-top: 1rem;
-      button {
-        margin-right: 1rem;
-      }
     }
     .quantity-toggle {
       display: flex;

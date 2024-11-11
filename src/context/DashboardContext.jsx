@@ -23,29 +23,6 @@ export const DashboardProvider = ({ children }) => {
   }, []);
 
   const fetchData = async () => {
-    // try {
-    //   const usersResponse = await axios.get("http://localhost:3000/users");
-    //   setUsers(usersResponse.data);
-
-    //   const ordersResponse = await axios.get("http://localhost:3000/orders");
-    //   setOrders(ordersResponse.data);
-
-    //   const categoriesResponse = await axios.get(
-    //     "http://localhost:3000/categories"
-    //   );
-    //   setCategories(categoriesResponse.data);
-
-    //   const productsResponse = await axios.get(
-    //     "http://localhost:3000/products"
-    //   );
-    //   setProducts(productsResponse.data);
-    // } catch (error) {
-    //   // showAlert('error', 'Error', 'Error while fetching data')
-    // }
-
-    // Fetch the cart data once on component mount
-    //cart
-
     //user
     axios
       .get(`${import.meta.env.VITE_MY_API}user/get`)
@@ -83,13 +60,16 @@ export const DashboardProvider = ({ children }) => {
       .get(`${import.meta.env.VITE_MY_API}user/getCart/${userID}`)
       .then((res) => {
         const fetchedCart = res.data;
+        console.log("fetchedCartzx", fetchedCart.items);
         setCartdata(fetchedCart || { items: [] });
+        return fetchedCart;
       })
       .catch((error) => {
         console.error("Error fetching cart:", error);
         setCartdata({ items: [] });
       });
   };
+
   const fetchWhishlist = async () => {
     axios
       .get(`${import.meta.env.VITE_MY_API}user/getWhishlist/${userID}`)
