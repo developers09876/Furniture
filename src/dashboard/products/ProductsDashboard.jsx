@@ -114,22 +114,27 @@ const ProductDashboard = () => {
         {
           product_Details: {
             feel: editingUser.specifications?.[0]?.product_Details?.feel || "",
-            cover_type:
-              editingUser.specifications?.[0]?.product_Details?.cover_type ||
+            cover_Type:
+              editingUser.specifications?.[0]?.product_Details?.cover_Type ||
               "",
-            cover_material:
+            cover_Material:
               editingUser.specifications?.[0]?.product_Details
-                ?.cover_material || "",
-            mattress_type:
-              editingUser.specifications?.[0]?.product_Details?.mattress_type ||
+                ?.cover_Material || "",
+            matress_Type:
+              editingUser.specifications?.[0]?.product_Details?.matress_Type ||
               "",
+            Usability:
+              editingUser.specifications?.[0]?.product_Details?.Usability || "",
 
-            // Map over dynamicFields to create an array of title and description objects
             dynamicFields:
               editingUser.specifications?.[0]?.product_Details?.dynamicFields?.map(
                 (field) => ({
-                  title: field.title || "",
-                  description: field.description || "",
+                  title:
+                    editingUser.specifications?.[0]?.product_Details?.field?.[0]
+                      ?.title || "",
+                  description:
+                    editingUser.specifications?.[0]?.product_Details?.field?.[0]
+                      ?.description || "",
                 })
               ) || [],
           },
@@ -137,18 +142,20 @@ const ProductDashboard = () => {
             dimensions:
               editingUser.specifications?.[0]?.product_Dimension?.dimensions ||
               "",
+            thickness:
+              editingUser.specifications?.[0]?.product_Dimension?.thickness ||
+              "",
           },
           product_Policies: {
             Warranty:
               editingUser.specifications?.[0]?.product_Policies?.Warranty || "",
-            shipping:
-              editingUser.specifications?.[0]?.product_Policies?.shipping || "",
-            trial_details:
+            Shipping:
+              editingUser.specifications?.[0]?.product_Policies?.Shipping || "",
+            trial:
+              editingUser.specifications?.[0]?.product_Policies?.trial || "",
+            available_Offers:
               editingUser.specifications?.[0]?.product_Policies
-                ?.trial_details || "",
-            available_offers:
-              editingUser.specifications?.[0]?.product_Policies
-                ?.available_offers || "",
+                ?.available_Offers || "",
           },
         },
       ],
