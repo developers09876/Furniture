@@ -23,24 +23,23 @@ const ProductDashboard = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState([]);
   const [product, setProduct] = useState([]);
-  console.log("editingUser", editingUser)
-
+  console.log("editingUser", editingUser);
 
   // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
   const { users, orders, products, fetchData } = useContext(DashboardContext);
   const deleteRecordFromAPI = async (id) => {
     try {
-      await axios.delete(
-        `${import.meta.env.VITE_MY_API}products/delete/${id}`
-      ).then(() => {
-        fetchUsersData();
+      await axios
+        .delete(`${import.meta.env.VITE_MY_API}products/delete/${id}`)
+        .then(() => {
+          fetchUsersData();
 
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: "User has been deleted successfully.",
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: "User has been deleted successfully.",
+          });
         });
-      })
     } catch (error) {
       console.error("Error deleting product:", error);
       Swal.fire({
@@ -121,8 +120,9 @@ const ProductDashboard = () => {
         Swal.fire({
           icon: "success",
           title: "Updated!",
-          text: `Product ${editingUser.name || "Product"
-            } has been updated successfully.`,
+          text: `Product ${
+            editingUser.name || "Product"
+          } has been updated successfully.`,
         });
         setEditModalVisible(false);
       }
@@ -155,7 +155,6 @@ const ProductDashboard = () => {
       },
     });
   };
-
 
   return (
     <StyledProducts>
@@ -250,7 +249,9 @@ const ProductDashboard = () => {
           <label>Feel</label>
           <Input
             type="text"
-            value={editingUser?.specifications?.[0]?.product_Details?.feel || ''}
+            value={
+              editingUser?.specifications?.[0]?.product_Details?.feel || ""
+            }
             onChange={(e) =>
               setEditingUser({
                 ...editingUser,
@@ -294,12 +295,11 @@ const ProductDashboard = () => {
         <div style={{ marginBottom: "10px" }}>
           <label>Mattress Type:</label>
           <Input
-            value={editingUser?.
-              matress_Type}
+            value={editingUser?.matress_Type}
             onChange={(e) =>
               setEditingUser({
                 ...editingUser,
-                matress_Type: e.target.value
+                matress_Type: e.target.value,
               })
             }
             placeholder="Enter the mattress type"
@@ -398,7 +398,10 @@ const ProductDashboard = () => {
           <Input
             value={editingUser?.available_Offers}
             onChange={(e) =>
-              setEditingUser({ ...editingUser, available_Offers: e.target.value })
+              setEditingUser({
+                ...editingUser,
+                available_Offers: e.target.value,
+              })
             }
             placeholder="Enter available offers"
           />
@@ -413,7 +416,6 @@ const ProductDashboard = () => {
             placeholder="Enter trial details"
           />
         </div>
-
       </Modal>
     </StyledProducts>
   );
