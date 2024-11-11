@@ -1,10 +1,6 @@
 import { Carousel } from "react-bootstrap";
 import styled from "styled-components";
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
 const CarouselContainer = styled.div`
   .carousel-control-prev,
   .carousel-control-next {
@@ -16,30 +12,17 @@ const CarouselContainer = styled.div`
     justify-content: center;
     align-items: center;
     position: absolute;
-<<<<<<< HEAD
-    top: 50%; 
-    transform: translateY(-50%); 
-=======
     top: 50%;
     transform: translateY(-50%);
->>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
     opacity: 0.8;
   }
 
   .carousel-control-prev {
-<<<<<<< HEAD
-    left: 200px; 
-  }
-
-  .carousel-control-next {
-    right: 200px; 
-=======
     left: 200px;
   }
 
   .carousel-control-next {
     right: 200px;
->>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
   }
 `;
 
@@ -71,20 +54,11 @@ const Description = styled.p`
   margin-bottom: 1rem;
   max-width: 80%;
   text-align: center;
-<<<<<<< HEAD
-  justifyContent: center,
- 
-`;
-
-const Position = styled.h4`
-  color: #AC5FC1;
-=======
   justifycontent: center;
 `;
 
 const Position = styled.h4`
   color: #ac5fc1;
->>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
   font-size: 1.1rem;
   font-style: italic;
   margin-bottom: 0.5rem;
@@ -100,12 +74,8 @@ const AdditionalInfo = styled.p`
 const testimonials = [
   {
     title: "TESTIMONIALS",
-<<<<<<< HEAD
-    description: "I’m a testimonial,Click to edit me and add text that says something nice about you and your services.",
-=======
     description:
       "I’m a testimonial,Click to edit me and add text that says something nice about you and your services.",
->>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
     position: "Marketing Director",
     additionalInfo: "Rajan",
   },
@@ -117,33 +87,21 @@ const testimonials = [
   },
   {
     title: "TESTIMONIALS",
-<<<<<<< HEAD
-    description: "Vivamus luctus urna sed urna ultricies ac tempor dui sagittis",
-=======
     description:
       "Vivamus luctus urna sed urna ultricies ac tempor dui sagittis",
->>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
     position: "CEO",
     additionalInfo: "Gowtham",
   },
   {
     title: "TESTIMONIALS",
-<<<<<<< HEAD
-    description: "Pellentesque habitant morbi tristique senectus et netus et malesuada fames",
-=======
     description:
       "Pellentesque habitant morbi tristique senectus et netus et malesuada fames",
->>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
     position: "Developer",
     additionalInfo: "Ganesh",
   },
 ];
 
-<<<<<<< HEAD
-const Review = () => (
-=======
 const ReviewCards = () => (
->>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
   <CarouselContainer>
     <Carousel slide={true} interval={3000}>
       {testimonials.map((testimonial, index) => (
@@ -164,8 +122,4 @@ const ReviewCards = () => (
   </CarouselContainer>
 );
 
-<<<<<<< HEAD
-export default Review;
-=======
 export default ReviewCards;
->>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc

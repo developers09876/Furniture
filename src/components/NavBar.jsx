@@ -264,21 +264,9 @@ const NavBar = () => {
                   {/* ({isAuthenticated ? totalItems : 0}) */}
                 </Link>
               </li>
-<<<<<<< HEAD
               <li className="nav-item ms-2 mt-3 pt-1">
                 <Link to="/wishlist" style={{ color: "#1D1D1D", textDecoration: "none" }}>
                   <Badge size="small" count={isAuthenticated ? total : 0}>
-=======
-              <li className="nav-item ms-2 mt-3  pt-1">
-                <Link
-                  to="/wishlist"
-                  style={{ color: "#1D1D1D", textDecoration: "none" }}
-                >
-                  {/* <FontAwesomeIcon icon={faHeart} className="me-1" /> (
-                  {isAuthenticated ? total : 0}) */}
-
-                  <Badge size="small" count={isAuthenticated ? totalWhish : 0}>
->>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
                     <FontAwesomeIcon
                       icon={total > 0 ? faHeartFilled : faHeartEmpty}
                       style={{

@@ -132,16 +132,12 @@ const Contact = () => {
         });
       });
   };
-<<<<<<< HEAD
   useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   }, []);
-=======
-
->>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
   return (
     <>
       <Breadcrumb />
