@@ -22,6 +22,7 @@ const StyledProducts = styled.div`
 const ProductDashboard = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState([]);
+  console.log("editingUser", editingUser);
   const [product, setProduct] = useState([]);
   console.log("editingUser", editingUser);
 
@@ -107,6 +108,14 @@ const ProductDashboard = () => {
       description: editingUser.description,
       price: editingUser.price,
       category: editingUser.category,
+      // Specifications: [
+      //   ...editingUser.specifications?.[0],
+      //   product_Details,
+      //   {
+      //     ...editingUser.specifications?.[0]?.product_Details,
+      //     feel: editingUser.feel,
+      //   },
+      // ],
     };
 
     try {
@@ -249,17 +258,19 @@ const ProductDashboard = () => {
           <label>Feel</label>
           <Input
             type="text"
-            value={
-              editingUser?.specifications?.[0]?.product_Details?.feel || ""
-            }
+            value={editingUser?.offer || ""}
+            // value={
+            //   editingUser?.specifications?.[0]?.product_Details
+            //     ?.dynamicFields?.[0]?.title
+            // }
             onChange={(e) =>
               setEditingUser({
                 ...editingUser,
                 specifications: [
                   {
-                    ...editingUser.specifications[0],
+                    ...editingUser.specifications?.[0],
                     product_Details: {
-                      ...editingUser.specifications[0]?.product_Details,
+                      ...editingUser.specifications?.[0]?.product_Details,
                       feel: e.target.value,
                     },
                   },
