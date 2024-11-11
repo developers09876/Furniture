@@ -122,8 +122,4 @@ const ReviewCards = () => (
   </CarouselContainer>
 );
 
-<<<<<<< HEAD
 export default ReviewCards;
-=======
-export default ReviewCards;
->>>>>>> 3c598c84c34eccfc8afa1467c249398fced17d97

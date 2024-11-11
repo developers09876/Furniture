@@ -1,6 +1,5 @@
-// import Logo from "./Logo";
-import Logo1 from "../assets/Restopedic-logo.png";
-// C:\Users\TRIMATIS\Documents\furniture\Furniture\src\assets\Restopedic-logo.jpg
+import React, { useContext, useEffect, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,31 +7,21 @@ import {
   faRightFromBracket,
   faSearch,
   faUserPlus,
+  faHeart as faHeartEmpty,
+  faHeart as faHeartFilled,
 } from "@fortawesome/free-solid-svg-icons";
-
-import { CloseCircleOutlined, DownOutlined } from "@ant-design/icons";
-
+import { CloseCircleOutlined, DownOutlined, SearchOutlined } from "@ant-design/icons";
 import { Avatar, Badge, Space, Tooltip, Dropdown, Menu, Input } from "antd";
-
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
-
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import Button from "./Button";
-import { useContext, useEffect, useState } from "react";
+import { CgProfile } from "react-icons/cg";
+import Logo1 from "../assets/Restopedic-logo.png";
+import NavBar1 from "./NavBar1";
+import NavBar2 from "./NavBar2";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
-import NavBar1 from "./NavBar1";
-import NavBar2 from "./NavBar2";
-import { CgProfile } from "react-icons/cg";
+import { DashboardContext } from "../context/DashboardContext"; // Import DashboardContext here
 import "./../Css-Pages/Navbr.css";
 import axios from "axios";
-import { SearchOutlined } from "@ant-design/icons";
-import { log } from "three/webgpu";
-import { DashboardContext } from "../context/DashboardContext";
-import { faHeart as faHeartEmpty } from "@fortawesome/free-regular-svg-icons";
-import { faHeart as faHeartFilled } from "@fortawesome/free-solid-svg-icons";
-// import Products from "../pages/Products";
 
 // styles for links
 const StyledLink = styled(NavLink)`
@@ -43,112 +32,82 @@ const StyledLink = styled(NavLink)`
   }
 
   @media (max-width: 991.98px) {
-    /* Medium screens and below */
     border-bottom: none;
-
     &:hover {
       padding-left: 10px;
     }
   }
 `;
-const SearchIcon = styled(FontAwesomeIcon)`
-  position: absolute;
-  left: 20px;
-  top: 13px;
-  color: ${(props) => props.theme.mutedTextColor};
-`;
-const WishlistIcon = () => {
-  const { isAuthenticated } = useContext(AuthContext);
-  const { total } = useContext(WishlistContext);
-};
+
 const NavBar = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
-  console.log("filteredProducts", filteredProducts);
   const { products } = useContext(DashboardContext);
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
   const { total } = useContext(WishlistContext);
   const { cartdata, whishlistData } = useContext(DashboardContext);
-  const [totalItems, setTotalItems] = useState("");
-  const [totalWhish, setTotalWhish] = useState("");
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalWhish, setTotalWhish] = useState(0);
   const [username, setUsername] = useState("");
-  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   useEffect(() => {
-    const totalItems = cartdata.items.reduce((sum, item) => {
-      return sum + Number(item.quantity);
-    }, 0);
-
-    setTotalItems(totalItems);
+    const itemsCount = cartdata.items.reduce((sum, item) => sum + Number(item.quantity), 0);
+    setTotalItems(itemsCount);
   }, [cartdata]);
 
   useEffect(() => {
-    const totalWhishItems = whishlistData.items.reduce((sum, item) => {
-      return sum + Number(item.quantity);
-    }, 0);
-    setTotalWhish(totalWhishItems);
+    const wishlistCount = whishlistData.items.reduce((sum, item) => sum + Number(item.quantity), 0);
+    setTotalWhish(wishlistCount);
   }, [whishlistData]);
 
-  const navIconItem = {
-    width: "40px",
-    height: "22px",
-  };
-
-  const handleSearch = (e) => {
-    if (e) {
-      const valuesfilt = products.filter((search) =>
-        search.category.toLowerCase().includes(query)
-      );
-      setFilteredProducts(valuesfilt);
-    } else {
-      clearSearch(); // Clear if the query is empty
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("name");
+    if (storedUsername) {
+      const formattedUsername = storedUsername.charAt(0).toUpperCase() + storedUsername.slice(1);
+      setUsername(formattedUsername);
     }
+  }, [isAuthenticated]);
+
+  const handleSearch = () => {
+    const filtered = products.filter((product) =>
+      product.category.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredProducts(filtered);
   };
 
-  const clearSearch = (e) => {
+  const clearSearch = () => {
     setQuery("");
     setFilteredProducts([]);
   };
 
   const onSearchChange = (e) => {
-    const query = e.target.value;
-    setQuery(query);
-    handleSearch(query);
+    const newQuery = e.target.value;
+    setQuery(newQuery);
+    if (newQuery) {
+      handleSearch();
+    } else {
+      clearSearch();
+    }
   };
 
-  const menuItems = (filteredProducts) => (
+  const menuItems = (
     <Menu>
       {filteredProducts.length > 0 ? (
         filteredProducts.map((product) => (
           <Menu.Item
             key={product.id}
-            onClick={() => {
-              navigate(`/products/${product.productId} `);
-              handleProductClick();
-            }}
+            onClick={() => navigate(`/products/${product.productId}`)}
           >
             <div style={{ display: "flex", alignItems: "center" }}>
-              <img
-                src={product.images[0]}
-                alt={product.title}
-                style={{ width: 50, marginRight: 10 }}
-              />
+              <img src={product.images[0]} alt={product.title} style={{ width: 50, marginRight: 10 }} />
               <div>
-                <span style={{ fontWeight: "bold", color: "#008000" }}>
-                  {product.title}
-                  {/* {product.productId} */}
-                </span>
+                <span style={{ fontWeight: "bold", color: "#008000" }}>{product.title}</span>
                 <br />
                 <span>{product.category}</span>
                 <br />
-                <span style={{ textDecoration: "line-through", color: "gray" }}>
-                  ₹{product.price}
-                </span>
-                <span style={{ color: "red", fontWeight: "bold" }}>
-                  {" "}
-                  ₹{product.discountPrice}
-                </span>
+                <span style={{ textDecoration: "line-through", color: "gray" }}>₹{product.price}</span>
+                <span style={{ color: "red", fontWeight: "bold" }}> ₹{product.discountPrice}</span>
               </div>
             </div>
           </Menu.Item>
@@ -161,192 +120,75 @@ const NavBar = () => {
     </Menu>
   );
 
-  const handleProductClick = () => {
-    window.location.reload();
-  };
-
-  useEffect(() => {
-    const storedUsername = localStorage.getItem("name");
-    if (storedUsername) {
-      const formattedUsername =
-        storedUsername.charAt(0).toUpperCase() + storedUsername.slice(1);
-      setUsername(formattedUsername);
-    }
-  }, [isAuthenticated]);
-
   return (
     <>
       <NavBar2 />
-      <nav
-        className="navbar navbar-expand-lg p-0"
-        style={{ backgroundColor: "var(--bgColor)" }}
-      >
+      <nav className="navbar navbar-expand-lg p-0" style={{ backgroundColor: "var(--bgColor)" }}>
         <div className="container lg-d-flex justify-content-center">
-          <h3 href="#" alt="Home" className="fw-bolder text-decoration-none">
-            {/* <Logo fontSize={30} width={150} /> */}
-            {/* Restopedic */}
-            <img
-              src={Logo1}
-              alt="Restropedic"
-              style={{ fontSize: "30px", width: "150px" }}
-            />
+          <h3 className="fw-bolder text-decoration-none">
+            <img src={Logo1} alt="Restropedic" style={{ fontSize: "30px", width: "150px" }} />
           </h3>
-
-          <div>
-            <div>
-              <Dropdown
-                overlay={menuItems(filteredProducts)}
-                trigger={["click"]}
-                visible={query.length > 0}
-              >
-                <Input
-                  value={query}
-                  placeholder="Search products"
-                  style={{ width: 300 }}
-                  onChange={onSearchChange}
-                  suffix={
-                    query.length > 0 ? (
-                      <CloseCircleOutlined
-                        onClick={() => clearSearch()}
-                        style={{ cursor: "pointer" }}
-                      />
-                    ) : (
-                      <SearchOutlined />
-                    )
-                  }
-                />
-              </Dropdown>
-            </div>
-          </div>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
+          <Dropdown overlay={menuItems} trigger={["click"]} visible={query.length > 0}>
+            <Input
+              value={query}
+              placeholder="Search products"
+              style={{ width: 300 }}
+              onChange={onSearchChange}
+              suffix={
+                query.length > 0 ? (
+                  <CloseCircleOutlined onClick={clearSearch} style={{ cursor: "pointer" }} />
+                ) : (
+                  <SearchOutlined />
+                )
+              }
+            />
+          </Dropdown>
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <div className="collapse navbar-collapse" id="navbarContent">
             <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
-              <li className="nav-item m-2 mx-3">
-                <StyledLink className="nav-link" to="/">
-                  Home
-                </StyledLink>
-              </li>
-              <li className="nav-item m-2 mx-3">
-                <StyledLink className="nav-link" to="/about">
-                  About
-                </StyledLink>
-              </li>
-              <li className="nav-item m-2 mx-3">
-                <StyledLink className="nav-link" to="/products ">
-                  Products
-                </StyledLink>
-              </li>
-              <li className="nav-item m-2 mx-3">
-                <StyledLink className="nav-link" to="/contact">
-                  Contact
-                </StyledLink>
-              </li>
-              <li>
-                {isAdmin && (
-                  <li className="nav-item m-2 mx-3">
-                    <StyledLink className="nav-link" to="/admin">
-                      Dashboard
-                    </StyledLink>
-                  </li>
-                )}
-                {isUser && (
-                  <li className="nav-item m-2">
-                    <StyledLink className="nav-link" to="/user/orders">
-                      {/* User Dashboard */}
-                      <CgProfile style={navIconItem} />
-                    </StyledLink>
-                  </li>
-                )}
-              </li>
-              <li className="nav-item ms-2  mt-3 pt-1">
-                <Link
-                  to="/cart"
-                  style={{ color: "#1D1D1D", textDecoration: "none" }}
-                >
+              <li className="nav-item m-2 mx-3"><StyledLink className="nav-link" to="/">Home</StyledLink></li>
+              <li className="nav-item m-2 mx-3"><StyledLink className="nav-link" to="/about">About</StyledLink></li>
+              <li className="nav-item m-2 mx-3"><StyledLink className="nav-link" to="/products">Products</StyledLink></li>
+              <li className="nav-item m-2 mx-3"><StyledLink className="nav-link" to="/contact">Contact</StyledLink></li>
+              {isAdmin && <li className="nav-item m-2 mx-3"><StyledLink className="nav-link" to="/admin">Dashboard</StyledLink></li>}
+              {isUser && <li className="nav-item m-2"><StyledLink className="nav-link" to="/user/orders"><CgProfile style={{ width: "40px", height: "22px" }} /></StyledLink></li>}
+              <li className="nav-item ms-2 mt-3 pt-1">
+                <Link to="/cart" style={{ color: "#1D1D1D", textDecoration: "none" }}>
                   <Badge size="small" count={isAuthenticated ? totalItems : 0}>
-                    <FontAwesomeIcon
-                      style={{ height: "18px" }}
-                      icon={faCartShopping}
-                    />
+                    <FontAwesomeIcon style={{ height: "18px" }} icon={faCartShopping} />
                   </Badge>
-
-                  {/* ({isAuthenticated ? totalItems : 0}) */}
                 </Link>
               </li>
               <li className="nav-item ms-2 mt-3 pt-1">
                 <Link to="/wishlist" style={{ color: "#1D1D1D", textDecoration: "none" }}>
-                  <Badge size="small" count={isAuthenticated ? total : 0}>
-=======
-              <li className="nav-item ms-2 mt-3  pt-1">
-                      <Link
-                        to="/wishlist"
-                        style={{ color: "#1D1D1D", textDecoration: "none" }}
-                      >
-                        {/* <FontAwesomeIcon icon={faHeart} className="me-1" /> (
-                  {isAuthenticated ? total : 0}) */}
-
-                        <Badge size="small" count={isAuthenticated ? totalWhish : 0}>
->>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
-                          <FontAwesomeIcon
-                            icon={total > 0 ? faHeartFilled : faHeartEmpty}
-                            style={{
-                              height: "18px",
-                              color: total > 0 ? "red" : "#1D1D1D",
-                              transition: "color 0.3s ease",
-                            }}
-                          />
-                        </Badge>
-                      </Link>
-                    </li>
-                    <li className="nav-item m-2  mt-3" style={{ cursor: "pointer" }}>
-                      {!isAuthenticated ? (
-                        <Tooltip title="Login">
-                          <FontAwesomeIcon
-                            className=" my-1"
-                            icon={faUserPlus}
-                            onClick={() => navigate("/userlogin")}
-                          />
-                        </Tooltip>
-                      ) : (
-                        <Tooltip title="Logout">
-                          <FontAwesomeIcon
-                            className="my-1"
-                            icon={faRightFromBracket}
-                            onClick={logout}
-                          />
-                        </Tooltip>
-                      )}
-                    </li>
-                    {/* <div>
-                {isAuthenticated && username && (
-                  <span
-                    style={{
-                      marginLeft: "10px",
-                      fontSize: "16px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Hi, {username}
-                  </span>
+                  <Badge size="small" count={isAuthenticated ? totalWhish : 0}>
+                    <FontAwesomeIcon
+                      icon={total > 0 ? faHeartFilled : faHeartEmpty}
+                      style={{ height: "18px", color: total > 0 ? "red" : "#1D1D1D", transition: "color 0.3s ease" }}
+                    />
+                  </Badge>
+                </Link>
+              </li>
+              <li className="nav-item m-2 mt-3" style={{ cursor: "pointer" }}>
+                {!isAuthenticated ? (
+                  <Tooltip title="Login">
+                    <FontAwesomeIcon icon={faUserPlus} onClick={() => navigate("/userlogin")} />
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Logout">
+                    <FontAwesomeIcon icon={faRightFromBracket} onClick={logout} />
+                  </Tooltip>
                 )}
-              </div> */}
-                  </ul>
-                </div>
-              </div>
-            </nav>
-            <NavBar1 />
-          </>
-          );
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <NavBar1 />
+    </>
+  );
 };
 
-          export default NavBar;
+export default NavBar;
