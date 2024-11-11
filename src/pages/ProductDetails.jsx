@@ -339,77 +339,6 @@ const SingleProductPage = () => {
     quantity_stock,
   } = product;
 
-  // const addToWishlist = async (item) => {
-  //   console.log("itemwhislist", item);
-  //   try {
-  //     if (isAuthenticated) {
-  //       const response = await axios.post(
-  //         `${import.meta.env.VITE_MY_API}user/createWhishlist`,
-  //         {
-  //           id: userID,
-  //           cartItem: {
-  //             productId: item.productId,
-  //             images: item.images,
-  //             title: item.title,
-  //             price: item.price,
-  //             quantity_stock: item.quantity_stock,
-  //             quantity: item.quantity,
-  //             subTotal: item.subTotal,
-  //             unit: item.unit,
-  //             category: item.category,
-  //             selectedDimension: item.selectedDimension,
-  //             thickness: item.thickness,
-  //           },
-  //         }
-  //       );
-  //       const fetchedCart = response.data.user.Carts;
-  //       setCart((prevCart) => ({
-  //         ...prevCart,
-  //         items: fetchedCart,
-  //       }));
-
-  //       const itemExists = wishlist.items.some(
-  //         (wishlistItem) => wishlistItem.id === item.productId
-  //       );
-
-  //       if (itemExists) {
-  //         Swal.fire({
-  //           icon: "info",
-  //           title: "Item already in wishlist",
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         });
-  //       } else {
-  //         const updatedWishlist = {
-  //           ...wishlist,
-  //           user_id: userID,
-  //           items: [...wishlist.items, { ...item }],
-  //         };
-
-  //         const response = await axios.put(
-  //           `${import.meta.env.VITE_MY_API}wishlists/${userID}`,
-  //           updatedWishlist
-  //         );
-  //         const fetchedWishlist = response.data;
-  //         // setWishlist(fetchedWishlist);
-  //         // setTotal(fetchedWishlist.items.length);
-  //         setWishlist(updatedWishlist);
-  //         setTotal(updatedWishlist.items.length);
-  //         Swal.fire({
-  //           icon: "success",
-  //           title: "Item added to wishlist",
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         });
-  //       }
-  //     } else {
-  //       console.error("User wishlist is not available");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error adding item to wishlist:", error);
-  //   }
-  // };
-
   return (
     <Wrapper className="container section-center page">
       <Breadcrumb />
@@ -561,12 +490,12 @@ const SingleProductPage = () => {
             )}
           </div>
           <div className="quantity-toggle">
-            <button
+            <Button
               onClick={() => handleQuantityChange(quantity - 1)}
               disabled={quantity === 1}
             >
               -
-            </button>
+            </Button>
             <span>{quantity}</span>
             <button
               onClick={() => handleQuantityChange(quantity + 1)}
@@ -592,6 +521,7 @@ const SingleProductPage = () => {
               ) : (
                 quantity_stock > 0 && (
                   <Button
+                    className="m-1"
                     handleClick={() =>
                       addToCart({
                         productId,
@@ -615,7 +545,7 @@ const SingleProductPage = () => {
               {whishlistData?.items?.find(
                 (item) => Number(item.productId) === Number(product?.productId)
               ) ? (
-                <Button>
+                <Button className="m-3">
                   <Link
                     style={{ textDecoration: "none", color: "inherit" }}
                     to="/wishlist"
@@ -626,6 +556,7 @@ const SingleProductPage = () => {
               ) : (
                 // <p>In Whishlist</p>
                 <Button
+                  className="m-3"
                   handleClick={() =>
                     addToWishlist({
                       productId,
@@ -1324,15 +1255,10 @@ const Wrapper = styled.main`
     height: auto;
     border: 1px solid ${(props) => props.theme.borderColor};
     border-radius: 15px;
-      transition: transform 0.3s ease;
+    transition: transform 0.3s ease;
   }
-      .product-image:hover {
-  transform: scale(1.1);
-  .product-container {
-  position: relative;
-  overflow: hidden;
-}
-.content {
+
+  .content {
     h2 {
       color: ${(props) => props.theme.mainColor};
     }
@@ -1360,12 +1286,6 @@ const Wrapper = styled.main`
         color: ${(props) => props.theme.textColor};
       }
     }
-
-    .buttons {
-      margin-top: 1rem;
-      button {
-        margin-right: 1rem;
-      }
     }
     .quantity-toggle {
       display: flex;

@@ -10,7 +10,7 @@ import {
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { DownOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined, DownOutlined } from "@ant-design/icons";
 
 import { Avatar, Badge, Space, Tooltip, Dropdown, Menu, Input } from "antd";
 
@@ -60,7 +60,7 @@ const SearchIcon = styled(FontAwesomeIcon)`
 const WishlistIcon = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const { total } = useContext(WishlistContext);
-}
+};
 const NavBar = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
@@ -101,7 +101,14 @@ const NavBar = () => {
         search.category.toLowerCase().includes(query)
       );
       setFilteredProducts(valuesfilt);
+    } else {
+      clearSearch(); // Clear if the query is empty
     }
+  };
+
+  const clearSearch = (e) => {
+    setQuery("");
+    setFilteredProducts([]);
   };
 
   const onSearchChange = (e) => {
@@ -153,6 +160,7 @@ const NavBar = () => {
       )}
     </Menu>
   );
+
   const handleProductClick = () => {
     window.location.reload();
   };
@@ -165,6 +173,7 @@ const NavBar = () => {
       setUsername(formattedUsername);
     }
   }, [isAuthenticated]);
+
   return (
     <>
       <NavBar2 />
@@ -191,10 +200,20 @@ const NavBar = () => {
                 visible={query.length > 0}
               >
                 <Input
-                  prefix={<SearchOutlined />}
+                  value={query}
                   placeholder="Search products"
                   style={{ width: 300 }}
                   onChange={onSearchChange}
+                  suffix={
+                    query.length > 0 ? (
+                      <CloseCircleOutlined
+                        onClick={() => clearSearch()}
+                        style={{ cursor: "pointer" }}
+                      />
+                    ) : (
+                      <SearchOutlined />
+                    )
+                  }
                 />
               </Dropdown>
             </div>
@@ -264,21 +283,12 @@ const NavBar = () => {
                   {/* ({isAuthenticated ? totalItems : 0}) */}
                 </Link>
               </li>
-<<<<<<< HEAD
               <li className="nav-item ms-2 mt-3 pt-1">
-                <Link to="/wishlist" style={{ color: "#1D1D1D", textDecoration: "none" }}>
-                  <Badge size="small" count={isAuthenticated ? total : 0}>
-=======
-              <li className="nav-item ms-2 mt-3  pt-1">
                 <Link
                   to="/wishlist"
                   style={{ color: "#1D1D1D", textDecoration: "none" }}
                 >
-                  {/* <FontAwesomeIcon icon={faHeart} className="me-1" /> (
-                  {isAuthenticated ? total : 0}) */}
-
                   <Badge size="small" count={isAuthenticated ? totalWhish : 0}>
->>>>>>> 7897cee10415944a95c278bf826fde65e8fd26cc
                     <FontAwesomeIcon
                       icon={total > 0 ? faHeartFilled : faHeartEmpty}
                       style={{

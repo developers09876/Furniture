@@ -31,8 +31,9 @@ const QueryText = styled.h3`
 const SearchContainer = styled.div`
   width: 270px;
   margin: 0 auto;
-  position: relative;
-  text-align: center;
+  display: flex;
+  // position: relative;
+  // text-align: center;
 `;
 
 const StyledInput = styled.input`
@@ -50,8 +51,8 @@ const StyledInput = styled.input`
 `;
 
 const SearchIcon = styled(FontAwesomeIcon)`
-  position: absolute;
-  left: 20px;
+  // position: absolute;
+  // left: 20px;
   top: 13px;
   color: ${(props) => props.theme.mutedTextColor};
 `;
@@ -85,7 +86,6 @@ const Products = () => {
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
     setQuery(query);
-
     let filtered = products;
 
     if (locationData) {
@@ -147,7 +147,7 @@ const Products = () => {
               value={query}
               onChange={handleSearch}
             />
-            <SearchIcon icon={faSearch} className="text-muted" />
+            <SearchIcon icon={faSearch} />
           </SearchContainer>
         </Col>
       </Row>
