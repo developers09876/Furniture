@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import Breadcrumb from "../components/Breadcrumb";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "../components/Button";
 import emailjs from "emailjs-com";
 import axios from "axios";
@@ -106,7 +106,7 @@ const Contact = () => {
       email: formData.email,
       message: formData.message,
     };
-
+    console.log("details", details);
     await axios
       .post(`${import.meta.env.VITE_MY_API}User/enquiry`, details)
       .then((response) => {
@@ -132,6 +132,12 @@ const Contact = () => {
         });
       });
   };
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
   return (
     <>
       <Breadcrumb />
@@ -183,8 +189,9 @@ const Contact = () => {
                 <TextArea
                   name="message"
                   value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
+                  onChange={
+                    (e) => setFormData({ ...formData, message: e.target.value })
+                    // console.log("edaww", e.target.value)
                   }
                   placeholder="Message"
                   required

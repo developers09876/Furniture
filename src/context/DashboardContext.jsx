@@ -9,57 +9,80 @@ export const DashboardProvider = ({ children }) => {
   // const [neworder, setnewOrder] = useState([]);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+  console.log("productszs", products);
 
+  const userID = localStorage.getItem("id");
+  const [cartdata, setCartdata] = useState({ items: [] });
+  const [whishlistData, setwhishlistData] = useState({ items: [] });
+  console.log("cartdata dash", cartdata);
+  console.log("whishlistData dash", whishlistData);
   useEffect(() => {
     fetchData();
   }, []);
+  useEffect(() => {
+    fetchCart();
+    fetchWhishlist();
+  }, []);
 
   const fetchData = async () => {
-    // try {
-    //   const usersResponse = await axios.get("http://localhost:3000/users");
-    //   setUsers(usersResponse.data);
+    //user
+    axios
+      .get(`${import.meta.env.VITE_MY_API}user/get`)
+      .then((res) => {
+        console.log("res", res);
+        setUsers(res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching users:", error);
+      });
 
-    //   const ordersResponse = await axios.get("http://localhost:3000/orders");
-    //   setOrders(ordersResponse.data);
+    axios
+      .get(`${import.meta.env.VITE_MY_API}products/order`)
+      .then((res) => {
+        setOrders(res.data);
+      })
 
-    //   const categoriesResponse = await axios.get(
-    //     "http://localhost:3000/categories"
-    //   );
-    //   setCategories(categoriesResponse.data);
+      .catch((error) => {
+        console.error("Error fetching orders:", error);
+      });
 
-    //   const productsResponse = await axios.get(
-    //     "http://localhost:3000/products"
-    //   );
-    //   setProducts(productsResponse.data);
-    // } catch (error) {
-    //   // showAlert('error', 'Error', 'Error while fetching data')
-    // }
+    axios
+      .get(`${import.meta.env.VITE_MY_API}products/`)
+      .then((res) => {
+        setProducts(res.data);
+      })
 
-    try {
-      const res = await axios.get(`${import.meta.env.VITE_MY_API}user/get`);
-      console.log("res", res);
-      setUsers(res.data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  };
 
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_MY_API}products/order`
-      );
-      setOrders(res.data);
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-    }
+  const fetchCart = async () => {
+    axios
+      .get(`${import.meta.env.VITE_MY_API}user/getCart/${userID}`)
+      .then((res) => {
+        const fetchedCart = res.data;
+        console.log("fetchedCartzx", fetchedCart.items);
+        setCartdata(fetchedCart || { items: [] });
+        return fetchedCart;
+      })
+      .catch((error) => {
+        console.error("Error fetching cart:", error);
+        setCartdata({ items: [] });
+      });
+  };
 
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_MY_API}products/`
-      );
-      setProducts(response.data);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
+  const fetchWhishlist = async () => {
+    axios
+      .get(`${import.meta.env.VITE_MY_API}user/getWhishlist/${userID}`)
+      .then((res) => {
+        const fetchedWhishlist = res.data;
+        setwhishlistData(fetchedWhishlist || { items: [] });
+      })
+      .catch((error) => {
+        console.error("Error fetching Whishlist:", error);
+        setwhishlistData({ items: [] });
+      });
   };
 
   const showAlert = (icon, title, text) => {
@@ -144,28 +167,31 @@ export const DashboardProvider = ({ children }) => {
 
   // Orders
   const updateOrderStatus = async (orderId, newStatus) => {
-    try {
-      await axios.patch(`${import.meta.env.VITE_MY_API}orders/${orderId}`, {
+    axios
+      .patch(`${import.meta.env.VITE_MY_API}orders/${orderId}`, {
         order_status: newStatus,
+      })
+      .then(() => {
+        fetchData();
+      })
+
+      .catch((error) => {
+        handleOperationError("order", "updating status", error);
       });
-      fetchData();
-    } catch (error) {
-      handleOperationError("order", "updating status");
-    }
   };
 
   // Categories
   const addCategory = async (newCategory) => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_MY_API}categories`,
-        newCategory
-      );
-      setCategories([...categories, response.data]);
-      showAlert("success", "Category Added", "Category added successfully.");
-    } catch (error) {
-      handleOperationError("category", "adding");
-    }
+    axios
+      .post(`${import.meta.env.VITE_MY_API}categories`, newCategory)
+      .then(() => {
+        setCategories([...categories, response.data]);
+        showAlert("success", "Category Added", "Category added successfully.");
+      })
+
+      .catch((error) => {
+        handleOperationError("category", "adding");
+      });
   };
 
   const deleteCategory = async (categoryId) => {
@@ -198,34 +224,36 @@ export const DashboardProvider = ({ children }) => {
   };
 
   const updateCategory = async (categoryId, updatedCategory) => {
-    try {
-      await axios.put(
+    axios
+      .put(
         `${import.meta.env.VITE_MY_API}categories/${categoryId}`,
         updatedCategory
-      );
-      fetchData();
-      showAlert(
-        "success",
-        "Category Updated",
-        "Category updated successfully."
-      );
-    } catch (error) {
-      handleOperationError("category", "updating");
-    }
+      )
+      .then(() => {
+        fetchData();
+        showAlert(
+          "success",
+          "Category Updated",
+          "Category updated successfully."
+        );
+      })
+      .catch((error) => {
+        handleOperationError("category", "updating");
+      });
   };
 
   // Products
   const addProduct = async (newProduct) => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_MY_API}products`,
-        newProduct
-      );
-      setProducts([...products, response.data]);
-      showAlert("success", "Product Added", "Product added successfully.");
-    } catch (error) {
-      handleOperationError("product", "adding");
-    }
+    axios
+      .post(`${import.meta.env.VITE_MY_API}products`, newProduct)
+      .then(() => {
+        setProducts([...products, response.data]);
+        showAlert("success", "Product Added", "Product added successfully.");
+      })
+
+      .catch((error) => {
+        handleOperationError("product", "adding");
+      });
   };
 
   const deleteProduct = async (productId) => {
@@ -256,26 +284,37 @@ export const DashboardProvider = ({ children }) => {
   };
 
   const updateProduct = async (productId, updatedProduct) => {
-    try {
-      await axios.put(
+    axios
+      .put(
         `${import.meta.env.VITE_MY_API}products/${productId}`,
         updatedProduct
-      );
-      fetchData();
-      showAlert("success", "Product Updated", "Product updated successfully.");
-    } catch (error) {
-      handleOperationError("product", "updating");
-    }
+      )
+      .then(() => {
+        fetchData();
+        showAlert(
+          "success",
+          "Product Updated",
+          "Product updated successfully."
+        );
+      })
+
+      .catch((error) => {
+        handleOperationError("product", "updating", error);
+      });
   };
 
   return (
     <DashboardContext.Provider
       value={{
         fetchData,
+        fetchCart,
+        fetchWhishlist,
         users,
         addUser,
         deleteUser,
         // newOrder,
+        cartdata,
+        whishlistData,
         orders,
         updateOrderStatus,
         categories,

@@ -14,6 +14,28 @@ const userSchema = new Schema({
   password: { type: String, required: true, minlength: 5, maxlength: 1024 },
   Carts: { type: Array },
   CreatedAt: { type: Date, default: Date.now },
+
+  Carts: [
+    {
+      productId: { type: String },
+      images: { type: [String], default: [] },
+      title: { type: String, required: true },
+      price: { type: String, required: true },
+      quantity: { type: Number },
+      subTotal: { type: String },
+      quantity_stock: { type: String, required: true },
+    },
+  ],
+  Whishlist: [
+    {
+      productId: { type: String },
+      images: { type: [String], default: [] },
+      title: { type: String, required: true },
+      price: { type: String, required: true },
+      quantity: { type: Number },
+      subTotal: { type: String },
+    },
+  ],
 });
 
 export const User = mongoose.model("User", userSchema);

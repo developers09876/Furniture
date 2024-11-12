@@ -4,6 +4,14 @@ import {
   registerUser,
   loginUser,
   createCart,
+  deleteCartItem,
+  clearCartItem,
+  getCart,
+  updateQuantity,
+  createWhishlist,
+  getWhishlist,
+  deleteWhishItem,
+  clearWhishlist,
   getOneUser,
   getAllUser,
   deleteUser,
@@ -26,6 +34,15 @@ router.post("/update/:id", updateUser);
 router.put("/resetUser", resetUser);
 router.post("/resetUsers", resetUsers);
 router.post("/createCart", createCart);
+router.get("/getCart/:id", getCart);
+router.put("/updateQuantity/:userId/:productId", updateQuantity);
+router.delete("/deleteCart/:userID/:productId", deleteCartItem);
+router.delete("/clearCart/:userID", clearCartItem);
+router.post("/createWhishlist", createWhishlist);
+router.get("/getWhishlist/:id", getWhishlist);
+router.delete("/deleteWhishlist/:userId/:productId", deleteWhishItem);
+router.delete("/clearWhishlist/:userId", clearWhishlist);
 router.delete("/delete/:id", deleteUser);
+// router.post("/addtocard/:id" , addToCard )
 // router.post("/whistlist", whistlistUser);
 export default router;

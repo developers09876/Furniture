@@ -2,143 +2,128 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
 import Swal from "sweetalert2";
+import { DashboardContext } from "./DashboardContext";
 
 // Create the Wishlist Context
 export const WishlistContext = createContext();
 
 // Wishlist Provider component
 export const WishlistProvider = ({ children }) => {
-  console.log('children', children)
+  console.log("children", children);
   const [wishlist, setWishlist] = useState({ id: "", user_id: "", items: [] });
-  const { isAuthenticated, userID } = useContext(AuthContext); // Use userID from AuthContext directly
+  const { isAuthenticated, userID } = useContext(AuthContext);
   const [total, setTotal] = useState(0);
-
-  console.log("wishlist",wishlist);
-  console.log("userid",userID);
-
-  // Function to fetch the user's wishlist from the API
-  // const fetchWishlist = async (userId) => {
-  //   try {
-  //     if (isAuthenticated) {
-  //       const response = await axios.get(
-  //         `${import.meta.env.VITE_MY_API}wishlists?user_id=${userId}`
-  //       );
-  //       const fetchedWishlist = response.data[0];
-  //       setWishlist(fetchedWishlist);
-  //       setTotal(fetchedWishlist.items.length);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching wishlist:", error);
-  //     setWishlist({ id: "", user_id: "", items: [] });
-  //     setTotal(0);
-  //   }
-  // };
-
-  // Function to add item to the wishlist
-  const addToWishlist = async (item) => {
-    console.log('itemwhislist', item)
+  const [Whistlist, setWhistlist] = useState();
+  console.log("wishlist", wishlist);
+  const { fetchWhishlist } = useContext(DashboardContext);
+  const fetchWishlist = async (userId) => {
     try {
       if (isAuthenticated) {
-        const itemExists = wishlist.items.some(
-          (wishlistItem) => wishlistItem.id === item.
-          productId
-          
+        const response = await axios.get(
+          `${import.meta.env.VITE_MY_API}wishlists?user_id=${userId}`
         );
-
-        if (itemExists) {
-          Swal.fire({
-            icon: "info",
-            title: "Item already in wishlist",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        } else {
-          const updatedWishlist = {
-            ...wishlist,
-            user_id: userID,
-            items: [...wishlist.items, { ...item }],
-          };
-
-          // const response = await axios.put(
-          //   `${import.meta.env.VITE_MY_API}wishlists/${userID}`,
-          //   updatedWishlist
-          // );
-          // const fetchedWishlist = response.data;
-          // setWishlist(fetchedWishlist);
-          // setTotal(fetchedWishlist.items.length);
- setWishlist(updatedWishlist);
-          setTotal(updatedWishlist.items.length);
-          Swal.fire({
-            icon: "success",
-            title: "Item added to wishlist",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      } else {
-        console.error("User wishlist is not available");
+        const fetchedWishlist = response.data[0];
+        setWishlist(fetchedWishlist);
+        setTotal(fetchedWishlist.items.length);
       }
     } catch (error) {
-      console.error("Error adding item to wishlist:", error);
+      console.error("Error fetching wishlist:", error);
+      setWishlist({ id: "", user_id: "", items: [] });
+      setTotal(0);
     }
   };
 
-  // Function to clear the wishlist
-  const clearWishlist = async () => {
+  const addToWishlist = async (item) => {
+    const userID = localStorage.getItem("id");
+
     try {
       if (isAuthenticated) {
-        const updatedWishlist = {
-          ...wishlist,
-          items: [],
-        };
-        await axios.put(
-          `${import.meta.env.VITE_MY_API}wishlists/${userID}`,
-          updatedWishlist
+        const response = await axios.post(
+          `${import.meta.env.VITE_MY_API}user/createWhishlist`,
+          {
+            id: userID,
+            whistItem: {
+              productId: item.productId,
+              images: item.images,
+              title: item.title,
+              price: item.price,
+              quantity_stock: item.quantity_stock,
+              quantity: item.quantity,
+              subTotal: item.subTotal,
+              unit: item.unit,
+              category: item.category,
+              selectedDimension: item.selectedDimension,
+              thickness: item.thickness,
+            },
+          }
         );
-        setWishlist(updatedWishlist);
-        setTotal(updatedWishlist.items.length); // Update total with updatedWishlist
+
+        const fetchedCart = response.data.user.Carts;
+        setWhistlist((prevCart) => ({
+          ...prevCart,
+          items: fetchedCart,
+        }));
+
+        Swal.fire({
+          icon: "success",
+          title: "Item added to Whishlist",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        fetchWhishlist();
+      } else {
+        console.error("User Whishlist is not available");
+      }
+    } catch (error) {
+      console.error("Error adding item to Whishlist:", error);
+    }
+  };
+
+  const clearWishlist = async () => {
+    const userId = localStorage.getItem("id");
+    axios
+      .delete(`${import.meta.env.VITE_MY_API}user/clearWhishlist/${userId}`)
+      .then((res) => {
         Swal.fire({
           icon: "success",
           title: "Wishlist cleared",
           showConfirmButton: false,
           timer: 1500,
         });
-      }
-    } catch (error) {
-      console.error("Error clearing wishlist:", error);
-    }
+        fetchWhishlist();
+      })
+
+      .catch((error) => {
+        console.error("Error clearing wishlist:", error);
+      });
   };
 
-  // Function to remove a specific item from the wishlist
   const removeItem = async (productId) => {
-    try {
-      if (isAuthenticated) {
-        const updatedWishlist = {
-          ...wishlist,
-          items: wishlist.items.filter((item) => item.id !== productId),
-        };
-        await axios.put(
-          `${import.meta.env.VITE_MY_API}wishlists/${userID}`,
-          updatedWishlist
-        );
-        setWishlist(updatedWishlist);
-        setTotal(updatedWishlist.items.length); // Update total with updatedWishlist
+    const userId = localStorage.getItem("id");
+
+    axios
+      .delete(
+        `${
+          import.meta.env.VITE_MY_API
+        }user/deleteWhishlist/${userId}/${productId}`
+      )
+      .then((res) => {
         Swal.fire({
           icon: "success",
           title: "Item removed from wishlist",
           showConfirmButton: false,
           timer: 1500,
         });
-      }
-    } catch (error) {
-      console.error("Error removing item from wishlist:", error);
-    }
+        fetchWhishlist();
+      })
+
+      .catch((error) => {
+        console.error("Error removing item from wishlist:", error);
+      });
   };
 
-  // Fetch the user's wishlist on component mount and when userID changes
   useEffect(() => {
     if (userID && isAuthenticated) {
-      // fetchWishlist(userID);
     } else {
       setWishlist({ id: "", user_id: "", items: [] });
     }
@@ -146,7 +131,13 @@ export const WishlistProvider = ({ children }) => {
 
   return (
     <WishlistContext.Provider
-      value={{ wishlist, total, addToWishlist, clearWishlist, removeItem }}
+      value={{
+        // wishlist,
+        total,
+        addToWishlist,
+        clearWishlist,
+        removeItem,
+      }}
     >
       {children}
     </WishlistContext.Provider>

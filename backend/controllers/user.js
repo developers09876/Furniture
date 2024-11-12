@@ -10,6 +10,7 @@ import { HTTP_RESPONSE } from "../utils/config.js";
 import nodemailer from "nodemailer";
 
 import { google } from "googleapis";
+import { message } from "antd";
 // create user without password=============================
 const createUserWithoutPass = async (user) => {
   const newUser = {
@@ -102,22 +103,187 @@ export const loginUser = async (req, res) => {
 
 export const createCart = async (req, res) => {
   try {
-    const { id, cartItem } = req.body; // Expect email and cartItem in the request body
-
-    // Find the user by email (or you can use another unique identifier)
-    const user = await User.findOne({ id });
+    const { id, cartItem } = req.body; // id from the request body
+    console.log("caetItem", cartItem);
+    console.log("id", id);
+    const user = await User.findById(id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
     user.Carts.push(cartItem);
-
     await user.save();
 
     res.status(200).json({ message: "Cart updated successfully", user });
   } catch (error) {
     res.status(500).json({ message: "Error updating cart", error });
+  }
+};
+
+export const getCart = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "cart not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Cart retrieved successfully", items: user.Carts });
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving cart", error });
+  }
+};
+
+export const updateQuantity = async (req, res) => {
+  try {
+    const { userId, productId } = req.params;
+    const { quantity } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const cartItem = user.Carts.find((item) => item.productId === productId);
+    if (!cartItem) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    cartItem.quantity = quantity;
+    cartItem.subTotal = cartItem.price * quantity;
+    await user.save();
+
+    res.status(200).json({
+      message: "Quantity updated successfully",
+      updatedCartItem: cartItem,
+    });
+  } catch (error) {
+    console.error("Error updating cart quantity:", error);
+    res.status(500).json({ message: "Server Error: " + error.message });
+  }
+};
+
+export const deleteCartItem = async (req, res) => {
+  const { userID, productId } = req.params;
+  console.log("UserID:", userID);
+  console.log("ProductID:", productId);
+
+  try {
+    const user = await User.findById(userID);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.Carts = user.Carts.filter((item) => item.productId !== productId);
+
+    await user.save();
+
+    return res
+      .status(200)
+      .json({ message: "Item removed from cart", cart: user.Carts });
+  } catch (error) {
+    console.error("Error removing item from cart:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const clearCartItem = async (req, res) => {
+  const userID = req.params.userID;
+  try {
+    const user = await User.findById(userID);
+    if (!user) {
+      return res.status(400).json({ message: "user Not Found" });
+    }
+    user.Carts = [];
+    await user.save();
+    return res.status(200).json({ message: "Cart cleared successfully" });
+  } catch (error) {
+    console.log("Error clearing cart:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const clearWhishlist = async (req, res) => {
+  const userId = req.params.userId;
+  console.log("userIdz", userId);
+  try {
+    const user = await User.findById(userId);
+    if (!userId) {
+      return res.status(404).json({ message: "user Not Found" });
+    }
+    user.Whishlist = [];
+    await user.save();
+    return res
+      .status(200)
+      .json({ message: "Whishlist Cleared successfully  " });
+  } catch (error) {
+    console.error("Error Clear Whishlist :", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const createWhishlist = async (req, res) => {
+  try {
+    const { id, whistItem } = req.body; // id from the request body
+
+    // Search by _id if you're using MongoDB's default unique identifier
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "Whishlist not found" });
+    }
+
+    // Add the item to the cart array
+    user.Whishlist.push(whistItem);
+    await user.save();
+
+    res.status(200).json({ message: "Whishlist updated successfully", user });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating Whishlist", error });
+  }
+};
+
+export const getWhishlist = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "Whishlist not found" });
+    }
+
+    res.status(200).json({
+      message: "Whishlist retrieved successfully",
+      items: user.Whishlist,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving Whishlist", error });
+  }
+};
+
+export const deleteWhishItem = async (req, res) => {
+  const { userId, productId } = req.params;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.Whishlist = user.Whishlist.filter(
+      (item) => item.productId !== productId
+    );
+    await user.save();
+    return res.status(200).json({
+      message: "Item removed from wishlist",
+      Whishlist: user.Whishlist,
+    });
+  } catch (error) {
+    console.error("Error Removing item from wishlist:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -154,19 +320,16 @@ export const updateUser = async (req, res) => {
     console.log("User", id);
     const { username, phoneNumber } = req.body;
 
-    // Update user document
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { username: username, phoneNumber: phoneNumber }, // Ensure this matches your schema
-      { new: true, runValidators: true } // Options to return updated document and run validators
+      { username: username, phoneNumber: phoneNumber },
+      { new: true, runValidators: true }
     );
-
-    // console.log("Updated User:", updatedUser); // Log the updated user
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     } else {
-      res.status(200).json(updatedUser); // Return the updated user data
+      res.status(200).json(updatedUser);
     }
   } catch (error) {
     console.error("Error updating user:", error);
@@ -176,44 +339,103 @@ export const updateUser = async (req, res) => {
 
 //enquiry api
 
+// export async function enquiryUser(req, res, next) {
+//   try {
+//     const data = req.body;
+
+//     const details = {
+//       name: data.name,
+//       email: data.email,
+//       message: data.message,
+//     };
+//     console.log("Customer", details.email);
+//     console.log("owner", process.env.EMAIL);
+//     const transporter = nodemailer.createTransport({
+//       service: "gmail",
+//       secure: true,
+//       port: 465,
+//       auth: {
+//         user: process.env.EMAIL,
+//         pass: process.env.EMAIL_PASSWORD,
+//       },
+//     });
+
+//     const mailOptions = {
+//       from: `${details.email}`,
+//       // from: "ganeshgm3113@gmil.com",
+//       to: process.env.EMAIL,
+
+//       subject: "Restropedic Mattress",
+//       html: `
+//     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+//       <h2 style="color: #007bff;">New Enquiry</h2>
+//       <p><strong>Name:</strong> ${details.name}</p>
+//       <p><strong>Email:</strong> ${details.email}</p>
+//       <p><strong>Message:</strong> ${details.message}</p>
+//       <hr style="border: 1px solid #ddd;" />
+//       <p>Thank you for reaching out to us!</p>
+//       <p style="color: #007bff;">Restropedic Team</p>
+//     </div>
+//   `,
+//     };
+//     console.log("emailx", details.email);
+
+//     const info = await transporter.sendMail(mailOptions);
+//     console.log("Email sent: " + info.response);
+
+//     res.status(200).json({
+//       message: "Enquiry sent successfully!",
+//       details,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({
+//       message: ("Error sending enquiry", err),
+//     });
+//   }
+// }
+
 export async function enquiryUser(req, res, next) {
   try {
     const data = req.body;
 
     const details = {
       name: data.name,
-      email: data.email,
+      email: data.email, // This is the user's email entered in the form
       message: data.message,
     };
-    console.log("details", details);
-    console.log("process.env.EMAIL", process.env.EMAIL);
+
+    console.log("Customer", details.email);
+    console.log("Owner", process.env.EMAIL);
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       secure: true,
       port: 465,
       auth: {
-        user: process.env.EMAIL,
+        user: process.env.EMAIL, // This is the email configured in your .env file
         pass: process.env.EMAIL_PASSWORD,
       },
     });
 
     const mailOptions = {
-      from: process.env.EMAIL,
-      to: "ganeshgm3113@gmail.com",
-      // to: ${details.email},
-      subject: "Furniture Enquiry",
+      from: details.email, // Using user's email directly here
+      to: process.env.EMAIL, // Owner's email from the .env file
+      subject: "Restropedic Mattress - New Enquiry",
       html: `
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-      <h2 style="color: #007bff;">New Enquiry</h2>
-      <p><strong>Name:</strong> ${details.name}</p>
-      <p><strong>Email:</strong> ${details.email}</p>
-      <p><strong>Message:</strong> ${details.message}</p>
-      <hr style="border: 1px solid #ddd;" />
-      <p>Thank you for reaching out to us!</p>
-      <p style="color: #007bff;">Furniture Team</p>
-    </div>
-  `,
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <h2 style="color: #007bff;">New Enquiry</h2>
+          <p><strong>Name:</strong> ${details.name}</p>
+          <p><strong>Email:</strong> ${details.email}</p>
+          <p><strong>Message:</strong> ${details.message}</p>
+          <hr style="border: 1px solid #ddd;" />
+          <p>Thank you for reaching out to us!</p>
+          <p style="color: #007bff;">Restropedic Team</p>
+        </div>
+      `,
     };
+
+    console.log("Email (from field):", details.email);
 
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent: " + info.response);
@@ -223,9 +445,10 @@ export async function enquiryUser(req, res, next) {
       details,
     });
   } catch (err) {
-    console.log(err);
+    console.error("Error sending enquiry:", err);
     res.status(500).json({
-      message: ("Error sending enquiry", err),
+      message: "Error sending enquiry",
+      error: err,
     });
   }
 }
@@ -258,7 +481,6 @@ export async function resetUsers(req, res) {
     });
   }
 }
-// get User by Id
 
 export async function getOneUser(req, res) {
   console.log("reqa", req);
@@ -285,19 +507,16 @@ export async function getOneUser(req, res) {
   }
 }
 
-//whistlist
-
 export const whistlistUser = async (req, res) => {
   try {
     const newWhistlist = new whistlist(req.body);
-    console.log("first", newWhistlist);
     const savedWhistlist = await newWhistlist.save();
     res.status(200).json(savedWhistlist);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-// Assuming you already have hashPassword defined somewhere in your project
+
 export async function resetUser(req, res) {
   try {
     const { email, newPassword } = req.body;

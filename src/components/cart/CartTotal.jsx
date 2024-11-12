@@ -8,8 +8,8 @@ import { FaIndianRupeeSign } from "react-icons/fa6";
 import "../../Css-Pages/HomeCard.css";
 import { Col, Row } from "react-bootstrap";
 
-const CartTotal = () => {
-  const { cart, total } = useContext(CartContext);
+const CartTotal = ({ total }) => {
+  const { cart } = useContext(CartContext);
   const { isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
 

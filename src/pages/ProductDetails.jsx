@@ -5,6 +5,7 @@ import axios from "axios";
 import Spinner from "../components/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { IoMdClose } from "react-icons/io";
 import { FaChevronDown } from "react-icons/fa";
@@ -13,6 +14,7 @@ import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
 import { WishlistContext } from "../context/WishlistContext";
 import Breadcrumb from "../components/Breadcrumb";
+import { FaHeartCircleCheck } from "react-icons/fa6";
 import img1 from "../assets/sofa.jpg";
 import img2 from "../assets/chair.jpg";
 import img3 from "../assets/bed.jpg";
@@ -37,32 +39,17 @@ import { ImYoutube } from "react-icons/im";
 import { IoIosArrowForward } from "react-icons/io";
 const { Group: RadioGroup, Button: RadioButton } = Radio;
 import "../Css-Pages/HomeCard.css";
+import { DashboardContext } from "../context/DashboardContext";
+import { faHeart as faHeartEmpty } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartFilled } from "@fortawesome/free-solid-svg-icons";
 // import "../Css-Pages/WallBackground.css";
 
 const SingleProductPage = () => {
-  const settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-  };
-
-  const { productID } = useParams();
-  const [product, setProduct] = useState([]);
-  if (
-    product &&
-    Array.isArray(product.specification) &&
-    product.specification.length > 0
-  ) {
-  } else {
-    console.log("Specification is not available");
-  }
   const [selectedImage, setSelectedImage] = useState(null);
   // const [images, setImages] = useState([img1, img2, img3, Amenity, Amenity_ET]);
   const [images, setImages] = useState([]);
   const [show, setShow] = useState(false);
   const [showPic, setShowPic] = useState(false);
-
   const [showVideo, setShowVideo] = useState(false);
   const [unit, setUnit] = useState("in");
   const [categorz, setCategory] = useState("Single");
@@ -72,7 +59,34 @@ const SingleProductPage = () => {
   const [customBreadth, setCustomBreadth] = useState("");
   const [hover, setHover] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const [subTotal, setSubTotal] = useState(0);
+  const { addToCart, removeItem } = useContext(CartContext);
+  const [orders, setOrders] = useState([]);
+  const { addToWishlist } = useContext(WishlistContext);
+  const { isAuthenticated } = useContext(AuthContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const { total } = useContext(WishlistContext);
 
+  const handleShowVideo = () => setVideoVisible(true);
+  const handleCloseVideo = () => setVideoVisible(false); // Hide video
+  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setShow(false);
+    resetFilters();
+  };
+  const handleShowPic = () => setShowPic(true);
+  const handleClosePic = () => {
+    setShowPic(false);
+    resetFilters();
+  };
+  const { productID } = useParams();
+  const { cartdata, whishlistData } = useContext(DashboardContext);
+  console.log("cartdatax", cartdata.items);
+
+  const [product, setProduct] = useState([]);
+  console.log("productzx", product);
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -90,28 +104,26 @@ const SingleProductPage = () => {
     // Ensure productID is passed here
     fetchProduct();
   }, [productID]);
-  const handleShow = () => setShow(true);
-  const handleClose = () => {
-    setShow(false);
-    resetFilters();
-  };
-  const handleShowPic = () => setShowPic(true);
-  const handleClosePic = () => {
-    setShowPic(false);
-    resetFilters();
+
+  useEffect(() => {
+    setSubTotal(quantity * product?.price);
+  }, [quantity, product]);
+
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
   };
 
-  const handleShowVideo = () => setVideoVisible(true);
-  const handleCloseVideo = () => setVideoVisible(false); // Hide video
-  // const resetFilters = () => {
-  //   // setCategory("");
-  //   setUnit("in");
-  //   setSelectedDimension("");
-  //   setCustomLength("");
-  //   setCustomBreadth("");
-  //   setThickness("");
-  // };
-
+  if (
+    product &&
+    Array.isArray(product.specification) &&
+    product.specification.length > 0
+  ) {
+  } else {
+    console.log("Specification is not available");
+  }
   const handleUnitChange = (e) => {
     setUnit(e.target.value);
     // setSelectedDimension("");
@@ -119,12 +131,11 @@ const SingleProductPage = () => {
 
   const handleCategoryChange = (value) => {
     setCategory(value);
-    // setSelectedDimension("");
   };
 
   const moveAr = () => {
     navigate("/ortholatex");
-    window.location.reload(); // This will refresh the page after navigation
+    window.location.reload();
   };
 
   const handleDimensionChange = (value) => {
@@ -235,26 +246,76 @@ const SingleProductPage = () => {
     width: "100%",
     backgroundColor: "var(--bgColor)",
   };
+  // const [isInWishlist, setIsInWishlist] = useState(false);
+  // const checkWishlist = async () => {
+  //   try {
+  //     const response = await axios.get(`http://localhost:5000/wishlist/check/${userId}/${product.id}`);
+  //     setIsInWishlist(response.data.isInWishlist);
+  //   } catch (error) {
+  //     console.error("Error checking wishlist status:", error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   checkWishlist();  // Check wishlist status when component mounts
+  // }, [product.id, userId]);
 
-  const [quantity, setQuantity] = useState(1);
-  const [subTotal, setSubTotal] = useState(0);
-  const { addToCart } = useContext(CartContext);
-  const { addToWishlist } = useContext(WishlistContext);
-  const { isAuthenticated } = useContext(AuthContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   console.log("addToWishlist", addToWishlist);
-  const navigate = useNavigate();
   const handleImageClick = (image) => {
     setSelectedImage(image);
   };
 
-  useEffect(() => {
-    setSubTotal(quantity * product?.price);
-  }, [quantity, product]);
-
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
   };
+  // const addItems = async (product, userId) => {
+  //   try {
+  //     // Increment product quantity by 1
+  //     const quantity = product.quantity + 1;
+
+  //     // Make an API call to update quantity
+  //     const updateQuantity = await axios.post(
+  //       `${import.meta.env.VITE_MY_API}user/updateCart/${userId}/${product.id}`,
+  //       {
+  //         id: product.id,
+  //         quantity,
+  //       }
+  //     );
+
+  //     console.log("Quantity updated successfully:", updateQuantity);
+  //     triggerCartUpdate();
+  //   } catch (error) {
+  //     console.error("Error updating quantity", error);
+  //   }
+  // };
+
+  // const removeItemCart = async (product, userId) => {
+  //   try {
+  //     // Decrement product quantity by 1
+  //     const newQuantity = product.quantity - 1;
+
+  //     if (newQuantity <= 0) {
+  //       // Call the delete item function if quantity is 0
+  //       await removeItem(product.id, userId);
+  //     } else {
+  //       // Update cart with new quantity
+  //       const updateQuantity = await axios.post(
+  //         `${import.meta.env.VITE_MY_API}user/updateCart/${userId}/${
+  //           product.id
+  //         }`,
+  //         {
+  //           id: product.id,
+  //           quantity: newQuantity,
+  //         }
+  //       );
+
+  //       console.log("Quantity updated successfully:", updateQuantity);
+  //       triggerCartUpdate();
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating quantity", error);
+  //   }
+  // };
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -265,7 +326,6 @@ const SingleProductPage = () => {
   if (!product) {
     return <Spinner />;
   }
-
   const {
     productId,
     // images,
@@ -278,6 +338,7 @@ const SingleProductPage = () => {
     path_view,
     quantity_stock,
   } = product;
+
   return (
     <Wrapper className="container section-center page">
       <Breadcrumb />
@@ -327,10 +388,8 @@ const SingleProductPage = () => {
               <h6>Category : {category}</h6>
             </span>
           </p>
-          <h5 className="price me-2 d-inline">₹{price}</h5>
-          {discountPrice && (
-            <h6 className="old-price d-inline">₹{discountPrice} </h6>
-          )}
+          <h5 className="price me-2 d-inline">₹{discountPrice}</h5>
+          {discountPrice && <h6 className="old-price d-inline">₹{price} </h6>}
           {/* <p className="desc my-1">{description}</p> */}
           <div className="info ">
             <p>
@@ -431,26 +490,75 @@ const SingleProductPage = () => {
             )}
           </div>
           <div className="quantity-toggle">
-            <button
+            <Button
               onClick={() => handleQuantityChange(quantity - 1)}
               disabled={quantity === 1}
             >
               -
-            </button>
+            </Button>
             <span>{quantity}</span>
             <button
-              disabled={quantity_stock <= quantity}
               onClick={() => handleQuantityChange(quantity + 1)}
+              disabled={quantity_stock <= quantity}
             >
               +
             </button>
           </div>
           {isAuthenticated ? (
             <div className="buttons">
-              {quantity_stock > 0 && (
+              {cartdata?.items?.find(
+                (item) => Number(item.productId) === Number(product?.productId)
+              ) ? (
+                <Button>
+                  <Link
+                    to="/cart"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    In Cart &nbsp;
+                    <FontAwesomeIcon icon={faCartPlus} />
+                  </Link>
+                </Button>
+              ) : (
+                quantity_stock > 0 && (
+                  <Button
+                    className="m-1"
+                    handleClick={() =>
+                      addToCart({
+                        productId,
+                        images,
+                        title,
+                        price,
+                        quantity_stock,
+                        quantity,
+                        subTotal,
+                        unit,
+                        categorz,
+                        selectedDimension,
+                        thickness,
+                      })
+                    }
+                  >
+                    Add to Cart
+                  </Button>
+                )
+              )}
+              {whishlistData?.items?.find(
+                (item) => Number(item.productId) === Number(product?.productId)
+              ) ? (
+                <Button className="m-3">
+                  <Link
+                    style={{ textDecoration: "none", color: "inherit" }}
+                    to="/wishlist"
+                  >
+                    <FaHeartCircleCheck />
+                  </Link>
+                </Button>
+              ) : (
+                // <p>In Whishlist</p>
                 <Button
+                  className="m-3"
                   handleClick={() =>
-                    addToCart({
+                    addToWishlist({
                       productId,
                       images,
                       title,
@@ -458,31 +566,12 @@ const SingleProductPage = () => {
                       quantity_stock,
                       quantity,
                       subTotal,
-                      unit,
-                      categorz,
-                      selectedDimension,
-                      thickness,
                     })
                   }
                 >
-                  Add to Cart
+                  <FontAwesomeIcon icon={faHeart} />
                 </Button>
               )}
-              <Button
-                handleClick={() =>
-                  addToWishlist({
-                    productId,
-                    images,
-                    title,
-                    price,
-                    quantity_stock,
-                    quantity,
-                    subTotal,
-                  })
-                }
-              >
-                <FontAwesomeIcon icon={faHeart} />
-              </Button>
             </div>
           ) : (
             <Button className="my-3" handleClick={() => navigate("/userlogin")}>
@@ -897,6 +986,7 @@ const SingleProductPage = () => {
               <Card
                 style={card_help}
                 className="d-flex align-items-center justify-content-center"
+                onClick={() => navigate("/products")}
               >
                 <Row className="w-100">
                   <Col md={9} style={{ marginTop: "3%" }}>
@@ -915,6 +1005,7 @@ const SingleProductPage = () => {
               <Card
                 style={card_help}
                 className="d-flex align-items-center justify-content-center"
+                onClick={() => navigate("/contact")}
               >
                 <Row className="w-100">
                   <Col md={9} style={{ marginTop: "9%" }}>
@@ -935,6 +1026,7 @@ const SingleProductPage = () => {
               <Card
                 style={card_help}
                 className="d-flex align-items-center justify-content-center"
+                onClick={() => navigate("/")}
               >
                 <Row className="w-100">
                   <Col md={9} style={{ marginTop: "9%" }}>
@@ -1163,6 +1255,7 @@ const Wrapper = styled.main`
     height: auto;
     border: 1px solid ${(props) => props.theme.borderColor};
     border-radius: 15px;
+    transition: transform 0.3s ease;
   }
 
   .content {
@@ -1193,12 +1286,6 @@ const Wrapper = styled.main`
         color: ${(props) => props.theme.textColor};
       }
     }
-
-    .buttons {
-      margin-top: 1rem;
-      button {
-        margin-right: 1rem;
-      }
     }
     .quantity-toggle {
       display: flex;

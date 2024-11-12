@@ -8,6 +8,7 @@ import { Table, Modal, Form, Input, Button } from "antd";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { DashboardContext } from "../../context/DashboardContext";
 import AddProduct from "./AddProduct";
+const { TextArea } = Input;
 
 const { confirm } = Modal;
 
@@ -21,22 +22,25 @@ const StyledProducts = styled.div`
 const ProductDashboard = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState([]);
+  console.log("editingUser", editingUser);
+  const [product, setProduct] = useState([]);
+  console.log("editingUser", editingUser);
 
   // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
   const { users, orders, products, fetchData } = useContext(DashboardContext);
   const deleteRecordFromAPI = async (id) => {
     try {
-       await axios.delete(
-        `${import.meta.env.VITE_MY_API}products/delete/${id}`
-      ).then(()=>{
-        fetchUsersData();
+      await axios
+        .delete(`${import.meta.env.VITE_MY_API}products/delete/${id}`)
+        .then(() => {
+          fetchUsersData();
 
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: "User has been deleted successfully.",
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: "User has been deleted successfully.",
+          });
         });
-      })      
     } catch (error) {
       console.error("Error deleting product:", error);
       Swal.fire({
@@ -104,6 +108,57 @@ const ProductDashboard = () => {
       description: editingUser.description,
       price: editingUser.price,
       category: editingUser.category,
+      LongDesc: editingUser.LongDesc,
+      quantity_stock: editingUser.quantity_stock,
+      specifications: [
+        {
+          product_Details: {
+            feel: editingUser.specifications?.[0]?.product_Details?.feel || "",
+            cover_Type:
+              editingUser.specifications?.[0]?.product_Details?.cover_Type ||
+              "",
+            cover_Material:
+              editingUser.specifications?.[0]?.product_Details
+                ?.cover_Material || "",
+            matress_Type:
+              editingUser.specifications?.[0]?.product_Details?.matress_Type ||
+              "",
+            Usability:
+              editingUser.specifications?.[0]?.product_Details?.Usability || "",
+
+            dynamicFields:
+              editingUser.specifications?.[0]?.product_Details?.dynamicFields?.map(
+                (field) => ({
+                  title:
+                    editingUser.specifications?.[0]?.product_Details?.field?.[0]
+                      ?.title || "",
+                  description:
+                    editingUser.specifications?.[0]?.product_Details?.field?.[0]
+                      ?.description || "",
+                })
+              ) || [],
+          },
+          product_Dimension: {
+            dimensions:
+              editingUser.specifications?.[0]?.product_Dimension?.dimensions ||
+              "",
+            thickness:
+              editingUser.specifications?.[0]?.product_Dimension?.thickness ||
+              "",
+          },
+          product_Policies: {
+            Warranty:
+              editingUser.specifications?.[0]?.product_Policies?.Warranty || "",
+            Shipping:
+              editingUser.specifications?.[0]?.product_Policies?.Shipping || "",
+            trial:
+              editingUser.specifications?.[0]?.product_Policies?.trial || "",
+            available_Offers:
+              editingUser.specifications?.[0]?.product_Policies
+                ?.available_Offers || "",
+          },
+        },
+      ],
     };
 
     try {
@@ -153,7 +208,6 @@ const ProductDashboard = () => {
     });
   };
 
-
   return (
     <StyledProducts>
       <h2 className="mb-4">All Products</h2>
@@ -166,7 +220,7 @@ const ProductDashboard = () => {
       <Table dataSource={products} columns={columns} />
 
       <Modal
-        title="Edit User"
+        title="Edit Product"
         centered
         open={editModalVisible}
         onOk={() => handleEditSubmit(editingUser)}
@@ -206,6 +260,379 @@ const ProductDashboard = () => {
             onChange={(e) =>
               setEditingUser({ ...editingUser, description: e.target.value })
             }
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Long Description:</label>
+          <TextArea
+            value={editingUser?.LongDesc}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, LongDesc: e.target.value })
+            }
+            rows={4}
+            placeholder="Enter the long description"
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label>Discount Price:</label>
+          <Input
+            type="number"
+            value={editingUser?.discountPrice}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, discountPrice: e.target.value })
+            }
+            placeholder="Enter the discount price"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Quantity in Stock:</label>
+          <Input
+            type="number"
+            value={editingUser?.quantity_stock}
+            onChange={(e) =>
+              setEditingUser({ ...editingUser, quantity_stock: e.target.value })
+            }
+            placeholder="Enter the quantity in stock"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Feel</label>
+          <Input
+            type="text"
+            value={editingUser?.offer || ""}
+            // value={
+            //   editingUser?.specifications?.[0]?.product_Details
+            //     ?.dynamicFields?.[0]?.title
+            // }
+            onChange={(e) =>
+              setEditingUser({
+                ...editingUser,
+                specifications: [
+                  {
+                    ...editingUser.specifications?.[0],
+                    product_Details: {
+                      ...editingUser.specifications?.[0]?.product_Details,
+                      feel: e.target.value,
+                    },
+                  },
+                ],
+              })
+            }
+            placeholder="Enter the feel"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Cover Type</label>
+          <Input
+            type="text"
+            value={
+              editingUser?.specifications?.[0]?.product_Details?.cover_Type ||
+              ""
+            }
+            onChange={(e) =>
+              setEditingUser({
+                ...editingUser,
+                specifications: [
+                  {
+                    ...editingUser.specifications[0],
+                    product_Details: {
+                      ...editingUser.specifications[0]?.product_Details,
+                      cover_Type: e.target.value,
+                    },
+                  },
+                ],
+              })
+            }
+            placeholder="Enter the cover type"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Cover Material:</label>
+          <Input
+            value={
+              editingUser?.specifications?.[0]?.product_Details
+                ?.cover_Material || ""
+            }
+            onChange={(e) =>
+              setEditingUser({
+                ...editingUser,
+                specifications: [
+                  {
+                    ...editingUser.specifications[0],
+                    product_Details: {
+                      ...editingUser.specifications[0]?.product_Details,
+                      cover_Material: e.target.value,
+                    },
+                  },
+                ],
+              })
+            }
+            placeholder="Enter the cover material"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Mattress Type:</label>
+          <Input
+            value={
+              editingUser?.specifications?.[0]?.product_Details?.matress_Type ||
+              ""
+            }
+            onChange={(e) =>
+              setEditingUser({
+                ...editingUser,
+                specifications: [
+                  {
+                    ...editingUser.specifications[0],
+                    product_Details: {
+                      ...editingUser.specifications[0]?.product_Details,
+                      matress_Type: e.target.value,
+                    },
+                  },
+                ],
+              })
+            }
+            placeholder="Enter the mattress type"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Usability:</label>
+          <Input
+            value={
+              editingUser?.specifications?.[0]?.product_Details?.Usability || ""
+            }
+            onChange={(e) =>
+              setEditingUser({
+                ...editingUser,
+                specifications: [
+                  {
+                    ...editingUser.specifications[0],
+                    product_Details: {
+                      ...editingUser.specifications[0]?.product_Details,
+                      Usability: e.target.value,
+                    },
+                  },
+                ],
+              })
+            }
+            placeholder="Enter the usability"
+          />
+        </div>
+        {editingUser?.specifications?.[0]?.product_Details?.dynamicFields?.map(
+          (field, index) => (
+            <div key={index} style={{ marginBottom: "10px" }}>
+              <label>Title {index + 1}:</label>
+              <Input
+                value={field.title || ""}
+                onChange={(e) =>
+                  setEditingUser({
+                    ...editingUser,
+                    specifications: [
+                      {
+                        ...editingUser.specifications[0],
+                        product_Details: {
+                          ...editingUser.specifications[0].product_Details,
+                          dynamicFields:
+                            editingUser.specifications[0].product_Details.dynamicFields.map(
+                              (dynamicField, fieldIndex) =>
+                                fieldIndex === index
+                                  ? { ...dynamicField, title: e.target.value }
+                                  : dynamicField
+                            ),
+                        },
+                      },
+                    ],
+                  })
+                }
+                placeholder="Enter the title"
+              />
+
+              <label>Description {index + 1}:</label>
+              <Input
+                value={field.description || ""}
+                onChange={(e) =>
+                  setEditingUser({
+                    ...editingUser,
+                    specifications: [
+                      {
+                        ...editingUser.specifications[0],
+                        product_Details: {
+                          ...editingUser.specifications[0].product_Details,
+                          dynamicFields:
+                            editingUser.specifications[0].product_Details.dynamicFields.map(
+                              (dynamicField, fieldIndex) =>
+                                fieldIndex === index
+                                  ? {
+                                      ...dynamicField,
+                                      description: e.target.value,
+                                    }
+                                  : dynamicField
+                            ),
+                        },
+                      },
+                    ],
+                  })
+                }
+                placeholder="Enter the description"
+              />
+            </div>
+          )
+        )}
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Thickness:</label>
+          <Input
+            value={
+              editingUser?.specifications?.[0]?.product_Dimension?.thickness ||
+              ""
+            }
+            onChange={(e) =>
+              setEditingUser({
+                ...editingUser,
+                specifications: [
+                  {
+                    ...editingUser.specifications[0],
+                    product_Details: {
+                      ...editingUser.specifications[0]?.product_Dimension,
+                      thickness: e.target.value,
+                    },
+                  },
+                ],
+              })
+            }
+            placeholder="Enter the thickness"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Dimensions:</label>
+          <Input
+            value={
+              editingUser?.specifications?.[0]?.product_Dimension?.dimensions ||
+              ""
+            }
+            onChange={(e) =>
+              setEditingUser({
+                ...editingUser,
+                specifications: [
+                  {
+                    ...editingUser.specifications[0],
+                    product_Details: {
+                      ...editingUser.specifications[0]?.product_Dimension,
+                      dimensions: e.target.value,
+                    },
+                  },
+                ],
+              })
+            }
+            placeholder="Enter the dimensions"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Warranty:</label>
+          <Input
+            type="text"
+            value={
+              editingUser?.specifications?.[0]?.product_Policies?.Warranty || ""
+            }
+            onChange={(e) =>
+              setEditingUser({
+                ...editingUser,
+                specifications: [
+                  {
+                    ...editingUser.specifications[0],
+                    product_Details: {
+                      ...editingUser.specifications[0]?.product_Policies,
+                      Warranty: e.target.value,
+                    },
+                  },
+                ],
+              })
+            }
+            placeholder="Enter the warranty details"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Shipping:</label>
+          <Input
+            type="text"
+            value={
+              editingUser?.specifications?.[0]?.product_Policies?.Shipping || ""
+            }
+            onChange={(e) =>
+              setEditingUser({
+                ...editingUser,
+                specifications: [
+                  {
+                    ...editingUser.specifications[0],
+                    product_Details: {
+                      ...editingUser.specifications[0]?.product_Policies,
+                      Shipping: e.target.value,
+                    },
+                  },
+                ],
+              })
+            }
+            placeholder="Enter the shipping details"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Trial:</label>
+          <Input
+            type="text"
+            value={
+              editingUser?.specifications?.[0]?.product_Policies?.trial || ""
+            }
+            onChange={(e) =>
+              setEditingUser({
+                ...editingUser,
+                specifications: [
+                  {
+                    ...editingUser.specifications[0],
+                    product_Details: {
+                      ...editingUser.specifications[0]?.product_Policies,
+                      trial: e.target.value,
+                    },
+                  },
+                ],
+              })
+            }
+            placeholder="Enter the trial details"
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>Available Offers:</label>
+          <Input
+            type="text"
+            value={
+              editingUser?.specifications?.[0]?.product_Policies
+                ?.available_Offers || ""
+            }
+            onChange={(e) =>
+              setEditingUser({
+                ...editingUser,
+                specifications: [
+                  {
+                    ...editingUser.specifications[0],
+                    product_Details: {
+                      ...editingUser.specifications[0]?.product_Policies,
+                      available_Offers: e.target.value,
+                    },
+                  },
+                ],
+              })
+            }
+            placeholder="Enter available offers"
           />
         </div>
       </Modal>

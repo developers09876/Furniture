@@ -170,8 +170,5 @@ const FeaturedProducts = () => {
     </>
   );
 };
-// const Wrapper = styled.main`
-//   .container {
-//   }
-// `;
+
 export default FeaturedProducts;

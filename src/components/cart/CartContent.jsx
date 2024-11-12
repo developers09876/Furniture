@@ -11,7 +11,7 @@ const CartContent = () => {
           <CartItem
             key={item.id}
             id={item.id}
-            image={item.images[0]}
+            image={item.images}
             title={item.title}
             price={item.price}
             quantity={item.quantity}
