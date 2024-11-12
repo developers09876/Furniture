@@ -56,7 +56,7 @@ const CartTotal = ({ total }) => {
           ) : (
             <Button
               className="login-btn"
-              handleClick={() => navigate("/userlogin")}
+              handleClick={() => navigate("/login")}
             >
               Login
             </Button>

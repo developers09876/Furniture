@@ -195,7 +195,7 @@ const Wishlist = () => {
       ) : (
         <Button
           className="mx-auto d-flex"
-          handleClick={() => navigate("/userlogin")}
+          handleClick={() => navigate("/login")}
         >
           Login
         </Button>

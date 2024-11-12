@@ -174,7 +174,7 @@ const NavBar = () => {
               <li className="nav-item m-2 mt-3" style={{ cursor: "pointer" }}>
                 {!isAuthenticated ? (
                   <Tooltip title="Login">
-                    <FontAwesomeIcon icon={faUserPlus} onClick={() => navigate("/userlogin")} />
+                    <FontAwesomeIcon icon={faUserPlus} onClick={() => navigate("/login")} />
                   </Tooltip>
                 ) : (
                   <Tooltip title="Logout">

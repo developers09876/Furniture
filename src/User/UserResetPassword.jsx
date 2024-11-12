@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "../components/Button";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import { Container, Form, Spinner, Alert } from "react-bootstrap";
 import Password from "antd/es/input/Password";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -41,6 +42,7 @@ const UserResetPassword = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const navigate = useNavigate();
 
   // Email validation
   const validateEmail = (email) => {
@@ -100,12 +102,18 @@ const UserResetPassword = () => {
 
     try {
       const response = await axios.put(
-        ` ${import.meta.env.VITE_MY_API}user/resetUser/`,
+        `${import.meta.env.VITE_MY_API}user/resetUser/`,
         { email, newPassword, confirmPassword }
       );
       console.log("response", response);
+
       if (response.data.status === "Successful") {
         setSuccessMessage("Password successfully reset!");
+
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       } else {
         setErrorMessage(response.data.message);
       }
@@ -194,6 +202,7 @@ const UserResetPassword = () => {
                     "Reset Password"
                   )}
                 </Button>
+
               </center>
             </Form>
           </>
