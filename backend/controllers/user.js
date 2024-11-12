@@ -70,6 +70,7 @@ export const loginUser = async (req, res) => {
 
   try {
     const foundUser = await User.findOne({ email });
+    console.log("foundUser", foundUser);
     if (!foundUser) {
       return res
         .status(HTTP_RESPONSE.NOT_FOUND.CODE)
@@ -103,11 +104,11 @@ export const loginUser = async (req, res) => {
 
 export const createCart = async (req, res) => {
   try {
-    const { id, cartItem } = req.body; // id from the request body
-    console.log("caetItem", cartItem);
-    console.log("id", id);
+    const { id, cartItem } = req.body;
+    // console.log("caetItem", cartItem);
+    // console.log("id", id);
     const user = await User.findById(id);
-
+    console.log("user", user);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
