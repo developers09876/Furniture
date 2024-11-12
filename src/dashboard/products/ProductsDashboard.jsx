@@ -210,13 +210,19 @@ const ProductDashboard = () => {
 
   return (
     <StyledProducts>
-      <h2 className="mb-4">All Products</h2>
-      <Link
-        className="text-reset text-decoration-none"
-        to={"/admin/products/add"}
-      >
-        <Button className="my-4">Add Products</Button>
-      </Link>
+      <div style={{ display: "flex", justifyContent: "end" }}>
+        <Link
+          className="text-reset text-decoration-none"
+          to={"/admin/products/add"}
+        >
+          <Button type="primary" className="my-4">
+            Add Products
+          </Button>
+        </Link>
+      </div>
+      <center>
+        <h2 className="mb-4">All Products</h2>
+      </center>
       <Table dataSource={products} columns={columns} />
 
       <Modal
