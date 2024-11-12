@@ -181,12 +181,10 @@ export const deleteProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   console.log("req.body", req.body);
+
   try {
-    const productId = req.params.id;
-    // Convert the productId to an ObjectId (if it's meant to match MongoDB's _id)
-    // if (!mongoose.Types.ObjectId.isValid(productId)) {
-    //   return res.status(400).json({ message: "Invalid product ID" });
-    // }
+    const productId = req.params.id; // Retrieve custom productId from route parameters
+    console.log("Product ID:", productId);
 
     const {
       title,
@@ -206,6 +204,7 @@ export const updateProduct = async (req, res) => {
       specifications,
     } = req.body;
 
+    // Parse specifications if it is a JSON string
     let parsedSpecifications;
     if (typeof specifications === "string") {
       try {
@@ -219,10 +218,9 @@ export const updateProduct = async (req, res) => {
       parsedSpecifications = specifications;
     }
 
-    // Find the product by _id and update its fields
-
+    // Find the product by custom productId and update its fields
     const updatedProduct = await Product.findOneAndUpdate(
-      productId, // Use the ObjectId for MongoDB's _id field
+      { productId: productId },
       {
         title,
         price,
@@ -239,9 +237,9 @@ export const updateProduct = async (req, res) => {
         images,
         quantity_stock,
         specifications: parsedSpecifications || [],
-      },
-      { new: true } // Return the updated document
+      }
     );
+
     if (!updatedProduct) {
       return res.status(404).json({ message: "Product not found" });
     }
@@ -254,7 +252,6 @@ export const updateProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 //orders
 export const getAllOrder = async (req, res) => {
   console.log("OrderDetail", req.body);

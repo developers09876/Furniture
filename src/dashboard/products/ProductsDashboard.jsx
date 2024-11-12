@@ -103,6 +103,7 @@ const ProductDashboard = () => {
   };
 
   const handleEditSubmit = async (editingUser) => {
+    console.log("step2", editingUser);
     const Data = {
       title: editingUser.title,
       description: editingUser.description,
@@ -110,6 +111,8 @@ const ProductDashboard = () => {
       category: editingUser.category,
       LongDesc: editingUser.LongDesc,
       quantity_stock: editingUser.quantity_stock,
+      productId: editingUser.productId,
+
       specifications: [
         {
           product_Details: {
@@ -149,7 +152,7 @@ const ProductDashboard = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_MY_API}products/edit/${editingUser._id}`,
+        `${import.meta.env.VITE_MY_API}products/edit/${editingUser.productId}`,
         Data
       );
       console.log("step1", response);
