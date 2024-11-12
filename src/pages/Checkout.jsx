@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import Breadcrumb from "../components/Breadcrumb";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
+import { DashboardContext } from "../context/DashboardContext";
 
 const Title = styled.h1`
   font-size: 24px;
@@ -45,16 +46,17 @@ const Checkout = () => {
   const [success, setSuccess] = useState(false);
   const [selectedDeliveryOption, setSelectedDeliveryOption] = useState("amana");
   const [paymentMethod, setPaymentMethod] = useState("online");
-
+  const { cartdata } = useContext(DashboardContext);
+  console.log("CartdataCartdata", cartdata);
   const navigate = useNavigate();
 
-  let cartValue = cart.items[0];
+  let cartValue = cartdata.items[0];
   const userId = localStorage.getItem("id");
   useEffect(() => {
-    if (!isAuthenticated || cart.items.lenght == 0) {
+    if (!isAuthenticated || cartdata.items.lenght == 0) {
       navigate("/cart");
     }
-  }, [isAuthenticated, cart]);
+  }, [isAuthenticated, cartdata]);
 
   const createOrder = async () => {
     if (!isFormValid()) {
@@ -62,7 +64,7 @@ const Checkout = () => {
     }
     console.log("Order placed");
     try {
-      if (cart.items.length === 0) {
+      if (cartdata.items.length === 0) {
         throw new Error(
           "No items in the cart. Please fill your cart to make an order."
         );
@@ -81,7 +83,7 @@ const Checkout = () => {
         delivery_company:
           selectedDeliveryOption === "amana" ? "Amana" : "Ozone",
         delivery_cost: deliveryOption.cost,
-        items: cart.items.map((item) => ({
+        items: cartdata.items.map((item) => ({
           id: item.id,
           image: item.image,
           title: item.title,
@@ -116,7 +118,6 @@ const Checkout = () => {
       throw error;
     }
   };
-
 
   const handleCOD = () => {
     // Simulate COD confirmation logic here
@@ -166,7 +167,7 @@ const Checkout = () => {
   //         "email":"abcd@gmail.com",
   //         "contact":"123456789"
   //     },
-      
+
   //   };
   //   try {
   //     // const order = await axios.post("http://localhost:5000/create-order", {
@@ -177,14 +178,11 @@ const Checkout = () => {
   //     // const { amount, id: order_id, currency } = order.data;
 
   //       e.preventDefault()
-       
+
   //       const res= await loadScripts('https://checkout.razorpay.com/v1/checkout.js');
   //     if(!res){
   //       alert('faild to load script')
   //     }
-      
-       
-     
 
   //     const paymentObject = new window.Razorpay(options);
   //     paymentObject.open();
@@ -192,9 +190,10 @@ const Checkout = () => {
   //     console.error("Error in loading Razorpay", error);
   //   }
   // };
+
   const loadScripts = (src) => {
     return new Promise((resolve, reject) => {
-      const script = document.createElement('script');
+      const script = document.createElement("script");
       script.src = src;
       script.onload = () => {
         resolve(true);
@@ -206,21 +205,23 @@ const Checkout = () => {
     });
   };
   const loadRazorpay = async (e) => {
-   // Prevent default button or form behavior
-    console.log("ln188")
+    // Prevent default button or form behavior
+    console.log("ln188");
 
     // Ensure the Razorpay script is loaded
-    const res = await loadScripts('https://checkout.razorpay.com/v1/checkout.js');
+    const res = await loadScripts(
+      "https://checkout.razorpay.com/v1/checkout.js"
+    );
     if (!res) {
-      alert('Failed to load Razorpay SDK');
+      alert("Failed to load Razorpay SDK");
       return;
     }
-    console.log("ln1941")
+    console.log("ln1941");
 
     // Razorpay payment options
     const options = {
       key: "rzp_test_NYUPSveWybUfyq", // Replace with your Razorpay Key ID
-      currency: 'INR',
+      currency: "INR",
       amount: 100, // Amount in paise (100 paise = ₹1)
       name: "Furniture Delivery",
       description: "Payment for furniture",
@@ -237,37 +238,35 @@ const Checkout = () => {
         color: "#61dafb",
       },
     };
-  
+
     // Check if Razorpay object is available
     if (!window.Razorpay) {
       alert("Razorpay SDK failed to load.");
       return;
     }
-  console.log("ln221")
+    console.log("ln221");
     // Open Razorpay checkout modal
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   };
-  
 
+  const handlePaymentMethodChange = (e) => {
+    setPaymentMethod(e.target.value);
+  };
 
-const handlePaymentMethodChange = (e) => {
-  setPaymentMethod(e.target.value);
-};
-
-const handleSubmit = () => {
-  if (paymentMethod === "cod") {
-    handleCOD();
-    // createOrder()
-  } else {
-    alert("razhorpay")
-    loadRazorpay();
-    // createOrder()
-  }
-};
+  const handleSubmit = () => {
+    if (paymentMethod === "cod") {
+      handleCOD();
+      // createOrder()
+    } else {
+      alert("razhorpay");
+      loadRazorpay();
+      // createOrder()
+    }
+  };
   const updateProductStock = async () => {
     try {
-      for (const item of cart.items) {
+      for (const item of cartdata.items) {
         const updatedStock =
           parseInt(item.quantity_stock) - parseInt(item.quantity);
         await axios.patch(`${import.meta.env.VITE_MY_API}products/${item.id}`, {
@@ -339,7 +338,16 @@ const handleSubmit = () => {
     ozone: { label: "Delivery by Ozone 48h", cost: 40.0 },
   };
 
-  const subTotal = cart.items.reduce((total, item) => total + item.subTotal, 0);
+  // const subTotal = cartdata.items.reduce(
+  //   (total, item) => total + item.subTotal,
+  //   0
+  // );
+
+  const subTotal = cartdata.items.reduce(
+    (total, item) => total + (Number(item.subTotal) || 0),
+    0
+  );
+
   const totalOrder = subTotal + deliveryOptions[selectedDeliveryOption].cost;
 
   return (
@@ -418,27 +426,27 @@ const handleSubmit = () => {
                   />
                 </div>
                 <div>
-        <label>
-          <input
-            type="radio"
-            value="online"
-            checked={paymentMethod === "online"}
-            onChange={handlePaymentMethodChange}
-          />
-          Pay Online (Razorpay)
-        </label>
-      </div>
-      <div>
-        <label>
-          <input
-            type="radio"
-            value="cod"
-            checked={paymentMethod === "cod"}
-            onChange={handlePaymentMethodChange}
-          />
-          Cash on Delivery (COD)
-        </label>
-      </div>
+                  <label>
+                    <input
+                      type="radio"
+                      value="online"
+                      checked={paymentMethod === "online"}
+                      onChange={handlePaymentMethodChange}
+                    />
+                    Pay Online (Razorpay)
+                  </label>
+                </div>
+                <div>
+                  <label>
+                    <input
+                      type="radio"
+                      value="cod"
+                      checked={paymentMethod === "cod"}
+                      onChange={handlePaymentMethodChange}
+                    />
+                    Cash on Delivery (COD)
+                  </label>
+                </div>
               </form>
             </div>
             <div className="col-md-6">
@@ -450,7 +458,7 @@ const handleSubmit = () => {
                     <span className="fw-bold">Sub-Total</span>
                   </div>
                   <hr />
-                  {cart.items.map((item) => (
+                  {/* {cartdata.items.map((item) => (
                     <div
                       key={item.title}
                       className="d-flex justify-content-between mb-2"
@@ -459,18 +467,21 @@ const handleSubmit = () => {
                         {item.title} <small>({item.quantity})</small>
                       </p>
                       <span>
-                        <FaIndianRupeeSign /> {item.subTotal.toFixed(2)}{" "}
+                        <FaIndianRupeeSign /> {item.subTotal.toFixed(2)}
                       </span>
                     </div>
-                  ))}
+                  ))} */}
                   <hr />
                   <div className="d-flex justify-content-between mb-2">
                     <p className="card-text fw-bold">Order Sub-Total : </p>
                     <span className="text-success">
-                      <FaIndianRupeeSign /> {subTotal.toFixed(2)}
+                      <FaIndianRupeeSign />
+                      {/* {subTotal.toFixed(2)} */}
+                      {(Number(subTotal) || 0).toFixed(2)}
                     </span>
                   </div>
                   <hr />
+
                   <div className="d-flex justify-content-between mb-2">
                     <p className="card-text fw-bold">Order Total : </p>
                     <span className="text-danger">

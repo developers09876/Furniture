@@ -29,14 +29,12 @@ const Cart = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const { clearCart, removeItem } = useContext(CartContext);
   const { cartdata } = useContext(DashboardContext);
-
   const [cd, setCd] = useState([]);
   const [total, setTotal] = useState(0);
+  console.log("total", total);
   const [totalItems, setTotalItems] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [product, setProduct] = useState([]);
-  const [cartdata1, setCartdata] = useState("");
-  console.log("productxz", cd);
+
   useEffect(() => {
     if (cartdata) {
       setCd(cartdata.items);
@@ -44,17 +42,18 @@ const Cart = () => {
   }, [cartdata]);
 
   useEffect(() => {
-    const total = cartdata.items.reduce((sum, item) => {
-      return sum + item.price * item.quantity;
+    const total = cd.reduce((sum, item) => {
+      return sum + Number(item.price) * Number(item.quantity);
     }, 0);
-    setTotal(total.toFixed(2));
+    console.log("totalx", total);
+    setTotal(Number(total.toFixed(2)));
 
-    const totalItems = cartdata.items.reduce((sum, item) => {
+    const totalItems = cd.reduce((sum, item) => {
       return sum + Number(item.quantity);
     }, 0);
 
     setTotalItems(totalItems);
-  }, [cartdata]);
+  }, [cd]);
 
   const handleDelete = (item) => {
     confirm({
