@@ -4,7 +4,7 @@ import axios from "axios";
 import { styled } from "styled-components";
 import Swal from "sweetalert2";
 // import Button from "../../components/Button";
-import { Table, Modal, Form, Input, Button } from "antd";
+import { Table, Modal, Form, Input, Button, Divider } from "antd";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { DashboardContext } from "../../context/DashboardContext";
 import AddProduct from "./AddProduct";
@@ -103,7 +103,6 @@ const ProductDashboard = () => {
   };
 
   const handleEditSubmit = async (editingUser) => {
-    console.log("step2", editingUser);
     const Data = {
       title: editingUser.title,
       description: editingUser.description,
@@ -210,7 +209,10 @@ const ProductDashboard = () => {
         </Link>
       </div>
       <center>
-        <h2 className="mb-4">All Products</h2>
+        <Divider>
+          {" "}
+          <h3>All Products</h3>
+        </Divider>
       </center>
       <Table dataSource={products} columns={columns} />
 
