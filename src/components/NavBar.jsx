@@ -163,7 +163,7 @@ const NavBar = () => {
               </li>
               <li className="nav-item ms-2 mt-3 pt-1">
                 <Link to="/wishlist" style={{ color: "#1D1D1D", textDecoration: "none" }}>
-                  <Badge size="small" count={isAuthenticated ? totalWhish : 0}>
+                  <Badge size="small" count={isAuthenticated ? total : 0}>
                     <FontAwesomeIcon
                       icon={total > 0 ? faHeartFilled : faHeartEmpty}
                       style={{ height: "18px", color: total > 0 ? "red" : "#1D1D1D", transition: "color 0.3s ease" }}
