@@ -242,7 +242,6 @@ export const updateProduct = async (req, res) => {
       },
       { new: true } // Return the updated document
     );
-
     if (!updatedProduct) {
       return res.status(404).json({ message: "Product not found" });
     }
