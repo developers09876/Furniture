@@ -52,6 +52,7 @@ const Checkout = () => {
 
   let cartValue = cartdata.items[0];
   const userId = localStorage.getItem("id");
+
   useEffect(() => {
     if (!isAuthenticated || cartdata.items.lenght == 0) {
       navigate("/cart");
@@ -63,60 +64,71 @@ const Checkout = () => {
       return;
     }
     console.log("Order placed");
-    try {
-      if (cartdata.items.length === 0) {
-        throw new Error(
-          "No items in the cart. Please fill your cart to make an order."
-        );
-      }
-      const deliveryOption = deliveryOptions[selectedDeliveryOption];
-      const order = {
-        // order_id: orderId,
-        user_id: userId,
-        shipping_address: shippingAddress,
-        name: name,
-        phone: phone,
-        order_status: "pending",
-        created_at: currentDate(),
-        description: `hiii this descrprtion `,
-        order_total: totalOrder,
-        delivery_company:
-          selectedDeliveryOption === "amana" ? "Amana" : "Ozone",
-        delivery_cost: deliveryOption.cost,
-        items: cartdata.items.map((item) => ({
-          id: item.id,
-          image: item.image,
-          title: item.title,
-          price: item.price,
-          quantity: item.quantity,
-          quantity_stock: item.quantity_stock,
-          subTotal: item.price * item.quantity,
-        })),
-      };
 
-      const response = await axios.post(
-        `${import.meta.env.VITE_MY_API}products/createorder`,
-        order
+    if (cartdata.items.length === 0) {
+      throw new Error(
+        "No items in the cart. Please fill your cart to make an order."
       );
-      if (response) {
+    }
+    const deliveryOption = deliveryOptions[selectedDeliveryOption];
+    const order = {
+      // order_id: orderId,
+      user_id: userId,
+      shipping_address: shippingAddress,
+      name: name,
+      phone: phone,
+      order_status: "pending",
+      created_at: currentDate(),
+      description: `hiii this descrprtion `,
+      order_total: totalOrder,
+      delivery_company: selectedDeliveryOption === "amana" ? "Amana" : "Ozone",
+      delivery_cost: deliveryOption.cost,
+      items: cartdata.items.map((item) => ({
+        productId: item.productId,
+        image: item.image,
+        title: item.title,
+        price: item.price,
+        quantity: item.quantity,
+        quantity_stock: item.quantity_stock,
+        subTotal: item.price * item.quantity,
+      })),
+    };
+
+    axios
+      .post(`${import.meta.env.VITE_MY_API}products/createorder`, order)
+      .then((response) => {
+        if (response) {
+          Swal.fire({
+            title: "Order Placed!",
+            text: "your order has been placed",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+
+          cartdata.items.map((item) =>
+            axios
+              .put(
+                `${import.meta.env.VITE_MY_API}products/editquantity/${
+                  item.productId
+                }`,
+                { quantity: item.quantity }
+              )
+              .then((res) => {
+                console.log("Admin Quantity Updated");
+              })
+          );
+        }
+      })
+      .catch((error) => {
         Swal.fire({
-          title: "Order Placed!",
-          text: "your order has been placed",
-          icon: "success",
+          title: "Order Not placed went something error!",
+          text: "Something went wrong while placing your order. Please try again.",
+          icon: "error",
           confirmButtonText: "OK",
         });
-        return navigate(`/`);
-      }
-    } catch (error) {
-      Swal.fire({
-        title: "Order Not placed went something error!",
-        text: "Something went wrong while placing your order. Please try again.",
-        icon: "error",
-        confirmButtonText: "OK",
+        console.error("Error creating order:", error);
+        throw error;
       });
-      console.error("Error creating order:", error);
-      throw error;
-    }
   };
 
   const handleCOD = () => {
@@ -282,39 +294,43 @@ const Checkout = () => {
     }
   };
 
-  // const handleOrderPlace = async () => {
-  //   const details = {
-  //     name: name,
-  //     phone: phone,
-  //     shippingAddress: shippingAddress,
-  //     title: cartValue.title,
-  //     quantity: cartValue.quantity,
-  //     price: cartValue.price,
-  //     subTotal: cartValue.subTotal,
-  //     category: "sofa",
-  //     userId: userId,
-  //   };
-  //   console.log("details", details);
+  const handleOrderPlace = async () => {
+    const details = {
+      name: name,
+      phone: phone,
+      shippingAddress: shippingAddress,
+      title: cartValue.title,
+      quantity: cartValue.quantity,
+      price: cartValue.price,
+      subTotal: cartValue.subTotal,
+      // category: "sofa",
+      userId: userId,
+    };
+    console.log("details", details);
 
-  //   try {
-  //     await axios.post(`${import.meta.env.VITE_MY_API}products/createorder`, details, {
-  //       order_status: "delivered",
-  //     });
-  //     await updateProductStock();
-  //     clearCart();
-  //     setOrderID(orderId);
-  //     setSuccess(true);
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_MY_API}products/createorder`,
+        details,
+        {
+          order_status: "delivered",
+        }
+      );
+      await updateProductStock();
+      clearCart();
+      setOrderID(orderId);
+      setSuccess(true);
 
-  //     Swal.fire({
-  //       icon: "success",
-  //       title: "Order placed successfully!",
-  //       showConfirmButton: false,
-  //       timer: 2000,
-  //     });
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
+      Swal.fire({
+        icon: "success",
+        title: "Order placed successfully!",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const handleOrderDelivered = async () => {
     try {
@@ -337,11 +353,6 @@ const Checkout = () => {
     amana: { label: "Delivery by Amana 24h", cost: 60.0 },
     ozone: { label: "Delivery by Ozone 48h", cost: 40.0 },
   };
-
-  // const subTotal = cartdata.items.reduce(
-  //   (total, item) => total + item.subTotal,
-  //   0
-  // );
 
   const subTotal = cartdata.items.reduce(
     (total, item) => total + (Number(item.subTotal) || 0),
@@ -522,7 +533,8 @@ const Checkout = () => {
                 <div className="card-footer text-center">
                   <Button
                     className="my-3 px-4"
-                    handleClick={handleSubmit}
+                    // onClick={() => handleOrderPlace()}   handleOrderPlace
+                    handleClick={createOrder}
                     disabled={!isFormValid()}
                   >
                     Place Order

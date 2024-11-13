@@ -252,6 +252,41 @@ export const updateProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// update quantity after place the order
+
+export const updateQuantity = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { quantity } = req.body;
+
+    const product = await Product.findOne({ productId: id });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    const currentStock = Number(product.quantity_stock);
+
+    product.quantity_stock = currentStock - quantity;
+
+    if (product.quantity_stock < 0) {
+      return res
+        .status(400)
+        .json({ message: "Insufficient stock to fulfill request" });
+    }
+
+    await product.save();
+
+    res.status(200).json({
+      message: "Quantity updated successfully",
+      product,
+    });
+  } catch (error) {
+    console.error("Error updating cart quantity:", error);
+    res.status(500).json({ message: "Server Error: " + error.message });
+  }
+};
+
 //orders
 export const getAllOrder = async (req, res) => {
   console.log("OrderDetail", req.body);

@@ -42,10 +42,13 @@ const Cart = () => {
   }, [cartdata]);
 
   useEffect(() => {
+    handleQuantityChange();
+  }, []);
+
+  useEffect(() => {
     const total = cd.reduce((sum, item) => {
       return sum + Number(item.price) * Number(item.quantity);
     }, 0);
-    console.log("totalx", total);
     setTotal(Number(total.toFixed(2)));
 
     const totalItems = cd.reduce((sum, item) => {
@@ -89,44 +92,6 @@ const Cart = () => {
       },
     });
   };
-
-  // const handleQuantityChange = (newQuantity) => {
-  //   setQuantity(newQuantity);
-  // };
-  // const handleQuantityChange = async (item, newQuantity) => {
-  //   if (newQuantity > 0 && newQuantity <= item.quantity_stock) {
-  //     setCd((prevCd) =>
-  //       prevCd.map((cartItem) =>
-  //         cartItem.productId === item.productId
-  //           ? { ...cartItem, quantity: newQuantity }
-  //           : cartItem
-  //       )
-  //     );
-  //     const userId = localStorage.getItem("id");
-  //     await axios
-  //       .post(
-  //         `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${
-  //           item.productId
-  //         }`,
-  //         {
-  //           quantity: newQuantity,
-  //         }
-  //       )
-  //       .then((res) => {
-  //         Swal.fire({
-  //           icon: "success",
-  //           title: "Item Update ",
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         });
-  //         console.log("Quantity updated on backend");
-  //       })
-
-  //       .catch((error) => {
-  //         console.error("Error updating quantity on backend:", error);
-  //       });
-  //   }
-  // };
 
   const handleQuantityChange = async (item, newQuantity) => {
     if (newQuantity > 0 && newQuantity <= item.quantity_stock) {
@@ -245,7 +210,6 @@ const Cart = () => {
                       -
                     </button>
                     <center>
-                      {" "}
                       <span className="quantity m-2">{item.quantity}</span>
                     </center>
                     <button

@@ -17,6 +17,7 @@ const orderSchema = new Schema({
   order_total: { type: String },
   items: [
     {
+      productId: { type: Number, required: true },
       title: { type: String, required: true },
       price: { type: String, required: true },
       quantity: { type: String },

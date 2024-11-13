@@ -2,10 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 
 const Ortholatex = () => {
-  const earth = useGLTF(
-    "/public/Organic_Posture_Pedic/Organic_Posture_Pedic.glb"
-  );
-
+  const earth = useGLTF("/public/3D-View-GLB/Latex_O_Pedic_Plus.glb");
   const style = {
     display: "block",
     margin: "0 auto",
