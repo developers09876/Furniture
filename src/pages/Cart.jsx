@@ -107,14 +107,12 @@ const Cart = () => {
         const userId = localStorage.getItem("id");
         console.log(
           "Sending request to:",
-          `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${
-            item.productId
+          `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${item.productId
           }`
         );
 
         const response = await axios.put(
-          `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${
-            item.productId
+          `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${item.productId
           }`,
           { quantity: newQuantity },
           { timeout: 5000 }
@@ -255,7 +253,7 @@ const Cart = () => {
       ) : (
         <Button
           className="mx-auto d-flex"
-          handleClick={() => navigate("/userlogin")}
+          handleClick={() => navigate("/login")}
         >
           Login
         </Button>

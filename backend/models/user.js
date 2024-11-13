@@ -11,6 +11,8 @@ const userSchema = new Schema({
     unique: true,
   },
   phoneNumber: { type: Number, required: true },
+  forgotOtp: { type: Number, required: true },
+
   password: { type: String, required: true, minlength: 5, maxlength: 1024 },
   Carts: { type: Array },
   CreatedAt: { type: Date, default: Date.now },

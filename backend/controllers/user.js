@@ -64,41 +64,122 @@ export const registerUser = async (req, res) => {
   }
 };
 
+// export const loginUser = async (req, res) => {
+//   const { email, password } = req.body;
+//   console.log("name", email, password);
+
+//   try {
+//     const foundUser = await User.findOne({ email });
+//     if (!foundUser) {
+//       return res
+//         .status(HTTP_RESPONSE.NOT_FOUND.CODE)
+//         .json({ error: "user not found" });
+//     }
+
+//     // check password match
+//     const matchedPassword = await checkPasswordMatch(
+//       password,
+//       foundUser.password
+//     );
+//     if (!matchedPassword) {
+//       return res
+//         .status(HTTP_RESPONSE.UNAUTHORIZED.CODE)
+//         .json({ error: "Invalid email or password..." });
+//     }
+
+//     const userWithoutPassword = await createUserWithoutPass(foundUser);
+//     const token = await createToken({ id: userWithoutPassword.id });
+
+//     return res
+//       .status(HTTP_RESPONSE.OK.CODE)
+//       .json({ data: userWithoutPassword, token });
+//   } catch (err) {
+//     console.log("An error inside user login.", err);
+//     return res
+//       .status(HTTP_RESPONSE.INTERNAL_ERROR.CODE)
+//       .json(HTTP_RESPONSE.INTERNAL_ERROR.MESSAGE);
+//   }
+// };
+const transporter = nodemailer.createTransport({
+  service: "Gmail", // Use a compatible email service
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+// Generate OTP
+const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
+
+// Step 1: Login and Send OTP
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  console.log("name", email, password);
+  console.log("Login attempt:", email, password);
 
   try {
     const foundUser = await User.findOne({ email });
     console.log("foundUser", foundUser);
     if (!foundUser) {
-      return res
-        .status(HTTP_RESPONSE.NOT_FOUND.CODE)
-        .json({ error: "user not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
-    // check password match
-    const matchedPassword = await checkPasswordMatch(
-      password,
-      foundUser.password
-    );
+    // Check if password matches
+    const matchedPassword = await checkPasswordMatch(password, foundUser.password);
     if (!matchedPassword) {
-      return res
-        .status(HTTP_RESPONSE.UNAUTHORIZED.CODE)
-        .json({ error: "Invalid email or password..." });
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    const userWithoutPassword = await createUserWithoutPass(foundUser);
-    const token = await createToken({ id: userWithoutPassword.id });
+    // Generate OTP and set expiration (e.g., 10 minutes from now)
+    const otp = generateOTP();
+    const otpExpiration = Date.now() + 10 * 60 * 1000; // 10 minutes
+    foundUser.loginOTP = otp;
+    foundUser.otpExpiration = otpExpiration;
 
-    return res
-      .status(HTTP_RESPONSE.OK.CODE)
-      .json({ data: userWithoutPassword, token });
+    // Save OTP in the user document
+    await foundUser.save();
+
+    // Send OTP via email
+    await transporter.sendMail({
+      to: email,
+      subject: "Your Login OTP",
+      text: `Your OTP for login is ${otp}. This code is valid for 10 minutes.`,
+    });
+
+    return res.status(200).json({ message: "OTP sent to your email. Please verify to complete login." });
   } catch (err) {
-    console.log("An error inside user login.", err);
-    return res
-      .status(HTTP_RESPONSE.INTERNAL_ERROR.CODE)
-      .json(HTTP_RESPONSE.INTERNAL_ERROR.MESSAGE);
+    console.error("Error during login:", err);
+    return res.status(500).json({ message: "An error occurred during login" });
+  }
+};
+
+// Step 2: Verify OTP and Complete Login
+export const verifyLoginOTP = async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user || !user.loginOTP || user.otpExpiration < Date.now()) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    if (user.loginOTP !== otp) {
+      return res.status(400).json({ message: "Incorrect OTP" });
+    }
+
+    // Clear OTP fields after successful verification
+    user.loginOTP = undefined;
+    user.otpExpiration = undefined;
+
+    await user.save();
+
+    // Generate token after OTP verification
+    const token = await createToken({ id: user.id });
+    const userWithoutPassword = { ...user.toObject(), password: undefined };
+
+    return res.status(200).json({ data: userWithoutPassword, token });
+  } catch (err) {
+    console.error("Error verifying OTP:", err);
+    return res.status(500).json({ message: "An error occurred during OTP verification" });
   }
 };
 
@@ -482,6 +563,77 @@ export async function resetUsers(req, res) {
     });
   }
 }
+
+// export async function resetUsers(req, res) {
+//   try {
+//     const { email } = req.body;
+//     console.log("Email provided for reset:", email);
+
+//     // Check if the user exists in the database
+//     const existUser = await User.findOne({ email });
+//     if (!existUser) {
+//       return res.status(400).json({
+//         message: "User not found",
+//         status: "Failed",
+//       });
+//     }
+
+//     // Generate a 4-digit OTP
+//     const otp = Math.floor(1000 + Math.random() * 9000);
+//     console.log("Generated OTP:", otp);
+
+//     // Set up the nodemailer transporter
+//     const transporter = nodemailer.createTransport({
+//       host: "smtp.gmail.com",
+//       port: 587,
+//       secure: false,
+//       auth: {
+//         user: "ferilcrosshurdle@gmail.com",
+//         pass: "ntjlgqizfbebdshd", // Use environment variables for sensitive information
+//       },
+//     });
+
+//     // Define the mail options
+//     const mailOptions = {
+//       from: "ferilcrosshurdle@gmail.com",
+//       to: email,
+//       subject: "Password Reset Verification Code",
+//       text: `Your OTP code is: ${otp}`,
+//     };
+
+//     // Send the email
+//     transporter.sendMail(mailOptions, async function (error, info) {
+//       if (error) {
+//         console.log("Error sending OTP email:", error);
+//         return res.status(500).json({
+//           message: "Failed to send OTP email",
+//           status: "Failed",
+//         });
+//       } else {
+//         console.log("OTP email sent:", info.response);
+
+//         // Update the user record with the OTP in the database
+//         await User.findByIdAndUpdate(
+//           existUser._id,
+//           { forgetPasswordCode: otp },
+//           { new: true }
+//         );
+
+//         return res.status(200).json({
+//           message: "OTP sent successfully",
+//           status: "Successful",
+//           userId: existUser._id,
+//         });
+//       }
+//     });
+//   } catch (err) {
+//     console.error("Error during password reset process:", err);
+//     return res.status(500).json({
+//       message: "An error occurred during reset",
+//       status: "Failed",
+//     });
+//   }
+// }
 
 export async function getOneUser(req, res) {
   console.log("reqa", req);

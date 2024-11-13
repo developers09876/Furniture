@@ -251,7 +251,7 @@ const NavBar = () => {
                   <Tooltip title="Login">
                     <FontAwesomeIcon
                       icon={faUserPlus}
-                      onClick={() => navigate("/userlogin")}
+                      onClick={() => navigate("/login")}
                     />
                   </Tooltip>
                 ) : (
