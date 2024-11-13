@@ -52,12 +52,16 @@ const UserResetPassword = () => {
 
   // Password validation
   const validatePasswords = () => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{10,}$/;
+
     if (newPassword !== confirmPassword) {
       setErrorMessage("Passwords do not match.");
       return false;
     }
-    if (newPassword.length < 6) {
-      setErrorMessage("Password must be at least 6 characters long.");
+    if (!passwordRegex.test(newPassword)) {
+      setErrorMessage(
+        "Password must be at least 10 characters long, include at least one uppercase letter, one lowercase letter, one digit, and one special character."
+      );
       return false;
     }
     return true;
