@@ -20,12 +20,14 @@ import {
   // getUserById,
   resetUsers,
   resetUser,
+  checkVerifivationCode
   // whistlistUser,
 } from "../controllers/user.js";
 import { isLoggedIn } from "../middleware.js";
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
+router.post("/verify/password", checkVerifivationCode);
 router.post("/enquiry", enquiryUser);
 // router.get("/:id", getUserById);
 router.post("/getUser", getOneUser);
