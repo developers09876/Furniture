@@ -32,13 +32,13 @@ const SearchContainer = styled.div`
   width: 270px;
   margin: 0 auto;
   display: flex;
-  // position: relative;
-  // text-align: center;
+  position: relative;
+  text-align: center;
 `;
 
 const SearchIcon = styled(FontAwesomeIcon)`
-  // position: absolute;
-  // left: 20px;
+  position: absolute;
+  left: 20px;
   top: 13px;
   color: ${(props) => props.theme.mutedTextColor};
 `;
