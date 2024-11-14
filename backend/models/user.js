@@ -14,6 +14,7 @@ const userSchema = new Schema({
   password: { type: String, required: true, minlength: 5, maxlength: 1024 },
   Carts: { type: Array },
   CreatedAt: { type: Date, default: Date.now },
+  forgetPasswordCode: { type: Number },
 
   Carts: [
     {

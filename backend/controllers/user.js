@@ -101,6 +101,39 @@ export const loginUser = async (req, res) => {
       .json(HTTP_RESPONSE.INTERNAL_ERROR.MESSAGE);
   }
 };
+// Step 2: Verify OTP and Complete Login
+export const verifyLoginOTP = async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user || !user.loginOTP || user.otpExpiration < Date.now()) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    if (user.loginOTP !== otp) {
+      return res.status(400).json({ message: "Incorrect OTP" });
+    }
+
+    // Clear OTP fields after successful verification
+    user.loginOTP = undefined;
+    user.otpExpiration = undefined;
+
+    await user.save();
+
+    // Generate token after OTP verification
+    const token = await createToken({ id: user.id });
+    const userWithoutPassword = { ...user.toObject(), password: undefined };
+
+    return res.status(200).json({ data: userWithoutPassword, token });
+  } catch (err) {
+    console.error("Error verifying OTP:", err);
+    return res
+      .status(500)
+      .json({ message: "An error occurred during OTP verification" });
+  }
+};
 
 export const createCart = async (req, res) => {
   try {
@@ -362,7 +395,7 @@ export const updateUser = async (req, res) => {
 //     });
 
 //     const mailOptions = {
-//       from: `${details.email}`,
+//       from: ${details.email},
 //       // from: "ganeshgm3113@gmil.com",
 //       to: process.env.EMAIL,
 
@@ -456,28 +489,203 @@ export async function enquiryUser(req, res, next) {
 
 // reset password
 
+// --------
+// export const registerUser = async (req, res) => {
+//   console.log("reqq.body", req.body);
+//   const { username, email, password, phoneNumber } = req.body;
+
+//   if (!password) {
+//     return res
+//       .status(HTTP_RESPONSE.BAD_REQUEST.CODE)
+//       .json({ error: "Password is required" });
+//   }
+
+//   const passwordHashed = await hashPassword(password);
+
+//   try {
+//     const registeredUser = await User.findOne({ email: email });
+//     if (registeredUser) {
+//       return res.status(HTTP_RESPONSE.BAD_REQUEST.CODE).json({
+//         message: "A user has already registered with this email address.",
+//       });
+//     } else {
+//       const newUser = new User({
+//         username,
+//         email,
+//         phoneNumber,
+//         password: passwordHashed,
+//       });
+
+//       await newUser.save();
+
+//       const userWithoutpassword = await createUserWithoutPass(newUser);
+//       const token = await createToken({ id: userWithoutpassword.id });
+
+//       return res.status(HTTP_RESPONSE.OK.CODE).json({
+//         data: userWithoutpassword,
+//         token,
+//         message: "User created Succesfully",
+//       });
+//     }
+//   } catch (err) {
+//     console.log("error inside register user!", err);
+//   }
+// };
+//-------------------
+// export async function resetUsers(req, res) {
+//   try {
+//     const data = req.body;
+//     console.log("data", data);
+//     const existUser = await User.findOne({ email: data.email });
+//     console.log("existUser", existUser);
+//     if (!existUser) {
+//       return res.status(400).json({
+//         message: "User  NOt found",
+//         status: "Failed",
+//       });
+//     }
+
+//     return res.status(200).json({
+//       message: "User found",
+//       data: existUser,
+//       status: "Successful",
+//     });
+//   } catch (err) {
+//     console.error("Error during login:", err);
+//     return res.status(500).json({
+//       message: "An error occurred during reset",
+//       status: "Failed",
+//     });
+//   }
+// }
+
 export async function resetUsers(req, res) {
   try {
-    const data = req.body;
-    console.log("data", data);
-    const existUser = await User.findOne({ email: data.email });
-    console.log("existUser", existUser);
+    const { email } = req.body;
+    console.log("Email provided for reset:", email);
+
+    // Check if the user exists in the database
+    const existUser = await User.findOne({ email });
     if (!existUser) {
       return res.status(400).json({
-        message: "User  NOt found",
+        message: "User not found",
         status: "Failed",
       });
     }
 
-    return res.status(200).json({
-      message: "User found",
-      data: existUser,
-      status: "Successful",
+    // Generate a 4-digit OTP
+    const otp = Math.floor(1000 + Math.random() * 9000);
+    console.log("Generated OTP:", otp);
+
+    // Set up the nodemailer transporter
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "ferilcrosshurdle@gmail.com",
+        pass: "ntjlgqizfbebdshd", // Use environment variables for sensitive information
+      },
+    });
+
+    // Define the mail options
+    const mailOptions = {
+      from: "ferilcrosshurdle@gmail.com",
+      to: email,
+      subject: "Password Reset Verification Code",
+      text: `Your OTP code is: ${otp}`,
+    };
+
+    // Send the email
+    transporter.sendMail(mailOptions, async function (error, info) {
+      if (error) {
+        console.log("Error sending OTP email:", error);
+        return res.status(500).json({
+          message: "Failed to send OTP email",
+          status: "Failed",
+        });
+      } else {
+        console.log("OTP email sent:", info.response);
+
+        // Update the user record with the OTP in the database
+        await User.findByIdAndUpdate(
+          existUser._id,
+          { forgetPasswordCode: otp },
+          { new: true }
+        );
+
+        return res.status(200).json({
+          message: "OTP sent successfully",
+          status: "Successful",
+          userId: existUser._id,
+        });
+      }
     });
   } catch (err) {
-    console.error("Error during login:", err);
+    console.error("Error during password reset process:", err);
     return res.status(500).json({
       message: "An error occurred during reset",
+      status: "Failed",
+    });
+  }
+}
+
+// export async function checkVerifivationCode(req, res, next) {
+//   try {
+//     const data = req.body;
+
+//     const code = JSON.parse(data.code);
+//     const checkEmail = await User.findOne({ email: data.email });
+//     if (checkEmail) {
+//       const matchVerificationCode = checkEmail.forgetPasswordCode === code;
+//       if (matchVerificationCode) {
+//         res.status(200).json({
+//           message: "verification code matched",
+//         });
+//       } else {
+//         res.status(400).json({
+//           message: "verification code mismatched",
+//         });
+//       }
+//     } else {
+//       res.status(400).json({
+//         message: "Email doesnot exist try again !!!",
+//       });
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     next();
+//   }
+// }
+export async function checkVerifivationCode(req, res) {
+  try {
+    const { email, code } = req.body;
+    console.log("hello", req.body);
+    // Find the user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        message: "Email does not exist. Try again!",
+        status: "Failed",
+      });
+    }
+
+    // Compare the stored OTP with the one provided
+    if (user.forgetPasswordCode === Number(code)) {
+      return res.status(200).json({
+        message: "Verification code matched",
+        status: "Successful",
+      });
+    } else {
+      return res.status(400).json({
+        message: "Verification code mismatched",
+        status: "Failed",
+      });
+    }
+  } catch (err) {
+    console.error("Error verifying code:", err);
+    return res.status(500).json({
+      message: "An error occurred during verification",
       status: "Failed",
     });
   }
