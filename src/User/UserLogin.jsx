@@ -101,10 +101,10 @@ const UserLogin = () => {
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label htmlFor="form1" className="form-label">
-              Email address
+              Email Address
             </label>
             <input
-              placeholder="Email adress"
+              placeholder="Email address"
               type="email"
               className="form-control"
               id="email"

@@ -144,7 +144,7 @@ const Register = () => {
 
         <div className="mb-4">
           <label htmlFor="email" className="form-label">
-            Email address
+            Email Address
           </label>
           <input
             type="email"
@@ -178,10 +178,10 @@ const Register = () => {
           <Input.Password
             // className="form-control flex"
             style={{ height: "38px" }}
-            type="password"
+            type="Password"
             id="password"
             name="password"
-            placeholder=" password"
+            placeholder="Password"
             value={formData.password}
             onChange={handleFormChange}
             onFocus={() => setPasswordFocused(true)}
@@ -216,7 +216,7 @@ const Register = () => {
             type="password"
             id="confirmPassword"
             name="confirmPassword"
-            placeholder=" confirmPassword"
+            placeholder="Confirm Password"
             value={formData.confirmPassword}
             onChange={handleFormChange}
             onFocus={() => setPasswordFocused(true)}
