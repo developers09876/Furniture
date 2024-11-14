@@ -360,9 +360,8 @@ const SingleProductPage = () => {
                 alt={title}
                 width="100%"
                 onClick={() => handleImageClick(img)}
-                className={`album-thumbnail ${
-                  img === selectedImage ? "active" : ""
-                } mb-2`}
+                className={`album-thumbnail ${img === selectedImage ? "active" : ""
+                  } mb-2`}
               />
             ))}
           </div>
@@ -574,7 +573,7 @@ const SingleProductPage = () => {
               )}
             </div>
           ) : (
-            <Button className="my-3" handleClick={() => navigate("/userlogin")}>
+            <Button className="my-3" handleClick={() => navigate("/login")}>
               login
             </Button>
           )}
@@ -613,10 +612,10 @@ const SingleProductPage = () => {
 
                           <p>
                             {product &&
-                            Array.isArray(product.specifications) &&
-                            product.specifications.length > 0
+                              Array.isArray(product.specifications) &&
+                              product.specifications.length > 0
                               ? product.specifications[0]?.product_Details
-                                  ?.feel || "N/A"
+                                ?.feel || "N/A"
                               : "Specification is not available"}
                           </p>
                         </Col>
@@ -636,10 +635,10 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {product &&
-                              Array.isArray(product.specifications) &&
-                              product.specifications.length > 0
+                                Array.isArray(product.specifications) &&
+                                product.specifications.length > 0
                                 ? product.specifications[0]?.product_Details
-                                    ?.cover_Type || "N/A"
+                                  ?.cover_Type || "N/A"
                                 : "specifications is not available"}
                             </p>
                           </div>
@@ -662,10 +661,10 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {product &&
-                              Array.isArray(product.specifications) &&
-                              product.specifications.length > 0
+                                Array.isArray(product.specifications) &&
+                                product.specifications.length > 0
                                 ? product.specifications[0]?.product_Details
-                                    ?.cover_Material || "N/A"
+                                  ?.cover_Material || "N/A"
                                 : "specifications is not available"}
                             </p>
                           </div>
@@ -686,10 +685,10 @@ const SingleProductPage = () => {
                           <div>
                             <p>
                               {product &&
-                              Array.isArray(product.specifications) &&
-                              product.specifications.length > 0
+                                Array.isArray(product.specifications) &&
+                                product.specifications.length > 0
                                 ? product.specifications[0]?.product_Details
-                                    ?.Usability || "N/A"
+                                  ?.Usability || "N/A"
                                 : "specifications is not available"}
                             </p>
                           </div>
@@ -712,10 +711,10 @@ const SingleProductPage = () => {
 
                           <p>
                             {product &&
-                            Array.isArray(product.specifications) &&
-                            product.specifications.length > 0
+                              Array.isArray(product.specifications) &&
+                              product.specifications.length > 0
                               ? product.specifications[0]?.product_Details
-                                  ?.cover_Type || "N/A"
+                                ?.cover_Type || "N/A"
                               : "specifications is not available"}
                           </p>
                         </Col>
@@ -723,16 +722,16 @@ const SingleProductPage = () => {
                     </Col>
                     <Col sm={12} md={12}>
                       {product &&
-                      Array.isArray(product.specifications) &&
-                      product.specifications.length > 0
+                        Array.isArray(product.specifications) &&
+                        product.specifications.length > 0
                         ? product.specifications[0]?.product_Details?.dynamicFields?.map(
-                            (fields) => (
-                              <Col sm={12} md={12}>
-                                <h5>{fields?.title || "N/A"}</h5>
-                                <p>{fields.description || "N/A"}</p>
-                              </Col>
-                            )
-                          ) || "N/A"
+                          (fields) => (
+                            <Col sm={12} md={12}>
+                              <h5>{fields?.title || "N/A"}</h5>
+                              <p>{fields.description || "N/A"}</p>
+                            </Col>
+                          )
+                        ) || "N/A"
                         : "specifications is not available"}
 
                       {/* <p>
@@ -844,10 +843,10 @@ const SingleProductPage = () => {
 
                           <p>
                             {product &&
-                            Array.isArray(product.specifications) &&
-                            product.specifications.length > 0
+                              Array.isArray(product.specifications) &&
+                              product.specifications.length > 0
                               ? product.specifications[0]?.product_Dimension
-                                  ?.thickness || "N/A"
+                                ?.thickness || "N/A"
                               : "specifications is not available"}
                           </p>
                         </Col>
@@ -870,10 +869,10 @@ const SingleProductPage = () => {
                           </div>
                           <p>
                             {product &&
-                            Array.isArray(product.specifications) &&
-                            product.specifications.length > 0
+                              Array.isArray(product.specifications) &&
+                              product.specifications.length > 0
                               ? product.specifications[0]?.product_Dimension
-                                  ?.dimensions || "N/A"
+                                ?.dimensions || "N/A"
                               : "specifications is not available"}
                           </p>
                         </Col>
@@ -905,10 +904,10 @@ const SingleProductPage = () => {
                           </div>
                           <p>
                             {product &&
-                            Array.isArray(product.specifications) &&
-                            product.specifications.length > 0
+                              Array.isArray(product.specifications) &&
+                              product.specifications.length > 0
                               ? product.specifications[0]?.product_Policies
-                                  ?.Warranty || "N/A"
+                                ?.Warranty || "N/A"
                               : "specifications is not available"}
                           </p>
                         </Col>
@@ -930,10 +929,10 @@ const SingleProductPage = () => {
                           </div>
                           <p>
                             {product &&
-                            Array.isArray(product.specifications) &&
-                            product.specifications.length > 0
+                              Array.isArray(product.specifications) &&
+                              product.specifications.length > 0
                               ? product.specifications[0]?.product_Policies
-                                  ?.Shipping || "N/A"
+                                ?.Shipping || "N/A"
                               : "specifications is not available"}
                           </p>
                         </Col>
@@ -959,10 +958,10 @@ const SingleProductPage = () => {
 
                           <p>
                             {product &&
-                            Array.isArray(product.specifications) &&
-                            product.specifications.length > 0
+                              Array.isArray(product.specifications) &&
+                              product.specifications.length > 0
                               ? product.specifications[0]?.product_Policies
-                                  ?.trial || "N/A"
+                                ?.trial || "N/A"
                               : "specifications is not available"}
                           </p>
                         </Col>
@@ -1084,9 +1083,8 @@ const SingleProductPage = () => {
                         alt={title}
                         width="100%"
                         onClick={() => handleImageClick(img)}
-                        className={` ${
-                          img === selectedImage ? "active" : ""
-                        } mb-2`}
+                        className={` ${img === selectedImage ? "active" : ""
+                          } mb-2`}
                       />
                     </Col>
                   </>
@@ -1223,8 +1221,8 @@ const SingleProductPage = () => {
               <button
                 onClick={handleConfirmVariant}
                 style={buttonStyle}
-                // onMouseEnter={() => setHover(true)}
-                // onMouseLeave={() => setHover(false)}
+              // onMouseEnter={() => setHover(true)}
+              // onMouseLeave={() => setHover(false)}
               >
                 Confirm Variant
               </button>

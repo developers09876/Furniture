@@ -306,6 +306,7 @@ import Swal from "sweetalert2";
 import { DashboardContext } from "../../context/DashboardContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const { confirm } = Modal;
 
 const StyledCategories = styled.div`
   margin: 20px;
@@ -374,34 +375,83 @@ const Categories = () => {
     }
   };
 
-  const handleDelete = async (record) => {
+  const deleteRecordFromAPI = async (id) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_MY_API}Category/delete/${record._id}`);
-      fetchCategories();
-      Swal.fire("Deleted!", "Category has been deleted successfully.", "success");
+      const response = await axios.delete(`${import.meta.env.VITE_MY_API}Category/delete/${id}`);
+      if (response.status === 200) {
+        fetchCategories();
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: `Category has been deleted successfully.`,
+        });
+      }
     } catch (error) {
-      Swal.fire("Error!", "There was an error deleting the category.", "error");
+      console.error("Error deleting record:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "There was an error deleting the category. Please try again.",
+      });
     }
   };
 
+  const handleDelete = (record) => {
+    console.log("hello", record)
+    confirm({
+      title: "Are you sure you want to delete this category?",
+      icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,
+      content: `Name: ${record.name}`,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        deleteRecordFromAPI(record._id);
+        console.log("step1", record._id)
+      },
+      onCancel() {
+        console.log("Deletion cancelled");
+      },
+    });
+  };
   const handleEdit = (record) => {
     setEditingCategory(record);
     setEditModalVisible(true);
   };
 
-  const handleEditSubmit = async () => {
+  const handleEditSubmit = async (editingCategory) => {
+    console.log("change", editingCategory)
+    const Data = {
+      name: editingCategory.name,
+      description: editingCategory.description,
+    };
+
     try {
-      await axios.post(
+      const response = await axios.put(
         `${import.meta.env.VITE_MY_API}Category/update/${editingCategory._id}`,
-        editingCategory
+        Data
       );
-      fetchCategories();
-      Swal.fire("Updated!", "Category has been updated successfully.", "success");
-      setEditModalVisible(false);
+
+      if (response.status === 200) {
+        fetchCategories(); // Refetch to update UI after editing
+        Swal.fire({
+          icon: "success",
+          title: "Updated!",
+          text: `Category ${editingCategory.name} has been updated successfully.`,
+        });
+        setEditModalVisible(false);
+      }
     } catch (error) {
-      Swal.fire("Error!", "There was an error updating the category.", "error");
+      console.error("Error updating record:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "There was an error updating the category. Please try again.",
+      });
     }
   };
+
+
 
   const columns = [
     {

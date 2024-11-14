@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "../components/Button";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import { Container, Form, Spinner, Alert } from "react-bootstrap";
 import Password from "antd/es/input/Password";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -41,6 +42,7 @@ const UserResetPassword = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const navigate = useNavigate();
 
   // Email validation
   const validateEmail = (email) => {
@@ -50,12 +52,16 @@ const UserResetPassword = () => {
 
   // Password validation
   const validatePasswords = () => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{10,}$/;
+
     if (newPassword !== confirmPassword) {
       setErrorMessage("Passwords do not match.");
       return false;
     }
-    if (newPassword.length < 6) {
-      setErrorMessage("Password must be at least 6 characters long.");
+    if (!passwordRegex.test(newPassword)) {
+      setErrorMessage(
+        "Password must be at least 10 characters long, include at least one uppercase letter, one lowercase letter, one digit, and one special character."
+      );
       return false;
     }
     return true;
@@ -100,12 +106,18 @@ const UserResetPassword = () => {
 
     try {
       const response = await axios.put(
-        ` ${import.meta.env.VITE_MY_API}user/resetUser/`,
+        `${import.meta.env.VITE_MY_API}user/resetUser/`,
         { email, newPassword, confirmPassword }
       );
       console.log("response", response);
+
       if (response.data.status === "Successful") {
         setSuccessMessage("Password successfully reset!");
+
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       } else {
         setErrorMessage(response.data.message);
       }
@@ -194,6 +206,7 @@ const UserResetPassword = () => {
                     "Reset Password"
                   )}
                 </Button>
+
               </center>
             </Form>
           </>

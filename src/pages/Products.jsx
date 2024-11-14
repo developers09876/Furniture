@@ -36,6 +36,13 @@ const SearchContainer = styled.div`
   // text-align: center;
 `;
 
+const SearchIcon = styled(FontAwesomeIcon)`
+  // position: absolute;
+  // left: 20px;
+  top: 13px;
+  color: ${(props) => props.theme.mutedTextColor};
+`;
+
 const StyledInput = styled.input`
   padding: 0.5rem 1rem 0.5rem 3rem;
   outline: 1px solid var(--button-hover);
@@ -48,13 +55,6 @@ const StyledInput = styled.input`
     outline: 1px solid ${(props) => props.theme.borderColor};
     border-radius: ${(props) => props.theme.radius};
   }
-`;
-
-const SearchIcon = styled(FontAwesomeIcon)`
-  // position: absolute;
-  // left: 20px;
-  top: 13px;
-  color: ${(props) => props.theme.mutedTextColor};
 `;
 
 const Products = () => {

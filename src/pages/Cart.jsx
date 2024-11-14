@@ -254,8 +254,8 @@ const Cart = () => {
         </div>
       ) : (
         <Button
-          className="mx-auto d-flex"
-          handleClick={() => navigate("/userlogin")}
+          className="mx-auto d-flex m-3"
+          handleClick={() => navigate("/login")}
         >
           Login
         </Button>

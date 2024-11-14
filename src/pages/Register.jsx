@@ -101,7 +101,7 @@ const Register = () => {
             });
 
             setTimeout(() => {
-              navigate("/userlogin");
+              navigate("/login");
             }, 1500);
           });
       } catch (error) {
@@ -234,7 +234,7 @@ const Register = () => {
         ) : null}
         <p className="text-center">
           Already have an account?{" "}
-          <Link style={{ textDecoration: "none" }} to="/userlogin">
+          <Link style={{ textDecoration: "none" }} to="/login">
             Login
           </Link>
         </p>

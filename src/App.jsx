@@ -80,7 +80,7 @@ const router = createBrowserRouter(
         <Route element={<AuthRoute />}>
           <Route path="/adminlogin" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/userlogin" element={<UserLogin />} />
+          <Route path="/login" element={<UserLogin />} />
           <Route path="/reset" element={<UserResetPassword />} />
         </Route>
         <Route path="*" exact element={<NotFound />} />
