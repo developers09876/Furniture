@@ -174,7 +174,7 @@
 // export default UserLogin;
 
 
-import React, { useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
@@ -197,20 +197,19 @@ const StyledHeading = styled.h1`
 `;
 
 const UserLogin = () => {
-  const { isAuthenticated, loginUser, error } = useContext(AuthContext); // Context for auth
+  const { isAuthenticated, loginUser, error } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const {
     handleSubmit,
     control,
-    register,
     formState: { errors },
-  } = useForm(); // Hook for form handling
+  } = useForm();
 
   const onSubmit = async (data) => {
     const { email, password } = data;
     try {
-      const success = await loginUser(email, password); // Call loginUser from context
+      const success = await loginUser(email, password);
       if (success) {
         Swal.fire({
           icon: "success",
@@ -219,7 +218,7 @@ const UserLogin = () => {
           timer: 1500,
         });
         setTimeout(() => {
-          navigate("/"); // Navigate to homepage
+          navigate("/");
         }, 1500);
       } else {
         Swal.fire({
@@ -251,15 +250,24 @@ const UserLogin = () => {
             <label htmlFor="email" className="form-label">
               Email Address
             </label>
-            <Input
-              id="email"
-              placeholder="Email address"
-              status={errors.email ? "error" : ""}
-              {...register("email", {
+            <Controller
+              name="email"
+              control={control}
+              rules={{
                 required: "Email is required",
-                validate: (value) =>
-                  /\S+@\S+\.\S+/.test(value) || "Invalid email format",
-              })}
+                validate: {
+                  validFormat: (value) =>
+                    /\S+@\S+\.\S+/.test(value) || "Invalid email format",
+                },
+              }}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  id="email"
+                  placeholder="Email address"
+                  status={errors.email ? "error" : ""}
+                />
+              )}
             />
             {errors.email && (
               <p style={{ color: "red" }} role="alert">
@@ -267,6 +275,7 @@ const UserLogin = () => {
               </p>
             )}
           </div>
+
 
           {/* Password Field */}
           <div className="mb-4">
@@ -301,17 +310,13 @@ const UserLogin = () => {
             )}
           </div>
 
-          {/* Error Message */}
           {error && <p style={{ color: "red" }}>{error}</p>}
-
-          {/* Submit Button */}
           {!isAuthenticated && (
             <Button className="mb-4 w-100" type="submit">
               Sign in
             </Button>
           )}
 
-          {/* Forgot Password */}
           <div>
             <p className="text-center" style={{ cursor: "pointer" }}>
               <Link to="/reset" style={{ textDecoration: "none" }}>
@@ -319,8 +324,6 @@ const UserLogin = () => {
               </Link>
             </p>
           </div>
-
-          {/* Registration Link */}
           <p className="text-center">
             Not a member?{" "}
             <Link to="/register" style={{ textDecoration: "none" }}>
