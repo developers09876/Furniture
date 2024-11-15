@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import CartContent from "../components/cart/CartContent";
 import { useContext, useEffect, useState } from "react";
@@ -186,7 +186,13 @@ const Cart = () => {
           {cd.length > 0 ? (
             cd.map((item, index) => (
               <Wrapper className="row" key={index}>
-                <div className="title col-md-3 col-4 d-flex align-items-center">
+                <div
+                  className="title col-md-3 col-4 d-flex align-items-center"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    navigate(`/products/${item.productId}`);
+                  }}
+                >
                   <img
                     src={item.images[0]}
                     alt={item.title}
