@@ -30,6 +30,7 @@ const Cart = () => {
   const { clearCart, removeItem } = useContext(CartContext);
   const { cartdata } = useContext(DashboardContext);
   const [cd, setCd] = useState([]);
+  console.log("cd", cd);
   const [total, setTotal] = useState(0);
   console.log("total", total);
   const [totalItems, setTotalItems] = useState("");
@@ -197,7 +198,7 @@ const Cart = () => {
                 </div>
                 <h7 className="price d-none d-md-block col align-content-center">
                   <FaIndianRupeeSign />
-                  {item.price}
+                  {item.discountPrice}
                 </h7>
                 <div className="amount d-none d-md-block col align-content-center">
                   <div className="quantity-toggle">

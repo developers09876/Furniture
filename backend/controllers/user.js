@@ -138,13 +138,13 @@ export const verifyLoginOTP = async (req, res) => {
 export const createCart = async (req, res) => {
   try {
     const { id, cartItem } = req.body;
-    // console.log("caetItem", cartItem);
-    // console.log("id", id);
     const user = await User.findById(id);
-    console.log("user", user);
+    // console.log("user", user);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    console.log("caetItem", cartItem);
+
     user.Carts.push(cartItem);
     await user.save();
 

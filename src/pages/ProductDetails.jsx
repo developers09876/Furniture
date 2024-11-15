@@ -84,6 +84,7 @@ const SingleProductPage = () => {
   const { productID } = useParams();
   const { cartdata, whishlistData } = useContext(DashboardContext);
   const [product, setProduct] = useState([]);
+  console.log("productxs", product);
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -526,6 +527,7 @@ const SingleProductPage = () => {
                         images,
                         title,
                         price,
+                        discountPrice,
                         quantity_stock,
                         quantity,
                         subTotal,
@@ -561,6 +563,7 @@ const SingleProductPage = () => {
                       images,
                       title,
                       price,
+                      discountPrice,
                       quantity_stock,
                       quantity,
                       subTotal,

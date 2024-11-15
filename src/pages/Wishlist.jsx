@@ -146,7 +146,7 @@ const Wishlist = () => {
                     <h5 className="price d-none d-md-block col">
                       {" "}
                       <FaIndianRupeeSign />
-                      {items.price}{" "}
+                      {items.discountPrice}{" "}
                     </h5>
                     <div
                       style={{ cursor: "pointer" }}
