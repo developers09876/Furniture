@@ -37,7 +37,7 @@ const Checkout = () => {
   };
   const onSubmit = (data) => console.log(data);
 
-  const { cart, clearCart } = useContext(CartContext);
+  const { cart, clearCart, clearCartssss } = useContext(CartContext);
   const { userID, isAuthenticated } = useContext(AuthContext);
   const [shippingAddress, setShippingAddress] = useState("");
   const [name, setName] = useState("");
@@ -104,12 +104,12 @@ const Checkout = () => {
             icon: "success",
             confirmButtonText: "OK",
           });
+
           navigate("/");
           cartdata.items.map((item) =>
             axios
               .put(
-                `${import.meta.env.VITE_MY_API}products/editquantity/${
-                  item.productId
+                `${import.meta.env.VITE_MY_API}products/editquantity/${item.productId
                 }`,
                 { quantity: item.quantity }
               )
@@ -117,6 +117,8 @@ const Checkout = () => {
                 console.log("Admin Quantity Updated");
               })
           );
+          clearCartssss();
+
         }
       })
       .catch((error) => {
@@ -317,7 +319,7 @@ const Checkout = () => {
         }
       );
       await updateProductStock();
-      clearCart();
+      // clearCart();
       setOrderID(orderId);
       setSuccess(true);
 
