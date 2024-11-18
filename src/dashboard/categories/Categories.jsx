@@ -298,6 +298,7 @@
 
 
 // export default Categories;
+
 import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import { MdDelete, MdEdit } from "react-icons/md";
@@ -450,8 +451,6 @@ const Categories = () => {
       });
     }
   };
-
-
 
   const columns = [
     {
