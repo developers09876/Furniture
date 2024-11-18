@@ -48,7 +48,7 @@ const Cart = () => {
 
   useEffect(() => {
     const total = cd.reduce((sum, item) => {
-      return sum + Number(item.price) * Number(item.quantity);
+      return sum + Number(item.discountPrice) * Number(item.quantity);
     }, 0);
     setTotal(Number(total.toFixed(2)));
 
@@ -231,7 +231,7 @@ const Cart = () => {
                 </div>
                 <h7 className="subtotal col-4 col-md align-content-center">
                   <FaIndianRupeeSign />
-                  {item.price * item.quantity}
+                  {item.discountPrice * item.quantity}
                 </h7>
                 <div
                   className="remove-btn col-4 col-md text-danger align-content-center"

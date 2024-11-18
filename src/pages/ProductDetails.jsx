@@ -59,7 +59,7 @@ const SingleProductPage = () => {
   const [customBreadth, setCustomBreadth] = useState("");
   const [hover, setHover] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
   const [subTotal, setSubTotal] = useState(0);
   const { addToCart, removeItem } = useContext(CartContext);
   const [orders, setOrders] = useState([]);
@@ -395,10 +395,7 @@ const SingleProductPage = () => {
               <span>Overview : </span>
               {LongDesc}
             </p>
-            <p>
-              <span>Available : </span>
-              {quantity_stock > 0 ? "In Stock" : "Out of Stock"}
-            </p>
+
             <span>Choose Mattress Dimensions</span>
             <br />
             <Row>
@@ -488,7 +485,7 @@ const SingleProductPage = () => {
               </div>
             )}
           </div>
-          <div className="quantity-toggle">
+          {/* <div className="quantity-toggle">
             <button
               onClick={() => handleQuantityChange(quantity - 1)}
               disabled={quantity === 1}
@@ -502,6 +499,12 @@ const SingleProductPage = () => {
             >
               +
             </button>
+          </div> */}
+          <div className="info mt-2">
+            <p>
+              <span>Available : </span>
+              {quantity_stock > 0 ? "In Stock" : "Out of Stock"}
+            </p>
           </div>
           {isAuthenticated ? (
             <div className="buttons">
