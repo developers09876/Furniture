@@ -288,8 +288,7 @@ const UserLogin = () => {
                 validate: (value) =>
                   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/.test(
                     value
-                  ) ||
-                  "Password must be at least 10 characters long, include one uppercase letter, one lowercase letter, one special character, and one digit.",
+                  ) || "Password must be at least 10 characters ",
               }}
               render={({ field }) => (
                 <Input.Password
@@ -304,13 +303,17 @@ const UserLogin = () => {
               )}
             />
             {errors.password && (
-              <p style={{ color: "red" }} role="alert">
+              <p className="mt-2" style={{ color: "red" }} role="alert">
                 {errors.password.message}
               </p>
             )}
           </div>
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && (
+            <p className="mt-2" style={{ color: "red" }}>
+              {error}
+            </p>
+          )}
           {!isAuthenticated && (
             <Button className="mb-4 w-100" type="submit">
               Sign in

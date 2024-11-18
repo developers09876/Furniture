@@ -390,9 +390,9 @@ const SingleProductPage = () => {
           <h5 className="price me-2 d-inline">₹{discountPrice}</h5>
           {discountPrice && <h6 className="old-price d-inline">₹{price} </h6>}
           {/* <p className="desc my-1">{description}</p> */}
-          <div className="info ">
+          <div className="info mt-2">
             <p>
-              <span>Descrpition : </span>
+              <span>Overview : </span>
               {LongDesc}
             </p>
             <p>

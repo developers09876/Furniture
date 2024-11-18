@@ -23,7 +23,7 @@ const Wishlist = () => {
 
   const { whishlistData } = useContext(DashboardContext);
   const [whishlistCnt, setWhishlist] = useState([]);
-
+  console.log("whishlistCnt", whishlistCnt);
   useEffect(() => {
     if (whishlistData) {
       setWhishlist(whishlistData.items);
@@ -159,7 +159,7 @@ const Wishlist = () => {
                       <Button
                         className="col-1 col-md w-75"
                         handleClick={() =>
-                          navigate(`/products/${whishlistCnt.id}`)
+                          navigate(`/products/${items.productId}`)
                         }
                       >
                         More Details
