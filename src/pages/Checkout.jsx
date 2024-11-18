@@ -104,7 +104,7 @@ const Checkout = () => {
             icon: "success",
             confirmButtonText: "OK",
           });
-
+          navigate("/");
           cartdata.items.map((item) =>
             axios
               .put(
@@ -355,7 +355,7 @@ const Checkout = () => {
   };
 
   const subTotal = cartdata.items.reduce(
-    (total, item) => total + (Number(item.subTotal) || 0),
+    (total, item) => total + (Number(item.discountPrice) || 0),
     0
   );
 
