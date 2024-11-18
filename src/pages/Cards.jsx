@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Row, Col, Typography, Space } from "antd";
 import styled from "styled-components";
 import Slider from "react-slick";
@@ -14,6 +14,7 @@ import image7 from "../assets/RBLBank-logo.png";
 import image8 from "../assets/idfc-logo.png";
 import "../Css-Pages/HomeCard.css";
 import { Container } from "react-bootstrap";
+import { DashboardContext } from "../context/DashboardContext";
 
 const { Text } = Typography;
 
@@ -112,6 +113,8 @@ const calculateTimeLeft = () => {
 };
 
 const Sale = () => {
+  // const { products } = useContext(DashboardContext);
+  // console.log("productz", products);
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   useEffect(() => {

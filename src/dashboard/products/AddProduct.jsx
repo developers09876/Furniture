@@ -204,7 +204,7 @@ const AddProduct = () => {
 
     try {
       axios
-        .post(`${import.meta.env.VITE_MY_API}/products/create`, updatedFormData)
+        .post(`${import.meta.env.VITE_MY_API}products/create`, updatedFormData)
         .then((res) => {
           Swal.fire({
             icon: "success",

@@ -159,30 +159,32 @@ const Users = () => {
       title: "Phone",
       dataIndex: "phoneNumber",
     },
-    {
-      title: "Role",
-      dataIndex: "role",
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <Row>
-          <Col md={3}>
-            <MdEdit
-              style={{ fontSize: "20px", cursor: "pointer" }}
-              onClick={() => handleEdit(record)}
-            />
-          </Col>
-          <Col md={3}>
-            <MdDelete
-              style={{ fontSize: "20px", cursor: "pointer", color: "red" }}
-              onClick={() => handleDelete(record)}
-            />
-          </Col>
-        </Row>
-      ),
-    },
+    // {
+    //   title: "Role",
+    //   dataIndex: "role",
+    // },
+    // {
+    //   title: "Action",
+    //   key: "action",
+    //   render: (_, record) => (
+    //     <Row>
+    //       <Col md={3}>
+    //         <MdEdit
+    //           style={{ fontSize: "20px", cursor: "pointer" }}
+    //           onClick={() => handleEdit(record)}
+    //         />
+    //       </Col>
+    //       <Col md={3}>
+    //         <MdDelete
+    //           style={{ fontSize: "20px", cursor: "pointer", color: "red" }}
+    //           onClick={() => handleDelete(record)}
+    //         />
+    //       </Col>
+    //     </Row>
+    //   ),
+    // },
+
+    {},
   ];
 
   return (

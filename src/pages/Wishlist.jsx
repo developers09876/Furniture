@@ -23,7 +23,7 @@ const Wishlist = () => {
 
   const { whishlistData } = useContext(DashboardContext);
   const [whishlistCnt, setWhishlist] = useState([]);
-
+  console.log("whishlistCnt", whishlistCnt);
   useEffect(() => {
     if (whishlistData) {
       setWhishlist(whishlistData.items);
@@ -146,7 +146,7 @@ const Wishlist = () => {
                     <h5 className="price d-none d-md-block col">
                       {" "}
                       <FaIndianRupeeSign />
-                      {items.price}{" "}
+                      {items.discountPrice}{" "}
                     </h5>
                     <div
                       style={{ cursor: "pointer" }}
@@ -159,7 +159,7 @@ const Wishlist = () => {
                       <Button
                         className="col-1 col-md w-75"
                         handleClick={() =>
-                          navigate(`/products/${whishlistCnt.id}`)
+                          navigate(`/products/${items.productId}`)
                         }
                       >
                         More Details
@@ -194,7 +194,7 @@ const Wishlist = () => {
         </>
       ) : (
         <Button
-          className="mx-auto d-flex"
+          className="mx-auto d-flex m-3"
           handleClick={() => navigate("/login")}
         >
           Login

@@ -148,8 +148,9 @@ const Footer = () => {
                   />
                   <div class="address">
                     <p className="address-detail">
-                      Register Office , Manufactur & Packer ,<br /> #192 , Sy no
-                      124 , halagevaderahalli , <br />
+                      "Registered Office, Manufacturer & Packer,
+                      <br />
+                      #192, Sy No. 124, Halagevaderahalli, <br />
                       Bangaluru , &nbsp; Karnataka <br /> India.
                     </p>
 

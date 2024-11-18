@@ -25,6 +25,7 @@ const ProductsList = ({ products }) => {
                   discountPrice={product.discountPrice}
                   description={product.description}
                   LongDesc={product.LongDesc}
+                  offer={product.offer}
                 />
               </div>
             ))}

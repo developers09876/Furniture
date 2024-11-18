@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import CartContent from "../components/cart/CartContent";
 import { useContext, useEffect, useState } from "react";
@@ -29,14 +29,13 @@ const Cart = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const { clearCart, removeItem } = useContext(CartContext);
   const { cartdata } = useContext(DashboardContext);
-
   const [cd, setCd] = useState([]);
+  console.log("cd", cd);
   const [total, setTotal] = useState(0);
+  console.log("total", total);
   const [totalItems, setTotalItems] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [product, setProduct] = useState([]);
-  const [cartdata1, setCartdata] = useState("");
-  console.log("productxz", cd);
+
   useEffect(() => {
     if (cartdata) {
       setCd(cartdata.items);
@@ -44,17 +43,21 @@ const Cart = () => {
   }, [cartdata]);
 
   useEffect(() => {
-    const total = cartdata.items.reduce((sum, item) => {
-      return sum + item.price * item.quantity;
-    }, 0);
-    setTotal(total.toFixed(2));
+    handleQuantityChange();
+  }, []);
 
-    const totalItems = cartdata.items.reduce((sum, item) => {
+  useEffect(() => {
+    const total = cd.reduce((sum, item) => {
+      return sum + Number(item.price) * Number(item.quantity);
+    }, 0);
+    setTotal(Number(total.toFixed(2)));
+
+    const totalItems = cd.reduce((sum, item) => {
       return sum + Number(item.quantity);
     }, 0);
 
     setTotalItems(totalItems);
-  }, [cartdata]);
+  }, [cd]);
 
   const handleDelete = (item) => {
     confirm({
@@ -91,44 +94,6 @@ const Cart = () => {
     });
   };
 
-  // const handleQuantityChange = (newQuantity) => {
-  //   setQuantity(newQuantity);
-  // };
-  // const handleQuantityChange = async (item, newQuantity) => {
-  //   if (newQuantity > 0 && newQuantity <= item.quantity_stock) {
-  //     setCd((prevCd) =>
-  //       prevCd.map((cartItem) =>
-  //         cartItem.productId === item.productId
-  //           ? { ...cartItem, quantity: newQuantity }
-  //           : cartItem
-  //       )
-  //     );
-  //     const userId = localStorage.getItem("id");
-  //     await axios
-  //       .post(
-  //         `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${
-  //           item.productId
-  //         }`,
-  //         {
-  //           quantity: newQuantity,
-  //         }
-  //       )
-  //       .then((res) => {
-  //         Swal.fire({
-  //           icon: "success",
-  //           title: "Item Update ",
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         });
-  //         console.log("Quantity updated on backend");
-  //       })
-
-  //       .catch((error) => {
-  //         console.error("Error updating quantity on backend:", error);
-  //       });
-  //   }
-  // };
-
   const handleQuantityChange = async (item, newQuantity) => {
     if (newQuantity > 0 && newQuantity <= item.quantity_stock) {
       try {
@@ -143,12 +108,14 @@ const Cart = () => {
         const userId = localStorage.getItem("id");
         console.log(
           "Sending request to:",
-          `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${item.productId
+          `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${
+            item.productId
           }`
         );
 
         const response = await axios.put(
-          `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${item.productId
+          `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${
+            item.productId
           }`,
           { quantity: newQuantity },
           { timeout: 5000 }
@@ -219,7 +186,13 @@ const Cart = () => {
           {cd.length > 0 ? (
             cd.map((item, index) => (
               <Wrapper className="row" key={index}>
-                <div className="title col-md-3 col-4 d-flex align-items-center">
+                <div
+                  className="title col-md-3 col-4 d-flex align-items-center"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    navigate(`/products/${item.productId}`);
+                  }}
+                >
                   <img
                     src={item.images[0]}
                     alt={item.title}
@@ -231,7 +204,7 @@ const Cart = () => {
                 </div>
                 <h7 className="price d-none d-md-block col align-content-center">
                   <FaIndianRupeeSign />
-                  {item.price}
+                  {item.discountPrice}
                 </h7>
                 <div className="amount d-none d-md-block col align-content-center">
                   <div className="quantity-toggle">
@@ -244,7 +217,6 @@ const Cart = () => {
                       -
                     </button>
                     <center>
-                      {" "}
                       <span className="quantity m-2">{item.quantity}</span>
                     </center>
                     <button
@@ -289,7 +261,7 @@ const Cart = () => {
         </div>
       ) : (
         <Button
-          className="mx-auto d-flex"
+          className="mx-auto d-flex m-3"
           handleClick={() => navigate("/login")}
         >
           Login

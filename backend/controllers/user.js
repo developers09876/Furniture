@@ -64,53 +64,6 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// export const loginUser = async (req, res) => {
-//   const { email, password } = req.body;
-//   console.log("name", email, password);
-
-//   try {
-//     const foundUser = await User.findOne({ email });
-//     if (!foundUser) {
-//       return res
-//         .status(HTTP_RESPONSE.NOT_FOUND.CODE)
-//         .json({ error: "user not found" });
-//     }
-
-//     // check password match
-//     const matchedPassword = await checkPasswordMatch(
-//       password,
-//       foundUser.password
-//     );
-//     if (!matchedPassword) {
-//       return res
-//         .status(HTTP_RESPONSE.UNAUTHORIZED.CODE)
-//         .json({ error: "Invalid email or password..." });
-//     }
-
-//     const userWithoutPassword = await createUserWithoutPass(foundUser);
-//     const token = await createToken({ id: userWithoutPassword.id });
-
-//     return res
-//       .status(HTTP_RESPONSE.OK.CODE)
-//       .json({ data: userWithoutPassword, token });
-//   } catch (err) {
-//     console.log("An error inside user login.", err);
-//     return res
-//       .status(HTTP_RESPONSE.INTERNAL_ERROR.CODE)
-//       .json(HTTP_RESPONSE.INTERNAL_ERROR.MESSAGE);
-//   }
-// };
-const transporter = nodemailer.createTransport({
-  service: "Gmail", // Use a compatible email service
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-// Generate OTP
-const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
-
-// Step 1: Login and Send OTP
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   console.log("name", email, password);
@@ -185,13 +138,13 @@ export const verifyLoginOTP = async (req, res) => {
 export const createCart = async (req, res) => {
   try {
     const { id, cartItem } = req.body;
-    // console.log("caetItem", cartItem);
-    // console.log("id", id);
     const user = await User.findById(id);
-    console.log("user", user);
+    // console.log("user", user);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    console.log("caetItem", cartItem);
+
     user.Carts.push(cartItem);
     await user.save();
 

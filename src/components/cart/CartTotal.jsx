@@ -7,8 +7,10 @@ import Button from "../Button";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import "../../Css-Pages/HomeCard.css";
 import { Col, Row } from "react-bootstrap";
+import { DashboardContext } from "../../context/DashboardContext";
 
 const CartTotal = ({ total }) => {
+  const { cartdata } = useContext(DashboardContext);
   const { cart } = useContext(CartContext);
   const { isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();

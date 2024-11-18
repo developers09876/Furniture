@@ -102,11 +102,10 @@ const UserResetPassword = () => {
     e.preventDefault();
     setLoading(true);
     setErrorMessage(null);
-    const details =
-    {
+    const details = {
       email: email,
-      code: otp
-    }
+      code: otp,
+    };
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_MY_API}user/verify/password`,
@@ -172,10 +171,21 @@ const UserResetPassword = () => {
             </Form.Group>
             {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
             <center>
-              <Button variant="primary" type="submit" disabled={loading} className="mt-3">
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={loading}
+                className="mt-3"
+              >
                 {loading ? (
                   <>
-                    <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />{" "}
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />{" "}
                     Loading...
                   </>
                 ) : (
@@ -197,10 +207,21 @@ const UserResetPassword = () => {
             </Form.Group>
             {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
             <center>
-              <Button variant="primary" type="submit" disabled={loading} className="mt-3">
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={loading}
+                className="mt-3"
+              >
                 {loading ? (
                   <>
-                    <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />{" "}
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />{" "}
                     Loading...
                   </>
                 ) : (
@@ -211,36 +232,63 @@ const UserResetPassword = () => {
           </Form>
         ) : (
           <Form onSubmit={handlePasswordReset}>
-            <Form.Group controlId="formNewPassword" style={styles.formGroup}>
+            <Form.Group
+              controlId="formNewPassword"
+              style={styles.formGroup}
+              className="mt-2"
+            >
               <Form.Label>New Password</Form.Label>
               <Form.Control
-                type={passwordVisible ? "text" : "password"}
-                placeholder="Enter new password"
+                type={passwordVisible ? "password" : " text"}
+                placeholder="Set New Password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
               />
-              <span onClick={() => setPasswordVisible(!passwordVisible)} style={styles.eyeIcon}>
+              <span
+                onClick={() => setPasswordVisible(!passwordVisible)}
+                style={styles.eyeIcon}
+              >
                 {passwordVisible ? <FaEyeSlash /> : <FaEye />}
               </span>
             </Form.Group>
-            <Form.Group controlId="formConfirmPassword" style={styles.formGroup}>
+            <Form.Group
+              controlId="formConfirmPassword"
+              style={styles.formGroup}
+              className="mt-3"
+            >
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control
-                type={confirmPasswordVisible ? "text" : "password"}
-                placeholder="Confirm new password"
+                type={confirmPasswordVisible ? "password" : "text"}
+                placeholder="Confirm Password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
-              <span onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)} style={styles.eyeIcon}>
+              <span
+                onClick={() =>
+                  setConfirmPasswordVisible(!confirmPasswordVisible)
+                }
+                style={styles.eyeIcon}
+              >
                 {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
               </span>
             </Form.Group>
             {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
             <center>
-              <Button variant="primary" type="submit" disabled={loading} className="mt-3">
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={loading}
+                className="mt-3"
+              >
                 {loading ? (
                   <>
-                    <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />{" "}
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />{" "}
                     Loading...
                   </>
                 ) : (
