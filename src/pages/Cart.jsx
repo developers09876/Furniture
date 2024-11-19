@@ -44,7 +44,7 @@ const Cart = () => {
 
   useEffect(() => {
     handleQuantityChange();
-  }, []);
+  }, [cd]);
 
   useEffect(() => {
     const total = cd.reduce((sum, item) => {
@@ -57,7 +57,7 @@ const Cart = () => {
     }, 0);
 
     setTotalItems(totalItems);
-  }, [cd]);
+  }, [cd, cartdata]);
 
   const handleDelete = (item) => {
     confirm({

@@ -5,7 +5,7 @@ import { generateUUID, currentDate } from "../utils/helpers";
 import axios from "axios";
 import styled from "styled-components";
 import Button from "../components/Button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Breadcrumb from "../components/Breadcrumb";
 import { FaIndianRupeeSign } from "react-icons/fa6";
@@ -34,7 +34,6 @@ const Checkout = () => {
       name.trim() !== "" && phone.trim() !== "" && shippingAddress.trim() !== ""
     );
   };
-  const onSubmit = (data) => console.log(data);
   const { register } = useForm();
   const { cart, clearCart } = useContext(CartContext);
   const { userID, isAuthenticated } = useContext(AuthContext);
@@ -46,7 +45,7 @@ const Checkout = () => {
   const [selectedDeliveryOption, setSelectedDeliveryOption] = useState("amana");
   const [paymentMethod, setPaymentMethod] = useState("online");
   const { cartdata } = useContext(DashboardContext);
-  console.log("CartdataCartdata", cartdata);
+  console.log("CartdataCartdata", cartdata.items);
   const navigate = useNavigate();
 
   let cartValue = cartdata.items[0];
@@ -135,73 +134,6 @@ const Checkout = () => {
     alert("Order placed successfully with Cash on Delivery!");
     createOrder();
   };
-
-  // const loadRazorpay = async () => {
-  //   alert("inside")
-  //   // const options = {
-  //   //   key:"rzp_test_NYUPSveWybUfyq", // Replace with your Razorpay Key ID
-  //   //    amount: "5",
-  //   //    currency: "$",
-  //   //    name: "Restopeditic Furniture",
-  //   //    description: "Test Transaction",
-  //   //    order_id: "dsgfweilufbk1",
-  //   //    handler: function (response) {
-  //   //      console.log("Payment successful", response);
-  //   //      // Handle the successful payment here
-  //   //    },
-
-  //   //    prefill: {
-  //   //      name: "John Doe",
-  //   //      email: "johndoe@example.com",
-  //   //      contact: "9999999999",
-  //   //    },
-  //   //    notes: {
-  //   //      address: "Razorpay Corporate Office",
-  //   //    },
-  //   //    theme: {
-  //   //      color: "#61dafb",
-  //   //    },
-  //   //  };
-  //   const options = {
-  //     "key":"rzp_test_NYUPSveWybUfyq", // Enter the Key ID generated from the Dashboard
-  //      "currency":'INR',
-  //     //  "amount":data?.price*100,
-  //      "amount":100,
-  //     "name": "furniture Delivery",
-  //     // "image":logo,
-  //     "description":"address",
-  //      //This is a sample Order ID. Pass the id obtained in the response of Step 1
-  //     "handler": function (response){
-  //       PaymentHandler(response)
-  //     },
-  //     "prefill": {
-  //         "name":"Rajan",
-  //         "email":"abcd@gmail.com",
-  //         "contact":"123456789"
-  //     },
-
-  //   };
-  //   try {
-  //     // const order = await axios.post("http://localhost:5000/create-order", {
-  //     //   amount: 500, // Amount in smallest currency unit (e.g., 500 paise = ₹5)
-  //     //   currency: "INR",
-  //     // });
-
-  //     // const { amount, id: order_id, currency } = order.data;
-
-  //       e.preventDefault()
-
-  //       const res= await loadScripts('https://checkout.razorpay.com/v1/checkout.js');
-  //     if(!res){
-  //       alert('faild to load script')
-  //     }
-
-  //     const paymentObject = new window.Razorpay(options);
-  //     paymentObject.open();
-  //   } catch (error) {
-  //     console.error("Error in loading Razorpay", error);
-  //   }
-  // };
 
   const loadScripts = (src) => {
     return new Promise((resolve, reject) => {
@@ -345,11 +277,12 @@ const Checkout = () => {
     amana: { label: "Delivery by Amana 24h", cost: 60.0 },
     ozone: { label: "Delivery by Ozone 48h", cost: 40.0 },
   };
-
-  const subTotal = cartdata.items.reduce(
-    (total, item) => total + (Number(item.discountPrice) || 0),
-    0
-  );
+  // const subTotal = cartdata.items.reduce(
+  //   (total, item) => total + item.discountPrice * item.quantity || 0,
+  //   0
+  // );
+  const { state } = useLocation();
+  const subTotal = state;
 
   const totalOrder = subTotal + deliveryOptions[selectedDeliveryOption].cost;
 
@@ -481,8 +414,8 @@ const Checkout = () => {
                     <p className="card-text fw-bold">Order Sub-Total : </p>
                     <span className="text-success">
                       <FaIndianRupeeSign />
-                      {/* {subTotal.toFixed(2)} */}
-                      {(Number(subTotal) || 0).toFixed(2)}
+
+                      {subTotal.toFixed(2) || "Please Try  Again..."}
                     </span>
                   </div>
                   <hr />
@@ -490,7 +423,8 @@ const Checkout = () => {
                   <div className="d-flex justify-content-between mb-2">
                     <p className="card-text fw-bold">Order Total : </p>
                     <span className="text-danger">
-                      <FaIndianRupeeSign /> {totalOrder.toFixed(2)}
+                      <FaIndianRupeeSign />
+                      {totalOrder.toFixed(2)}
                     </span>
                   </div>
                   <p className="card-text">
