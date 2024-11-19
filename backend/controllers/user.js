@@ -429,32 +429,48 @@ export const updateUser = async (req, res) => {
 //   }
 // }
 
-export async function enquiryUser(req, res, next) {
+export async function enquiryUser(req, res) {
+  console.log("req.body", req.body);
   try {
-    const data = req.body;
+    const { name, email, message } = req.body;
+
+    // Validate input data
+    if (!name || !email || !message) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
 
     const details = {
-      name: data.name,
-      email: data.email, // This is the user's email entered in the form
-      message: data.message,
+      name,
+      email,
+      message,
     };
 
-    console.log("Customer", details.email);
-    console.log("Owner", process.env.EMAIL);
+    console.log("Customer's Email (from field):", details.email);
+    console.log("Owner's Email (to field):", process.env.EMAIL);
 
+    // Check if environment variables are set
+    if (!process.env.EMAIL || !process.env.EMAIL_PASSWORD) {
+      throw new Error("EMAIL and EMAIL_PASSWORD must be set in the .env file");
+    }
+
+    // Configure the transporter
     const transporter = nodemailer.createTransport({
       service: "gmail",
       secure: true,
       port: 465,
       auth: {
-        user: process.env.EMAIL, // This is the email configured in your .env file
+        user: process.env.EMAIL,
         pass: process.env.EMAIL_PASSWORD,
       },
     });
 
+    // Configure mail options
     const mailOptions = {
-      from: details.email, // Using user's email directly here
-      to: process.env.EMAIL, // Owner's email from the .env file
+      // from: process.env.EMAIL,
+      // to: details.email,
+      from: details.email,
+      to: process.env.EMAIL,
+      replyTo: details.email,
       subject: "Restropedic Mattress - New Enquiry",
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -469,23 +485,83 @@ export async function enquiryUser(req, res, next) {
       `,
     };
 
-    console.log("Email (from field):", details.email);
-
+    // Send email
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent: " + info.response);
 
+    // Respond to client
     res.status(200).json({
       message: "Enquiry sent successfully!",
       details,
     });
   } catch (err) {
     console.error("Error sending enquiry:", err);
+
+    // Respond with error
     res.status(500).json({
       message: "Error sending enquiry",
-      error: err,
+      error: err.message,
     });
   }
 }
+
+// export async function enquiryUser(req, res, next) {
+//   try {
+//     const data = req.body;
+
+//     const details = {
+//       name: data.name,
+//       email: data.email, // This is the user's email entered in the form
+//       message: data.message,
+//     };
+
+//     console.log("Customer", details.email);
+//     console.log("Owner", process.env.EMAIL);
+
+//     const transporter = nodemailer.createTransport({
+//       service: "gmail",
+//       secure: true,
+//       port: 465,
+//       auth: {
+//         user: process.env.EMAIL, // This is the email configured in your .env file
+//         pass: process.env.EMAIL_PASSWORD,
+//       },
+//     });
+
+//     const mailOptions = {
+//       from: details.email, // Using user's email directly here
+//       to: process.env.EMAIL, // Owner's email from the .env file
+//       subject: "Restropedic Mattress - New Enquiry",
+//       html: `
+//         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+//           <h2 style="color: #007bff;">New Enquiry</h2>
+//           <p><strong>Name:</strong> ${details.name}</p>
+//           <p><strong>Email:</strong> ${details.email}</p>
+//           <p><strong>Message:</strong> ${details.message}</p>
+//           <hr style="border: 1px solid #ddd;" />
+//           <p>Thank you for reaching out to us!</p>
+//           <p style="color: #007bff;">Restropedic Team</p>
+//         </div>
+//       `,
+//     };
+
+//     console.log("Email (from field):", details.email);
+
+//     const info = await transporter.sendMail(mailOptions);
+//     console.log("Email sent: " + info.response);
+
+//     res.status(200).json({
+//       message: "Enquiry sent successfully!",
+//       details,
+//     });
+//   } catch (err) {
+//     console.error("Error sending enquiry:", err);
+//     res.status(500).json({
+//       message: "Error sending enquiry",
+//       error: err,
+//     });
+//   }
+// }
 
 // reset password
 
