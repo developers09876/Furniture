@@ -11,7 +11,6 @@ import Breadcrumb from "../components/Breadcrumb";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import { DashboardContext } from "../context/DashboardContext";
-
 const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
@@ -37,7 +36,7 @@ const Checkout = () => {
   };
   const onSubmit = (data) => console.log(data);
 
-  const { cart, clearCart, clearCartssss } = useContext(CartContext);
+  const { cart, clearCart } = useContext(CartContext);
   const { userID, isAuthenticated } = useContext(AuthContext);
   const [shippingAddress, setShippingAddress] = useState("");
   const [name, setName] = useState("");
@@ -52,7 +51,6 @@ const Checkout = () => {
 
   let cartValue = cartdata.items[0];
   const userId = localStorage.getItem("id");
-
   useEffect(() => {
     if (!isAuthenticated || cartdata.items.lenght == 0) {
       navigate("/cart");
@@ -137,6 +135,7 @@ const Checkout = () => {
   const handleCOD = () => {
     // Simulate COD confirmation logic here
     alert("Order placed successfully with Cash on Delivery!");
+    createOrder();
   };
 
   // const loadRazorpay = async () => {
@@ -220,30 +219,29 @@ const Checkout = () => {
     });
   };
 
-  const loadRazorpay = async (e) => {
-    // Prevent default button or form behavior
-    console.log("ln188");
-
-    // Ensure the Razorpay script is loaded
+  const loadRazorpay = async () => {
     const res = await loadScripts(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
     if (!res) {
-      alert("Failed to load Razorpay SDK");
+      Swal.fire({
+        title: "SDK Error",
+        text: "Failed to load Razorpay SDK. Please refresh the page.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
       return;
     }
-    console.log("ln1941");
 
-    // Razorpay payment options
     const options = {
-      key: "rzp_test_NYUPSveWybUfyq", // Replace with your Razorpay Key ID
+      key: "rzp_test_NYUPSveWybUfyq",
       currency: "INR",
-      amount: 100, // Amount in paise (100 paise = ₹1)
+      amount: 100, // Amount in paise
       name: "Furniture Delivery",
       description: "Payment for furniture",
-      handler: function (response) {
+      handler: async (response) => {
         console.log("Payment successful", response);
-        PaymentHandler(response); // Trigger your payment success handler
+        await createOrder(); // Call after successful payment
       },
       prefill: {
         name: "Rajan",
@@ -255,13 +253,6 @@ const Checkout = () => {
       },
     };
 
-    // Check if Razorpay object is available
-    if (!window.Razorpay) {
-      alert("Razorpay SDK failed to load.");
-      return;
-    }
-    console.log("ln221");
-    // Open Razorpay checkout modal
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   };
@@ -273,11 +264,9 @@ const Checkout = () => {
   const handleSubmit = () => {
     if (paymentMethod === "cod") {
       handleCOD();
-      // createOrder()
     } else {
       alert("razhorpay");
       loadRazorpay();
-      // createOrder()
     }
   };
 
@@ -434,11 +423,13 @@ const Checkout = () => {
                     Shipping Address:
                   </label>
                   <input
+                    {...register("shippingAddress")}
                     type="text"
                     className="form-control"
                     id="shippingAddress"
                     value={shippingAddress}
                     onChange={(e) => setShippingAddress(e.target.value)}
+                    required
                   />
                 </div>
                 <div>
@@ -539,7 +530,7 @@ const Checkout = () => {
                   <Button
                     className="my-3 px-4"
                     // onClick={() => handleOrderPlace()}   handleOrderPlace
-                    handleClick={createOrder}
+                    handleClick={handleSubmit}
                     disabled={!isFormValid()}
                   >
                     Place Order
