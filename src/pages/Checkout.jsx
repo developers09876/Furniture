@@ -36,7 +36,6 @@ const Checkout = () => {
     );
   };
   const onSubmit = (data) => console.log(data);
-  const { register } = useForm();
   const { cart, clearCart } = useContext(CartContext);
   const { userID, isAuthenticated } = useContext(AuthContext);
   const [shippingAddress, setShippingAddress] = useState("");
@@ -110,7 +109,8 @@ const Checkout = () => {
           cartdata.items.map((item) =>
             axios
               .put(
-                `${import.meta.env.VITE_MY_API}products/editquantity/${item.productId
+                `${import.meta.env.VITE_MY_API}products/editquantity/${
+                  item.productId
                 }`,
                 { quantity: item.quantity }
               )
@@ -119,7 +119,6 @@ const Checkout = () => {
               })
           );
           clearCartssss();
-
         }
       })
       .catch((error) => {
@@ -157,9 +156,9 @@ const Checkout = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm()
+  } = useForm();
+
   const loadRazorpay = async (e) => {
-    // Prevent default button or form behavior
     console.log("ln188");
 
     // Ensure the Razorpay script is loaded
@@ -338,9 +337,11 @@ const Checkout = () => {
           </div>
         ) : (
           <>
-
-            <form className="mt-5" style={{ display: "flex" }} onSubmit={handleSubmit(onSubmit)}>
-
+            <form
+              className="mt-5"
+              style={{ display: "flex" }}
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <div className="col-md-6 mt-5">
                 <div className="mb-3">
                   <label htmlFor="name" className="form-label">
@@ -381,7 +382,6 @@ const Checkout = () => {
                     value={shippingAddress}
                     onChange={(e) => setShippingAddress(e.target.value)}
                     required
-
                   />
                 </div>
                 <div>
@@ -407,7 +407,6 @@ const Checkout = () => {
                   </label>
                 </div>
               </div>
-
 
               <div className="col-md-6">
                 <div className="card">
@@ -461,7 +460,10 @@ const Checkout = () => {
                         checked={selectedDeliveryOption === "amana"}
                         onChange={() => setSelectedDeliveryOption("amana")}
                       />
-                      <label className="form-check-label" htmlFor="deliveryAmana">
+                      <label
+                        className="form-check-label"
+                        htmlFor="deliveryAmana"
+                      >
                         Delivery by Amana 24h: 30.00 DH
                       </label>
                     </div>
@@ -474,7 +476,10 @@ const Checkout = () => {
                         checked={selectedDeliveryOption === "ozone"}
                         onChange={() => setSelectedDeliveryOption("ozone")}
                       />
-                      <label className="form-check-label" htmlFor="deliveryOzone">
+                      <label
+                        className="form-check-label"
+                        htmlFor="deliveryOzone"
+                      >
                         Delivery by Ozone 48h: 20.00 DH
                       </label>
                     </div>
@@ -491,11 +496,12 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
-            </>
+            </form>
+          </>
         )}
-          </div>
       </div>
-      );
+    </div>
+  );
 };
 
-      export default Checkout;
+export default Checkout;
