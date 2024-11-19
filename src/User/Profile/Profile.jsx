@@ -31,6 +31,7 @@ function Profile() {
   const [name, setName] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
   const [UserData, setUserData] = useState("");
+  console.log("UserData", UserData);
   const userId = localStorage.getItem("id");
 
   const handleUpdate = (values) => {
@@ -78,7 +79,7 @@ function Profile() {
   const fetchUser = async () => {
     axios
       .post(`${import.meta.env.VITE_MY_API}user/getUser`, { id: userId })
-      .then(() => {
+      .then((response) => {
         setUserData(response.data.data);
         form.setFieldsValue({
           name: response.data.data.username,
@@ -132,20 +133,23 @@ function Profile() {
         <Row>
           <Col xs={12} sm={6}>
             <Form.Item
-              label="Phonenumber"
+              label="Phone Number"
               name="phonenumber"
               rules={[
                 {
                   required: true,
-                  message: "Please enter your phone number!",
+                  pattern: /^[6-9]\d{9}$/,
+                  message: "Please Enter Valid Phone Number!",
                 },
               ]}
             >
               <Input
+                addonBefore="+91"
                 onChange={(e) =>
                   setUserData({ ...UserData, phoneNumber: e.target.value })
                 }
-                required
+                // required
+                maxLength={10} //
               />
             </Form.Item>
           </Col>

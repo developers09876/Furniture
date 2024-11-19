@@ -263,7 +263,6 @@
 //       >
 //         <AddCategory closeModal={() => setCategoriesModel(false)} />
 
-
 //       </Modal>
 
 //       <Modal
@@ -295,7 +294,6 @@
 //     </>
 //   );
 // };
-
 
 // export default Categories;
 
@@ -333,7 +331,8 @@ const StyledModalContent = styled.div`
 `;
 
 const Categories = () => {
-  const { categories, deleteCategory, addCategory } = useContext(DashboardContext);
+  const { categories, deleteCategory, addCategory } =
+    useContext(DashboardContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
@@ -348,11 +347,13 @@ const Categories = () => {
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [categoryList]);
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_MY_API}Category/get`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_MY_API}Category/get`
+      );
       setCategoryList(response.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -378,7 +379,9 @@ const Categories = () => {
 
   const deleteRecordFromAPI = async (id) => {
     try {
-      const response = await axios.delete(`${import.meta.env.VITE_MY_API}Category/delete/${id}`);
+      const response = await axios.delete(
+        `${import.meta.env.VITE_MY_API}Category/delete/${id}`
+      );
       if (response.status === 200) {
         fetchCategories();
         Swal.fire({
@@ -398,7 +401,7 @@ const Categories = () => {
   };
 
   const handleDelete = (record) => {
-    console.log("hello", record)
+    console.log("hello", record);
     confirm({
       title: "Are you sure you want to delete this category?",
       icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,
@@ -408,7 +411,7 @@ const Categories = () => {
       cancelText: "No",
       onOk() {
         deleteRecordFromAPI(record._id);
-        console.log("step1", record._id)
+        console.log("step1", record._id);
       },
       onCancel() {
         console.log("Deletion cancelled");
@@ -421,7 +424,7 @@ const Categories = () => {
   };
 
   const handleEditSubmit = async (editingCategory) => {
-    console.log("change", editingCategory)
+    console.log("change", editingCategory);
     const Data = {
       name: editingCategory.name,
       description: editingCategory.description,

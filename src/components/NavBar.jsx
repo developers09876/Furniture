@@ -43,6 +43,7 @@ const NavBar = () => {
   const [query, setQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const { products } = useContext(DashboardContext);
+  console.log("first", products);
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
   const { total } = useContext(WishlistContext);
   const { cartdata, whishlistData } = useContext(DashboardContext);
@@ -76,9 +77,12 @@ const NavBar = () => {
   }, [isAuthenticated]);
 
   const handleSearch = () => {
-    const filtered = products.filter((product) =>
-      product.category.toLowerCase().includes(query.toLowerCase())
+    const filtered = products.filter(
+      (product) =>
+        product.category.toLowerCase().includes(query.toLowerCase()) ||
+        product.title.toLowerCase().includes(query.toLowerCase())
     );
+
     setFilteredProducts(filtered);
   };
 

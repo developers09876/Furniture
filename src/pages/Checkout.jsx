@@ -97,6 +97,7 @@ const Checkout = () => {
     axios
       .post(`${import.meta.env.VITE_MY_API}products/createorder`, order)
       .then((response) => {
+        clearCart();
         if (response) {
           Swal.fire({
             title: "Order Placed!",
@@ -218,6 +219,7 @@ const Checkout = () => {
       document.body.appendChild(script);
     });
   };
+
   const loadRazorpay = async (e) => {
     // Prevent default button or form behavior
     console.log("ln188");
@@ -278,6 +280,7 @@ const Checkout = () => {
       // createOrder()
     }
   };
+
   const updateProductStock = async () => {
     try {
       for (const item of cartdata.items) {

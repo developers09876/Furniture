@@ -25,7 +25,6 @@ const ProductDashboard = () => {
   console.log("editingUser", editingUser);
   const [product, setProduct] = useState([]);
   console.log("editingUser", editingUser);
-
   // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
   const { users, orders, products, fetchData } = useContext(DashboardContext);
   const deleteRecordFromAPI = async (id) => {

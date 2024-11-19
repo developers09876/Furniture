@@ -106,13 +106,6 @@ const Cart = () => {
         );
 
         const userId = localStorage.getItem("id");
-        console.log(
-          "Sending request to:",
-          `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${
-            item.productId
-          }`
-        );
-
         const response = await axios.put(
           `${import.meta.env.VITE_MY_API}user/updateQuantity/${userId}/${
             item.productId

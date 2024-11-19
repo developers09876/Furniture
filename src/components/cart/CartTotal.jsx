@@ -10,7 +10,6 @@ import { Col, Row } from "react-bootstrap";
 import { DashboardContext } from "../../context/DashboardContext";
 
 const CartTotal = ({ total }) => {
-  const { cartdata } = useContext(DashboardContext);
   const { cart } = useContext(CartContext);
   const { isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -19,24 +18,6 @@ const CartTotal = ({ total }) => {
 
   return (
     <Wrapper>
-      {/* <div>
-        <article>
-          <h4>
-            Order Total :
-            <span>
-              <FaIndianRupeeSign /> {total}
-            </span>
-          </h4>
-          <hr />
-          {isAuthenticated ? (
-            <Button handleClick={() => navigate("/checkout")}>
-              proceed to checkout
-            </Button>
-          ) : (
-            <Button handleClick={() => navigate("/login")}>login</Button>
-          )}
-        </article>
-      </div> */}
       <div className="order-total-container">
         <article className="order-total-card">
           <Row>

@@ -83,7 +83,7 @@ const UserOrders = () => {
 
   const userOrderColumn = [
     {
-      title: "Sno",
+      title: "S.No",
       render: (i, record, index) => <p>{1 + index}</p>,
     },
     {
@@ -109,7 +109,7 @@ const UserOrders = () => {
   ];
   const columns = [
     {
-      title: "Sno",
+      title: "S.No",
       render: (i, record, index) => <p>{index + 1}</p>,
     },
 
