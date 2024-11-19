@@ -57,6 +57,7 @@ const UserOrders = () => {
   // const { orders, updateOrderStatus, fetchData } =
   //   useContext(UserDashboardContext);
   const [selectedStatus, setSelectedStatus] = useState("all");
+
   // const handleStatusChange = (orderId, status) => {
   //   updateOrderStatus(orderId, status);
   // };
@@ -65,6 +66,7 @@ const UserOrders = () => {
   //   selectedStatus === "all"
   //     ? orders
   //     : orders.filter((order) => order.order_status === selectedStatus);
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dataFilter, setDataFilter] = useState([]);
