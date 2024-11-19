@@ -308,8 +308,14 @@ const AddProduct = () => {
               label="Price"
               name="price"
               rules={[
-                { required: true, message: "Please enter the price" },
-                { type: "number", min: 1, message: "Price must be greater than 0" },
+                {
+                  validator: (_, value) => {
+                    if (value > 0) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error("Price must be greater than 0"));
+                  },
+                },
               ]}
             >
               <Input type="number" />
@@ -321,8 +327,14 @@ const AddProduct = () => {
               label="Discount Price"
               name="discountPrice"
               rules={[
-                { required: true, message: "Please enter the discount price" },
-                { type: "number", min: 0, message: "Discount price must be 0 or higher" },
+                {
+                  validator: (_, value) => {
+                    if (value > 0) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error(" Discount Price must be greater than 0"));
+                  },
+                },
               ]}
             >
               <Input type="number" />
@@ -334,15 +346,21 @@ const AddProduct = () => {
               label="Quantity in Stock"
               name="quantity_stock"
               rules={[
-                { required: true, message: "Please enter the quantity in stock" },
-                { type: "number", min: 0, message: "Quantity in stock cannot be negative" },
+                {
+                  validator: (_, value) => {
+                    if (value > 0) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error("Quantity must be greater than 0"));
+                  },
+                },
               ]}
             >
               <Input type="number" />
             </Form.Item>
           </div>
-        </div>
 
+        </div>
 
         {/* Specifications Section */}
         <div className="form-group fw-bold my-2 row mt-5">
@@ -370,7 +388,9 @@ const AddProduct = () => {
             </div>
 
             <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
-              <label htmlFor="cover_Type">Cover Typez:</label>
+              <label htmlFor="cover_Type">Cover
+                /
+                :</label>
               <input
                 type="text"
                 className="form-control"
