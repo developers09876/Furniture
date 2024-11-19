@@ -32,7 +32,7 @@ const CartTotal = ({ total }) => {
           {isAuthenticated ? (
             <Button
               className="proceed-btn"
-              handleClick={() => navigate("/checkout")}
+              handleClick={() => navigate("/checkout", { state: total })}
             >
               Proceed to Checkout
             </Button>
