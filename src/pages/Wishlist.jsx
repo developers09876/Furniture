@@ -180,7 +180,7 @@ const Wishlist = () => {
               </h5>
             )}
             <hr />
-            <div className="d-flex justify-content-between">
+            <div className="d-flex justify-content-between mb-3">
               <Button handleClick={() => navigate("/products")}>
                 Continue Shopping
               </Button>
