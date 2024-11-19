@@ -6,7 +6,7 @@ import { currentDate, generateUUID } from "../../utils/helpers";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Form, Input, Select, Upload } from 'antd';
+import { Form, Input, Select, Upload } from "antd";
 
 // styled components
 const StyledProducts = styled.div`
@@ -17,6 +17,7 @@ const StyledProducts = styled.div`
 const AddProduct = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [categoriesField, setCategoriesField] = useState([]);
+
   console.log("firstW", categoriesField);
   const categories = [
     { id: "1", cat_name: "Sofa" },
@@ -63,7 +64,7 @@ const AddProduct = () => {
   });
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_MY_API}/Category/`).then((response) => {
+    axios.get(`${import.meta.env.VITE_MY_API}Category/get`).then((response) => {
       setCategoriesField(response.data);
     });
   }, []);
@@ -225,11 +226,7 @@ const AddProduct = () => {
     <StyledProducts style={{ width: "100%" }}>
       <h2 className="mb-5">Add Product</h2>
 
-      <Form
-        layout="vertical"
-        onFinish={addProduct}
-        initialValues={formData}
-      >
+      <Form layout="vertical" onFinish={addProduct} initialValues={formData}>
         <div className="row">
           <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
             <Form.Item
@@ -252,7 +249,10 @@ const AddProduct = () => {
             >
               <Select placeholder="Select a category">
                 {categoriesField.map((categoryField) => (
-                  <Select.Option key={categoryField.id} value={categoryField.name}>
+                  <Select.Option
+                    key={categoryField.id}
+                    value={categoryField.name}
+                  >
                     {categoryField.name}
                   </Select.Option>
                 ))}
@@ -264,7 +264,10 @@ const AddProduct = () => {
             <Form.Item
               label="Images"
               name="images"
-              rules={[{ required: true, message: "Please upload at least one image" }]}
+              rules={[
+                { required: true, message: "Please upload at least one image" },
+                { min: 1, message: "picture" },
+              ]}
             >
               <Upload
                 listType="picture"
@@ -272,9 +275,9 @@ const AddProduct = () => {
                 beforeUpload={() => false}
                 onChange={handleImageChange}
               >
-                <Button>Upload Images</Button>
+                <button>Upload Images</button>
               </Upload>
-              <p>Total Images Selected: {formData.images?.length || 0}</p>
+              {/* <p>Total Images Selected: {formData.images?.length || 0}</p> */}
             </Form.Item>
           </div>
           <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
@@ -283,7 +286,11 @@ const AddProduct = () => {
               name="description"
               rules={[
                 { required: true, message: "Please enter a short description" },
-                { min: 10, message: "Short description must be at least 10 characters long" },
+                {
+                  min: 10,
+                  message:
+                    "Short description must be at least 10 characters long",
+                },
               ]}
             >
               <Input.TextArea />
@@ -296,7 +303,11 @@ const AddProduct = () => {
               name="LongDesc"
               rules={[
                 { required: true, message: "Please enter a long description" },
-                { min: 20, message: "Long description must be at least 20 characters long" },
+                {
+                  min: 20,
+                  message:
+                    "Long description must be at least 20 characters long",
+                },
               ]}
             >
               <Input.TextArea />
@@ -307,12 +318,9 @@ const AddProduct = () => {
             <Form.Item
               label="Price"
               name="price"
-              rules={[
-                { required: true, message: "Please enter the price" },
-                { type: "number", min: 1, message: "Price must be greater than 0" },
-              ]}
+              rules={[{ required: true, message: "Please enter the price" }]}
             >
-              <Input type="number" />
+              <Input type="number" min="1" />
             </Form.Item>
           </div>
 
@@ -322,7 +330,6 @@ const AddProduct = () => {
               name="discountPrice"
               rules={[
                 { required: true, message: "Please enter the discount price" },
-                { type: "number", min: 0, message: "Discount price must be 0 or higher" },
               ]}
             >
               <Input type="number" />
@@ -334,15 +341,20 @@ const AddProduct = () => {
               label="Quantity in Stock"
               name="quantity_stock"
               rules={[
-                { required: true, message: "Please enter the quantity in stock" },
-                { type: "number", min: 0, message: "Quantity in stock cannot be negative" },
+                {
+                  required: true,
+                  message: "Please enter the quantity in stock",
+                },
+                {
+                  min: 0,
+                  message: "Quantity in stock cannot be negative",
+                },
               ]}
             >
-              <Input type="number" />
+              <Input />
             </Form.Item>
           </div>
         </div>
-
 
         {/* Specifications Section */}
         <div className="form-group fw-bold my-2 row mt-5">
@@ -380,11 +392,7 @@ const AddProduct = () => {
                 //   formData?.specifications[0].product_Details.cover_Type || ""
                 // }
                 onChange={(e) =>
-                  handleSpecificationChange(
-                    e,
-                    "product_Details",
-                    "cover_Type"
-                  )
+                  handleSpecificationChange(e, "product_Details", "cover_Type")
                 }
               />
             </div>
@@ -473,26 +481,26 @@ const AddProduct = () => {
                       />
                     </div>
                     <div className="form-group col-md-2 mt-4">
-                      {formData.specifications[0].product_Details
-                        .dynamicFields.length !== 1 && (
-                          <button
-                            className="btn btn-danger mx-1 my-1"
-                            onClick={() => handleDynamicRemoveClick(i)}
-                          >
-                            Remove
-                          </button>
-                        )}
-                      {formData.specifications[0].product_Details
-                        .dynamicFields.length -
+                      {formData.specifications[0].product_Details.dynamicFields
+                        .length !== 1 && (
+                        <button
+                          className="btn btn-danger mx-1 my-1"
+                          onClick={() => handleDynamicRemoveClick(i)}
+                        >
+                          Remove
+                        </button>
+                      )}
+                      {formData.specifications[0].product_Details.dynamicFields
+                        .length -
                         1 ===
                         i && (
-                          <button
-                            className="btn btn-primary mx-1"
-                            onClick={handleDynamicAddClick}
-                          >
-                            Add
-                          </button>
-                        )}
+                        <button
+                          className="btn btn-primary mx-1"
+                          onClick={handleDynamicAddClick}
+                        >
+                          Add
+                        </button>
+                      )}
                     </div>
                   </div>
                 )
@@ -558,11 +566,7 @@ const AddProduct = () => {
                   name="Warranty"
                   // value={formData.specifications[0].product_Policies.Warranty}
                   onChange={(e) =>
-                    handleSpecificationChange(
-                      e,
-                      "product_Policies",
-                      "Warranty"
-                    )
+                    handleSpecificationChange(e, "product_Policies", "Warranty")
                   }
                 />
               </div>
@@ -576,11 +580,7 @@ const AddProduct = () => {
                   name="Shipping"
                   // value={formData.specifications[0].product_Policies.Shipping}
                   onChange={(e) =>
-                    handleSpecificationChange(
-                      e,
-                      "product_Policies",
-                      "Shipping"
-                    )
+                    handleSpecificationChange(e, "product_Policies", "Shipping")
                   }
                 />
               </div>
@@ -635,9 +635,8 @@ const AddProduct = () => {
             </Button>
           </div>
         </div>
-
       </Form>
-    </StyledProducts >
+    </StyledProducts>
   );
 };
 

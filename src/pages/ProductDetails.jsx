@@ -59,7 +59,7 @@ const SingleProductPage = () => {
   const [customBreadth, setCustomBreadth] = useState("");
   const [hover, setHover] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [subTotal, setSubTotal] = useState(0);
   const { addToCart, removeItem } = useContext(CartContext);
   const [orders, setOrders] = useState([]);
@@ -84,7 +84,7 @@ const SingleProductPage = () => {
   const { productID } = useParams();
   const { cartdata, whishlistData } = useContext(DashboardContext);
   const [product, setProduct] = useState([]);
-  console.log("productxs", product);
+  console.log("productxs", product.discountPrice);
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -104,7 +104,7 @@ const SingleProductPage = () => {
   }, [productID]);
 
   useEffect(() => {
-    setSubTotal(quantity * product?.price);
+    setSubTotal(quantity * product.discountPrice);
   }, [quantity, product]);
 
   const settings = {

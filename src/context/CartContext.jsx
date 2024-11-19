@@ -60,7 +60,7 @@ export const CartProvider = ({ children }) => {
         icon: "success",
         title: "Item added to cart",
         showConfirmButton: false,
-        timer: 1500,
+        timer: 1000,
       });
 
       fetchCart();

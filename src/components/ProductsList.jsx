@@ -5,6 +5,7 @@ import Spinner from "./Spinner";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { faHtml5 } from "@fortawesome/free-brands-svg-icons";
 
 const ProductsList = ({ products }) => {
   return (
@@ -32,7 +33,18 @@ const ProductsList = ({ products }) => {
           </div>
         </div>
       ) : (
-        <Spinner />
+        <h5
+          style={{
+            color: "#555",
+            fontSize: "18px",
+            textAlign: "center",
+            marginTop: "20px",
+            fontStyle: "italic",
+            fontWeight: "400",
+          }}
+        >
+          No relevant items were found for your search.
+        </h5>
       )}
     </Wrapper>
   );
