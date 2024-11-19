@@ -318,7 +318,10 @@ const AddProduct = () => {
             <Form.Item
               label="Price"
               name="price"
-              rules={[{ required: true, message: "Please enter the price" }]}
+              rules={[
+                { required: true, message: "Please enter the price" },
+                { type: "number", min: 1, message: "Price must be greater than 0" },
+              ]}
             >
               <Input type="number" min="1" />
             </Form.Item>
@@ -330,6 +333,7 @@ const AddProduct = () => {
               name="discountPrice"
               rules={[
                 { required: true, message: "Please enter the discount price" },
+                { type: "number", min: 0, message: "Discount price must be 0 or higher" },
               ]}
             >
               <Input type="number" />
@@ -341,19 +345,14 @@ const AddProduct = () => {
               label="Quantity in Stock"
               name="quantity_stock"
               rules={[
-                {
-                  required: true,
-                  message: "Please enter the quantity in stock",
-                },
-                {
-                  min: 0,
-                  message: "Quantity in stock cannot be negative",
-                },
+                { required: true, message: "Please enter the quantity in stock" },
+                { type: "number", min: 0, message: "Quantity in stock cannot be negative" },
               ]}
             >
               <Input />
             </Form.Item>
           </div>
+
         </div>
 
         {/* Specifications Section */}
@@ -382,7 +381,9 @@ const AddProduct = () => {
             </div>
 
             <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
-              <label htmlFor="cover_Type">Cover Typez:</label>
+              <label htmlFor="cover_Type">Cover
+                /
+                :</label>
               <input
                 type="text"
                 className="form-control"
@@ -483,24 +484,24 @@ const AddProduct = () => {
                     <div className="form-group col-md-2 mt-4">
                       {formData.specifications[0].product_Details.dynamicFields
                         .length !== 1 && (
-                        <button
-                          className="btn btn-danger mx-1 my-1"
-                          onClick={() => handleDynamicRemoveClick(i)}
-                        >
-                          Remove
-                        </button>
-                      )}
+                          <button
+                            className="btn btn-danger mx-1 my-1"
+                            onClick={() => handleDynamicRemoveClick(i)}
+                          >
+                            Remove
+                          </button>
+                        )}
                       {formData.specifications[0].product_Details.dynamicFields
                         .length -
                         1 ===
                         i && (
-                        <button
-                          className="btn btn-primary mx-1"
-                          onClick={handleDynamicAddClick}
-                        >
-                          Add
-                        </button>
-                      )}
+                          <button
+                            className="btn btn-primary mx-1"
+                            onClick={handleDynamicAddClick}
+                          >
+                            Add
+                          </button>
+                        )}
                     </div>
                   </div>
                 )

@@ -11,6 +11,7 @@ import Breadcrumb from "../components/Breadcrumb";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import { DashboardContext } from "../context/DashboardContext";
+
 const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
@@ -34,6 +35,7 @@ const Checkout = () => {
       name.trim() !== "" && phone.trim() !== "" && shippingAddress.trim() !== ""
     );
   };
+  const onSubmit = (data) => console.log(data);
   const { register } = useForm();
   const { cart, clearCart } = useContext(CartContext);
   const { userID, isAuthenticated } = useContext(AuthContext);
@@ -50,6 +52,7 @@ const Checkout = () => {
 
   let cartValue = cartdata.items[0];
   const userId = localStorage.getItem("id");
+
   useEffect(() => {
     if (!isAuthenticated || cartdata.items.lenght == 0) {
       navigate("/cart");
@@ -102,12 +105,12 @@ const Checkout = () => {
             icon: "success",
             confirmButtonText: "OK",
           });
+
           navigate("/");
           cartdata.items.map((item) =>
             axios
               .put(
-                `${import.meta.env.VITE_MY_API}products/editquantity/${
-                  item.productId
+                `${import.meta.env.VITE_MY_API}products/editquantity/${item.productId
                 }`,
                 { quantity: item.quantity }
               )
@@ -115,6 +118,8 @@ const Checkout = () => {
                 console.log("Admin Quantity Updated");
               })
           );
+          clearCartssss();
+
         }
       })
       .catch((error) => {
@@ -132,7 +137,6 @@ const Checkout = () => {
   const handleCOD = () => {
     // Simulate COD confirmation logic here
     alert("Order placed successfully with Cash on Delivery!");
-    createOrder();
   };
 
   const loadScripts = (src) => {
@@ -148,30 +152,36 @@ const Checkout = () => {
       document.body.appendChild(script);
     });
   };
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm()
+  const loadRazorpay = async (e) => {
+    // Prevent default button or form behavior
+    console.log("ln188");
 
-  const loadRazorpay = async () => {
+    // Ensure the Razorpay script is loaded
     const res = await loadScripts(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
     if (!res) {
-      Swal.fire({
-        title: "SDK Error",
-        text: "Failed to load Razorpay SDK. Please refresh the page.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+      alert("Failed to load Razorpay SDK");
       return;
     }
+    console.log("ln1941");
 
+    // Razorpay payment options
     const options = {
-      key: "rzp_test_NYUPSveWybUfyq",
+      key: "rzp_test_NYUPSveWybUfyq", // Replace with your Razorpay Key ID
       currency: "INR",
-      amount: 100, // Amount in paise
+      amount: 100, // Amount in paise (100 paise = ₹1)
       name: "Furniture Delivery",
       description: "Payment for furniture",
-      handler: async (response) => {
+      handler: function (response) {
         console.log("Payment successful", response);
-        await createOrder(); // Call after successful payment
+        PaymentHandler(response); // Trigger your payment success handler
       },
       prefill: {
         name: "Rajan",
@@ -183,6 +193,13 @@ const Checkout = () => {
       },
     };
 
+    // Check if Razorpay object is available
+    if (!window.Razorpay) {
+      alert("Razorpay SDK failed to load.");
+      return;
+    }
+    console.log("ln221");
+    // Open Razorpay checkout modal
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   };
@@ -191,14 +208,16 @@ const Checkout = () => {
     setPaymentMethod(e.target.value);
   };
 
-  const handleSubmit = () => {
-    if (paymentMethod === "cod") {
-      handleCOD();
-    } else {
-      alert("razhorpay");
-      loadRazorpay();
-    }
-  };
+  // const handleSubmit = () => {
+  //   if (paymentMethod === "cod") {
+  //     handleCOD();
+  //     // createOrder()
+  //   } else {
+  //     alert("razhorpay");
+  //     loadRazorpay();
+  //     // createOrder()
+  //   }
+  // };
 
   const updateProductStock = async () => {
     try {
@@ -241,7 +260,7 @@ const Checkout = () => {
         }
       );
       await updateProductStock();
-      clearCart();
+      // clearCart();
       setOrderID(orderId);
       setSuccess(true);
 
@@ -319,8 +338,10 @@ const Checkout = () => {
           </div>
         ) : (
           <>
-            <div className="col-md-6 mt-5">
-              <form className="mt-5">
+
+            <form className="mt-5" style={{ display: "flex" }} onSubmit={handleSubmit(onSubmit)}>
+
+              <div className="col-md-6 mt-5">
                 <div className="mb-3">
                   <label htmlFor="name" className="form-label">
                     Full Name:
@@ -340,7 +361,7 @@ const Checkout = () => {
                     Phone Number :
                   </label>
                   <input
-                    type="numbe r"
+                    type="number"
                     className="form-control"
                     id="phone"
                     value={phone}
@@ -354,13 +375,13 @@ const Checkout = () => {
                     Shipping Address:
                   </label>
                   <input
-                    {...register("shippingAddress")}
                     type="text"
                     className="form-control"
                     id="shippingAddress"
                     value={shippingAddress}
                     onChange={(e) => setShippingAddress(e.target.value)}
                     required
+
                   />
                 </div>
                 <div>
@@ -385,18 +406,19 @@ const Checkout = () => {
                     Cash on Delivery (COD)
                   </label>
                 </div>
-              </form>
-            </div>
-            <div className="col-md-6">
-              <div className="card">
-                <div className="card-body">
-                  <h2 className="card-title text-center mb-4">Your Order</h2>
-                  <div className="d-flex justify-content-between">
-                    <p className="card-text fw-bold">Product</p>
-                    <span className="fw-bold">Sub-Total</span>
-                  </div>
-                  <hr />
-                  {/* {cartdata.items.map((item) => (
+              </div>
+
+
+              <div className="col-md-6">
+                <div className="card">
+                  <div className="card-body">
+                    <h2 className="card-title text-center mb-4">Your Order</h2>
+                    <div className="d-flex justify-content-between">
+                      <p className="card-text fw-bold">Product</p>
+                      <span className="fw-bold">Sub-Total</span>
+                    </div>
+                    <hr />
+                    {/* {cartdata.items.map((item) => (
                     <div
                       key={item.title}
                       className="d-flex justify-content-between mb-2"
@@ -409,72 +431,71 @@ const Checkout = () => {
                       </span>
                     </div>
                   ))} */}
-                  <hr />
-                  <div className="d-flex justify-content-between mb-2">
-                    <p className="card-text fw-bold">Order Sub-Total : </p>
-                    <span className="text-success">
-                      <FaIndianRupeeSign />
+                    <hr />
+                    <div className="d-flex justify-content-between mb-2">
+                      <p className="card-text fw-bold">Order Sub-Total : </p>
+                      <span className="text-success">
+                        <FaIndianRupeeSign />
+                        {/* {subTotal.toFixed(2)} */}
+                        {(Number(subTotal) || 0).toFixed(2)}
+                      </span>
+                    </div>
+                    <hr />
 
-                      {subTotal.toFixed(2) || "Please Try  Again..."}
-                    </span>
+                    <div className="d-flex justify-content-between mb-2">
+                      <p className="card-text fw-bold">Order Total : </p>
+                      <span className="text-danger">
+                        <FaIndianRupeeSign /> {totalOrder.toFixed(2)}
+                      </span>
+                    </div>
+                    <p className="card-text">
+                      Delivered By :
+                      {selectedDeliveryOption === "amana" ? "Amana" : "Ozone"}
+                    </p>
+                    <div className="form-check">
+                      <input
+                        type="radio"
+                        className="form-check-input"
+                        id="deliveryAmana"
+                        value="amana"
+                        checked={selectedDeliveryOption === "amana"}
+                        onChange={() => setSelectedDeliveryOption("amana")}
+                      />
+                      <label className="form-check-label" htmlFor="deliveryAmana">
+                        Delivery by Amana 24h: 30.00 DH
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        type="radio"
+                        className="form-check-input"
+                        id="deliveryOzone"
+                        value="ozone"
+                        checked={selectedDeliveryOption === "ozone"}
+                        onChange={() => setSelectedDeliveryOption("ozone")}
+                      />
+                      <label className="form-check-label" htmlFor="deliveryOzone">
+                        Delivery by Ozone 48h: 20.00 DH
+                      </label>
+                    </div>
                   </div>
-                  <hr />
-
-                  <div className="d-flex justify-content-between mb-2">
-                    <p className="card-text fw-bold">Order Total : </p>
-                    <span className="text-danger">
-                      <FaIndianRupeeSign />
-                      {totalOrder.toFixed(2)}
-                    </span>
+                  <div className="card-footer text-center">
+                    <Button
+                      className="my-3 px-4"
+                      // onClick={() => handleOrderPlace()}   handleOrderPlace
+                      handleClick={handleSubmit}
+                      disabled={!isFormValid()}
+                    >
+                      Place Order
+                    </Button>
                   </div>
-                  <p className="card-text">
-                    Delivered By :
-                    {selectedDeliveryOption === "amana" ? "Amana" : "Ozone"}
-                  </p>
-                  <div className="form-check">
-                    <input
-                      type="radio"
-                      className="form-check-input"
-                      id="deliveryAmana"
-                      value="amana"
-                      checked={selectedDeliveryOption === "amana"}
-                      onChange={() => setSelectedDeliveryOption("amana")}
-                    />
-                    <label className="form-check-label" htmlFor="deliveryAmana">
-                      Delivery by Amana 24h: 30.00 DH
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      type="radio"
-                      className="form-check-input"
-                      id="deliveryOzone"
-                      value="ozone"
-                      checked={selectedDeliveryOption === "ozone"}
-                      onChange={() => setSelectedDeliveryOption("ozone")}
-                    />
-                    <label className="form-check-label" htmlFor="deliveryOzone">
-                      Delivery by Ozone 48h: 20.00 DH
-                    </label>
-                  </div>
-                </div>
-                <div className="card-footer text-center">
-                  <Button
-                    className="my-3 px-4"
-                    // onClick={() => handleOrderPlace()}   handleOrderPlace
-                    handleClick={handleSubmit}
-                    disabled={!isFormValid()}
-                  >
-                    Place Order
-                  </Button>
                 </div>
               </div>
-            </div>
-          </>
+            </>
         )}
+          </div>
       </div>
-    </div>
-  );
+      );
 };
 
-export default Checkout;
+      export default Checkout;
