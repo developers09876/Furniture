@@ -99,7 +99,7 @@ const UserOrders = () => {
   const [orderId, setOrderId] = useState(null);
 
   const [data, setData] = useState([]);
-  console.log("data", data);
+  console.log("datax", data);
   const [loading, setLoading] = useState(true);
 
   const viewOrder = [
@@ -135,17 +135,14 @@ const UserOrders = () => {
 
   const orderDetail = [
     {
-      title: "Sno",
+      title: "S.No",
       render: (i, record, index) => (
         <div>
           <p>{1 + index}</p>
         </div>
       ),
     },
-    {
-      title: "Name",
-      dataIndex: "name",
-    },
+
     {
       title: "Address",
       dataIndex: "shipping_address",
@@ -154,10 +151,10 @@ const UserOrders = () => {
       title: "Phone",
       dataIndex: "phone",
     },
-    {
-      title: "Status",
-      dataIndex: "order_status",
-    },
+    // {
+    //   title: "Status",
+    //   dataIndex: "order_status",
+    // },
     // {
     //   title: "Delivery Company",
     //   dataIndex: "deliveryCompany",
@@ -167,13 +164,16 @@ const UserOrders = () => {
       title: "Date",
       dataIndex: "created_at",
     },
-
     {
-      title: "orderTotal",
+      title: "Name",
+      dataIndex: "name",
+    },
+    {
+      title: "Total Amount",
       dataIndex: "order_total",
     },
     {
-      title: "Change Status",
+      title: "Status Update",
       dataIndex: "changeStatus",
       render: (record, e) => (
         <div onClick={() => getId(e)}>

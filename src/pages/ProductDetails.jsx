@@ -258,7 +258,6 @@ const SingleProductPage = () => {
   //   checkWishlist();  // Check wishlist status when component mounts
   // }, [product.id, userId]);
 
-  console.log("addToWishlist", addToWishlist);
   const handleImageClick = (image) => {
     setSelectedImage(image);
   };
@@ -1152,7 +1151,7 @@ const SingleProductPage = () => {
             {/* Category Selection */}
             <div className="mb-3">
               <p>
-                <b>Select Category</b>
+                <b>Select Category :</b>
               </p>
               <div className="d-flex flex-wrap">
                 {["Single", "Diwan", "Queen", "King", "Custom Size"].map(
