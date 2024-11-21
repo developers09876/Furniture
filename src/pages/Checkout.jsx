@@ -109,8 +109,7 @@ const Checkout = () => {
           cartdata.items.map((item) =>
             axios
               .put(
-                `${import.meta.env.VITE_MY_API}products/editquantity/${
-                  item.productId
+                `${import.meta.env.VITE_MY_API}products/editquantity/${item.productId
                 }`,
                 { quantity: item.quantity }
               )
@@ -342,7 +341,7 @@ const Checkout = () => {
               style={{ display: "flex" }}
               onSubmit={handleSubmit(onSubmit)}
             >
-              <div className="col-md-6 mt-5">
+              <div className="col-md-6 mt-5" style={{ backgroundColor: "" }}>
                 <div className="mb-3">
                   <label htmlFor="name" className="form-label">
                     Full Name:
@@ -408,7 +407,7 @@ const Checkout = () => {
                 </div>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-md-6 ms-4">
                 <div className="card">
                   <div className="card-body">
                     <h2 className="card-title text-center mb-4">Your Order</h2>
@@ -430,7 +429,7 @@ const Checkout = () => {
                       </span>
                     </div>
                   ))} */}
-                    <hr />
+                    {/* <hr /> */}
                     <div className="d-flex justify-content-between mb-2">
                       <p className="card-text fw-bold">Order Sub-Total : </p>
                       <span className="text-success">
