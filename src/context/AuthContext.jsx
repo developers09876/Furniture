@@ -115,7 +115,7 @@ export const AuthProvider = ({ children }) => {
           setUserID(res.data.data._id);
           Cookies.set("isLoggedIn", "true", { expires: 1 });
           setIsUser(true);
-          Cookies.set("isUser", "true");
+          Cookies.set("isUser", "true"); n
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("id", res.data.data.id);
           localStorage.setItem("name", res.data.data.username); // Make sure to use res.data.Token
