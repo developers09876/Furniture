@@ -36,10 +36,8 @@ function Profile() {
 
   const handleUpdate = (values) => {
     confirm({
-      title: `Want to update ${values.name}?`,
-      // content: `Phonenumber: ${values.phonenumber}`,
+      title: `Want to update ${UserData.username}?`,
       okText: "Yes",
-      // noType: "danger",
       cancelText: "No",
       onOk() {
         updateRecordFromAPI();
@@ -112,7 +110,6 @@ function Profile() {
               label="Name"
               name="name"
               rules={[{ required: true, message: "Please enter your name!" }]}
-              // initialValue={name}
             >
               <Input
                 onChange={(e) =>

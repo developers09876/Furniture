@@ -15,6 +15,8 @@ const StyledProducts = styled.div`
 `;
 
 const AddProduct = () => {
+  const [form] = Form.useForm();
+  const [imageCount, setImageCount] = useState(0);
   const [selectedImages, setSelectedImages] = useState([]);
   const [categoriesField, setCategoriesField] = useState([]);
 
@@ -87,11 +89,7 @@ const AddProduct = () => {
       return { ...prevForm, specifications: updatedSpecifications };
     });
   };
-  const handleImageChange = (e) => {
-    setSelectedImages(e.target.files); // Store the selected files
-  };
 
-  // Upload images to Cloudinary and get URLs
   const uploadImages = async () => {
     const uploadedImages = [];
 
@@ -118,26 +116,6 @@ const AddProduct = () => {
     return uploadedImages;
   };
 
-  //   const handleImageChange = (event) => {
-  //     console.log(event.target)
-  //     const files = Array.from(event.target.files);
-  // console.log('files', files)
-  //     if (formData.images && files.length + formData.images.length > 10) {
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "Error",
-  //         text: "You can only select up to 10 images.",
-  //       });
-  //       return;
-  //     }
-
-  //     Promise.all(newImages).then((results) => {
-  //       setFormData((prevForm) => ({
-  //         ...prevForm,
-  //         images: [...prevForm.images, ...results],
-  //       }));
-  //     });
-  //   };
   const handleDynamicInputChange = (e, index) => {
     const { name, value } = e.target;
     const updatedSpecifications = [...formData.specifications];
@@ -160,18 +138,6 @@ const AddProduct = () => {
       updatedDynamicFields;
     setFormData({ ...formData, specifications: updatedSpecifications });
   };
-
-  // const handleDynamicAddClick = () => {
-  //   const updatedSpecifications = [...formData.specifications];
-  //   updatedSpecifications[0].product_Details.dynamicFields.push({
-  //     title: "",
-  //     description: "",
-  //   });
-  //   setFormData({
-  //     ...formData,
-  //     specifications: JSON.stringify(updatedSpecifications),
-  //   });
-  // };
 
   const handleDynamicAddClick = () => {
     // Make a deep copy of specifications to avoid mutating the state directly
@@ -221,12 +187,21 @@ const AddProduct = () => {
       });
     }
   };
-
+  const handleImageChange = (info) => {
+    const { fileList } = info;
+    setImageCount(fileList.length);
+    form.setFieldsValue({ images: { fileList } });
+  };
   return (
     <StyledProducts style={{ width: "100%" }}>
       <h2 className="mb-5">Add Product</h2>
 
-      <Form layout="vertical" onFinish={addProduct} initialValues={formData}>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={addProduct}
+        initialValues={formData}
+      >
         <div className="row">
           <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
             <Form.Item
@@ -262,32 +237,12 @@ const AddProduct = () => {
 
           <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
             <Form.Item
-              label="Images"
-              name="images"
-              rules={[
-                { required: true, message: "Please upload at least one image" },
-                { min: 1, message: "picture" },
-              ]}
-            >
-              <Upload
-                listType="picture"
-                multiple
-                beforeUpload={() => false}
-                onChange={handleImageChange}
-              >
-                <button>Upload Images</button>
-              </Upload>
-              {/* <p>Total Images Selected: {formData.images?.length || 0}</p> */}
-            </Form.Item>
-          </div>
-          <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
-            <Form.Item
               label="Short Description"
               name="description"
               rules={[
                 { required: true, message: "Please enter a short description" },
                 {
-                  min: 10,
+                  min: 3,
                   message:
                     "Short description must be at least 10 characters long",
                 },
@@ -304,7 +259,7 @@ const AddProduct = () => {
               rules={[
                 { required: true, message: "Please enter a long description" },
                 {
-                  min: 20,
+                  min: 10,
                   message:
                     "Long description must be at least 20 characters long",
                 },
@@ -320,7 +275,16 @@ const AddProduct = () => {
               name="price"
               rules={[
                 { required: true, message: "Please enter the price" },
-                { type: "number", min: 1, message: "Price must be greater than 0" },
+                {
+                  validator: (_, value) => {
+                    if (value < 0) {
+                      return Promise.reject(
+                        new Error("No negative values allowed")
+                      );
+                    }
+                    return Promise.resolve();
+                  },
+                },
               ]}
             >
               <Input type="number" min="1" />
@@ -333,7 +297,16 @@ const AddProduct = () => {
               name="discountPrice"
               rules={[
                 { required: true, message: "Please enter the discount price" },
-                { type: "number", min: 0, message: "Discount price must be 0 or higher" },
+                {
+                  validator: (_, value) => {
+                    if (value < 0) {
+                      return Promise.reject(
+                        new Error("No negative values allowed")
+                      );
+                    }
+                    return Promise.resolve();
+                  },
+                },
               ]}
             >
               <Input type="number" />
@@ -345,14 +318,58 @@ const AddProduct = () => {
               label="Quantity in Stock"
               name="quantity_stock"
               rules={[
-                { required: true, message: "Please enter the quantity in stock" },
-                { type: "number", min: 0, message: "Quantity in stock cannot be negative" },
+                {
+                  required: true,
+                  message: "Please enter the quantity in stock",
+                },
+                {
+                  validator: (_, value) => {
+                    if (value < 0) {
+                      return Promise.reject(
+                        new Error("No negative values allowed")
+                      );
+                    }
+                    return Promise.resolve();
+                  },
+                },
               ]}
             >
               <Input />
             </Form.Item>
           </div>
 
+          <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
+            <Form.Item
+              label="Images"
+              name="images"
+              rules={[
+                {
+                  required: true,
+                  message: "Please upload at least one image",
+                },
+                {
+                  validator: (_, value) => {
+                    if (!value || value.fileList.length < 1) {
+                      return Promise.reject(
+                        new Error("Please upload at least one image")
+                      );
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
+            >
+              <Upload
+                listType="picture"
+                multiple
+                beforeUpload={() => false} // Prevents automatic upload
+                onChange={handleImageChange}
+              >
+                <Button type="button">Upload Images</Button>
+              </Upload>
+            </Form.Item>
+            <p>Total Images Selected: {imageCount}</p>
+          </div>
         </div>
 
         {/* Specifications Section */}
@@ -381,9 +398,7 @@ const AddProduct = () => {
             </div>
 
             <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
-              <label htmlFor="cover_Type">Cover
-                /
-                :</label>
+              <label htmlFor="cover_Type">Cover / :</label>
               <input
                 type="text"
                 className="form-control"
@@ -484,24 +499,24 @@ const AddProduct = () => {
                     <div className="form-group col-md-2 mt-4">
                       {formData.specifications[0].product_Details.dynamicFields
                         .length !== 1 && (
-                          <button
-                            className="btn btn-danger mx-1 my-1"
-                            onClick={() => handleDynamicRemoveClick(i)}
-                          >
-                            Remove
-                          </button>
-                        )}
+                        <button
+                          className="btn btn-danger mx-1 my-1"
+                          onClick={() => handleDynamicRemoveClick(i)}
+                        >
+                          Remove
+                        </button>
+                      )}
                       {formData.specifications[0].product_Details.dynamicFields
                         .length -
                         1 ===
                         i && (
-                          <button
-                            className="btn btn-primary mx-1"
-                            onClick={handleDynamicAddClick}
-                          >
-                            Add
-                          </button>
-                        )}
+                        <button
+                          className="btn btn-primary mx-1"
+                          onClick={handleDynamicAddClick}
+                        >
+                          Add
+                        </button>
+                      )}
                     </div>
                   </div>
                 )

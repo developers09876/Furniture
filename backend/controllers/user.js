@@ -139,7 +139,6 @@ export const createCart = async (req, res) => {
   try {
     const { id, cartItem } = req.body;
     const user = await User.findById(id);
-    // console.log("user", user);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -262,16 +261,13 @@ export const clearWhishlist = async (req, res) => {
 
 export const createWhishlist = async (req, res) => {
   try {
-    const { id, whistItem } = req.body; // id from the request body
+    const { id, whistItem } = req.body;
 
-    // Search by _id if you're using MongoDB's default unique identifier
     const user = await User.findById(id);
 
     if (!user) {
       return res.status(404).json({ message: "Whishlist not found" });
     }
-
-    // Add the item to the cart array
     user.Whishlist.push(whistItem);
     await user.save();
 
@@ -448,12 +444,10 @@ export async function enquiryUser(req, res) {
     console.log("Customer's Email (from field):", details.email);
     console.log("Owner's Email (to field):", process.env.EMAIL);
 
-    // Check if environment variables are set
     if (!process.env.EMAIL || !process.env.EMAIL_PASSWORD) {
       throw new Error("EMAIL and EMAIL_PASSWORD must be set in the .env file");
     }
 
-    // Configure the transporter
     const transporter = nodemailer.createTransport({
       service: "gmail",
       secure: true,
@@ -464,7 +458,6 @@ export async function enquiryUser(req, res) {
       },
     });
 
-    // Configure mail options
     const mailOptions = {
       // from: process.env.EMAIL,
       // to: details.email,
@@ -485,11 +478,9 @@ export async function enquiryUser(req, res) {
       `,
     };
 
-    // Send email
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent: " + info.response);
 
-    // Respond to client
     res.status(200).json({
       message: "Enquiry sent successfully!",
       details,
@@ -497,7 +488,6 @@ export async function enquiryUser(req, res) {
   } catch (err) {
     console.error("Error sending enquiry:", err);
 
-    // Respond with error
     res.status(500).json({
       message: "Error sending enquiry",
       error: err.message,

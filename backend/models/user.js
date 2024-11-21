@@ -13,10 +13,9 @@ const userSchema = new Schema({
   phoneNumber: { type: Number, required: true },
   password: { type: String, required: true, minlength: 5, maxlength: 1024 },
   Carts: { type: Array },
-  // CreatedAt: { type: Date, default: Date.now },
-  createdAt: {
+  created_at: {
     type: String,
-    default: () => new Date().toLocaleDateString("en-GB"), // Outputs dd-mm-yyyy format
+    default: () => new Date().toLocaleDateString("en-GB"),
   },
   forgetPasswordCode: { type: Number },
 

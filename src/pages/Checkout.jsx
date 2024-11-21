@@ -70,6 +70,7 @@ const Checkout = () => {
       );
     }
     const deliveryOption = deliveryOptions[selectedDeliveryOption];
+
     const order = {
       // order_id: orderId,
       user_id: userId,
@@ -96,7 +97,6 @@ const Checkout = () => {
     axios
       .post(`${import.meta.env.VITE_MY_API}products/createorder`, order)
       .then((response) => {
-        clearCartPlaceOrder();
         if (response) {
           Swal.fire({
             title: "Order Placed!",
@@ -104,21 +104,9 @@ const Checkout = () => {
             icon: "success",
             confirmButtonText: "OK",
           });
-
+          clearCartPlaceOrder();
+          updateProductStock();
           navigate("/");
-          cartdata.items.map((item) =>
-            axios
-              .put(
-                `${import.meta.env.VITE_MY_API}products/editquantity/${
-                  item.productId
-                }`,
-                { quantity: item.quantity }
-              )
-              .then((res) => {
-                console.log("Admin Quantity Updated");
-              })
-          );
-          // clearCartssss();
         }
       })
       .catch((error) => {
@@ -134,7 +122,6 @@ const Checkout = () => {
   };
 
   const handleCOD = () => {
-    // Simulate COD confirmation logic here
     alert("going to COD");
     createOrder();
   };
@@ -211,85 +198,29 @@ const Checkout = () => {
   const orderPlace = () => {
     if (paymentMethod === "cod") {
       handleCOD();
-      // createOrder()
     } else {
       loadRazorpay();
-      // createOrder()
     }
   };
 
   const updateProductStock = async () => {
-    try {
-      for (const item of cartdata.items) {
-        const updatedStock =
-          parseInt(item.quantity_stock) - parseInt(item.quantity);
-        await axios.patch(`${import.meta.env.VITE_MY_API}products/${item.id}`, {
-          quantity_stock: updatedStock,
-        });
-        console.log(updatedStock);
-        console.log(item.id);
-        console.log(item.quantity);
-        console.log(item.quantity_stock);
-      }
-    } catch (error) {
-      console.error("Error updating product stock:", error);
-    }
+    cartdata.items
+      .map((item) =>
+        axios
+          .put(
+            `${import.meta.env.VITE_MY_API}products/editquantity/${
+              item.productId
+            }`,
+            { quantity: item.quantity }
+          )
+          .then((res) => {
+            console.log("Admin Quantity Updated");
+          })
+      )
+      .catch((error) => {
+        console.error("Error updating product stock:", error);
+      });
   };
-
-  // const handleOrderPlace = async () => {
-  //   const details = {
-  //     name: name,
-  //     phone: phone,
-  //     shippingAddress: shippingAddress,
-  //     title: cartValue.title,
-  //     quantity: cartValue.quantity,
-  //     price: cartValue.price,
-  //     subTotal: cartValue.subTotal,
-  //     // category: "sofa",
-  //     userId: userId,
-  //   };
-  //   console.log("details", details);
-
-  //   try {
-  //     await axios.post(
-  //       `${import.meta.env.VITE_MY_API}products/createorder`,
-  //       details,
-  //       {
-  //         order_status: "delivered",
-  //       }
-  //     );
-  //     await updateProductStock();
-  //     // clearCart();
-  //     setOrderID(orderId);
-  //     setSuccess(true);
-
-  //     Swal.fire({
-  //       icon: "success",
-  //       title: "Order placed successfully!",
-  //       showConfirmButton: false,
-  //       timer: 2000,
-  //     });
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
-
-  // const handleOrderDelivered = async () => {
-  //   try {
-  //     await axios.patch(`${import.meta.env.VITE_MY_API}orders/${orderID}`, {
-  //       order_status: "delivered",
-  //     });
-  //     Swal.fire({
-  //       icon: "success",
-  //       title: "Order marked as delivered!",
-  //       showConfirmButton: false,
-  //       timer: 2000,
-  //     });
-  //     navigate("/products");
-  //   } catch (error) {
-  //     console.error("Error updating order status:", error);
-  //   }
-  // };
 
   const deliveryOptions = {
     amana: { label: "Delivery by Amana 24h", cost: 60.0 },

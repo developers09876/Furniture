@@ -12,7 +12,10 @@ const orderSchema = new Schema({
   description: { type: String },
   delivery_company: { type: String },
   delivery_cost: { type: String },
-  created_at: { type: String },
+  created_at: {
+    type: String,
+    default: () => new Date().toLocaleDateString("en-GB"),
+  },
   order_status: { type: String },
   order_total: { type: String },
   items: [

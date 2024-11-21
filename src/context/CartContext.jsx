@@ -115,14 +115,6 @@ export const CartProvider = ({ children }) => {
           setCart(updatedCart);
           fetchCart();
         });
-      // .catch((error) => {
-      //   console.error("Error clearing cart:", error);
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Error",
-      //     text: "Could not clear the cart. Please try again.",
-      //   });
-      // });
     } else {
       console.error("User not authenticated");
     }
