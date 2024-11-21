@@ -26,13 +26,11 @@ const Wrapper = styled.article`
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, userID } = useContext(AuthContext);
   const { clearCart, removeItem } = useContext(CartContext);
-  const { cartdata } = useContext(DashboardContext);
+  const { cartdata, fetchCart } = useContext(DashboardContext);
   const [cd, setCd] = useState([]);
-  console.log("cd", cd);
   const [total, setTotal] = useState(0);
-  console.log("total", total);
   const [totalItems, setTotalItems] = useState("");
   const [quantity, setQuantity] = useState(1);
 
@@ -45,6 +43,9 @@ const Cart = () => {
   useEffect(() => {
     handleQuantityChange();
   }, [cd]);
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
   useEffect(() => {
     const total = cd.reduce((sum, item) => {
@@ -113,7 +114,7 @@ const Cart = () => {
           { quantity: newQuantity },
           { timeout: 5000 }
         );
-
+        fetchCart();
         console.log("response", response);
 
         Swal.fire({
@@ -128,6 +129,9 @@ const Cart = () => {
       }
     }
   };
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
   const Wrapper = styled.main`
     .quantity-toggle {

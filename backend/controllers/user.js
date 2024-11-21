@@ -706,33 +706,6 @@ export async function resetUsers(req, res) {
   }
 }
 
-// export async function checkVerifivationCode(req, res, next) {
-//   try {
-//     const data = req.body;
-
-//     const code = JSON.parse(data.code);
-//     const checkEmail = await User.findOne({ email: data.email });
-//     if (checkEmail) {
-//       const matchVerificationCode = checkEmail.forgetPasswordCode === code;
-//       if (matchVerificationCode) {
-//         res.status(200).json({
-//           message: "verification code matched",
-//         });
-//       } else {
-//         res.status(400).json({
-//           message: "verification code mismatched",
-//         });
-//       }
-//     } else {
-//       res.status(400).json({
-//         message: "Email doesnot exist try again !!!",
-//       });
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     next();
-//   }
-// }
 export async function checkVerifivationCode(req, res) {
   try {
     const { email, code } = req.body;

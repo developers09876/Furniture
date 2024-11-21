@@ -52,7 +52,7 @@ const ProductDashboard = () => {
 
   const columns = [
     {
-      title: "ProductId",
+      title: "Product Id",
       dataIndex: "productId",
       key: "productId",
     },

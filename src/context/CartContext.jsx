@@ -102,35 +102,27 @@ export const CartProvider = ({ children }) => {
       console.error("User not authenticated");
     }
   };
-  const clearCartssss = async () => {
+  const clearCartPlaceOrder = async () => {
     if (isAuthenticated) {
       const updatedCart = {
         ...cart,
         items: [],
       };
-
       const userID = localStorage.getItem("id");
       axios
         .delete(`${import.meta.env.VITE_MY_API}user/clearCart/${userID}`)
         .then((res) => {
           setCart(updatedCart);
-          // Swal.fire({
-          //   icon: "success",
-          //   title: "Cart cleared",
-          //   showConfirmButton: false,
-          //   timer: 1500,
-          // });
-
           fetchCart();
-        })
-        .catch((error) => {
-          console.error("Error clearing cart:", error);
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Could not clear the cart. Please try again.",
-          });
         });
+      // .catch((error) => {
+      //   console.error("Error clearing cart:", error);
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error",
+      //     text: "Could not clear the cart. Please try again.",
+      //   });
+      // });
     } else {
       console.error("User not authenticated");
     }
@@ -193,7 +185,15 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ cart, totalItems, total, addToCart, clearCart, removeItem, clearCartssss }}
+      value={{
+        cart,
+        totalItems,
+        total,
+        addToCart,
+        clearCart,
+        removeItem,
+        clearCartPlaceOrder,
+      }}
     >
       {children}
     </CartContext.Provider>

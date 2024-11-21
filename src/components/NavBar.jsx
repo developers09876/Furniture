@@ -48,6 +48,7 @@ const NavBar = () => {
   const { total } = useContext(WishlistContext);
   const { cartdata, whishlistData } = useContext(DashboardContext);
   const [totalItems, setTotalItems] = useState(0);
+  console.log("totalItems", totalItems);
   const [totalWhish, setTotalWhish] = useState(0);
   const [username, setUsername] = useState("");
 

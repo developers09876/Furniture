@@ -139,7 +139,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-
     confirm({
       title: `Want to logout?`,
       okText: "Yes",
@@ -167,8 +166,6 @@ export const AuthProvider = ({ children }) => {
         console.log("Update cancelled");
       },
     });
-
-
   };
   console.log("logout check", isAdmin);
   console.log("logout check", isUser);
