@@ -208,7 +208,7 @@ const Checkout = () => {
     setPaymentMethod(e.target.value);
   };
 
-  const handleSubmit1 = () => {
+  const orderPlace = () => {
     if (paymentMethod === "cod") {
       handleCOD();
       // createOrder()
@@ -488,7 +488,7 @@ const Checkout = () => {
                     <Button
                       className="my-3 px-4"
                       // onClick={() => handleOrderPlace()}   handleOrderPlace
-                      handleClick={handleSubmit1}
+                      handleClick={orderPlace}
                       disabled={!isFormValid()}
                     >
                       Place Order
