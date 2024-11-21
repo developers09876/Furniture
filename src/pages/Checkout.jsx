@@ -36,7 +36,7 @@ const Checkout = () => {
     );
   };
   const onSubmit = (data) => console.log(data);
-  const { cart, clearCart } = useContext(CartContext);
+  const { cart, clearCart, clearCartPlaceOrder } = useContext(CartContext);
   const { userID, isAuthenticated } = useContext(AuthContext);
   const [shippingAddress, setShippingAddress] = useState("");
   const [name, setName] = useState("");
@@ -96,7 +96,7 @@ const Checkout = () => {
     axios
       .post(`${import.meta.env.VITE_MY_API}products/createorder`, order)
       .then((response) => {
-        clearCart();
+        clearCartPlaceOrder();
         if (response) {
           Swal.fire({
             title: "Order Placed!",
@@ -109,7 +109,8 @@ const Checkout = () => {
           cartdata.items.map((item) =>
             axios
               .put(
-                `${import.meta.env.VITE_MY_API}products/editquantity/${item.productId
+                `${import.meta.env.VITE_MY_API}products/editquantity/${
+                  item.productId
                 }`,
                 { quantity: item.quantity }
               )
@@ -117,7 +118,7 @@ const Checkout = () => {
                 console.log("Admin Quantity Updated");
               })
           );
-          clearCartssss();
+          // clearCartssss();
         }
       })
       .catch((error) => {
@@ -134,7 +135,8 @@ const Checkout = () => {
 
   const handleCOD = () => {
     // Simulate COD confirmation logic here
-    alert("Order placed successfully with Cash on Delivery!");
+    alert("going to COD");
+    createOrder();
   };
 
   const loadScripts = (src) => {
@@ -151,13 +153,12 @@ const Checkout = () => {
     });
   };
   const {
-    register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
   const loadRazorpay = async (e) => {
+    alert("razhorpay");
     console.log("ln188");
 
     // Ensure the Razorpay script is loaded
@@ -200,22 +201,22 @@ const Checkout = () => {
     // Open Razorpay checkout modal
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
+    createOrder();
   };
 
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
   };
 
-  // const handleSubmit = () => {
-  //   if (paymentMethod === "cod") {
-  //     handleCOD();
-  //     // createOrder()
-  //   } else {
-  //     alert("razhorpay");
-  //     loadRazorpay();
-  //     // createOrder()
-  //   }
-  // };
+  const handleSubmit1 = () => {
+    if (paymentMethod === "cod") {
+      handleCOD();
+      // createOrder()
+    } else {
+      loadRazorpay();
+      // createOrder()
+    }
+  };
 
   const updateProductStock = async () => {
     try {
@@ -235,60 +236,60 @@ const Checkout = () => {
     }
   };
 
-  const handleOrderPlace = async () => {
-    const details = {
-      name: name,
-      phone: phone,
-      shippingAddress: shippingAddress,
-      title: cartValue.title,
-      quantity: cartValue.quantity,
-      price: cartValue.price,
-      subTotal: cartValue.subTotal,
-      // category: "sofa",
-      userId: userId,
-    };
-    console.log("details", details);
+  // const handleOrderPlace = async () => {
+  //   const details = {
+  //     name: name,
+  //     phone: phone,
+  //     shippingAddress: shippingAddress,
+  //     title: cartValue.title,
+  //     quantity: cartValue.quantity,
+  //     price: cartValue.price,
+  //     subTotal: cartValue.subTotal,
+  //     // category: "sofa",
+  //     userId: userId,
+  //   };
+  //   console.log("details", details);
 
-    try {
-      await axios.post(
-        `${import.meta.env.VITE_MY_API}products/createorder`,
-        details,
-        {
-          order_status: "delivered",
-        }
-      );
-      await updateProductStock();
-      // clearCart();
-      setOrderID(orderId);
-      setSuccess(true);
+  //   try {
+  //     await axios.post(
+  //       `${import.meta.env.VITE_MY_API}products/createorder`,
+  //       details,
+  //       {
+  //         order_status: "delivered",
+  //       }
+  //     );
+  //     await updateProductStock();
+  //     // clearCart();
+  //     setOrderID(orderId);
+  //     setSuccess(true);
 
-      Swal.fire({
-        icon: "success",
-        title: "Order placed successfully!",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "Order placed successfully!",
+  //       showConfirmButton: false,
+  //       timer: 2000,
+  //     });
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
 
-  const handleOrderDelivered = async () => {
-    try {
-      await axios.patch(`${import.meta.env.VITE_MY_API}orders/${orderID}`, {
-        order_status: "delivered",
-      });
-      Swal.fire({
-        icon: "success",
-        title: "Order marked as delivered!",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-      navigate("/products");
-    } catch (error) {
-      console.error("Error updating order status:", error);
-    }
-  };
+  // const handleOrderDelivered = async () => {
+  //   try {
+  //     await axios.patch(`${import.meta.env.VITE_MY_API}orders/${orderID}`, {
+  //       order_status: "delivered",
+  //     });
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "Order marked as delivered!",
+  //       showConfirmButton: false,
+  //       timer: 2000,
+  //     });
+  //     navigate("/products");
+  //   } catch (error) {
+  //     console.error("Error updating order status:", error);
+  //   }
+  // };
 
   const deliveryOptions = {
     amana: { label: "Delivery by Amana 24h", cost: 60.0 },
@@ -487,7 +488,7 @@ const Checkout = () => {
                     <Button
                       className="my-3 px-4"
                       // onClick={() => handleOrderPlace()}   handleOrderPlace
-                      handleClick={handleSubmit}
+                      handleClick={handleSubmit1}
                       disabled={!isFormValid()}
                     >
                       Place Order

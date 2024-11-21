@@ -115,7 +115,7 @@ export const AuthProvider = ({ children }) => {
           setUserID(res.data.data._id);
           Cookies.set("isLoggedIn", "true", { expires: 1 });
           setIsUser(true);
-          Cookies.set("isUser", "true"); n
+          Cookies.set("isUser", "true");
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("id", res.data.data.id);
           localStorage.setItem("name", res.data.data.username); // Make sure to use res.data.Token
@@ -139,7 +139,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-
     confirm({
       title: `Want to logout?`,
       okText: "Yes",
@@ -167,8 +166,6 @@ export const AuthProvider = ({ children }) => {
         console.log("Update cancelled");
       },
     });
-
-
   };
   console.log("logout check", isAdmin);
   console.log("logout check", isUser);

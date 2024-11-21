@@ -183,6 +183,7 @@ import { Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import Button from "../components/Button";
 import Breadcrumb from "../components/Breadcrumb";
+import { DashboardContext } from "../context/DashboardContext";
 
 // Styled components
 const StyledLogin = styled.div`
@@ -197,8 +198,11 @@ const StyledHeading = styled.h1`
 
 const UserLogin = () => {
   const { isAuthenticated, loginUser, error } = useContext(AuthContext);
+  const { fetchCart, whishlistData } = useContext(DashboardContext);
   const navigate = useNavigate();
-
+  useEffect(() => {
+    fetchCart;
+  });
   const {
     handleSubmit,
     control,
@@ -210,12 +214,15 @@ const UserLogin = () => {
     try {
       const success = await loginUser(email, password);
       if (success) {
+        await fetchCart();
+        await whishlistData();
         Swal.fire({
           icon: "success",
           title: "Login successful!",
           showConfirmButton: false,
           timer: 1500,
         });
+
         setTimeout(() => {
           navigate("/");
         }, 1500);
@@ -228,6 +235,7 @@ const UserLogin = () => {
       }
     } catch (err) {
       console.error("Error occurred during login:", err);
+      console.error("Error fetching cart:", error);
     }
   };
 

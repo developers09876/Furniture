@@ -64,14 +64,13 @@ export const WishlistProvider = ({ children }) => {
           ...prevCart,
           items: fetchedCart,
         }));
-
+        fetchWhishlist();
         Swal.fire({
           icon: "success",
           title: "Item added to Whishlist",
           showConfirmButton: false,
           timer: 1500,
         });
-        fetchWhishlist();
       } else {
         console.error("User Whishlist is not available");
       }

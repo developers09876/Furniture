@@ -86,6 +86,13 @@ export const DashboardProvider = ({ children }) => {
         setwhishlistData({ items: [] });
       });
   };
+  const initializeDashboard = async () => {
+    await fetchCart();
+    await fetchWhishlist();
+  };
+  useEffect(() => {
+    initializeDashboard();
+  }, []);
 
   const showAlert = (icon, title, text) => {
     Swal.fire({
