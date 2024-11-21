@@ -183,13 +183,18 @@ const UserOrders = () => {
             onChange={(status) => {
               setStatus(status); // Update the status
               orderdata(status);
+
+
             }}
             style={{ width: 120 }}
           >
-            <Option value="Pending">Pending</Option>
-            <Option value="Inprogress">In Progress</Option>
-            <Option value="Delivered">Delivered</Option>
-            <Option value="Initial">Initial</Option>
+
+            <Option value="Pending" style={{ color: "orange" }}>Pending</Option>
+            <Option value="Inprogress" style={{ color: "blue" }}>In Progress</Option>
+            <Option value="shipped" style={{ color: "purple" }}>Shipped</Option>
+            <Option value="Delivered" style={{ color: "green" }}>Delivered</Option>
+            {/* <Option value="Initial">Initial</Option> */}
+            <Option value="Cancelled" style={{ color: "red" }}>Cancelled</Option>
           </Select>
         </div>
       ),
@@ -316,6 +321,7 @@ const UserOrders = () => {
         >
           <option value="all">All</option>
           <option value="pending">Pending</option>
+          <option value="Inprogress">In Progress</option>
           <option value="shipped">Shipped</option>
           <option value="delivered">Delivered</option>
           <option value="canceled">Canceled</option>
