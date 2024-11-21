@@ -140,7 +140,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     confirm({
-      title: `Want to logout?`,
+      title: `Want to logout ?`,
       okText: "Yes",
       cancelText: "No",
       onOk() {

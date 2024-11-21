@@ -296,7 +296,7 @@ const UserLogin = () => {
                 validate: (value) =>
                   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/.test(
                     value
-                  ) || "Password must be at least 10 characters ",
+                  ) || "Login Credentials Invalid",
               }}
               render={({ field }) => (
                 <Input.Password

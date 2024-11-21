@@ -8,6 +8,7 @@ import Breadcrumb from "../components/Breadcrumb";
 import { Input, Space } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useForm, Controller } from "react-hook-form";
+import { min } from "three/webgpu";
 
 const StyledRegister = styled.form`
   max-width: 350px;
@@ -152,10 +153,16 @@ const Register = () => {
             Phone
           </label>
           <input
-            type="text"
+            type="tel"
             className="form-control"
             id="phone"
-            {...register("phone", { required: "Phone number is required" })}
+            maxLength={10}
+            {...register("phone", {
+              required: "Phone number is required",
+              pattern: {
+                message: "Phone number must be exactly 10 digits",
+              },
+            })}
           />
           {errors.phone && (
             <p style={{ color: "red" }} role="alert">
