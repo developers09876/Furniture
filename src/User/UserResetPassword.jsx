@@ -202,7 +202,12 @@ const UserResetPassword = () => {
                 type="text"
                 placeholder="Enter OTP"
                 value={otp}
-                onChange={(e) => setOtp(e.target.value)}
+                onChange={(e) => {
+                  const input = e.target.value;
+                  if (/^\d*$/.test(input) && input.length <= 4) {
+                    setOtp(input);
+                  }
+                }}
               />
             </Form.Group>
             {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}

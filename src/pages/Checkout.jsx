@@ -106,19 +106,7 @@ const Checkout = () => {
           });
 
           navigate("/");
-          cartdata.items.map((item) =>
-            axios
-              .put(
-                `${import.meta.env.VITE_MY_API}products/editquantity/${
-                  item.productId
-                }`,
-                { quantity: item.quantity }
-              )
-              .then((res) => {
-                console.log("Admin Quantity Updated");
-              })
-          );
-          // clearCartssss();
+          updateProductStock();
         }
       })
       .catch((error) => {
@@ -208,32 +196,30 @@ const Checkout = () => {
     setPaymentMethod(e.target.value);
   };
 
-  const handleSubmit1 = () => {
+  const orderPlace = () => {
     if (paymentMethod === "cod") {
       handleCOD();
-      // createOrder()
     } else {
       loadRazorpay();
-      // createOrder()
     }
   };
 
   const updateProductStock = async () => {
-    try {
-      for (const item of cartdata.items) {
-        const updatedStock =
-          parseInt(item.quantity_stock) - parseInt(item.quantity);
-        await axios.patch(`${import.meta.env.VITE_MY_API}products/${item.id}`, {
-          quantity_stock: updatedStock,
-        });
-        console.log(updatedStock);
-        console.log(item.id);
-        console.log(item.quantity);
-        console.log(item.quantity_stock);
-      }
-    } catch (error) {
-      console.error("Error updating product stock:", error);
-    }
+    cartdata.items
+      .map((item) =>
+        axios
+          .put(
+            `${import.meta.env.VITE_MY_API}products/editquantity/${item.productId
+            }`,
+            { quantity: item.quantity }
+          )
+          .then((res) => {
+            console.log("Admin Quantity Updated");
+          })
+      )
+      .catch((error) => {
+        console.error("Error updating product stock:", error);
+      });
   };
 
   // const handleOrderPlace = async () => {
@@ -252,7 +238,7 @@ const Checkout = () => {
 
   //   try {
   //     await axios.post(
-  //       `${import.meta.env.VITE_MY_API}products/createorder`,
+  //       ${import.meta.env.VITE_MY_API}products/createorder,
   //       details,
   //       {
   //         order_status: "delivered",
@@ -276,7 +262,7 @@ const Checkout = () => {
 
   // const handleOrderDelivered = async () => {
   //   try {
-  //     await axios.patch(`${import.meta.env.VITE_MY_API}orders/${orderID}`, {
+  //     await axios.patch(${import.meta.env.VITE_MY_API}orders/${orderID}, {
   //       order_status: "delivered",
   //     });
   //     Swal.fire({
@@ -488,7 +474,7 @@ const Checkout = () => {
                     <Button
                       className="my-3 px-4"
                       // onClick={() => handleOrderPlace()}   handleOrderPlace
-                      handleClick={handleSubmit1}
+                      handleClick={orderPlace}
                       disabled={!isFormValid()}
                     >
                       Place Order
