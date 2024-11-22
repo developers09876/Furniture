@@ -101,7 +101,25 @@ const UserOrders = () => {
   const [data, setData] = useState([]);
   console.log("datax", data);
   const [loading, setLoading] = useState(true);
+  const { Option } = Select;
 
+  const StatusUpdateColumn = ({ e, getId, orderdata }) => {
+    const [status, setStatus] = useState(e.order_status);
+
+    const handleStatusChange = (status) => {
+      setStatus(status);
+      orderdata(status); // Call your order update function
+    };
+
+    // Color mapping for statuses
+    const colorMap = {
+      Pending: "orange",
+      Inprogress: "blue",
+      Shipped: "purple",
+      Delivered: "green",
+      Cancelled: "red",
+    };
+  }
   const viewOrder = [
     {
       title: "Sno",
@@ -183,8 +201,6 @@ const UserOrders = () => {
             onChange={(status) => {
               setStatus(status); // Update the status
               orderdata(status);
-
-
             }}
             style={{ width: 120 }}
           >
