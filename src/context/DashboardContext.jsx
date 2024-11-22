@@ -6,7 +6,6 @@ export const DashboardContext = createContext();
 export const DashboardProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [orders, setOrders] = useState([]);
-  // const [neworder, setnewOrder] = useState([]);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   console.log("productszs", products);
@@ -16,6 +15,7 @@ export const DashboardProvider = ({ children }) => {
   const [whishlistData, setwhishlistData] = useState({ items: [] });
   console.log("cartdata dash", users);
   console.log("whishlistData dash", whishlistData);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -86,13 +86,6 @@ export const DashboardProvider = ({ children }) => {
         setwhishlistData({ items: [] });
       });
   };
-  const initializeDashboard = async () => {
-    await fetchCart();
-    await fetchWhishlist();
-  };
-  useEffect(() => {
-    initializeDashboard();
-  }, []);
 
   const showAlert = (icon, title, text) => {
     Swal.fire({

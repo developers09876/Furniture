@@ -130,16 +130,30 @@ const Register = () => {
             </p>
           )}
         </div>
-
         <div className="mb-4">
           <label htmlFor="email" className="form-label">
             Email Address
           </label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            {...register("email", { required: "Email is required" })}
+          <Controller
+            name="email"
+            control={control}
+            rules={{
+              required: "Email is required",
+              validate: {
+                validFormat: (value) =>
+                  /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/.test(
+                    value
+                  ) || "Invalid email format",
+              },
+            }}
+            render={({ field }) => (
+              <Input
+                {...field}
+                id="email"
+                placeholder="Email address"
+                status={errors.email ? "error" : ""}
+              />
+            )}
           />
           {errors.email && (
             <p style={{ color: "red" }} role="alert">
@@ -150,7 +164,7 @@ const Register = () => {
 
         <div className="mb-4">
           <label htmlFor="phone" className="form-label">
-            Phone
+            Phone Number
           </label>
           <input
             type="tel"

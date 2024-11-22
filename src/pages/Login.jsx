@@ -54,12 +54,10 @@ const Login = () => {
               showConfirmButton: false,
               timer: 1500,
             });
-            // Redirect to the home page after a delay
             setTimeout(() => {
               navigate("/");
             }, 1500);
           } else {
-            // Display error message using SweetAlert
             Swal.fire({
               icon: "error",
               title: "Error",
