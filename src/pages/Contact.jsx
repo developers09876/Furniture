@@ -123,12 +123,10 @@ const Contact = () => {
   // };
 
   const handleFormSubmit = async (data) => {
-    console.log("Form Data:", data);
-
     const details = {
       name: data.name,
       email: data.email,
-      message: data.textarea, // Correcting the field reference
+      message: data.textarea,
     };
 
     try {
@@ -136,8 +134,6 @@ const Contact = () => {
         `${import.meta.env.VITE_MY_API}User/enquiry`,
         details
       );
-      console.log("Response:", response);
-
       Swal.fire({
         icon: "success",
         title: "Mail was successfully sent",
@@ -145,7 +141,11 @@ const Contact = () => {
         timer: 1000,
       });
 
-      reset(); // Resets the form using React-Hook-Form
+      reset({
+        name: "",
+        email: "",
+        textarea: "",
+      });
     } catch (error) {
       console.error("Error occurred:", error);
 
@@ -278,6 +278,7 @@ const Contact = () => {
                   Name
                 </label>
                 <input
+                  placeholder="Enter Your Email"
                   type="text"
                   className="form-control"
                   id="name"
@@ -315,7 +316,7 @@ const Contact = () => {
                     <Input
                       {...field}
                       id="email"
-                      placeholder="Email address"
+                      placeholder="Enter Email address"
                       status={errors.email ? "error" : ""}
                     />
                   )}
