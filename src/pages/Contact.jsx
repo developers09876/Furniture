@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Button from "../components/Button";
 import emailjs from "emailjs-com";
 import axios from "axios";
+import { Controller, useForm } from "react-hook-form";
 
 const ContactSection = styled.section`
   display: flex;
@@ -90,54 +91,87 @@ const sendMessage = async (form) => {
 };
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  console.log("first", formData);
+  // const handleFormSubmit = async (data) => {
+  //   console.log("FormData:", data);
 
-  const handleFormSubmit = async (e) => {
-    console.log("first", e);
-    e.preventDefault();
+  //   const details = {
+  //     name: data.name,
+  //     email: data.email,
+  //     message: data.textarea,
+  //   };
+  //   console.log("details", details);
+  //   await axios
+  //     .post(`${import.meta.env.VITE_MY_API}User/enquiry`, details)
+  //     .then((response) => {
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Mail Was Succesfully send",
+  //         showConfirmButton: true,
+  //         timer: 1000,
+  //       });
+  //       reset();
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error Accured:", error);
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Failed to send message",
+  //         text: "Please try again later",
+  //         showConfirmButton: true,
+  //       });
+  //     });
+  // };
+
+  const handleFormSubmit = async (data) => {
+    console.log("Form Data:", data);
 
     const details = {
-      name: formData.name,
-      email: formData.email,
-      message: formData.message,
+      name: data.name,
+      email: data.email,
+      message: data.textarea, // Correcting the field reference
     };
-    console.log("details", details);
-    await axios
-      .post(`${import.meta.env.VITE_MY_API}User/enquiry`, details)
-      .then((response) => {
-        Swal.fire({
-          icon: "success",
-          title: "Mail Was Succesfully send",
-          showConfirmButton: true,
-          timer: 1000,
-        });
-        setFormData({
-          name: "",
-          email: "",
-          message: "",
-        });
-      })
-      .catch((error) => {
-        console.error("Error Accured:", error);
-        Swal.fire({
-          icon: "error",
-          title: "Failed to send message",
-          text: "Please try again later",
-          showConfirmButton: true,
-        });
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_MY_API}User/enquiry`,
+        details
+      );
+      console.log("Response:", response);
+
+      Swal.fire({
+        icon: "success",
+        title: "Mail was successfully sent",
+        showConfirmButton: true,
+        timer: 1000,
       });
+
+      reset(); // Resets the form using React-Hook-Form
+    } catch (error) {
+      console.error("Error occurred:", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Failed to send message",
+        text: "Please try again later",
+        showConfirmButton: true,
+      });
+    }
   };
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   }, []);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset,
+  } = useForm();
+
   return (
     <>
       <Breadcrumb />
@@ -160,43 +194,161 @@ const Contact = () => {
             </div>
           </StyledMap>
           <ContactFormWrapper className="contact-form-wrapper">
-            <ContactForm onSubmit={handleFormSubmit}>
-              <FormItem className="form-item">
-                <Input
+            {/* <ContactForm onSubmit={handleSubmit(handleFormSubmit())}>
+              <div className="mb-4">
+                <label htmlFor="name" className="form-label">
+                  Name
+                </label>
+                <input
                   type="text"
-                  name="sender"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  placeholder="Name"
-                  required
+                  className="form-control"
+                  id="name"
+                  {...register("name", {
+                    required: "Name is required",
+                    validate: (value) =>
+                      /^[a-zA-Z\s]+$/.test(value) ||
+                      "Name must not contain special characters or numbers",
+                  })}
                 />
-              </FormItem>
-              <FormItem className="form-item">
-                <Input
-                  type="text"
+                {errors.name && (
+                  <p style={{ color: "red" }} role="alert">
+                    {errors.name.message}
+                  </p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="email" className="form-label">
+                  Email Address
+                </label>
+                <Controller
                   name="email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  placeholder="Email"
-                  required
+                  control={control}
+                  rules={{
+                    required: "Email is required",
+                    validate: {
+                      validFormat: (value) =>
+                        /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/.test(
+                          value
+                        ) || "Invalid email format",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="email"
+                      placeholder="Email address"
+                      status={errors.email ? "error" : ""}
+                    />
+                  )}
                 />
-              </FormItem>
-              <FormItem className="form-item">
+                {errors.email && (
+                  <p style={{ color: "red" }} role="alert">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="textarea" className="form-label">
+                  Message
+                </label>
                 <TextArea
                   name="message"
-                  value={formData.message}
-                  onChange={
-                    (e) => setFormData({ ...formData, message: e.target.value })
-                    // console.log("edaww", e.target.value)
-                  }
                   placeholder="Message"
-                  required
+                  id="textarea"
+                  {...register("textarea", {
+                    required: "Message must be at least 10 characters",
+                    minLength: {
+                      value: 10,
+                      message: "Message must be at least 10 characters",
+                    },
+                  })}
+                ></TextArea>
+                {errors.message && (
+                  <p style={{ color: "red" }} role="alert">
+                    {errors.message.message}
+                  </p>
+                )}
+              </div>
+
+              <Button type="submit">Send</Button>
+            </ContactForm> */}
+            <ContactForm onSubmit={handleSubmit(handleFormSubmit)}>
+              <div className="mb-4">
+                <label htmlFor="name" className="form-label">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="name"
+                  {...register("name", {
+                    required: "Name is required",
+                    validate: (value) =>
+                      /^[a-zA-Z\s]+$/.test(value) ||
+                      "Name must not contain special characters or numbers",
+                  })}
                 />
-              </FormItem>
+                {errors.name && (
+                  <p style={{ color: "red" }} role="alert">
+                    {errors.name.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="email" className="form-label">
+                  Email Address
+                </label>
+                <Controller
+                  name="email"
+                  control={control}
+                  rules={{
+                    required: "Email is required",
+                    validate: {
+                      validFormat: (value) =>
+                        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(
+                          value
+                        ) || "Invalid email format",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="email"
+                      placeholder="Email address"
+                      status={errors.email ? "error" : ""}
+                    />
+                  )}
+                />
+                {errors.email && (
+                  <p style={{ color: "red" }} role="alert">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="textarea" className="form-label">
+                  Message
+                </label>
+                <textarea
+                  className="form-control"
+                  id="textarea"
+                  {...register("textarea", {
+                    required: "Message must be at least 10 characters",
+                    minLength: {
+                      value: 10,
+                      message: "Message must be at least 10 characters",
+                    },
+                  })}
+                ></textarea>
+                {errors.textarea && (
+                  <p style={{ color: "red" }} role="alert">
+                    {errors.textarea.message}
+                  </p>
+                )}
+              </div>
+
               <Button type="submit">Send</Button>
             </ContactForm>
           </ContactFormWrapper>
