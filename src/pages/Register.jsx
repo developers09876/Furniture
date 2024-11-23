@@ -2,13 +2,12 @@ import axios from "axios";
 import { useState } from "react";
 import { styled } from "styled-components";
 import Swal from "sweetalert2";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Breadcrumb from "../components/Breadcrumb";
-import { Input, Space } from "antd";
+import { Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useForm, Controller } from "react-hook-form";
-import { min } from "three/webgpu";
 
 const StyledRegister = styled.form`
   max-width: 350px;
@@ -141,7 +140,7 @@ const Register = () => {
               required: "Email is required",
               validate: {
                 validFormat: (value) =>
-                  /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/.test(
+                  /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
                     value
                   ) || "Invalid email format",
               },
@@ -173,8 +172,11 @@ const Register = () => {
             maxLength={10}
             {...register("phone", {
               required: "Phone number is required",
+              validate: (value) =>
+                /^[0-9]+$/.test(value) || "Only Numbers Are Allowed",
               pattern: {
-                message: "Phone number must be exactly 10 digits",
+                value: /^[0-9]{10}$/,
+                message: "10 digits Number Only Allowed",
               },
             })}
           />

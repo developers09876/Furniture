@@ -1,5 +1,4 @@
 import { Divider, Table, Modal, Button, Form, Input, Select } from "antd";
-import { Col, Row } from "react-bootstrap";
 import { useContext, useEffect, useState } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { DashboardContext } from "../../context/DashboardContext";
@@ -244,17 +243,6 @@ const Users = () => {
           >
             <Input placeholder="Enter phone number" />
           </Form.Item>
-          {/* <Form.Item
-            name="role"
-            label="Role"
-            rules={[{ required: true, message: "Please select a role" }]}
-          >
-            <Select placeholder="Select a role">
-              <Option value="Admin">Admin</Option>
-              <Option value="Manager">Manager</Option>
-              <Option value="User">User</Option>
-            </Select>
-          </Form.Item> */}
         </Form>
       </Modal>
     </StyledUsers>

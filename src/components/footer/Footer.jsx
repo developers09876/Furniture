@@ -148,10 +148,10 @@ const Footer = () => {
                   />
                   <div class="address">
                     <p className="address-detail">
-                      "Registered Office, Manufacturer & Packer,
+                      Registered Office, Manufacturer & Packer,
                       <br />
                       #192, Sy No. 124, Halagevaderahalli, <br />
-                      Bangaluru , &nbsp; Karnataka <br /> India.
+                      Bengaluru , &nbsp; Karnataka <br /> India.
                     </p>
 
                     <p className="d-flex align-items-center justify-content-center justify-content-md-start">

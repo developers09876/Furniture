@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import Breadcrumb from "../components/Breadcrumb";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Button from "../components/Button";
 import emailjs from "emailjs-com";
 import axios from "axios";
@@ -21,7 +21,7 @@ const ContactBox = styled.div`
 
 const StyledMap = styled.div`
   width: 50%;
-  height: 500px;
+  height: 530px !important;
 
   @media only screen and (max-width: 800px) {
     width: 100%;
@@ -32,6 +32,7 @@ const StyledMap = styled.div`
 const ContactFormWrapper = styled.div`
   width: 50%;
   padding: 8% 5% 10% 5%;
+  height: 500px;
   // background-color: #fdf1e9;
   background-color: var(--bgColor);
   border-radius: 0 10px 10px 0;
@@ -91,37 +92,6 @@ const sendMessage = async (form) => {
 };
 
 const Contact = () => {
-  // const handleFormSubmit = async (data) => {
-  //   console.log("FormData:", data);
-
-  //   const details = {
-  //     name: data.name,
-  //     email: data.email,
-  //     message: data.textarea,
-  //   };
-  //   console.log("details", details);
-  //   await axios
-  //     .post(`${import.meta.env.VITE_MY_API}User/enquiry`, details)
-  //     .then((response) => {
-  //       Swal.fire({
-  //         icon: "success",
-  //         title: "Mail Was Succesfully send",
-  //         showConfirmButton: true,
-  //         timer: 1000,
-  //       });
-  //       reset();
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error Accured:", error);
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "Failed to send message",
-  //         text: "Please try again later",
-  //         showConfirmButton: true,
-  //       });
-  //     });
-  // };
-
   const handleFormSubmit = async (data) => {
     const details = {
       name: data.name,
@@ -194,91 +164,13 @@ const Contact = () => {
             </div>
           </StyledMap>
           <ContactFormWrapper className="contact-form-wrapper">
-            {/* <ContactForm onSubmit={handleSubmit(handleFormSubmit())}>
-              <div className="mb-4">
-                <label htmlFor="name" className="form-label">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="name"
-                  {...register("name", {
-                    required: "Name is required",
-                    validate: (value) =>
-                      /^[a-zA-Z\s]+$/.test(value) ||
-                      "Name must not contain special characters or numbers",
-                  })}
-                />
-                {errors.name && (
-                  <p style={{ color: "red" }} role="alert">
-                    {errors.name.message}
-                  </p>
-                )}
-              </div>
-              <div className="mb-4">
-                <label htmlFor="email" className="form-label">
-                  Email Address
-                </label>
-                <Controller
-                  name="email"
-                  control={control}
-                  rules={{
-                    required: "Email is required",
-                    validate: {
-                      validFormat: (value) =>
-                        /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/.test(
-                          value
-                        ) || "Invalid email format",
-                    },
-                  }}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      id="email"
-                      placeholder="Email address"
-                      status={errors.email ? "error" : ""}
-                    />
-                  )}
-                />
-                {errors.email && (
-                  <p style={{ color: "red" }} role="alert">
-                    {errors.email.message}
-                  </p>
-                )}
-              </div>
-              <div className="mb-4">
-                <label htmlFor="textarea" className="form-label">
-                  Message
-                </label>
-                <TextArea
-                  name="message"
-                  placeholder="Message"
-                  id="textarea"
-                  {...register("textarea", {
-                    required: "Message must be at least 10 characters",
-                    minLength: {
-                      value: 10,
-                      message: "Message must be at least 10 characters",
-                    },
-                  })}
-                ></TextArea>
-                {errors.message && (
-                  <p style={{ color: "red" }} role="alert">
-                    {errors.message.message}
-                  </p>
-                )}
-              </div>
-
-              <Button type="submit">Send</Button>
-            </ContactForm> */}
             <ContactForm onSubmit={handleSubmit(handleFormSubmit)}>
-              <div className="mb-4">
+              <div className="">
                 <label htmlFor="name" className="form-label">
                   Name
                 </label>
                 <input
-                  placeholder="Enter Your Email"
+                  placeholder="Enter Your Name"
                   type="text"
                   className="form-control"
                   id="name"
@@ -290,13 +182,16 @@ const Contact = () => {
                   })}
                 />
                 {errors.name && (
-                  <p style={{ color: "red" }} role="alert">
+                  <p
+                    style={{ color: "red", position: "absolute" }}
+                    role="alert"
+                  >
                     {errors.name.message}
                   </p>
                 )}
               </div>
 
-              <div className="mb-4">
+              <div className="mt-4">
                 <label htmlFor="email" className="form-label">
                   Email Address
                 </label>
@@ -316,41 +211,50 @@ const Contact = () => {
                     <Input
                       {...field}
                       id="email"
-                      placeholder="Enter Email address"
+                      placeholder="Enter Your Email"
                       status={errors.email ? "error" : ""}
                     />
                   )}
                 />
                 {errors.email && (
-                  <p style={{ color: "red" }} role="alert">
+                  <p
+                    style={{ color: "red", position: "absolute" }}
+                    role="alert"
+                  >
                     {errors.email.message}
                   </p>
                 )}
               </div>
 
-              <div className="mb-4">
+              <div className="mt-4">
                 <label htmlFor="textarea" className="form-label">
                   Message
                 </label>
                 <textarea
                   className="form-control"
                   id="textarea"
+                  placeholder="Type your message here"
                   {...register("textarea", {
-                    required: "Message must be at least 10 characters",
+                    required: "Message must be at least 5 characters",
                     minLength: {
-                      value: 10,
-                      message: "Message must be at least 10 characters",
+                      value: 5,
+                      message: "Message must be at least 5 characters",
                     },
                   })}
                 ></textarea>
                 {errors.textarea && (
-                  <p style={{ color: "red" }} role="alert">
+                  <p
+                    style={{ color: "red", position: "absolute" }}
+                    role="alert"
+                  >
                     {errors.textarea.message}
                   </p>
                 )}
               </div>
 
-              <Button type="submit">Send</Button>
+              <Button className="mt-5" type="submit">
+                Send
+              </Button>
             </ContactForm>
           </ContactFormWrapper>
         </ContactBox>
