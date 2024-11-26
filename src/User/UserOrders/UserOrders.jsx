@@ -137,16 +137,16 @@ const UserOrders = () => {
       key: "Action",
       render: (e) => (
         <div>
-          <center>
-            <IoEyeOutline
-              style={{
-                fontSize: "20px",
-                cursor: "pointer",
-                marginRight: "10px",
-              }}
-              onClick={() => orderModel(e)}
-            />
-          </center>
+          {/* <center> */}
+          <IoEyeOutline
+            style={{
+              fontSize: "20px",
+              cursor: "pointer",
+              marginRight: "10px",
+            }}
+            onClick={() => orderModel(e)}
+          />
+          {/* </center> */}
         </div>
       ),
     },
