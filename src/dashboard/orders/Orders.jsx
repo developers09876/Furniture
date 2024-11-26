@@ -197,20 +197,18 @@ const UserOrders = () => {
     {
       title: "Status Update",
       dataIndex: "changeStatus",
-      render: (record, e) => {
-        const [currentStatus , setCurrentStatus]      = useState(e.order_status)  ;
+      render: (record, e) => (
+        //  {
+        // const [currentStatus , setCurrentStatus]      = useState(e.order_status)  ;
 
-        
-        (
         <div onClick={() => getId(e)}>
           <Select
-            defaultValue={currentStatus}
-            // defaultValue={e.order_status}
+            // defaultValue={currentStatus}
+            defaultValue={e.order_status}
             onChange={(status) => {
               orderdata(status);
             }}
             style={{ width: 120 }}
-            
           >
             <Option value="Pending" style={{ color: "orange" }}>
               Pending
@@ -231,8 +229,8 @@ const UserOrders = () => {
           </Select>
         </div>
       ),
-    }
-  },
+      // }
+    },
 
     {
       title: "View",
