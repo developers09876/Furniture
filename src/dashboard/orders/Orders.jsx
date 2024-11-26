@@ -9,6 +9,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
 import "../../Css-Pages/WallBackground.css";
 import { div } from "three/webgpu";
+import { MdCancel } from "react-icons/md";
 // styled components
 
 const data = [
@@ -241,14 +242,6 @@ const UserOrders = () => {
               onClick={() => orderModel(e)}
             />
           </center>
-          {/* <MdEdit
-            style={{ fontSize: "20px", cursor: "pointer", marginRight: "10px" }}
-            onClick={() => handleEdit(record)}
-          />
-          <MdDelete
-            style={{ fontSize: "20px", cursor: "pointer", color: "red" }}
-            onClick={() => handleDelete(record)}
-          /> */}
         </div>
       ),
     },
@@ -267,7 +260,6 @@ const UserOrders = () => {
   };
 
   const getId = async (e) => {
-    console.log("recorzd", e);
     const userID = e.user_id;
     setUserID(userID);
     const orderGetId = e._id;

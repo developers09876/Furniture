@@ -7,6 +7,7 @@ import {
   getAllOrder,
   createOrder,
   updateOrder,
+  userUpdateOrder,
   updateQuantity,
   deleteOrder,
   getOneOrder,
@@ -28,6 +29,7 @@ router.get("/order", getAllOrder);
 router.get("/getOrder/:productId", getOneOrder);
 router.post("/createorder", createOrder);
 router.post("/updateorder/:id", updateOrder);
+router.put("/userUpdateOrder/:orderId", userUpdateOrder);
 router.delete("/deleteorder/:id", deleteOrder);
 
 export default router;

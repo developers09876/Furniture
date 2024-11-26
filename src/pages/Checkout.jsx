@@ -162,14 +162,14 @@ const Checkout = () => {
 
     // Razorpay payment options
     const options = {
-      key: "rzp_test_NYUPSveWybUfyq", // Replace with your Razorpay Key ID
+      key: "rzp_test_NYUPSveWybUfyq",
       currency: "INR",
-      amount: 100, // Amount in paise (100 paise = ₹1)
+      amount: 100,
       name: "Furniture Delivery",
       description: "Payment for furniture",
       handler: function (response) {
         console.log("Payment successful", response);
-        PaymentHandler(response); // Trigger your payment success handler
+        PaymentHandler(response);
       },
       prefill: {
         name: "Rajan",

@@ -317,11 +317,9 @@ export const updateOrder = async (req, res) => {
     const { order_status } = req.body;
     const { emailDetails } = req.body;
 
-    const updateOrder = await order.findByIdAndUpdate(
-      orderId,
-      { order_status },
-      { new: true, runValidators: true }
-    );
+    const updateOrder = await order.findByIdAndUpdate(orderId, {
+      order_status,
+    });
 
     if (!updateOrder) {
       return res.status(404).json({ message: "Order not found" });
@@ -354,6 +352,25 @@ export const updateOrder = async (req, res) => {
 
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent: " + info.response);
+
+    res.status(200).json(updateOrder);
+  } catch (error) {
+    console.error("Error updating Order:", error);
+    res.status(500).json({ message: "Server Error: " + error.message });
+  }
+};
+
+export const userUpdateOrder = async (req, res) => {
+  const { orderId } = req.params;
+  const { order_status } = req.body;
+  try {
+    const updateOrder = await order.findByIdAndUpdate(orderId, {
+      order_status,
+    });
+
+    if (!updateOrder) {
+      return res.status(404).json({ message: "Order not found" });
+    }
 
     res.status(200).json(updateOrder);
   } catch (error) {

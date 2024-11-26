@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faLeftLong } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button";
 // import { UserDashboardContext } from "../Context/UserDashContext";
 import { Divider, Modal, Table } from "antd";
@@ -11,6 +11,10 @@ import { Col, Row } from "react-bootstrap";
 import { MdDelete, MdEdit } from "react-icons/md";
 import axios from "axios";
 import { IoEyeOutline } from "react-icons/io5";
+import { MdCancel } from "react-icons/md";
+import { render } from "react-dom";
+import Swal from "sweetalert2";
+const { confirm } = Modal;
 
 // styled components
 const StyledOrders = styled.div`
@@ -57,7 +61,16 @@ const UserOrders = () => {
   // const { orders, updateOrderStatus, fetchData } =
   //   useContext(UserDashboardContext);
   const [selectedStatus, setSelectedStatus] = useState("all");
+  const [data, setData] = useState([]);
+  console.log("dataxs", data);
+  const [loading, setLoading] = useState(true);
+  const [dataFilter, setDataFilter] = useState([]);
+  const [isOrderModel, setOrderModel] = useState(false);
+  const [userOrder, setUserOrder] = useState([]);
+  console.log("userOrder", userOrder);
+  const [orderData, setOrderData] = useState([]);
 
+  // const [data, setData] = useState("")
   // const handleStatusChange = (orderId, status) => {
   //   updateOrderStatus(orderId, status);
   // };
@@ -67,11 +80,46 @@ const UserOrders = () => {
   //     ? orders
   //     : orders.filter((order) => order.order_status === selectedStatus);
 
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [dataFilter, setDataFilter] = useState([]);
-  const [isOrderModel, setOrderModel] = useState(false);
-  const [userOrder, setUserOrder] = useState([]);
+  const userOrderUpdate = async (id) => {
+    console.log("idcd", id._id);
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_MY_API}products/userUpdateOrder/${id._id}`,
+        { order_status: "canceled" }
+      );
+
+      const updatedOrder = response.data;
+
+      Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: `User Order has been updated successfully.`,
+      });
+    } catch (error) {
+      console.error("Error updating Order:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "There was an error updating the Order. Please try again.",
+      });
+    }
+  };
+
+  const orderCancel = (e) => {
+    confirm({
+      title: "Are you sure you want to Cancel the Order",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+      onOk() {
+        userOrderUpdate(e);
+      },
+      onCancel() {
+        console.log("order not Cancel");
+      },
+    });
+  };
+
   const orderModel = (e) => {
     setOrderModel(true);
     setUserOrder(e.items);
@@ -150,10 +198,28 @@ const UserOrders = () => {
         </div>
       ),
     },
+    {
+      title: "Cancel",
+      // dataIndex: "_id",
+      key: "",
+      render: (e) => (
+        <div>
+          <center>
+            <MdCancel
+              style={{
+                fontSize: "20px",
+                cursor: "pointer",
+                marginRight: "10px",
+              }}
+              onClick={() => orderCancel(e)}
+            />
+          </center>
+        </div>
+      ),
+    },
   ];
   useEffect(() => {
     const id = localStorage.getItem("id");
-    console.log("idor", id);
 
     axios
       .get(`${import.meta.env.VITE_MY_API}products/getOrder/${id}`)
@@ -199,66 +265,6 @@ const UserOrders = () => {
           <option value="cancelled">Cancelled</option>
         </StyledSelect>
       </StyledSelectWrapper>
-      <div className="table-responsive mt-3">
-        <table className="table table-striped table-bordered table-hover">
-          {/* <thead>
-            <tr>
-              <StyledTh>#</StyledTh>
-              <StyledTh>Name</StyledTh>
-              <StyledTh>Address</StyledTh>
-              <StyledTh>Phone</StyledTh>
-              <StyledTh>Status</StyledTh>
-              <StyledTh style={{ minWidth: "205px" }}>
-                Delivery Company
-              </StyledTh>
-              <StyledTh>Date</StyledTh>
-              <StyledTh style={{ minWidth: "145px" }}>Order Total</StyledTh>
-              <StyledTh style={{ minWidStyledTh: "155px" }}>
-                Change Status
-              </StyledTh>
-              <th>Details</th>
-            </tr>
-          </thead> */}
-          <tbody>
-            {/* {filteredOrders.map((order, index) => (
-              <tr key={order.id}>
-                <StyledTd>{index + 1}</StyledTd>
-                <StyledTd>{order.name}</StyledTd>
-                <StyledTd>{order.shipping_address}</StyledTd>
-                <StyledTd>{order.phone}</StyledTd>
-                <StyledTd>{order.order_status}</StyledTd>
-                <StyledTd>{order.delivery_company}</StyledTd>
-                <StyledTd>{order.created_at}</StyledTd>
-                <StyledTd>{order.order_total.toFixed(2)}</StyledTd>
-                <StyledTd>
-                  {order.order_status != "delivered" ? (
-                    <select
-                      value={order.order_status}
-                      onChange={(e) =>
-                        handleStatusChange(order.id, e.target.value)
-                      }
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="canceled">Canceled</option>
-                    </select>
-                  ) : (
-                    "delivered"
-                  )}
-                </StyledTd>
-                <StyledTd>
-                  <Link
-                    to={`/dashboard/orders/${order.id}`}
-                    className="text-center fs-5"
-                  >
-                    <FontAwesomeIcon icon={faEye} />
-                  </Link>
-                </StyledTd>
-              </tr>
-            ))} */}
-          </tbody>
-        </table>
-      </div>
 
       <div>
         <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
@@ -270,7 +276,7 @@ const UserOrders = () => {
           rowKey="id"
         />
       </div>
-      <center></center>
+
       <Modal
         open={isOrderModel}
         onOk={handleOk}
@@ -278,7 +284,18 @@ const UserOrders = () => {
         width={800}
       >
         <div>
-          <Divider style={{ fontSize: "30px" }}> Your Order</Divider>
+          <Divider style={{ fontSize: "30px" }}>
+            <center>
+              <h5> Your Order</h5>
+            </center>
+          </Divider>
+          {/* <button
+              style={{ fontSize: "17px" }}
+              onClick={(e) => orderCancel(e)}
+            >
+              Cancel
+            </button> */}
+
           {userOrder && (
             <Table
               columns={userOrderColumn}
