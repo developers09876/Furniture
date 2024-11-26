@@ -134,41 +134,45 @@ const UserOrders = () => {
   const userOrderColumn = [
     {
       title: "S.No",
+      align: "center",
       render: (i, record, index) => <p>{1 + index}</p>,
     },
     {
       title: "Title",
       dataIndex: "title",
-      key: "title",
+      align: "center",
     },
     {
       title: "Price",
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "discountPrice",
+      align: "center",
     },
     {
       title: "Quantity",
       dataIndex: "quantity",
-      key: "quantity",
+      align: "center",
     },
     {
       title: "Sub Total",
-      dataIndex: "subTotal",
-      key: "subTotal",
+      align: "center",
+      render: (record) => <p>{record.quantity * record.discountPrice}</p>,
     },
   ];
   const columns = [
     {
       title: "S.No",
+      align: "center",
       render: (i, record, index) => <p>{index + 1}</p>,
     },
 
     {
       title: "Status",
+      align: "center",
       dataIndex: "order_status",
     },
     {
       title: "Delivery Company",
+      align: "center",
       dataIndex: "delivery_company",
     },
     {
@@ -177,11 +181,13 @@ const UserOrders = () => {
     },
     {
       title: "Total Amount",
+      align: "center",
       dataIndex: "order_total",
     },
 
     {
       title: "View",
+      align: "center",
       key: "Action",
       render: (e) => (
         <div>
@@ -200,22 +206,31 @@ const UserOrders = () => {
     },
     {
       title: "Cancel",
+      align: "center",
       // dataIndex: "_id",
       key: "",
-      render: (e) => (
-        <div>
-          <center>
-            <MdCancel
-              style={{
-                fontSize: "20px",
-                cursor: "pointer",
-                marginRight: "10px",
-              }}
-              onClick={() => orderCancel(e)}
-            />
-          </center>
-        </div>
-      ),
+      render: (record) => {
+        if (
+          record.order_status === "pending" ||
+          record.order_status === "Inprogress"
+        ) {
+          return (
+            <div>
+              <center>
+                <MdCancel
+                  style={{
+                    fontSize: "20px",
+                    cursor: "pointer",
+                    marginRight: "10px",
+                  }}
+                  onClick={() => orderCancel(e)}
+                />
+              </center>
+            </div>
+          );
+        }
+        return null;
+      },
     },
   ];
   useEffect(() => {

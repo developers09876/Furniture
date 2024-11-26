@@ -147,7 +147,6 @@ const Checkout = () => {
   } = useForm();
 
   const loadRazorpay = async (e) => {
-    alert("razhorpay");
     console.log("ln188");
 
     // Ensure the Razorpay script is loaded

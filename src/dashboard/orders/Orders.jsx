@@ -175,7 +175,7 @@ const UserOrders = () => {
     },
     {
       title: "Email",
-      dataIndex: "order_status",
+      dataIndex: "email",
     },
     // {
     //   title: "Delivery Company",
@@ -197,14 +197,20 @@ const UserOrders = () => {
     {
       title: "Status Update",
       dataIndex: "changeStatus",
-      render: (record, e) => (
+      render: (record, e) => {
+        const [currentStatus , setCurrentStatus]      = useState(e.order_status)  ;
+
+        
+        (
         <div onClick={() => getId(e)}>
           <Select
-            defaultValue={e.order_status}
+            defaultValue={currentStatus}
+            // defaultValue={e.order_status}
             onChange={(status) => {
               orderdata(status);
             }}
             style={{ width: 120 }}
+            
           >
             <Option value="Pending" style={{ color: "orange" }}>
               Pending
@@ -225,7 +231,8 @@ const UserOrders = () => {
           </Select>
         </div>
       ),
-    },
+    }
+  },
 
     {
       title: "View",
@@ -355,66 +362,6 @@ const UserOrders = () => {
           <option value="canceled">Canceled</option>
         </StyledSelect>
       </StyledSelectWrapper>
-      <div className="table-responsive mt-3">
-        <table className="table table-striped table-bordered table-hover">
-          {/* <thead>
-            <tr>
-              <StyledTh>#</StyledTh>
-              <StyledTh>Name</StyledTh>
-              <StyledTh>Address</StyledTh>
-              <StyledTh>Phone</StyledTh>
-              <StyledTh>Status</StyledTh>
-              <StyledTh style={{ minWidth: "205px" }}>
-                Delivery Company
-              </StyledTh>
-              <StyledTh>Date</StyledTh>
-              <StyledTh style={{ minWidth: "145px" }}>Order Total</StyledTh>
-              <StyledTh style={{ minWidStyledTh: "155px" }}>
-                Change Status
-              </StyledTh>
-              <th>Details</th>
-            </tr>
-          </thead> */}
-          <tbody>
-            {/* {filteredOrders.map((order, index) => (
-              <tr key={order.id}>
-                <StyledTd>{index + 1}</StyledTd>
-                <StyledTd>{order.name}</StyledTd>
-                <StyledTd>{order.shipping_address}</StyledTd>
-                <StyledTd>{order.phone}</StyledTd>
-                <StyledTd>{order.order_status}</StyledTd>
-                <StyledTd>{order.delivery_company}</StyledTd>
-                <StyledTd>{order.created_at}</StyledTd>
-                <StyledTd>{order.order_total.toFixed(2)}</StyledTd>
-                <StyledTd>
-                  {order.order_status != "delivered" ? (
-                    <select
-                      value={order.order_status}
-                      onChange={(e) =>
-                        handleStatusChange(order.id, e.target.value)
-                      }
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="canceled">Canceled</option>
-                    </select>
-                  ) : (
-                    "delivered"
-                  )}
-                </StyledTd>
-                <StyledTd>
-                  <Link
-                    to={`/dashboard/orders/${order.id}`}
-                    className="text-center fs-5"
-                  >
-                    <FontAwesomeIcon icon={faEye} />
-                  </Link>
-                </StyledTd>
-              </tr>
-            ))} */}
-          </tbody>
-        </table>
-      </div>
 
       <div>
         <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
