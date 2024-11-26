@@ -270,16 +270,15 @@ const UserOrders = () => {
           rowKey="id"
         />
       </div>
-
+      <center></center>
       <Modal
-        title="Order Model"
         open={isOrderModel}
         onOk={handleOk}
         onCancel={handleCancel}
         width={800}
       >
         <div>
-          <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
+          <Divider style={{ fontSize: "30px" }}> Your Order</Divider>
           {userOrder && (
             <Table
               columns={userOrderColumn}

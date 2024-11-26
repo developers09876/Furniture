@@ -33,7 +33,7 @@ function Profile() {
   const [UserData, setUserData] = useState("");
   console.log("UserData", UserData);
   const userId = localStorage.getItem("id");
-
+  console.log("userIdP", userId);
   const handleUpdate = (values) => {
     confirm({
       title: `Want to update ${UserData.username}?`,
@@ -76,7 +76,7 @@ function Profile() {
 
   const fetchUser = async () => {
     axios
-      .post(`${import.meta.env.VITE_MY_API}user/getUser`, { id: userId })
+      .get(`${import.meta.env.VITE_MY_API}user/getUser/${userId}`)
       .then((response) => {
         setUserData(response.data.data);
         form.setFieldsValue({

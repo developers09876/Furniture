@@ -732,9 +732,9 @@ export async function checkVerifivationCode(req, res) {
 
 export async function getOneUser(req, res) {
   try {
-    const data = req.body;
+    const data = req.params;
     const user = await User.findOne({
-      id: data._id,
+      _id: data.id,
     });
     console.log("oneuser", user);
     if (!user) {

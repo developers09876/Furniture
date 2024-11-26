@@ -16,51 +16,6 @@ const ProductCard = ({
   LongDesc,
 }) => {
   const navigate = useNavigate();
-
-  // const Wrapper = styled.div`
-  //   .price {
-  //     color: ${(props) => props.theme.mainColor};
-  //     font-size: 1.3rem;
-  //   }
-  // `;
-  // return (
-  //   <>
-  //     <Wrapper>
-  //       <Card
-  //         hoverable
-  //         style={{
-  //           width: "90%",
-  //         }}
-  //         cover={
-  //           <img
-  //             alt="example"
-  //             src={image[0]}
-  //             style={{ height: "250px", padding: "10px", borderRadius: "20px" }}
-  //           />
-  //         }
-  //         onClick={() => {
-  //           navigate(`/products/${id}`);
-  //         }}
-  //       >
-  //         <h6>{offer}</h6>
-  //         <div style={{ height: "auto" }}>
-  //           <Meta title={title} description={description.slice(0, 70)} />
-  //           <div
-  //             className="mt-3"
-  //             style={{ display: "flex", justifyContent: "center" }}
-  //           >
-  //             <s> ₹{price}</s>
-  //             &nbsp;
-  //             <h6 className="price me-2 d-inline">₹{discountPrice}</h6>
-  //           </div>
-  //           {/* {offer}% off */}
-  //           <ButtonAnimation />
-  //         </div>
-  //       </Card>
-  //     </Wrapper>
-  //   </>
-  // );
-
   const Wrapper = styled.div`
     .ant-card {
       border-radius: 12px;

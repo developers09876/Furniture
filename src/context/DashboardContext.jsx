@@ -12,6 +12,7 @@ export const DashboardProvider = ({ children }) => {
 
   const userID = localStorage.getItem("id");
   const [cartdata, setCartdata] = useState({ items: [] });
+  console.log("cartdatah", cartdata);
   const [whishlistData, setwhishlistData] = useState({ items: [] });
   console.log("cartdata dash", users);
   console.log("whishlistData dash", whishlistData);

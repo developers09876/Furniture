@@ -5,6 +5,7 @@ import multer from "multer";
 const storage = multer.memoryStorage();
 import mongoose from "mongoose";
 const upload = multer({ storage });
+import nodemailer from "nodemailer";
 
 export const getAllProducts = async (req, res) => {
   console.log("resss", req.body);
@@ -314,17 +315,47 @@ export const updateOrder = async (req, res) => {
   const orderId = req.params.id;
   try {
     const { order_status } = req.body;
+    const { emailDetails } = req.body;
+
     const updateOrder = await order.findByIdAndUpdate(
       orderId,
       { order_status },
-      { new: true, runValidators: true } // Options to return updated document and run validators
+      { new: true, runValidators: true }
     );
 
     if (!updateOrder) {
       return res.status(404).json({ message: "Order not found" });
-    } else {
-      res.status(200).json(updateOrder); // Return the updated user data
     }
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      secure: true,
+      port: 465,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: emailDetails.email,
+      subject: `Your Order has been  ${order_status}`,
+      html: `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <h2 style="color: #007bff;"> status has been updated  </h2>
+        <p><strong>Status:</strong> ${emailDetails.name}</p>
+        <p><strong>Name:</strong> ${order_status}</p>
+        <hr style="border: 1px solid #ddd;" />
+        <p>Thank you for join with Us!</p>
+        <p style="color: #007bff;">Restropedic Team</p>
+      </div>
+    `,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent: " + info.response);
+
+    res.status(200).json(updateOrder);
   } catch (error) {
     console.error("Error updating Order:", error);
     res.status(500).json({ message: "Server Error: " + error.message });

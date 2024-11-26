@@ -23,6 +23,7 @@ const orderSchema = new Schema({
       productId: { type: Number, required: true },
       title: { type: String, required: true },
       price: { type: String, required: true },
+      discountPrice: { type: String, required: true },
       quantity: { type: String },
       subTotal: { type: String },
     },

@@ -8,6 +8,7 @@ import axios from "axios";
 import { IoEyeOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
 import "../../Css-Pages/WallBackground.css";
+import { div } from "three/webgpu";
 // styled components
 
 const data = [
@@ -94,12 +95,13 @@ const UserOrders = () => {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [isOrderModel, setOrderModel] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState([]);
-  const [status, setStatus] = useState("");
-  console.log("status", status);
   const [orderId, setOrderId] = useState(null);
-
+  const [userData, setUserData] = useState("");
+  console.log("userData", userData.email);
+  console.log("userDataname", userData.name);
+  const [userID, setUserID] = useState("");
+  console.log("userIDx", userID);
   const [data, setData] = useState([]);
-  console.log("datax", data);
   const [loading, setLoading] = useState(true);
   const { Option } = Select;
 
@@ -119,7 +121,7 @@ const UserOrders = () => {
       Delivered: "green",
       Cancelled: "red",
     };
-  }
+  };
   const viewOrder = [
     {
       title: "Sno",
@@ -132,22 +134,23 @@ const UserOrders = () => {
     {
       title: "Title",
       dataIndex: "title",
-      key: "title",
     },
     {
       title: "Price",
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "discountPrice",
     },
     {
       title: "Quantity",
       dataIndex: "quantity",
-      key: "quantity",
     },
     {
       title: "Sub Total",
-      dataIndex: "subTotal",
-      key: "subTotal",
+      // dataIndex: "discountPrice" * "quantity",
+      render: (record) => (
+        <div>
+          <p>{record.quantity * record.discountPrice}</p>
+        </div>
+      ),
     },
   ];
 
@@ -169,10 +172,10 @@ const UserOrders = () => {
       title: "Phone",
       dataIndex: "phone",
     },
-    // {
-    //   title: "Status",
-    //   dataIndex: "order_status",
-    // },
+    {
+      title: "Email",
+      dataIndex: "order_status",
+    },
     // {
     //   title: "Delivery Company",
     //   dataIndex: "deliveryCompany",
@@ -197,20 +200,27 @@ const UserOrders = () => {
         <div onClick={() => getId(e)}>
           <Select
             defaultValue={e.order_status}
-            // value={status}
             onChange={(status) => {
-              setStatus(status); // Update the status
               orderdata(status);
             }}
             style={{ width: 120 }}
           >
-
-            <Option value="Pending" style={{ color: "orange" }}>Pending</Option>
-            <Option value="Inprogress" style={{ color: "blue" }}>In Progress</Option>
-            <Option value="shipped" style={{ color: "purple" }}>Shipped</Option>
-            <Option value="Delivered" style={{ color: "green" }}>Delivered</Option>
+            <Option value="Pending" style={{ color: "orange" }}>
+              Pending
+            </Option>
+            <Option value="Inprogress" style={{ color: "blue" }}>
+              In Progress
+            </Option>
+            <Option value="shipped" style={{ color: "purple" }}>
+              Shipped
+            </Option>
+            <Option value="Delivered" style={{ color: "green" }}>
+              Delivered
+            </Option>
             {/* <Option value="Initial">Initial</Option> */}
-            <Option value="Cancelled" style={{ color: "red" }}>Cancelled</Option>
+            <Option value="Cancelled" style={{ color: "red" }}>
+              Cancelled
+            </Option>
           </Select>
         </div>
       ),
@@ -258,8 +268,11 @@ const UserOrders = () => {
 
   const getId = async (e) => {
     console.log("recorzd", e);
+    const userID = e.user_id;
+    setUserID(userID);
     const orderGetId = e._id;
     setOrderId(orderGetId);
+    fetchUser();
   };
   useEffect(() => {
     axios
@@ -275,18 +288,24 @@ const UserOrders = () => {
       });
   }, []);
 
+  const fetchUser = async () => {
+    axios
+      .get(`${import.meta.env.VITE_MY_API}user/getUser/${userID}`)
+      .then((response) => {
+        setUserData(response.data.data);
+      });
+  };
   const orderdata = async (status) => {
+    const emailDetails = {
+      name: userData.username,
+      email: userData.email,
+    };
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_MY_API}products/updateorder/${orderId}`,
-        { order_status: status }
+        { order_status: status, emailDetails }
       );
-      // const updatedData = Array.isArray(response.data)
-      //   ? response.data
-      //   : [response.data];
 
-      // setData(updatedData);
-      // setData(response.data);
       const updatedOrder = response.data;
       setData((prevData) =>
         prevData.map((order) =>
@@ -295,6 +314,7 @@ const UserOrders = () => {
             : order
         )
       );
+
       Swal.fire({
         icon: "success",
         title: "Updated!",

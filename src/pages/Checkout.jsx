@@ -36,8 +36,8 @@ const Checkout = () => {
     );
   };
   const onSubmit = (data) => console.log(data);
-  const { cart, clearCart, clearCartPlaceOrder } = useContext(CartContext);
-  const { userID, isAuthenticated } = useContext(AuthContext);
+  const { clearCartPlaceOrder } = useContext(CartContext);
+  const { isAuthenticated } = useContext(AuthContext);
   const [shippingAddress, setShippingAddress] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -88,6 +88,7 @@ const Checkout = () => {
         image: item.image,
         title: item.title,
         price: item.price,
+        discountPrice: item.discountPrice,
         quantity: item.quantity,
         quantity_stock: item.quantity_stock,
         subTotal: item.price * item.quantity,
@@ -139,6 +140,7 @@ const Checkout = () => {
       document.body.appendChild(script);
     });
   };
+
   const {
     handleSubmit,
     formState: { errors },
@@ -226,10 +228,7 @@ const Checkout = () => {
     amana: { label: "Delivery by Amana 24h", cost: 60.0 },
     ozone: { label: "Delivery by Ozone 48h", cost: 40.0 },
   };
-  // const subTotal = cartdata.items.reduce(
-  //   (total, item) => total + item.discountPrice * item.quantity || 0,
-  //   0
-  // );
+
   const { state } = useLocation();
   const subTotal = state;
 
