@@ -12,44 +12,6 @@ import { div } from "three/webgpu";
 import { MdCancel } from "react-icons/md";
 // styled components
 
-const data = [
-  {
-    key: "1",
-    name: "User1",
-    phone: "1234567890",
-    date: "10-12-2023",
-    details: "Ordered",
-    changeStatus: "No",
-    orderTotal: "12",
-    deliveryCompany: "Amazon",
-    status: "Process",
-    address: "Delhi",
-  },
-  {
-    key: "2",
-    name: "User2",
-    phone: "2345678901",
-    date: "11-12-2023",
-    details: "Order",
-    changeStatus: "-",
-    orderTotal: "13",
-    deliveryCompany: "SD",
-    status: "Pending",
-    address: "Pune",
-  },
-  {
-    key: "3",
-    name: "User3",
-    phone: "3456789012",
-    date: "12-12-2023",
-    details: "Not Placed",
-    changeStatus: "yes",
-    orderTotal: "14",
-    deliveryCompany: "Flipkart",
-    status: "--",
-    address: "Mumbai",
-  },
-];
 const StyledOrders = styled.div`
   margin: 20px;
   margin-left: 250px;
@@ -125,7 +87,6 @@ const UserOrders = () => {
     },
     {
       title: "Sub Total",
-      // dataIndex: "discountPrice" * "quantity",
       render: (record) => (
         <div>
           <p>{record.quantity * record.discountPrice}</p>
@@ -185,10 +146,9 @@ const UserOrders = () => {
         return (
           <div onClick={() => getId(e)}>
             <Select
-              // defaultValue={currentStatus}
               defaultValue={e.order_status}
               onChange={(status) => {
-                orderdata(status);
+                UpdateOrder(status);
               }}
               style={{ width: 120 }}
             >
@@ -204,7 +164,7 @@ const UserOrders = () => {
               <Option value="Delivered" style={{ color: "green" }}>
                 Delivered
               </Option>
-              {/* <Option value="Initial">Initial</Option> */}
+
               <Option value="Cancelled" style={{ color: "red" }}>
                 Cancelled
               </Option>
@@ -243,7 +203,6 @@ const UserOrders = () => {
   };
   const handleCancel = () => {
     setOrderModel(false);
-    // setSelectedOrder(null);
   };
 
   const getId = async (e) => {
@@ -278,7 +237,7 @@ const UserOrders = () => {
         setUserData(response.data.data);
       });
   };
-  const orderdata = async (status) => {
+  const UpdateOrder = async (status) => {
     const emailDetails = {
       name: userData.username,
       email: userData.email,
@@ -318,10 +277,6 @@ const UserOrders = () => {
       ? data
       : data.filter((order) => order.order_status === selectedStatus);
 
-  // useEffect(() => {
-  //   orderdata();
-  // }, []);
-
   return (
     <StyledOrders>
       {/* <Button handleClick={() => fetchData()} className='me-3 my-4'>Refresh Data</Button> */}
@@ -355,7 +310,6 @@ const UserOrders = () => {
         />
       </div>
       <Modal
-        // title="Order Model"
         open={isOrderModel}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -369,7 +323,6 @@ const UserOrders = () => {
               columns={viewOrder}
               dataSource={selectedOrder}
               loading={loading}
-              // rowKey="_id"
               size="middle"
               pagination={false}
             />

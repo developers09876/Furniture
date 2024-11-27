@@ -4,7 +4,6 @@ import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faLeftLong } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button";
-// import { UserDashboardContext } from "../Context/UserDashContext";
 import { Divider, Modal, Table } from "antd";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
@@ -58,22 +57,15 @@ const StyledSelect = styled.select`
 `;
 
 const UserOrders = () => {
-  // const { orders, updateOrderStatus, fetchData } =
-  //   useContext(UserDashboardContext);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [data, setData] = useState([]);
   console.log("dataxs", data);
   const [loading, setLoading] = useState(true);
-  const [dataFilter, setDataFilter] = useState([]);
   const [isOrderModel, setOrderModel] = useState(false);
   const [userOrder, setUserOrder] = useState([]);
   console.log("userOrder", userOrder);
   const [orderData, setOrderData] = useState([]);
 
-  const dataFilterr =
-    selectedStatus === "All"
-      ? data
-      : data.filter((order) => order.order_status === selectedStatus);
   const userOrderUpdate = async (id) => {
     console.log("idcd", id._id);
     try {
@@ -185,7 +177,6 @@ const UserOrders = () => {
       key: "Action",
       render: (e) => (
         <div>
-          {/* <center> */}
           <IoEyeOutline
             style={{
               fontSize: "20px",
@@ -194,14 +185,12 @@ const UserOrders = () => {
             }}
             onClick={() => orderModel(e)}
           />
-          {/* </center> */}
         </div>
       ),
     },
     {
       title: "Cancel",
       align: "center",
-      // dataIndex: "_id",
       key: "",
       render: (record, e) => {
         if (
@@ -234,7 +223,6 @@ const UserOrders = () => {
       .get(`${import.meta.env.VITE_MY_API}products/getOrder/${id}`)
       .then((response) => {
         setData(response.data);
-        setDataFilter(response.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -243,17 +231,11 @@ const UserOrders = () => {
       });
   }, []);
 
-  useEffect(() => {
-    if (selectedStatus === "All") {
-      setDataFilter(data);
-    } else {
-      const orderFilter = data.filter(
-        (order) => order.order_status === selectedStatus
-      );
-      setDataFilter(orderFilter);
-    }
-    [selectedStatus, data];
-  });
+  const dataFilter =
+    selectedStatus === "All"
+      ? data
+      : data.filter((order) => order.order_status === selectedStatus);
+
   return (
     <StyledOrders>
       <StyledSelectWrapper>
@@ -279,7 +261,7 @@ const UserOrders = () => {
         <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
         <Table
           columns={columns}
-          dataSource={dataFilterr}
+          dataSource={dataFilter}
           loading={loading}
           size="middle"
           rowKey="id"
@@ -298,12 +280,6 @@ const UserOrders = () => {
               <h5> Your Order</h5>
             </center>
           </Divider>
-          {/* <button
-              style={{ fontSize: "17px" }}
-              onClick={(e) => orderCancel(e)}
-            >
-              Cancel
-            </button> */}
 
           {userOrder && (
             <Table

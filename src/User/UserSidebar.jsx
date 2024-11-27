@@ -66,10 +66,6 @@ const UserSidebar = () => {
       <Link className="navbar-brand me-auto mb-4" to="/">
         <Logo fontSize={40} width={150} />
       </Link>
-      {/* <SidebarLink exact to="/user">
-        <Icon icon={faChartBar} />
-        Dashboard
-      </SidebarLink> */}
       <SidebarLink exact to="/user/orders">
         <Icon icon={faBox} />
         Orders
