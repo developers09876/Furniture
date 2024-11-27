@@ -197,39 +197,42 @@ const UserOrders = () => {
     {
       title: "Status Update",
       dataIndex: "changeStatus",
-      render: (record, e) => (
-        //  {
-        // const [currentStatus , setCurrentStatus]      = useState(e.order_status)  ;
-
-        <div onClick={() => getId(e)}>
-          <Select
-            // defaultValue={currentStatus}
-            defaultValue={e.order_status}
-            onChange={(status) => {
-              orderdata(status);
-            }}
-            style={{ width: 120 }}
-          >
-            <Option value="Pending" style={{ color: "orange" }}>
-              Pending
-            </Option>
-            <Option value="Inprogress" style={{ color: "blue" }}>
-              In Progress
-            </Option>
-            <Option value="shipped" style={{ color: "purple" }}>
-              Shipped
-            </Option>
-            <Option value="Delivered" style={{ color: "green" }}>
-              Delivered
-            </Option>
-            {/* <Option value="Initial">Initial</Option> */}
-            <Option value="Cancelled" style={{ color: "red" }}>
-              Cancelled
-            </Option>
-          </Select>
-        </div>
-      ),
-      // }
+      render: (record, e) => {
+        if (e.order_status === "Cancelled") {
+          return (
+            <span style={{ color: "red", fontWeight: "bold" }}>Canceled</span>
+          );
+        }
+        return (
+          <div onClick={() => getId(e)}>
+            <Select
+              // defaultValue={currentStatus}
+              defaultValue={e.order_status}
+              onChange={(status) => {
+                orderdata(status);
+              }}
+              style={{ width: 120 }}
+            >
+              <Option value="Pending" style={{ color: "orange" }}>
+                Pending
+              </Option>
+              <Option value="Inprogress" style={{ color: "blue" }}>
+                In Progress
+              </Option>
+              <Option value="shipped" style={{ color: "purple" }}>
+                Shipped
+              </Option>
+              <Option value="Delivered" style={{ color: "green" }}>
+                Delivered
+              </Option>
+              {/* <Option value="Initial">Initial</Option> */}
+              <Option value="Cancelled" style={{ color: "red" }}>
+                Cancelled
+              </Option>
+            </Select>
+          </div>
+        );
+      },
     },
 
     {
@@ -271,7 +274,7 @@ const UserOrders = () => {
     setOrderId(orderGetId);
     fetchUser();
   };
-  useEffect(() => {
+  const fetchOrder = async () => {
     axios
       .get(`${import.meta.env.VITE_MY_API}products/order`)
 
@@ -283,6 +286,9 @@ const UserOrders = () => {
         console.error("Error fetching the order data", error);
         setLoading(false);
       });
+  };
+  useEffect(() => {
+    fetchOrder();
   }, []);
 
   const fetchUser = async () => {

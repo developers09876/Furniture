@@ -14,7 +14,7 @@ import { Badge, Tooltip, Dropdown, Menu, Input } from "antd";
 import { CgProfile } from "react-icons/cg";
 import Logo1 from "../assets/Restopedic-logo.png";
 import NavBar1 from "./NavBar1";
-import NavBar2 from "./NavBar2";
+import TopBar from "./TopBar";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
@@ -144,7 +144,7 @@ const NavBar = () => {
 
   return (
     <>
-      <NavBar2 />
+      <TopBar />
       <nav
         className="navbar navbar-expand-lg p-0"
         style={{ backgroundColor: "var(--bgColor)" }}
@@ -239,7 +239,7 @@ const NavBar = () => {
               <li className="nav-item ms-2 mt-3 pt-0 ">
                 <Link
                   to="/wishlist"
-                // style={{ color: "#1D1D1D", textDecoration: "none" }}
+                  // style={{ color: "#1D1D1D", textDecoration: "none" }}
                 >
                   <Badge size="small" count={isAuthenticated ? totalWhish : 0}>
                     <FaRegHeart
