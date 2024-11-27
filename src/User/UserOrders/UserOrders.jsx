@@ -60,7 +60,7 @@ const StyledSelect = styled.select`
 const UserOrders = () => {
   // const { orders, updateOrderStatus, fetchData } =
   //   useContext(UserDashboardContext);
-  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("All");
   const [data, setData] = useState([]);
   console.log("dataxs", data);
   const [loading, setLoading] = useState(true);
@@ -70,22 +70,16 @@ const UserOrders = () => {
   console.log("userOrder", userOrder);
   const [orderData, setOrderData] = useState([]);
 
-  // const [data, setData] = useState("")
-  // const handleStatusChange = (orderId, status) => {
-  //   updateOrderStatus(orderId, status);
-  // };
-
-  // const filteredOrders =
-  //   selectedStatus === "all"
-  //     ? orders
-  //     : orders.filter((order) => order.order_status === selectedStatus);
-
+  const dataFilterr =
+    selectedStatus === "All"
+      ? data
+      : data.filter((order) => order.order_status === selectedStatus);
   const userOrderUpdate = async (id) => {
     console.log("idcd", id._id);
     try {
       const response = await axios.put(
         `${import.meta.env.VITE_MY_API}products/userUpdateOrder/${id._id}`,
-        { order_status: "canceled" }
+        { order_status: "Cancelled" }
       );
 
       const updatedOrder = response.data;
@@ -209,9 +203,9 @@ const UserOrders = () => {
       align: "center",
       // dataIndex: "_id",
       key: "",
-      render: (record) => {
+      render: (record, e) => {
         if (
-          record.order_status === "pending" ||
+          record.order_status === "Pending" ||
           record.order_status === "Inprogress"
         ) {
           return (
@@ -250,7 +244,7 @@ const UserOrders = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedStatus === "all") {
+    if (selectedStatus === "All") {
       setDataFilter(data);
     } else {
       const orderFilter = data.filter(
@@ -272,12 +266,12 @@ const UserOrders = () => {
           onChange={(e) => setSelectedStatus(e.target.value)}
           className="me-2 form-select"
         >
-          <option value="all">All</option>
-          <option value="pending">Pending </option>
+          <option value="All">All</option>
+          <option value="Pending">Pending </option>
           <option value="Inprogress">In Progress</option>
-          <option value="shipped">Shipped</option>
-          <option value="delivered">Delivered</option>
-          <option value="cancelled">Cancelled</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Cancelled">Cancelled</option>
         </StyledSelect>
       </StyledSelectWrapper>
 
@@ -285,7 +279,7 @@ const UserOrders = () => {
         <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
         <Table
           columns={columns}
-          dataSource={dataFilter}
+          dataSource={dataFilterr}
           loading={loading}
           size="middle"
           rowKey="id"

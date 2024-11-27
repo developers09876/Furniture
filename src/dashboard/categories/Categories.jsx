@@ -1,13 +1,14 @@
-import { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Table, Divider, Modal, Input, Button } from "antd";
 import Swal from "sweetalert2";
 import { DashboardContext } from "../../context/DashboardContext";
+import { Tabs } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 const { confirm } = Modal;
-
+React;
 const StyledCategories = styled.div`
   margin: 20px;
   margin-left: 250px;
@@ -48,7 +49,7 @@ const Categories = () => {
 
   useEffect(() => {
     fetchCategories();
-  }, [categoryList]);
+  }, []);
 
   const fetchCategories = async () => {
     try {

@@ -91,38 +91,17 @@ const StyledSelect = styled.select`
 `;
 
 const UserOrders = () => {
-  // const { orders, updateOrderStatus, fetchData } =
-  //   useContext(UserDashboardContext);
-  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("All");
   const [isOrderModel, setOrderModel] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [orderId, setOrderId] = useState(null);
   const [userData, setUserData] = useState("");
-  console.log("userData", userData.email);
-  console.log("userDataname", userData.name);
   const [userID, setUserID] = useState("");
-  console.log("userIDx", userID);
   const [data, setData] = useState([]);
+  const [dataFilter, setDataFilter] = useState([]);
   const [loading, setLoading] = useState(true);
   const { Option } = Select;
 
-  const StatusUpdateColumn = ({ e, getId, orderdata }) => {
-    const [status, setStatus] = useState(e.order_status);
-
-    const handleStatusChange = (status) => {
-      setStatus(status);
-      orderdata(status); // Call your order update function
-    };
-
-    // Color mapping for statuses
-    const colorMap = {
-      Pending: "orange",
-      Inprogress: "blue",
-      Shipped: "purple",
-      Delivered: "green",
-      Cancelled: "red",
-    };
-  };
   const viewOrder = [
     {
       title: "Sno",
@@ -198,7 +177,7 @@ const UserOrders = () => {
       title: "Status Update",
       dataIndex: "changeStatus",
       render: (record, e) => {
-        if (e.order_status === "Cancelled") {
+        if (e.order_status === "cancelled") {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>Canceled</span>
           );
@@ -219,7 +198,7 @@ const UserOrders = () => {
               <Option value="Inprogress" style={{ color: "blue" }}>
                 In Progress
               </Option>
-              <Option value="shipped" style={{ color: "purple" }}>
+              <Option value="Shipped" style={{ color: "purple" }}>
                 Shipped
               </Option>
               <Option value="Delivered" style={{ color: "green" }}>
@@ -280,6 +259,7 @@ const UserOrders = () => {
 
       .then((response) => {
         setData(response.data);
+        setDataFilter(response.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -333,14 +313,11 @@ const UserOrders = () => {
     }
   };
 
-  const handleStatusChange = (orderId, status) => {
-    updateOrderStatus(orderId, status);
-  };
+  const filteredOrders =
+    selectedStatus === "All"
+      ? data
+      : data.filter((order) => order.order_status === selectedStatus);
 
-  // const filteredOrders =
-  //   selectedStatus === "all"
-  //     ? orders
-  //     : orders.filter((order) => order.order_status === selectedStatus);
   // useEffect(() => {
   //   orderdata();
   // }, []);
@@ -358,12 +335,12 @@ const UserOrders = () => {
           onChange={(e) => setSelectedStatus(e.target.value)}
           className="me-2 form-select"
         >
-          <option value="all">All</option>
-          <option value="pending">Pending</option>
+          <option value="All">All</option>
+          <option value="Pending">Pending</option>
           <option value="Inprogress">In Progress</option>
-          <option value="shipped">Shipped</option>
-          <option value="delivered">Delivered</option>
-          <option value="canceled">Canceled</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Cancelled">Canceled</option>
         </StyledSelect>
       </StyledSelectWrapper>
 
@@ -371,7 +348,7 @@ const UserOrders = () => {
         <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
         <Table
           columns={orderDetail}
-          dataSource={data}
+          dataSource={filteredOrders}
           loading={loading}
           rowKey="_id"
           size="middle"

@@ -81,7 +81,7 @@ const AddCategory = () => {
     try {
       const res = await axios.get(`${import.meta.env.VITE_MY_API}Category/`);
       category(res.data);
-    } catch (error) { }
+    } catch (error) {}
   };
   const handleAddCategory = async (e) => {
     e.preventDefault();
@@ -148,7 +148,6 @@ const AddCategory = () => {
             </Button> */}
 
             <Button type="submit">Add Category</Button>
-
           </div>
         </div>
       </form>
