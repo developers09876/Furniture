@@ -10,6 +10,7 @@ import featuredItemsRouter from "./routes/featuredItems.js";
 import productsRouter from "./routes/product.js";
 import basketRouter from "./routes/basket.js";
 import CategoryRouter from "./routes/category.js";
+import adminRouter from "./routes/admin.js";
 const app = express();
 const port = process.env.PORT || 5000;
 const dbUrl = process.env.DB_URL;
@@ -23,21 +24,21 @@ app.use(express.json());
 app.use("/products", productsRouter);
 app.use("/Category", CategoryRouter);
 app.use("/user", userRouter);
+app.use("/admin", adminRouter),
+  // app.use('/uploads', express.static('uploads'));
 
-// app.use('/uploads', express.static('uploads'));
-
-// Connect to MongoDB Atlas database
-mongoose
-  .connect(dbUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Connected to MongoDB Atlas database");
-  })
-  .catch((error) => {
-    console.log("Error connecting to MongoDB Atlas database:", error);
-  });
+  // Connect to MongoDB Atlas database
+  mongoose
+    .connect(dbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => {
+      console.log("Connected to MongoDB Atlas database");
+    })
+    .catch((error) => {
+      console.log("Error connecting to MongoDB Atlas database:", error);
+    });
 
 // connect to the server
 app.listen(port, () => {

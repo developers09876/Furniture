@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Button, Input } from "antd";
-
+import { Divider, Input, Space } from "antd";
+import { useForm } from "react-hook-form";
+import Button from "../../components/Button";
+import axios from "axios";
 const { TextArea } = Input;
 
 const StyledOffer = styled.div`
@@ -12,6 +14,11 @@ const StyledOffer = styled.div`
 `;
 
 const Offer = () => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
   const [textArea, setTextArea] = useState([""]);
 
   const handleAddTextArea = () => {
@@ -28,46 +35,110 @@ const Offer = () => {
     updatedTextChange[index] = value;
     setTextArea(updatedTextChange);
   };
+
+  // const onSubmit = async (offer) => {
+  //   console.log("data", offer);
+  //   const payload = {
+  //     offer: offer.offer,
+  //     offer_Details: textArea.map((detail) => ({ offer_text: detail })),
+  //   };
+
+  //   console.log("payload", payload);
+  //   axios
+  //     .post(`${import.meta.env.VITE_MY_API}admin/offer`, { payload })
+  //     .then((res) => {
+  //       console.log("Added", res);
+  //     })
+  //     .catch((error) => {
+  //       console.log("Not Added", error);
+  //     });
+  // };
+
+  const onSubmit = async (offer) => {
+    try {
+      const payload = {
+        offer: offer.offer,
+        offer_Details: textArea && textArea.length > 0 ? textArea : [], // Ensure it's an array
+      };
+
+      const res = await axios.post(
+        `${import.meta.env.VITE_MY_API}admin/offer`,
+        payload
+      );
+      console.log("Added", res.data);
+    } catch (error) {
+      console.log("Not Added", error.response?.data || error.message);
+    }
+  };
+
   return (
     <StyledOffer>
-      <div className="d-flex flex-column align-items-center">
-        {/* Add Button */}
-        <Button
-          style={{ marginInlineStart: "auto", marginBottom: "20px" }}
-          type="primary"
-          onClick={handleAddTextArea}
-        >
-          Add
-        </Button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="d-flex flex-column align-items-center">
+          <Divider style={{ fontSize: "30px" }}>Offers Section</Divider>
+          <input
+            type="number"
+            style={{ width: "8%", marginBottom: "20px" }}
+            {...register("offer", {
+              required: true,
+              valueAsNumber: true,
+              min: 1,
+              max: 99,
+            })}
+          />
+          {errors.offer && (
+            <p style={{ color: "red" }}>
+              {errors.offer?.type === "required"
+                ? "Offer is required"
+                : errors.offer?.type === "min"
+                ? "Offer must be at least 1"
+                : "Offer must be 99 or less"}
+            </p>
+          )}
 
-        {textArea.map((value, index) => (
-          <div
-            className="d-flex"
-            key={index}
-            style={{
-              alignItems: "center",
-              marginBottom: "10px",
-            }}
+          <button
+            className="btn btn-primary"
+            style={{ marginBottom: "20px" }}
+            type="button"
+            onClick={handleAddTextArea}
           >
-            <TextArea
-              value={value}
-              style={{ width: "400px" }}
-              placeholder={`Enter Description ${index + 1}`}
-              onChange={(e) => handleTextAreaChange(index, e.target.value)}
-            />
-            {textArea.length > 1 && (
-              <Button
-                style={{ marginLeft: "10px" }}
-                type="primary"
-                danger
-                onClick={() => handleRemoveTextArea(index)}
-              >
-                Remove
-              </Button>
-            )}
+            Add
+          </button>
+
+          {textArea.map((value, index) => (
+            <div
+              className="d-flex"
+              key={index}
+              style={{
+                alignItems: "center",
+                marginBottom: "10px",
+              }}
+            >
+              <TextArea
+                value={value}
+                style={{ width: "400px" }}
+                placeholder={`Enter Offer Details ${index + 1}`}
+                onChange={(e) => handleTextAreaChange(index, e.target.value)}
+              />
+              {textArea.length > 1 && (
+                <button
+                  className="btn btn-danger"
+                  style={{ marginLeft: "10px" }}
+                  type="button"
+                  onClick={() => handleRemoveTextArea(index)}
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          ))}
+          <div className="form-group mt-4 " style={{ textAlign: "end" }}>
+            <Button type="submit" className="me-2">
+              Submit
+            </Button>
           </div>
-        ))}
-      </div>
+        </div>
+      </form>
     </StyledOffer>
   );
 };
