@@ -214,7 +214,7 @@ const NavBar = () => {
               </li>
               {isAdmin && (
                 <li className="nav-item m-2 mx-3">
-                  <StyledLink className="nav-link" to="/admin">
+                  <StyledLink className="nav-link" to="/admin/offers">
                     Dashboard
                   </StyledLink>
                 </li>

@@ -89,7 +89,7 @@ const Sidebar = () => {
       </SidebarLink>
       <SidebarLink to="/admin/offers">
         <BiSolidOffer />
-        &nbsp; Offers
+        Offers
       </SidebarLink>
       <Footer className="mt-auto">
         <Button className="me-2 my-3" handleClick={logout}>

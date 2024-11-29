@@ -36,24 +36,6 @@ const Offer = () => {
     setTextArea(updatedTextChange);
   };
 
-  // const onSubmit = async (offer) => {
-  //   console.log("data", offer);
-  //   const payload = {
-  //     offer: offer.offer,
-  //     offer_Details: textArea.map((detail) => ({ offer_text: detail })),
-  //   };
-
-  //   console.log("payload", payload);
-  //   axios
-  //     .post(`${import.meta.env.VITE_MY_API}admin/offer`, { payload })
-  //     .then((res) => {
-  //       console.log("Added", res);
-  //     })
-  //     .catch((error) => {
-  //       console.log("Not Added", error);
-  //     });
-  // };
-
   const onSubmit = async (offer) => {
     try {
       const payload = {
