@@ -58,6 +58,11 @@ import UserLogin from "./User/UserLogin";
 import Whistlist from "./User/Whistlist/Whistlist";
 import Profile from "./User/Profile/Profile";
 import Ortholatex from "./Ar/newAr/Ortholatex";
+
+//offer
+
+import Offer from "./dashboard/offers/offer";
+
 // import Testing from "./Ar/view";
 
 import UserResetPassword from "./User/UserResetPassword";
@@ -96,6 +101,7 @@ const router = createBrowserRouter(
         <Route path="/admin/categories/add" element={<AddCategory />} />
         <Route path="/admin/categories/edit/:id" element={<EditCategory />} />
         <Route path="/admin/orders" element={<Orders />} />
+        <Route path="/admin/offers" element={<Offer />} />
         <Route path="/admin/orders/:id" element={<OrderDetails />} />
       </Route>
       <Route path="/user" element={<UserDashboardLayout />}>
