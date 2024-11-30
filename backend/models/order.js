@@ -12,13 +12,18 @@ const orderSchema = new Schema({
   description: { type: String },
   delivery_company: { type: String },
   delivery_cost: { type: String },
-  created_at: { type: String },
+  created_at: {
+    type: String,
+    default: () => new Date().toLocaleDateString("en-GB"),
+  },
   order_status: { type: String },
   order_total: { type: String },
   items: [
     {
+      productId: { type: Number, required: true },
       title: { type: String, required: true },
       price: { type: String, required: true },
+      discountPrice: { type: String, required: true },
       quantity: { type: String },
       subTotal: { type: String },
     },

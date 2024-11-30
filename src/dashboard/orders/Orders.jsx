@@ -8,46 +8,10 @@ import axios from "axios";
 import { IoEyeOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
 import "../../Css-Pages/WallBackground.css";
+import { div } from "three/webgpu";
+import { MdCancel } from "react-icons/md";
 // styled components
 
-const data = [
-  {
-    key: "1",
-    name: "User1",
-    phone: "1234567890",
-    date: "10-12-2023",
-    details: "Ordered",
-    changeStatus: "No",
-    orderTotal: "12",
-    deliveryCompany: "Amazon",
-    status: "Process",
-    address: "Delhi",
-  },
-  {
-    key: "2",
-    name: "User2",
-    phone: "2345678901",
-    date: "11-12-2023",
-    details: "Order",
-    changeStatus: "-",
-    orderTotal: "13",
-    deliveryCompany: "SD",
-    status: "Pending",
-    address: "Pune",
-  },
-  {
-    key: "3",
-    name: "User3",
-    phone: "3456789012",
-    date: "12-12-2023",
-    details: "Not Placed",
-    changeStatus: "yes",
-    orderTotal: "14",
-    deliveryCompany: "Flipkart",
-    status: "--",
-    address: "Mumbai",
-  },
-];
 const StyledOrders = styled.div`
   margin: 20px;
   margin-left: 250px;
@@ -89,18 +53,16 @@ const StyledSelect = styled.select`
 `;
 
 const UserOrders = () => {
-  // const { orders, updateOrderStatus, fetchData } =
-  //   useContext(UserDashboardContext);
-  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("All");
   const [isOrderModel, setOrderModel] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState([]);
-  const [status, setStatus] = useState("");
-  console.log("status", status);
   const [orderId, setOrderId] = useState(null);
-
+  const [userData, setUserData] = useState("");
+  const [userID, setUserID] = useState("");
   const [data, setData] = useState([]);
-  console.log("data", data);
+  const [dataFilter, setDataFilter] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { Option } = Select;
 
   const viewOrder = [
     {
@@ -114,38 +76,35 @@ const UserOrders = () => {
     {
       title: "Title",
       dataIndex: "title",
-      key: "title",
     },
     {
       title: "Price",
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "discountPrice",
     },
     {
       title: "Quantity",
       dataIndex: "quantity",
-      key: "quantity",
     },
     {
       title: "Sub Total",
-      dataIndex: "subTotal",
-      key: "subTotal",
+      render: (record) => (
+        <div>
+          <p>{record.quantity * record.discountPrice}</p>
+        </div>
+      ),
     },
   ];
 
   const orderDetail = [
     {
-      title: "Sno",
+      title: "S.No",
       render: (i, record, index) => (
         <div>
           <p>{1 + index}</p>
         </div>
       ),
     },
-    {
-      title: "Name",
-      dataIndex: "name",
-    },
+
     {
       title: "Address",
       dataIndex: "shipping_address",
@@ -155,8 +114,8 @@ const UserOrders = () => {
       dataIndex: "phone",
     },
     {
-      title: "Status",
-      dataIndex: "order_status",
+      title: "Email",
+      dataIndex: "email",
     },
     // {
     //   title: "Delivery Company",
@@ -167,32 +126,52 @@ const UserOrders = () => {
       title: "Date",
       dataIndex: "created_at",
     },
-
     {
-      title: "orderTotal",
+      title: "Name",
+      dataIndex: "name",
+    },
+    {
+      title: "Total Amount",
       dataIndex: "order_total",
     },
     {
-      title: "Change Status",
+      title: "Status Update",
       dataIndex: "changeStatus",
-      render: (record, e) => (
-        <div onClick={() => getId(e)}>
-          <Select
-            defaultValue={e.order_status}
-            // value={status}
-            onChange={(status) => {
-              setStatus(status); // Update the status
-              orderdata(status);
-            }}
-            style={{ width: 120 }}
-          >
-            <Option value="Pending">Pending</Option>
-            <Option value="Inprogress">In Progress</Option>
-            <Option value="Delivered">Delivered</Option>
-            <Option value="Initial">Initial</Option>
-          </Select>
-        </div>
-      ),
+      render: (record, e) => {
+        if (e.order_status === "cancelled") {
+          return (
+            <span style={{ color: "red", fontWeight: "bold" }}>Canceled</span>
+          );
+        }
+        return (
+          <div onClick={() => getId(e)}>
+            <Select
+              defaultValue={e.order_status}
+              onChange={(status) => {
+                UpdateOrder(status);
+              }}
+              style={{ width: 120 }}
+            >
+              <Option value="Pending" style={{ color: "orange" }}>
+                Pending
+              </Option>
+              <Option value="Inprogress" style={{ color: "blue" }}>
+                In Progress
+              </Option>
+              <Option value="Shipped" style={{ color: "purple" }}>
+                Shipped
+              </Option>
+              <Option value="Delivered" style={{ color: "green" }}>
+                Delivered
+              </Option>
+
+              <Option value="Cancelled" style={{ color: "red" }}>
+                Cancelled
+              </Option>
+            </Select>
+          </div>
+        );
+      },
     },
 
     {
@@ -210,14 +189,6 @@ const UserOrders = () => {
               onClick={() => orderModel(e)}
             />
           </center>
-          {/* <MdEdit
-            style={{ fontSize: "20px", cursor: "pointer", marginRight: "10px" }}
-            onClick={() => handleEdit(record)}
-          />
-          <MdDelete
-            style={{ fontSize: "20px", cursor: "pointer", color: "red" }}
-            onClick={() => handleDelete(record)}
-          /> */}
         </div>
       ),
     },
@@ -232,40 +203,51 @@ const UserOrders = () => {
   };
   const handleCancel = () => {
     setOrderModel(false);
-    // setSelectedOrder(null);
   };
 
   const getId = async (e) => {
-    console.log("recorzd", e);
+    const userID = e.user_id;
+    setUserID(userID);
     const orderGetId = e._id;
     setOrderId(orderGetId);
+    fetchUser();
   };
-  useEffect(() => {
+  const fetchOrder = async () => {
     axios
       .get(`${import.meta.env.VITE_MY_API}products/order`)
 
       .then((response) => {
         setData(response.data);
+        setDataFilter(response.data);
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching the order data", error);
         setLoading(false);
       });
+  };
+  useEffect(() => {
+    fetchOrder();
   }, []);
 
-  const orderdata = async (status) => {
+  const fetchUser = async () => {
+    axios
+      .get(`${import.meta.env.VITE_MY_API}user/getUser/${userID}`)
+      .then((response) => {
+        setUserData(response.data.data);
+      });
+  };
+  const UpdateOrder = async (status) => {
+    const emailDetails = {
+      name: userData.username,
+      email: userData.email,
+    };
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_MY_API}products/updateorder/${orderId}`,
-        { order_status: status }
+        { order_status: status, emailDetails }
       );
-      // const updatedData = Array.isArray(response.data)
-      //   ? response.data
-      //   : [response.data];
 
-      // setData(updatedData);
-      // setData(response.data);
       const updatedOrder = response.data;
       setData((prevData) =>
         prevData.map((order) =>
@@ -274,6 +256,7 @@ const UserOrders = () => {
             : order
         )
       );
+
       Swal.fire({
         icon: "success",
         title: "Updated!",
@@ -289,17 +272,10 @@ const UserOrders = () => {
     }
   };
 
-  const handleStatusChange = (orderId, status) => {
-    updateOrderStatus(orderId, status);
-  };
-
-  // const filteredOrders =
-  //   selectedStatus === "all"
-  //     ? orders
-  //     : orders.filter((order) => order.order_status === selectedStatus);
-  // useEffect(() => {
-  //   orderdata();
-  // }, []);
+  const filteredOrders =
+    selectedStatus === "All"
+      ? data
+      : data.filter((order) => order.order_status === selectedStatus);
 
   return (
     <StyledOrders>
@@ -314,86 +290,26 @@ const UserOrders = () => {
           onChange={(e) => setSelectedStatus(e.target.value)}
           className="me-2 form-select"
         >
-          <option value="all">All</option>
-          <option value="pending">Pending</option>
-          <option value="shipped">Shipped</option>
-          <option value="delivered">Delivered</option>
-          <option value="canceled">Canceled</option>
+          <option value="All">All</option>
+          <option value="Pending">Pending</option>
+          <option value="Inprogress">In Progress</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Cancelled">Canceled</option>
         </StyledSelect>
       </StyledSelectWrapper>
-      <div className="table-responsive mt-3">
-        <table className="table table-striped table-bordered table-hover">
-          {/* <thead>
-            <tr>
-              <StyledTh>#</StyledTh>
-              <StyledTh>Name</StyledTh>
-              <StyledTh>Address</StyledTh>
-              <StyledTh>Phone</StyledTh>
-              <StyledTh>Status</StyledTh>
-              <StyledTh style={{ minWidth: "205px" }}>
-                Delivery Company
-              </StyledTh>
-              <StyledTh>Date</StyledTh>
-              <StyledTh style={{ minWidth: "145px" }}>Order Total</StyledTh>
-              <StyledTh style={{ minWidStyledTh: "155px" }}>
-                Change Status
-              </StyledTh>
-              <th>Details</th>
-            </tr>
-          </thead> */}
-          <tbody>
-            {/* {filteredOrders.map((order, index) => (
-              <tr key={order.id}>
-                <StyledTd>{index + 1}</StyledTd>
-                <StyledTd>{order.name}</StyledTd>
-                <StyledTd>{order.shipping_address}</StyledTd>
-                <StyledTd>{order.phone}</StyledTd>
-                <StyledTd>{order.order_status}</StyledTd>
-                <StyledTd>{order.delivery_company}</StyledTd>
-                <StyledTd>{order.created_at}</StyledTd>
-                <StyledTd>{order.order_total.toFixed(2)}</StyledTd>
-                <StyledTd>
-                  {order.order_status != "delivered" ? (
-                    <select
-                      value={order.order_status}
-                      onChange={(e) =>
-                        handleStatusChange(order.id, e.target.value)
-                      }
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="canceled">Canceled</option>
-                    </select>
-                  ) : (
-                    "delivered"
-                  )}
-                </StyledTd>
-                <StyledTd>
-                  <Link
-                    to={`/dashboard/orders/${order.id}`}
-                    className="text-center fs-5"
-                  >
-                    <FontAwesomeIcon icon={faEye} />
-                  </Link>
-                </StyledTd>
-              </tr>
-            ))} */}
-          </tbody>
-        </table>
-      </div>
 
       <div>
         <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
         <Table
           columns={orderDetail}
-          dataSource={data}
+          dataSource={filteredOrders}
           loading={loading}
           rowKey="_id"
           size="middle"
         />
       </div>
       <Modal
-        // title="Order Model"
         open={isOrderModel}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -407,7 +323,6 @@ const UserOrders = () => {
               columns={viewOrder}
               dataSource={selectedOrder}
               loading={loading}
-              // rowKey="_id"
               size="middle"
               pagination={false}
             />

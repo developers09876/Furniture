@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { BiSolidOffer } from "react-icons/bi";
 import {
   faChartBar,
   faBox,
@@ -85,6 +86,10 @@ const Sidebar = () => {
       <SidebarLink to="/admin/orders">
         <Icon icon={faShoppingCart} />
         Orders
+      </SidebarLink>
+      <SidebarLink to="/admin/offers">
+        <BiSolidOffer />
+        Offers
       </SidebarLink>
       <Footer className="mt-auto">
         <Button className="me-2 my-3" handleClick={logout}>

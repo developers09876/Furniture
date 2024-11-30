@@ -47,6 +47,7 @@ export const WishlistProvider = ({ children }) => {
               images: item.images,
               title: item.title,
               price: item.price,
+              discountPrice: item.discountPrice,
               quantity_stock: item.quantity_stock,
               quantity: item.quantity,
               subTotal: item.subTotal,
@@ -63,14 +64,13 @@ export const WishlistProvider = ({ children }) => {
           ...prevCart,
           items: fetchedCart,
         }));
-
+        fetchWhishlist();
         Swal.fire({
           icon: "success",
           title: "Item added to Whishlist",
           showConfirmButton: false,
           timer: 1500,
         });
-        fetchWhishlist();
       } else {
         console.error("User Whishlist is not available");
       }

@@ -18,7 +18,7 @@ import {
 // pages
 import Home from "./pages/Home";
 import Cards from "./pages/Cards";
-import NavBar2 from "./components/NavBar2";
+import TopBar from "./components/TopBar";
 import About from "./pages/About";
 import Products from "./pages/Products";
 import Login from "./pages/Login";
@@ -58,6 +58,11 @@ import UserLogin from "./User/UserLogin";
 import Whistlist from "./User/Whistlist/Whistlist";
 import Profile from "./User/Profile/Profile";
 import Ortholatex from "./Ar/newAr/Ortholatex";
+
+//offer
+
+import Offer from "./dashboard/offers/offer";
+
 // import Testing from "./Ar/view";
 
 import UserResetPassword from "./User/UserResetPassword";
@@ -68,7 +73,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/card" element={<Cards />} />
-        <Route path="/navbar" element={<NavBar2 />} />
+        <Route path="/navbar" element={<TopBar />} />
         <Route path="/about" element={<About />} />
         <Route path="/products" element={<Products />} />
         <Route path="/contact" element={<Contact />} />
@@ -80,7 +85,7 @@ const router = createBrowserRouter(
         <Route element={<AuthRoute />}>
           <Route path="/adminlogin" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/userlogin" element={<UserLogin />} />
+          <Route path="/login" element={<UserLogin />} />
           <Route path="/reset" element={<UserResetPassword />} />
         </Route>
         <Route path="*" exact element={<NotFound />} />
@@ -96,6 +101,7 @@ const router = createBrowserRouter(
         <Route path="/admin/categories/add" element={<AddCategory />} />
         <Route path="/admin/categories/edit/:id" element={<EditCategory />} />
         <Route path="/admin/orders" element={<Orders />} />
+        <Route path="/admin/offers" element={<Offer />} />
         <Route path="/admin/orders/:id" element={<OrderDetails />} />
       </Route>
       <Route path="/user" element={<UserDashboardLayout />}>

@@ -1,81 +1,3 @@
-// import { Divider, Table } from "antd";
-// import React from "react";
-// import { Col, Row } from "react-bootstrap";
-// import { MdDelete, MdEdit } from "react-icons/md";
-// import styled from "styled-components";
-
-// const StyledProfile = styled.div`
-//   margin: 20px;
-//   margin-left: 250px;
-//   margin-right: auto;
-//   width: 100%;
-// `;
-
-// const columns = [
-//   {
-//     title: "Sno",
-//     dataIndex: "key",
-//   },
-//   {
-//     title: "Name",
-//     dataIndex: "name",
-//   },
-//   {
-//     title: "Description",
-//     dataIndex: "description",
-//   },
-//   {
-//     title: "Action",
-//     key: "Action",
-//     render: (_, record) => (
-//       <div>
-//         <Row>
-//           <Col md={3}>
-//             <a>
-//               <MdEdit style={{ fontSize: "20px" }} />
-//             </a>
-//           </Col>
-//           <Col md={3}>
-//             <a>
-//               <MdDelete style={{ fontSize: "20px" }} />
-//             </a>
-//           </Col>
-//         </Row>
-//       </div>
-//     ),
-//   },
-// ];
-
-// const data = [
-//   {
-//     key: "1",
-//     name: "user1",
-//     description: "Lorem ipsum dolor sit amet.",
-//   },
-//   {
-//     key: "2",
-//     name: "user2",
-//     description: "Lorem ipsum dolor sit amet consectetur.",
-//   },
-//   {
-//     key: "3",
-//     name: "user3",
-//     description: "Lorem ipsum dolo amet consectetur.",
-//   },
-// ];
-// function Profile() {
-//   return (
-//     <StyledProfile>
-//       <div>
-//         <Divider style={{ fontSize: "30px" }}>Profile</Divider>
-//         <Table columns={columns} dataSource={data} size="middle" />
-//       </div>
-//     </StyledProfile>
-//   );
-// }
-
-// export default Profile;
-
 import { Divider, Form, Input, Button, Modal } from "antd";
 import React, { useState } from "react";
 import { Row, Col } from "react-bootstrap";
@@ -109,14 +31,13 @@ function Profile() {
   const [name, setName] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
   const [UserData, setUserData] = useState("");
+  console.log("UserData", UserData);
   const userId = localStorage.getItem("id");
-
+  console.log("userIdP", userId);
   const handleUpdate = (values) => {
     confirm({
-      title: `Want to update ${values.name}?`,
-      // content: `Phonenumber: ${values.phonenumber}`,
+      title: `Want to update ${UserData.username}?`,
       okText: "Yes",
-      // noType: "danger",
       cancelText: "No",
       onOk() {
         updateRecordFromAPI();
@@ -128,26 +49,25 @@ function Profile() {
   };
 
   const updateRecordFromAPI = async () => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_MY_API}user/update/${userId}`,
-        UserData
-      );
+    axios
+      .post(`${import.meta.env.VITE_MY_API}user/update/${userId}`, UserData)
+      .then((res) => {
+        setData(res.data);
+        Swal.fire({
+          icon: "success",
+          title: "Updated!",
+          text: `User has been updated successfully.`,
+        });
+      })
 
-      setData(response.data);
-      Swal.fire({
-        icon: "success",
-        title: "Updated!",
-        text: `User has been updated successfully.`,
+      .catch((error) => {
+        console.error("Error updating user:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "There was an error updating the user. Please try again.",
+        });
       });
-    } catch (error) {
-      console.error("Error updating user:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "There was an error updating the user. Please try again.",
-      });
-    }
   };
 
   const handleCancel = () => {
@@ -155,20 +75,20 @@ function Profile() {
   };
 
   const fetchUser = async () => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_MY_API}user/getUser`,
-        { id: userId }
-      );
-      setUserData(response.data.data);
-      form.setFieldsValue({
-        name: response.data.data.username,
-        email: response.data.data.email,
-        phonenumber: response.data.data.phoneNumber,
+    axios
+      .get(`${import.meta.env.VITE_MY_API}user/getUser/${userId}`)
+      .then((response) => {
+        setUserData(response.data.data);
+        form.setFieldsValue({
+          name: response.data.data.username,
+          email: response.data.data.email,
+          phonenumber: response.data.data.phoneNumber,
+        });
+      })
+
+      .catch((error) => {
+        handleOperationError("product", "adding");
       });
-    } catch (error) {
-      handleOperationError("product", "adding");
-    }
   };
 
   useEffect(() => {
@@ -190,7 +110,6 @@ function Profile() {
               label="Name"
               name="name"
               rules={[{ required: true, message: "Please enter your name!" }]}
-              // initialValue={name}
             >
               <Input
                 onChange={(e) =>
@@ -211,20 +130,23 @@ function Profile() {
         <Row>
           <Col xs={12} sm={6}>
             <Form.Item
-              label="Phonenumber"
+              label="Phone Number"
               name="phonenumber"
               rules={[
                 {
                   required: true,
-                  message: "Please enter your phone number!",
+                  pattern: /^[6-9]\d{9}$/,
+                  message: "Please Enter Valid Phone Number!",
                 },
               ]}
             >
               <Input
+                addonBefore="+91"
                 onChange={(e) =>
                   setUserData({ ...UserData, phoneNumber: e.target.value })
                 }
-                required
+                // required
+                maxLength={10} //
               />
             </Form.Item>
           </Col>

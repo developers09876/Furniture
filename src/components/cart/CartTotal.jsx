@@ -7,6 +7,7 @@ import Button from "../Button";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import "../../Css-Pages/HomeCard.css";
 import { Col, Row } from "react-bootstrap";
+import { DashboardContext } from "../../context/DashboardContext";
 
 const CartTotal = ({ total }) => {
   const { cart } = useContext(CartContext);
@@ -17,29 +18,11 @@ const CartTotal = ({ total }) => {
 
   return (
     <Wrapper>
-      {/* <div>
-        <article>
-          <h4>
-            Order Total :
-            <span>
-              <FaIndianRupeeSign /> {total}
-            </span>
-          </h4>
-          <hr />
-          {isAuthenticated ? (
-            <Button handleClick={() => navigate("/checkout")}>
-              proceed to checkout
-            </Button>
-          ) : (
-            <Button handleClick={() => navigate("/login")}>login</Button>
-          )}
-        </article>
-      </div> */}
       <div className="order-total-container">
         <article className="order-total-card">
           <Row>
             <Col md={6}>
-              <p className="order-total-heading">Order Total :</p>
+              <p className="order-total-heading">Total Amount:</p>
             </Col>
             <Col md={6}>
               <div className="order-total-amount">₹&nbsp;{total}</div>
@@ -49,14 +32,14 @@ const CartTotal = ({ total }) => {
           {isAuthenticated ? (
             <Button
               className="proceed-btn"
-              handleClick={() => navigate("/checkout")}
+              handleClick={() => navigate("/checkout", { state: total })}
             >
               Proceed to Checkout
             </Button>
           ) : (
             <Button
               className="login-btn"
-              handleClick={() => navigate("/userlogin")}
+              handleClick={() => navigate("/login")}
             >
               Login
             </Button>

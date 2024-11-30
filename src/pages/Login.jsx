@@ -54,12 +54,10 @@ const Login = () => {
               showConfirmButton: false,
               timer: 1500,
             });
-            // Redirect to the home page after a delay
             setTimeout(() => {
               navigate("/");
             }, 1500);
           } else {
-            // Display error message using SweetAlert
             Swal.fire({
               icon: "error",
               title: "Error",
@@ -101,9 +99,10 @@ const Login = () => {
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label htmlFor="form1" className="form-label">
-              Email address
+              Email Address
             </label>
             <input
+              placeholder="Email"
               type="email"
               className="form-control"
               id="email"
@@ -120,7 +119,7 @@ const Login = () => {
             <Space direction="vertical" />
             <Input.Password
               style={{ height: "38px" }}
-              placeholder=" password"
+              placeholder="Password"
               name="password"
               id="password"
               value={formData.password}

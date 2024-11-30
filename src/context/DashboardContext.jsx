@@ -6,21 +6,24 @@ export const DashboardContext = createContext();
 export const DashboardProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [orders, setOrders] = useState([]);
-  // const [neworder, setnewOrder] = useState([]);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   console.log("productszs", products);
 
   const userID = localStorage.getItem("id");
   const [cartdata, setCartdata] = useState({ items: [] });
+  console.log("cartdatah", cartdata);
   const [whishlistData, setwhishlistData] = useState({ items: [] });
-  console.log("cartdata dash", cartdata);
+  console.log("cartdata dash", users);
   console.log("whishlistData dash", whishlistData);
+
   useEffect(() => {
     fetchData();
   }, []);
   useEffect(() => {
     fetchCart();
+  }, []);
+  useEffect(() => {
     fetchWhishlist();
   }, []);
 

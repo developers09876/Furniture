@@ -2,11 +2,12 @@ import axios from "axios";
 import { useState } from "react";
 import { styled } from "styled-components";
 import Swal from "sweetalert2";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Breadcrumb from "../components/Breadcrumb";
-import { Input, Space } from "antd";
+import { Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { useForm, Controller } from "react-hook-form";
 
 const StyledRegister = styled.form`
   max-width: 350px;
@@ -26,7 +27,7 @@ const PasswordStrengthMessage = styled.p`
 
 const Register = () => {
   const [isRegistered, setIsRegistered] = useState(false);
-  const [formData, setFormData] = useState({
+  const [data, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
@@ -51,83 +52,62 @@ const Register = () => {
     }
   };
 
-  const handleRegistration = async (e) => {
-    e.preventDefault();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    trigger,
+    getValues,
+  } = useForm();
 
-    const { name, email, phone, password, confirmPassword } = formData;
+  const onSubmit = async (data) => {
+    const { name, email, phone, password } = data;
 
-    if (name && email && phone && password && confirmPassword) {
-      if (password !== confirmPassword) {
-        Swal.fire({
-          title: "Error",
-          text: "Passwords do not match.",
-          icon: "error",
-        });
-        return;
-      }
+    try {
+      const userData = {
+        username: name,
+        email,
+        phoneNumber: phone,
+        password,
+      };
 
-      if (!passwordValid) {
-        Swal.fire({
-          title: "Error",
-          text: "Password must be at least 10 characters long,one uppercase letter,one lowercase letter,one special character & one digit.",
-          icon: "error",
-        });
-        return;
-      }
+      await axios.post(
+        `${import.meta.env.VITE_MY_API}user/register`,
+        userData,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-      try {
-        const userData = {
-          username: name,
-          email: email,
-          phoneNumber: phone,
-          password: password,
-        };
+      setIsRegistered(true);
 
-        await axios
-          .post(`${import.meta.env.VITE_MY_API}user/register`, userData, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((res) => {
-            setIsRegistered(true);
+      Swal.fire({
+        title: "Registration successful!",
+        text: "Redirecting to login...",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
 
-            Swal.fire({
-              title: "Registration successful!",
-              text: "Redirecting to login...",
-              icon: "success",
-              timer: 1500,
-              showConfirmButton: false,
-            });
+      setTimeout(() => navigate("/login"), 1500);
 
-            setTimeout(() => {
-              navigate("/userlogin");
-            }, 1500);
-          });
-      } catch (error) {
-        setIsRegistered(false);
-        console.error("Error during registration:", error);
-        Swal.fire({
-          title: "Error",
-          text: error.response.data.message,
-          icon: "error",
-        });
-      }
-    } else {
+      reset(); // Clear the form after submission
+    } catch (error) {
       setIsRegistered(false);
       Swal.fire({
         title: "Error",
-        text: "Please fill in all the fields.",
+        text: error.response?.data?.message || "Something went wrong.",
         icon: "error",
       });
     }
   };
-
   return (
     <>
       <Breadcrumb />
       <StyledHeading>Create Your Account and Start Exploring</StyledHeading>
-      <StyledRegister onSubmit={handleRegistration}>
+      <StyledRegister onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
           <label htmlFor="name" className="form-label">
             Name
@@ -136,108 +116,145 @@ const Register = () => {
             type="text"
             className="form-control"
             id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleFormChange}
+            {...register("name", {
+              required: "Name is required",
+              validate: (value) =>
+                /^[a-zA-Z\s]+$/.test(value) ||
+                "Name must not contain special characters or numbers",
+            })}
           />
+          {errors.name && (
+            <p style={{ color: "red" }} role="alert">
+              {errors.name.message}
+            </p>
+          )}
         </div>
-
         <div className="mb-4">
           <label htmlFor="email" className="form-label">
-            Email address
+            Email Address
           </label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
+          <Controller
             name="email"
-            value={formData.email}
-            onChange={handleFormChange}
+            control={control}
+            rules={{
+              required: "Email is required",
+              validate: {
+                validFormat: (value) =>
+                  /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
+                    value
+                  ) || "Invalid email format",
+              },
+            }}
+            render={({ field }) => (
+              <Input
+                {...field}
+                id="email"
+                placeholder="Email address"
+                status={errors.email ? "error" : ""}
+              />
+            )}
           />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="phone" className="form-label">
-            Phone
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleFormChange}
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="form2" className="form-label">
-            Password
-          </label>
-          <Space direction="vertical" />
-          <Input.Password
-            // className="form-control flex"
-            style={{ height: "38px" }}
-            type="password"
-            id="password"
-            name="password"
-            placeholder=" password"
-            value={formData.password}
-            onChange={handleFormChange}
-            onFocus={() => setPasswordFocused(true)}
-            onBlur={() => setPasswordFocused(false)}
-            iconRender={(visible) =>
-              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-            }
-          />
-          {passwordValid && !passwordFocused && (
-            <PasswordStrengthMessage isValid={passwordValid}>
-              Password is strong.
-            </PasswordStrengthMessage>
+          {errors.email && (
+            <p style={{ color: "red" }} role="alert">
+              {errors.email.message}
+            </p>
           )}
         </div>
 
         <div className="mb-4">
-          <label htmlFor="confirmPassword" className="form-label">
-            Confirm Password
+          <label htmlFor="phone" className="form-label">
+            Phone Number
           </label>
-          {/* <input
-            type="password"
+          <input
+            type="tel"
             className="form-control"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleFormChange}
-          /> */}
-          <Space direction="vertical" />
-          <Input.Password
-            // className="form-control flex"
-            style={{ height: "38px" }}
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder=" confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleFormChange}
-            onFocus={() => setPasswordFocused(true)}
-            onBlur={() => setPasswordFocused(false)}
-            iconRender={(visible) =>
-              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-            }
+            id="phone"
+            maxLength={10}
+            {...register("phone", {
+              required: "Phone number is required",
+              validate: (value) =>
+                /^[0-9]+$/.test(value) || "Only Numbers Are Allowed",
+              pattern: {
+                value: /^[0-9]{10}$/,
+                message: "10 digits Number Only Allowed",
+              },
+            })}
           />
+          {errors.phone && (
+            <p style={{ color: "red" }} role="alert">
+              {errors.phone.message}
+            </p>
+          )}
         </div>
 
-        {!isRegistered ? (
-          <Button className="mb-4 w-100" type="submit">
-            Sign up
-          </Button>
-        ) : null}
-        <p className="text-center">
-          Already have an account?{" "}
-          <Link style={{ textDecoration: "none" }} to="/userlogin">
-            Login
-          </Link>
-        </p>
+        <div className="mb-4">
+          <label htmlFor="password">Password</label>
+          <Controller
+            name="password"
+            control={control}
+            rules={{
+              required: "Password is required",
+              validate: (value) =>
+                passwordRegex.test(value) ||
+                "Password must be at least 10 characters long,one uppercase letter, one lowercase letter, one special character & one digit.",
+            }}
+            render={({ field }) => (
+              <Input.Password
+                {...field}
+                id="password"
+                placeholder="Password"
+                onChange={(e) => {
+                  field.onChange(e);
+                  trigger("password");
+                }}
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
+              />
+            )}
+          />
+          {errors.password && (
+            <p style={{ color: "red" }} role="alert">
+              {errors.password.message}
+            </p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <Controller
+            name="confirmPassword"
+            control={control}
+            rules={{
+              required: "Confirm Password is required",
+              validate: (value) =>
+                value === getValues("password") || "Passwords do not match.",
+            }}
+            render={({ field }) => (
+              <Input.Password
+                {...field}
+                id="confirmPassword"
+                placeholder="Confirm Password"
+                onChange={(e) => {
+                  field.onChange(e);
+                  trigger("confirmPassword");
+                }}
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
+              />
+            )}
+          />
+          {errors.confirmPassword && (
+            <p style={{ color: "red" }} role="alert">
+              {errors.confirmPassword.message}
+            </p>
+          )}
+        </div>
+
+        <Button className="mb-4 w-100" type="submit">
+          Sign up
+        </Button>
       </StyledRegister>
     </>
   );

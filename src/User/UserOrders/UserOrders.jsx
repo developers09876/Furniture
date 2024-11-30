@@ -2,15 +2,18 @@ import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faLeftLong } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button";
-// import { UserDashboardContext } from "../Context/UserDashContext";
 import { Divider, Modal, Table } from "antd";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { MdDelete, MdEdit } from "react-icons/md";
 import axios from "axios";
 import { IoEyeOutline } from "react-icons/io5";
+import { MdCancel } from "react-icons/md";
+import { render } from "react-dom";
+import Swal from "sweetalert2";
+const { confirm } = Modal;
 
 // styled components
 const StyledOrders = styled.div`
@@ -54,22 +57,55 @@ const StyledSelect = styled.select`
 `;
 
 const UserOrders = () => {
-  // const { orders, updateOrderStatus, fetchData } =
-  //   useContext(UserDashboardContext);
-  const [selectedStatus, setSelectedStatus] = useState("all");
-  // const handleStatusChange = (orderId, status) => {
-  //   updateOrderStatus(orderId, status);
-  // };
-
-  // const filteredOrders =
-  //   selectedStatus === "all"
-  //     ? orders
-  //     : orders.filter((order) => order.order_status === selectedStatus);
+  const [selectedStatus, setSelectedStatus] = useState("All");
   const [data, setData] = useState([]);
+  console.log("dataxs", data);
   const [loading, setLoading] = useState(true);
-  const [dataFilter, setDataFilter] = useState([]);
   const [isOrderModel, setOrderModel] = useState(false);
   const [userOrder, setUserOrder] = useState([]);
+  console.log("userOrder", userOrder);
+  const [orderData, setOrderData] = useState([]);
+
+  const userOrderUpdate = async (id) => {
+    console.log("idcd", id._id);
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_MY_API}products/userUpdateOrder/${id._id}`,
+        { order_status: "Cancelled" }
+      );
+
+      const updatedOrder = response.data;
+
+      Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: `User Order has been updated successfully.`,
+      });
+    } catch (error) {
+      console.error("Error updating Order:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "There was an error updating the Order. Please try again.",
+      });
+    }
+  };
+
+  const orderCancel = (e) => {
+    confirm({
+      title: "Are you sure you want to Cancel the Order",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+      onOk() {
+        userOrderUpdate(e);
+      },
+      onCancel() {
+        console.log("order not Cancel");
+      },
+    });
+  };
+
   const orderModel = (e) => {
     setOrderModel(true);
     setUserOrder(e.items);
@@ -83,42 +119,46 @@ const UserOrders = () => {
 
   const userOrderColumn = [
     {
-      title: "Sno",
+      title: "S.No",
+      align: "center",
       render: (i, record, index) => <p>{1 + index}</p>,
     },
     {
       title: "Title",
       dataIndex: "title",
-      key: "title",
+      align: "center",
     },
     {
       title: "Price",
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "discountPrice",
+      align: "center",
     },
     {
       title: "Quantity",
       dataIndex: "quantity",
-      key: "quantity",
+      align: "center",
     },
     {
       title: "Sub Total",
-      dataIndex: "subTotal",
-      key: "subTotal",
+      align: "center",
+      render: (record) => <p>{record.quantity * record.discountPrice}</p>,
     },
   ];
   const columns = [
     {
-      title: "Sno",
+      title: "S.No",
+      align: "center",
       render: (i, record, index) => <p>{index + 1}</p>,
     },
 
     {
       title: "Status",
+      align: "center",
       dataIndex: "order_status",
     },
     {
       title: "Delivery Company",
+      align: "center",
       dataIndex: "delivery_company",
     },
     {
@@ -127,37 +167,62 @@ const UserOrders = () => {
     },
     {
       title: "Total Amount",
+      align: "center",
       dataIndex: "order_total",
     },
 
     {
       title: "View",
+      align: "center",
       key: "Action",
       render: (e) => (
         <div>
-          <center>
-            <IoEyeOutline
-              style={{
-                fontSize: "20px",
-                cursor: "pointer",
-                marginRight: "10px",
-              }}
-              onClick={() => orderModel(e)}
-            />
-          </center>
+          <IoEyeOutline
+            style={{
+              fontSize: "20px",
+              cursor: "pointer",
+              marginRight: "10px",
+            }}
+            onClick={() => orderModel(e)}
+          />
         </div>
       ),
+    },
+    {
+      title: "Cancel",
+      align: "center",
+      key: "",
+      render: (record, e) => {
+        if (
+          record.order_status === "Pending" ||
+          record.order_status === "Inprogress"
+        ) {
+          return (
+            <div>
+              <center>
+                <MdCancel
+                  style={{
+                    fontSize: "20px",
+                    cursor: "pointer",
+                    marginRight: "10px",
+                  }}
+                  onClick={() => orderCancel(e)}
+                />
+              </center>
+            </div>
+          );
+        }
+        return null;
+      },
     },
   ];
   useEffect(() => {
     const id = localStorage.getItem("id");
-    console.log("idor", id);
 
     axios
       .get(`${import.meta.env.VITE_MY_API}products/getOrder/${id}`)
       .then((response) => {
         setData(response.data);
-        setDataFilter(response.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -166,17 +231,11 @@ const UserOrders = () => {
       });
   }, []);
 
-  useEffect(() => {
-    if (selectedStatus === "all") {
-      setDataFilter(data);
-    } else {
-      const orderFilter = data.filter(
-        (order) => order.order_status === selectedStatus
-      );
-      setDataFilter(orderFilter);
-    }
-    [selectedStatus, data];
-  });
+  const dataFilter =
+    selectedStatus === "All"
+      ? data
+      : data.filter((order) => order.order_status === selectedStatus);
+
   return (
     <StyledOrders>
       <StyledSelectWrapper>
@@ -189,73 +248,14 @@ const UserOrders = () => {
           onChange={(e) => setSelectedStatus(e.target.value)}
           className="me-2 form-select"
         >
-          <option value="all">All</option>
-          <option value="pending">Pending </option>
-          <option value="shipped">Shipped</option>
-          <option value="delivered">Delivered</option>
-          <option value="cancelled">Cancelled</option>
+          <option value="All">All</option>
+          <option value="Pending">Pending </option>
+          <option value="Inprogress">In Progress</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Cancelled">Cancelled</option>
         </StyledSelect>
       </StyledSelectWrapper>
-      <div className="table-responsive mt-3">
-        <table className="table table-striped table-bordered table-hover">
-          {/* <thead>
-            <tr>
-              <StyledTh>#</StyledTh>
-              <StyledTh>Name</StyledTh>
-              <StyledTh>Address</StyledTh>
-              <StyledTh>Phone</StyledTh>
-              <StyledTh>Status</StyledTh>
-              <StyledTh style={{ minWidth: "205px" }}>
-                Delivery Company
-              </StyledTh>
-              <StyledTh>Date</StyledTh>
-              <StyledTh style={{ minWidth: "145px" }}>Order Total</StyledTh>
-              <StyledTh style={{ minWidStyledTh: "155px" }}>
-                Change Status
-              </StyledTh>
-              <th>Details</th>
-            </tr>
-          </thead> */}
-          <tbody>
-            {/* {filteredOrders.map((order, index) => (
-              <tr key={order.id}>
-                <StyledTd>{index + 1}</StyledTd>
-                <StyledTd>{order.name}</StyledTd>
-                <StyledTd>{order.shipping_address}</StyledTd>
-                <StyledTd>{order.phone}</StyledTd>
-                <StyledTd>{order.order_status}</StyledTd>
-                <StyledTd>{order.delivery_company}</StyledTd>
-                <StyledTd>{order.created_at}</StyledTd>
-                <StyledTd>{order.order_total.toFixed(2)}</StyledTd>
-                <StyledTd>
-                  {order.order_status != "delivered" ? (
-                    <select
-                      value={order.order_status}
-                      onChange={(e) =>
-                        handleStatusChange(order.id, e.target.value)
-                      }
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="canceled">Canceled</option>
-                    </select>
-                  ) : (
-                    "delivered"
-                  )}
-                </StyledTd>
-                <StyledTd>
-                  <Link
-                    to={`/dashboard/orders/${order.id}`}
-                    className="text-center fs-5"
-                  >
-                    <FontAwesomeIcon icon={faEye} />
-                  </Link>
-                </StyledTd>
-              </tr>
-            ))} */}
-          </tbody>
-        </table>
-      </div>
 
       <div>
         <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
@@ -269,14 +269,18 @@ const UserOrders = () => {
       </div>
 
       <Modal
-        title="Order Model"
         open={isOrderModel}
         onOk={handleOk}
         onCancel={handleCancel}
         width={800}
       >
         <div>
-          <Divider style={{ fontSize: "30px" }}>All Orders</Divider>
+          <Divider style={{ fontSize: "30px" }}>
+            <center>
+              <h5> Your Order</h5>
+            </center>
+          </Divider>
+
           {userOrder && (
             <Table
               columns={userOrderColumn}

@@ -14,7 +14,7 @@ import { Badge, Tooltip, Dropdown, Menu, Input } from "antd";
 import { CgProfile } from "react-icons/cg";
 import Logo1 from "../assets/Restopedic-logo.png";
 import NavBar1 from "./NavBar1";
-import NavBar2 from "./NavBar2";
+import TopBar from "./TopBar";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
@@ -43,10 +43,12 @@ const NavBar = () => {
   const [query, setQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const { products } = useContext(DashboardContext);
+  console.log("first", products);
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
   const { total } = useContext(WishlistContext);
   const { cartdata, whishlistData } = useContext(DashboardContext);
   const [totalItems, setTotalItems] = useState(0);
+  console.log("totalItems", totalItems);
   const [totalWhish, setTotalWhish] = useState(0);
   const [username, setUsername] = useState("");
 
@@ -76,9 +78,12 @@ const NavBar = () => {
   }, [isAuthenticated]);
 
   const handleSearch = () => {
-    const filtered = products.filter((product) =>
-      product.category.toLowerCase().includes(query.toLowerCase())
+    const filtered = products.filter(
+      (product) =>
+        product.category.toLowerCase().includes(query.toLowerCase()) ||
+        product.title.toLowerCase().includes(query.toLowerCase())
     );
+
     setFilteredProducts(filtered);
   };
 
@@ -139,7 +144,7 @@ const NavBar = () => {
 
   return (
     <>
-      <NavBar2 />
+      <TopBar />
       <nav
         className="navbar navbar-expand-lg p-0"
         style={{ backgroundColor: "var(--bgColor)" }}
@@ -209,7 +214,7 @@ const NavBar = () => {
               </li>
               {isAdmin && (
                 <li className="nav-item m-2 mx-3">
-                  <StyledLink className="nav-link" to="/admin">
+                  <StyledLink className="nav-link" to="/admin/offers">
                     Dashboard
                   </StyledLink>
                 </li>
@@ -251,7 +256,7 @@ const NavBar = () => {
                   <Tooltip title="Login">
                     <FontAwesomeIcon
                       icon={faUserPlus}
-                      onClick={() => navigate("/userlogin")}
+                      onClick={() => navigate("/login")}
                     />
                   </Tooltip>
                 ) : (

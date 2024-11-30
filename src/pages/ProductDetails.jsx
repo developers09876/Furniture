@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { startTransition, useContext, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -83,10 +83,8 @@ const SingleProductPage = () => {
   };
   const { productID } = useParams();
   const { cartdata, whishlistData } = useContext(DashboardContext);
-  console.log("cartdatax", cartdata.items);
-
   const [product, setProduct] = useState([]);
-  console.log("productzx", product);
+  console.log("productxs", product.discountPrice);
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -106,7 +104,7 @@ const SingleProductPage = () => {
   }, [productID]);
 
   useEffect(() => {
-    setSubTotal(quantity * product?.price);
+    setSubTotal(quantity * product.discountPrice);
   }, [quantity, product]);
 
   const settings = {
@@ -134,8 +132,9 @@ const SingleProductPage = () => {
   };
 
   const moveAr = () => {
-    navigate("/ortholatex");
-    window.location.reload();
+    startTransition(() => {
+      navigate("/ortholatex", { state: product.productId });
+    });
   };
 
   const handleDimensionChange = (value) => {
@@ -259,7 +258,6 @@ const SingleProductPage = () => {
   //   checkWishlist();  // Check wishlist status when component mounts
   // }, [product.id, userId]);
 
-  console.log("addToWishlist", addToWishlist);
   const handleImageClick = (image) => {
     setSelectedImage(image);
   };
@@ -315,7 +313,9 @@ const SingleProductPage = () => {
   //     console.error("Error updating quantity", error);
   //   }
   // };
-
+  const unselectedStyless = {
+    color: "red",
+  };
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -391,15 +391,12 @@ const SingleProductPage = () => {
           <h5 className="price me-2 d-inline">₹{discountPrice}</h5>
           {discountPrice && <h6 className="old-price d-inline">₹{price} </h6>}
           {/* <p className="desc my-1">{description}</p> */}
-          <div className="info ">
+          <div className="info mt-2">
             <p>
-              <span>Descrpition : </span>
+              <span>Overview : </span>
               {LongDesc}
             </p>
-            <p>
-              <span>Available : </span>
-              {quantity_stock > 0 ? "In Stock" : "Out of Stock"}
-            </p>
+
             <span>Choose Mattress Dimensions</span>
             <br />
             <Row>
@@ -489,13 +486,13 @@ const SingleProductPage = () => {
               </div>
             )}
           </div>
-          <div className="quantity-toggle">
-            <Button
+          {/* <div className="quantity-toggle">
+            <button
               onClick={() => handleQuantityChange(quantity - 1)}
               disabled={quantity === 1}
             >
               -
-            </Button>
+            </button>
             <span>{quantity}</span>
             <button
               onClick={() => handleQuantityChange(quantity + 1)}
@@ -503,6 +500,18 @@ const SingleProductPage = () => {
             >
               +
             </button>
+          </div> */}
+          <div className="info mt-2">
+            <p>
+              <span>Availability : </span>
+              <span
+                style={{
+                  color: quantity_stock > 0 ? "green" : unselectedStyless.color,
+                }}
+              >
+                {quantity_stock > 0 ? "In Stock" : "Out of Stock"}
+              </span>
+            </p>
           </div>
           {isAuthenticated ? (
             <div className="buttons">
@@ -528,6 +537,7 @@ const SingleProductPage = () => {
                         images,
                         title,
                         price,
+                        discountPrice,
                         quantity_stock,
                         quantity,
                         subTotal,
@@ -563,6 +573,7 @@ const SingleProductPage = () => {
                       images,
                       title,
                       price,
+                      discountPrice,
                       quantity_stock,
                       quantity,
                       subTotal,
@@ -574,7 +585,7 @@ const SingleProductPage = () => {
               )}
             </div>
           ) : (
-            <Button className="my-3" handleClick={() => navigate("/userlogin")}>
+            <Button className="my-3" handleClick={() => navigate("/login")}>
               login
             </Button>
           )}
@@ -1140,7 +1151,7 @@ const SingleProductPage = () => {
             {/* Category Selection */}
             <div className="mb-3">
               <p>
-                <b>Select Category</b>
+                <b>Select Category :</b>
               </p>
               <div className="d-flex flex-wrap">
                 {["Single", "Diwan", "Queen", "King", "Custom Size"].map(

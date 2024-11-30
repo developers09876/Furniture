@@ -34,6 +34,7 @@ export const CartProvider = ({ children }) => {
             images: item.images,
             title: item.title,
             price: item.price,
+            discountPrice: item.discountPrice,
             quantity_stock: item.quantity_stock,
             quantity: item.quantity,
             subTotal: item.subTotal,
@@ -59,7 +60,7 @@ export const CartProvider = ({ children }) => {
         icon: "success",
         title: "Item added to cart",
         showConfirmButton: false,
-        timer: 1500,
+        timer: 1000,
       });
 
       fetchCart();
@@ -72,9 +73,9 @@ export const CartProvider = ({ children }) => {
     if (isAuthenticated) {
       const updatedCart = {
         ...cart,
-        items: [], // Reset cart items to an empty array
+        items: [],
       };
-      9;
+
       const userID = localStorage.getItem("id");
       axios
         .delete(`${import.meta.env.VITE_MY_API}user/clearCart/${userID}`)
@@ -96,6 +97,23 @@ export const CartProvider = ({ children }) => {
             title: "Error",
             text: "Could not clear the cart. Please try again.",
           });
+        });
+    } else {
+      console.error("User not authenticated");
+    }
+  };
+  const clearCartPlaceOrder = async () => {
+    if (isAuthenticated) {
+      const updatedCart = {
+        ...cart,
+        items: [],
+      };
+      const userID = localStorage.getItem("id");
+      axios
+        .delete(`${import.meta.env.VITE_MY_API}user/clearCart/${userID}`)
+        .then((res) => {
+          setCart(updatedCart);
+          fetchCart();
         });
     } else {
       console.error("User not authenticated");
@@ -159,7 +177,15 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ cart, totalItems, total, addToCart, clearCart, removeItem }}
+      value={{
+        cart,
+        totalItems,
+        total,
+        addToCart,
+        clearCart,
+        removeItem,
+        clearCartPlaceOrder,
+      }}
     >
       {children}
     </CartContext.Provider>

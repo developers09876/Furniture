@@ -2,7 +2,9 @@ import { createContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { Modal } from "antd";
 export const AuthContext = createContext();
+const { confirm } = Modal;
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -137,22 +139,32 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setIsAuthenticated(false);
-    setIsAdmin(false); // Reset isAdmin state on logout
-    setIsUser(false); // Reset isUser state on logout
-    Cookies.remove("isLoggedIn");
-    Cookies.remove("isAdmin");
-    Cookies.remove("isUser");
-    Cookies.remove("userID");
-    localStorage.removeItem("token");
-    localStorage.removeItem("id");
-    localStorage.removeItem("name");
+    confirm({
+      title: `Want to logout ?`,
+      okText: "Yes",
+      cancelText: "No",
+      onOk() {
+        setIsAuthenticated(false);
+        setIsAdmin(false); // Reset isAdmin state on logout
+        setIsUser(false); // Reset isUser state on logout
+        Cookies.remove("isLoggedIn");
+        Cookies.remove("isAdmin");
+        Cookies.remove("isUser");
+        Cookies.remove("userID");
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("name");
 
-    Swal.fire({
-      title: "Logout successful!",
-      icon: "success",
-      timer: 1000,
-      showConfirmButton: false,
+        Swal.fire({
+          title: "Logout successful!",
+          icon: "success",
+          timer: 1000,
+          showConfirmButton: false,
+        });
+      },
+      onCancel() {
+        console.log("Update cancelled");
+      },
     });
   };
   console.log("logout check", isAdmin);

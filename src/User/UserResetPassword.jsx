@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Button from "../components/Button";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Container, Form, Spinner, Alert } from "react-bootstrap";
-import Password from "antd/es/input/Password";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const UserResetPassword = () => {
@@ -33,14 +33,17 @@ const UserResetPassword = () => {
   };
 
   const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isEmailSubmitted, setIsEmailSubmitted] = useState(false);
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const navigate = useNavigate();
 
   // Email validation
   const validateEmail = (email) => {
@@ -50,18 +53,21 @@ const UserResetPassword = () => {
 
   // Password validation
   const validatePasswords = () => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{10,}$/;
     if (newPassword !== confirmPassword) {
       setErrorMessage("Passwords do not match.");
       return false;
     }
-    if (newPassword.length < 6) {
-      setErrorMessage("Password must be at least 6 characters long.");
+    if (!passwordRegex.test(newPassword)) {
+      setErrorMessage(
+        "Password must be at least 10 characters long, include at least one uppercase letter, one lowercase letter, one digit, and one special character."
+      );
       return false;
     }
     return true;
   };
 
-  // Handle email submission for verification
+  // Handle email submission for OTP request
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     if (!validateEmail(email)) {
@@ -72,7 +78,7 @@ const UserResetPassword = () => {
     setErrorMessage(null);
     try {
       const response = await axios.post(
-        ` ${import.meta.env.VITE_MY_API}user/resetUsers`,
+        `${import.meta.env.VITE_MY_API}user/resetUsers`,
         { email }
       );
       if (response.data.status === "Successful") {
@@ -91,21 +97,50 @@ const UserResetPassword = () => {
     }
   };
 
+  // Handle OTP submission for verification
+  const handleOtpSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMessage(null);
+    const details = {
+      email: email,
+      code: otp,
+    };
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_MY_API}user/verify/password`,
+        details
+      );
+      if (response.data.status === "Successful") {
+        setIsOtpVerified(true);
+        setErrorMessage(null);
+      } else {
+        setErrorMessage("Invalid OTP. Please try again.");
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred while verifying OTP.");
+      console.error("Error verifying OTP:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Handle password reset
   const handlePasswordReset = async (e) => {
     e.preventDefault();
     if (!validatePasswords()) return;
     setLoading(true);
     setErrorMessage(null);
-
     try {
       const response = await axios.put(
-        ` ${import.meta.env.VITE_MY_API}user/resetUser/`,
+        `${import.meta.env.VITE_MY_API}user/resetUser/`,
         { email, newPassword, confirmPassword }
       );
-      console.log("response", response);
       if (response.data.status === "Successful") {
         setSuccessMessage("Password successfully reset!");
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       } else {
         setErrorMessage(response.data.message);
       }
@@ -117,87 +152,13 @@ const UserResetPassword = () => {
     }
   };
 
-  // Toggle visibility of new password
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
-
-  // Toggle visibility of confirm password
-  const toggleConfirmPasswordVisibility = () => {
-    setConfirmPasswordVisible(!confirmPasswordVisible);
-  };
-
   return (
     <div style={styles.container}>
       <div style={styles.form}>
         <h2>Reset Your Password</h2>
-
         {successMessage ? (
           <Alert variant="success">{successMessage}</Alert>
-        ) : isEmailSubmitted ? (
-          <>
-            <Alert variant="success">Email found! Enter a new password.</Alert>
-            <Form onSubmit={handlePasswordReset}>
-              <Form.Group controlId="formNewPassword" style={styles.formGroup}>
-                <Form.Label>New Password</Form.Label>
-                <Form.Control
-                  type={passwordVisible ? "text" : "password"}
-                  placeholder="Enter new password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-                <span onClick={togglePasswordVisibility} style={styles.eyeIcon}>
-                  {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-                </span>
-              </Form.Group>
-
-              <Form.Group
-                controlId="formConfirmPassword"
-                style={styles.formGroup}
-              >
-                <Form.Label>Confirm Password</Form.Label>
-                <Form.Control
-                  type={confirmPasswordVisible ? "text" : "password"}
-                  placeholder="Confirm new password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                <span
-                  onClick={toggleConfirmPasswordVisibility}
-                  style={styles.eyeIcon}
-                >
-                  {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
-                </span>
-              </Form.Group>
-
-              {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
-
-              <center>
-                <Button
-                  variant="primary"
-                  type="submit"
-                  disabled={loading}
-                  className="mt-3"
-                >
-                  {loading ? (
-                    <>
-                      <Spinner
-                        as="span"
-                        animation="border"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                      />{" "}
-                      Loading...
-                    </>
-                  ) : (
-                    "Reset Password"
-                  )}
-                </Button>
-              </center>
-            </Form>
-          </>
-        ) : (
+        ) : !isEmailSubmitted ? (
           <Form onSubmit={handleEmailSubmit}>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
@@ -208,9 +169,7 @@ const UserResetPassword = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Form.Group>
-
             {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
-
             <center>
               <Button
                 variant="primary"
@@ -230,7 +189,115 @@ const UserResetPassword = () => {
                     Loading...
                   </>
                 ) : (
-                  "Submit"
+                  "Send OTP"
+                )}
+              </Button>
+            </center>
+          </Form>
+        ) : !isOtpVerified ? (
+          <Form onSubmit={handleOtpSubmit}>
+            <Form.Group controlId="formOtp">
+              <Form.Label>Enter OTP</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter OTP"
+                value={otp}
+                onChange={(e) => {
+                  const input = e.target.value;
+                  if (/^\d*$/.test(input) && input.length <= 4) {
+                    setOtp(input);
+                  }
+                }}
+              />
+            </Form.Group>
+            {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+            <center>
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={loading}
+                className="mt-3"
+              >
+                {loading ? (
+                  <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />{" "}
+                    Loading...
+                  </>
+                ) : (
+                  "Verify OTP"
+                )}
+              </Button>
+            </center>
+          </Form>
+        ) : (
+          <Form onSubmit={handlePasswordReset}>
+            <Form.Group
+              controlId="formNewPassword"
+              style={styles.formGroup}
+              className="mt-2"
+            >
+              <Form.Label>New Password</Form.Label>
+              <Form.Control
+                type={passwordVisible ? "password" : " text"}
+                placeholder="Set New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+              <span
+                onClick={() => setPasswordVisible(!passwordVisible)}
+                style={styles.eyeIcon}
+              >
+                {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </Form.Group>
+            <Form.Group
+              controlId="formConfirmPassword"
+              style={styles.formGroup}
+              className="mt-3"
+            >
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control
+                type={confirmPasswordVisible ? "password" : "text"}
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              <span
+                onClick={() =>
+                  setConfirmPasswordVisible(!confirmPasswordVisible)
+                }
+                style={styles.eyeIcon}
+              >
+                {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </Form.Group>
+            {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+            <center>
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={loading}
+                className="mt-3"
+              >
+                {loading ? (
+                  <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />{" "}
+                    Loading...
+                  </>
+                ) : (
+                  "Reset Password"
                 )}
               </Button>
             </center>

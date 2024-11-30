@@ -1,5 +1,4 @@
 import { Divider, Table, Modal, Button, Form, Input, Select } from "antd";
-import { Col, Row } from "react-bootstrap";
 import { useContext, useEffect, useState } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { DashboardContext } from "../../context/DashboardContext";
@@ -159,30 +158,32 @@ const Users = () => {
       title: "Phone",
       dataIndex: "phoneNumber",
     },
-    {
-      title: "Role",
-      dataIndex: "role",
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <Row>
-          <Col md={3}>
-            <MdEdit
-              style={{ fontSize: "20px", cursor: "pointer" }}
-              onClick={() => handleEdit(record)}
-            />
-          </Col>
-          <Col md={3}>
-            <MdDelete
-              style={{ fontSize: "20px", cursor: "pointer", color: "red" }}
-              onClick={() => handleDelete(record)}
-            />
-          </Col>
-        </Row>
-      ),
-    },
+    // {
+    //   title: "Role",
+    //   dataIndex: "role",
+    // },
+    // {
+    //   title: "Action",
+    //   key: "action",
+    //   render: (_, record) => (
+    //     <Row>
+    //       <Col md={3}>
+    //         <MdEdit
+    //           style={{ fontSize: "20px", cursor: "pointer" }}
+    //           onClick={() => handleEdit(record)}
+    //         />
+    //       </Col>
+    //       <Col md={3}>
+    //         <MdDelete
+    //           style={{ fontSize: "20px", cursor: "pointer", color: "red" }}
+    //           onClick={() => handleDelete(record)}
+    //         />
+    //       </Col>
+    //     </Row>
+    //   ),
+    // },
+
+    {},
   ];
 
   return (
@@ -242,17 +243,6 @@ const Users = () => {
           >
             <Input placeholder="Enter phone number" />
           </Form.Item>
-          {/* <Form.Item
-            name="role"
-            label="Role"
-            rules={[{ required: true, message: "Please select a role" }]}
-          >
-            <Select placeholder="Select a role">
-              <Option value="Admin">Admin</Option>
-              <Option value="Manager">Manager</Option>
-              <Option value="User">User</Option>
-            </Select>
-          </Form.Item> */}
         </Form>
       </Modal>
     </StyledUsers>

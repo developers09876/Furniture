@@ -71,7 +71,6 @@ const FeaturedProducts = () => {
       <div className="container text-center">
         <h4 className="my-4" style={{ fontSize: "32px" }}>
           Featured Products
-          <center></center>
         </h4>
         <>
           {products.length > 0 ? (

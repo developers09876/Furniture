@@ -13,7 +13,11 @@ const userSchema = new Schema({
   phoneNumber: { type: Number, required: true },
   password: { type: String, required: true, minlength: 5, maxlength: 1024 },
   Carts: { type: Array },
-  CreatedAt: { type: Date, default: Date.now },
+  created_at: {
+    type: String,
+    default: () => new Date().toLocaleDateString("en-GB"),
+  },
+  forgetPasswordCode: { type: Number },
 
   Carts: [
     {
@@ -21,6 +25,7 @@ const userSchema = new Schema({
       images: { type: [String], default: [] },
       title: { type: String, required: true },
       price: { type: String, required: true },
+      discountPrice: { type: String },
       quantity: { type: Number },
       subTotal: { type: String },
       quantity_stock: { type: String, required: true },
@@ -32,6 +37,7 @@ const userSchema = new Schema({
       images: { type: [String], default: [] },
       title: { type: String, required: true },
       price: { type: String, required: true },
+      discountPrice: { type: String },
       quantity: { type: Number },
       subTotal: { type: String },
     },

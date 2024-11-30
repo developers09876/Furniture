@@ -66,10 +66,6 @@ const UserSidebar = () => {
       <Link className="navbar-brand me-auto mb-4" to="/">
         <Logo fontSize={40} width={150} />
       </Link>
-      {/* <SidebarLink exact to="/user">
-        <Icon icon={faChartBar} />
-        Dashboard
-      </SidebarLink> */}
       <SidebarLink exact to="/user/orders">
         <Icon icon={faBox} />
         Orders
@@ -78,10 +74,10 @@ const UserSidebar = () => {
         <Icon icon={faBox} />
         Profile
       </SidebarLink>
-      {/* <SidebarLink to="/user/whistlist">
+      <SidebarLink exact to="/user">
         <Icon icon={faBox} />
-        Whistlist
-      </SidebarLink> */}
+        History
+      </SidebarLink>
 
       <Footer className="mt-auto">
         <Button className="me-2 my-3" handleClick={logout}>
