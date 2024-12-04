@@ -128,7 +128,7 @@ const FeaturedProducts = () => {
             </Col>
             <Col className="modern-image-card hero-images" sm={12} md={8}>
               <div className="chair-cnt">
-                <h2>Chair Collection!</h2>
+                <h2>Mattresses Collection!</h2>
                 <p>Launch Offer 15% Off!</p>
                 <Button type="primary">View Collections</Button>
               </div>

@@ -9,6 +9,7 @@ import axios from "axios";
 import { Form, Input, Select, Upload } from "antd";
 
 // styled components
+
 const StyledProducts = styled.div`
   width: 450px;
   margin: 10px 270px;
@@ -20,7 +21,6 @@ const AddProduct = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [categoriesField, setCategoriesField] = useState([]);
 
-  console.log("firstW", categoriesField);
   const categories = [
     { id: "1", cat_name: "Sofa" },
     { id: "2", cat_name: "Chair" },
