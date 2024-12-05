@@ -7,7 +7,8 @@ import ServicesSection from "../components/ServicesSection";
 import Cards from "../pages/Cards";
 import ShopByCategory from "../components/ShopByCategory";
 import HomeHeader from "./HomeHeader";
-import ScrollToTop from "react-scroll-to-top"
+import ScrollToTop from "react-scroll-to-top";
+import WhatsApp from "../components/WhatsApp";
 
 const Home = () => {
   return (
@@ -21,7 +22,15 @@ const Home = () => {
       <DeliveryPartners />
       <Review />
       {/* <Newsletter /> */}
-      <ScrollToTop style={{ backgroundColor: '#93aabf4d', borderRadius: '300px', color: 'white' }} smooth />
+      <ScrollToTop
+        style={{
+          backgroundColor: "#93aabf4d",
+          borderRadius: "300px",
+          color: "white",
+        }}
+        smooth
+      />
+      <WhatsApp />
     </>
   );
 };

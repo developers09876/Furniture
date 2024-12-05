@@ -209,7 +209,7 @@ const Offer = () => {
 
   useEffect(() => {
     fetchOffer();
-  }, []);
+  }, [adminOffer]);
 
   return (
     <StyledOffer>
