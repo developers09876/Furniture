@@ -4,7 +4,7 @@ import WhatsAppIcon from "../assets/whatsApp.png";
 
 const whatsAppClick = () => {
   const whatsAppURL =
-    "http://wa.me/9108559999? text=Welcome%20to%20Restropedic%20Furniture..";
+    "http://wa.me/9108559999? text=Hello%20I%20am%20interested%20in%20your%20services";
   window.open(whatsAppURL, "_blank");
 };
 const WhatsApp = () => {
