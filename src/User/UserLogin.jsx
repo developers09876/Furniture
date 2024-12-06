@@ -121,7 +121,7 @@ const UserLogin = () => {
               rules={{
                 required: "Password is required",
                 validate: (value) =>
-                  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/.test(
+                  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[\w@$!%*?& ]{10,}$/.test(
                     value
                   ) || "Login Credentials Invalid",
               }}

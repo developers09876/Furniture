@@ -18,7 +18,7 @@ const StyledProducts = styled.div`
 const AddProduct = () => {
   const [form] = Form.useForm();
   const [imageCount, setImageCount] = useState(0);
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [animationCount, setAnimationCount] = useState(0);
   const [categoriesField, setCategoriesField] = useState([]);
 
   const categories = [
@@ -190,6 +190,11 @@ const AddProduct = () => {
   const handleImageChange = (info) => {
     const { fileList } = info;
     setImageCount(fileList.length);
+    form.setFieldsValue({ images: { fileList } });
+  };
+  const handleAnimationChange = (info) => {
+    const { fileList } = info;
+    setAnimationCount(fileList.length);
     form.setFieldsValue({ images: { fileList } });
   };
   return (
@@ -369,6 +374,38 @@ const AddProduct = () => {
               </Upload>
             </Form.Item>
             <p>Total Images Selected: {imageCount}</p>
+          </div>
+          <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
+            <Form.Item
+              label="3D Animation"
+              name="images"
+              rules={[
+                {
+                  required: true,
+                  message: "Please upload  one 3D Animation",
+                },
+                {
+                  validator: (_, value) => {
+                    if (!value || value.fileList.length == 1) {
+                      return Promise.reject(
+                        new Error("Please upload one  3D Animation")
+                      );
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
+            >
+              <Upload
+                listType="picture"
+                multiple
+                beforeUpload={() => false}
+                onChange={handleAnimationChange}
+              >
+                <Button type="button">Upload 3D Animation</Button>
+              </Upload>
+            </Form.Item>
+            <p>Total 3D Animation Selected: {animationCount}</p>
           </div>
         </div>
 

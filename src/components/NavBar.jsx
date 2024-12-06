@@ -108,7 +108,11 @@ const NavBar = () => {
         filteredProducts.map((product) => (
           <Menu.Item
             key={product.id}
-            onClick={() => navigate(`/products/${product.productId}`)}
+            onClick={() => {
+              setQuery("");
+              setFilteredProducts([]);
+              navigate(`/products/${product.productId}`);
+            }}
           >
             <div style={{ display: "flex", alignItems: "center" }}>
               <img
@@ -214,7 +218,7 @@ const NavBar = () => {
               </li>
               {isAdmin && (
                 <li className="nav-item m-2 mx-3">
-                  <StyledLink className="nav-link" to="/admin/offers">
+                  <StyledLink className="nav-link" to="/admin">
                     Dashboard
                   </StyledLink>
                 </li>
