@@ -78,7 +78,7 @@ const UserLogin = () => {
       <StyledLogin>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Email Field */}
-          <div className="mb-4">
+          <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email Address
             </label>
@@ -104,14 +104,14 @@ const UserLogin = () => {
               )}
             />
             {errors.email && (
-              <p style={{ color: "red" }} role="alert">
+              <p className="mt-1" style={{ color: "red" }} role="alert">
                 {errors.email.message}
               </p>
             )}
           </div>
 
           {/* Password Field */}
-          <div className="mb-4">
+          <div className="mb-3">
             <label htmlFor="password" className="form-label">
               Password
             </label>
@@ -138,7 +138,7 @@ const UserLogin = () => {
               )}
             />
             {errors.password && (
-              <p className="mt-2" style={{ color: "red" }} role="alert">
+              <p className="mt-1" style={{ color: "red" }} role="alert">
                 {errors.password.message}
               </p>
             )}

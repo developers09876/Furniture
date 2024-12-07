@@ -196,7 +196,7 @@ const Register = () => {
               required: "Password is required",
               validate: (value) =>
                 passwordRegex.test(value) ||
-                "Password must be at least 10 characters long,one uppercase letter, one lowercase letter, one special character & one digit.",
+                "Password must be at least 10 characters long and include at least one uppercase letter, one lowercase letter, one special character, and one digit",
             }}
             render={({ field }) => (
               <Input.Password

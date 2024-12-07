@@ -202,7 +202,7 @@ const Contact = () => {
                     required: "Email is required",
                     validate: {
                       validFormat: (value) =>
-                        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(
+                        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})$/i.test(
                           value
                         ) || "Invalid email format",
                     },

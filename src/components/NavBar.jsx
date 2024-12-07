@@ -233,10 +233,12 @@ const NavBar = () => {
               <li className="nav-item ms-2 mt-3 pt-1">
                 <Link to="/cart" style={{ textDecoration: "none" }}>
                   <Badge size="small" count={isAuthenticated ? totalItems : 0}>
-                    <FontAwesomeIcon
-                      style={{ height: "18px" }}
-                      icon={faCartShopping}
-                    />
+                    <Tooltip title="Cart">
+                      <FontAwesomeIcon
+                        style={{ height: "18px" }}
+                        icon={faCartShopping}
+                      />
+                    </Tooltip>
                   </Badge>
                 </Link>
               </li>
@@ -246,12 +248,14 @@ const NavBar = () => {
                   // style={{ color: "#1D1D1D", textDecoration: "none" }}
                 >
                   <Badge size="small" count={isAuthenticated ? totalWhish : 0}>
-                    <FaRegHeart
-                      style={{
-                        fontSize: "18px",
-                        // color: "red",
-                      }}
-                    />
+                    <Tooltip title="Whishlist">
+                      <FaRegHeart
+                        style={{
+                          fontSize: "18px",
+                          // color: "red",
+                        }}
+                      />
+                    </Tooltip>
                   </Badge>
                 </Link>
               </li>

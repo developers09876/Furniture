@@ -34,18 +34,31 @@ function Profile() {
   console.log("UserData", UserData);
   const userId = localStorage.getItem("id");
   console.log("userIdP", userId);
-  const handleUpdate = (values) => {
-    confirm({
-      title: `Want to update ${UserData.username}?`,
-      okText: "Yes",
-      cancelText: "No",
-      onOk() {
-        updateRecordFromAPI();
-      },
-      onCancel() {
-        console.log("Update cancelled");
-      },
-    });
+
+  const handleUpdate = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        confirm({
+          title: `Want to update ${UserData.username}?`,
+          okText: "Yes",
+          cancelText: "No",
+          onOk() {
+            updateRecordFromAPI();
+          },
+          onCancel() {
+            console.log("Update cancelled");
+          },
+        });
+      })
+      .catch((errorInfo) => {
+        console.error("Validation Failed:", errorInfo);
+        Swal.fire({
+          icon: "error",
+          title: "Validation Error",
+          text: "Please correct the errors in the form!",
+        });
+      });
   };
 
   const updateRecordFromAPI = async () => {
@@ -109,7 +122,13 @@ function Profile() {
             <Form.Item
               label="Name"
               name="name"
-              rules={[{ required: true, message: "Please enter your name!" }]}
+              rules={[
+                { required: true, message: "Please enter your name!" },
+                {
+                  pattern: /^[a-zA-Z\s]+$/,
+                  message: "Name should only contain alphabets and spaces!",
+                },
+              ]}
             >
               <Input
                 onChange={(e) =>
@@ -141,6 +160,7 @@ function Profile() {
               ]}
             >
               <Input
+                type="number"
                 addonBefore="+91"
                 onChange={(e) =>
                   setUserData({ ...UserData, phoneNumber: e.target.value })

@@ -3,7 +3,8 @@ import Button from "../components/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Spinner, Alert } from "react-bootstrap";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { Input } from "antd";
 
 const UserResetPassword = () => {
   const styles = {
@@ -60,7 +61,7 @@ const UserResetPassword = () => {
     }
     if (!passwordRegex.test(newPassword)) {
       setErrorMessage(
-        "Password must be at least 10 characters long, include at least one uppercase letter, one lowercase letter, one digit, and one special character."
+        "Password must be at least 10 characters long and include at least one uppercase letter, one lowercase letter, one special character, and one digit"
       );
       return false;
     }
@@ -243,18 +244,15 @@ const UserResetPassword = () => {
               className="mt-2"
             >
               <Form.Label>New Password</Form.Label>
-              <Form.Control
-                type={passwordVisible ? "password" : " text"}
+              <Input.Password
+                type="number"
                 placeholder="Set New Password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
               />
-              <span
-                onClick={() => setPasswordVisible(!passwordVisible)}
-                style={styles.eyeIcon}
-              >
-                {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-              </span>
             </Form.Group>
             <Form.Group
               controlId="formConfirmPassword"
@@ -262,20 +260,15 @@ const UserResetPassword = () => {
               className="mt-3"
             >
               <Form.Label>Confirm Password</Form.Label>
-              <Form.Control
-                type={confirmPasswordVisible ? "password" : "text"}
+              <Input.Password
+                type="number"
                 placeholder="Confirm Password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-              <span
-                onClick={() =>
-                  setConfirmPasswordVisible(!confirmPasswordVisible)
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                 }
-                style={styles.eyeIcon}
-              >
-                {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
-              </span>
+              />
             </Form.Group>
             {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
             <center>
