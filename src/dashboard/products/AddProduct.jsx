@@ -20,7 +20,8 @@ const AddProduct = () => {
   const [imageCount, setImageCount] = useState(0);
   const [animationCount, setAnimationCount] = useState(0);
   const [categoriesField, setCategoriesField] = useState([]);
-
+  const [threeDimenstion, setThreeDimenstion] = useState([]);
+  console.log("threeDimenstion", threeDimenstion);
   const categories = [
     { id: "1", cat_name: "Sofa" },
     { id: "2", cat_name: "Chair" },
@@ -193,6 +194,7 @@ const AddProduct = () => {
     form.setFieldsValue({ images: { fileList } });
   };
   const handleAnimationChange = (info) => {
+    setThreeDimenstion(info);
     const { fileList } = info;
     setAnimationCount(fileList.length);
     form.setFieldsValue({ images: { fileList } });
@@ -368,7 +370,7 @@ const AddProduct = () => {
                 listType="picture"
                 multiple
                 beforeUpload={() => false} // Prevents automatic upload
-                onChange={handleImageChange}
+                onChange={{ handleImageChange }}
               >
                 <Button type="button">Upload Images</Button>
               </Upload>
