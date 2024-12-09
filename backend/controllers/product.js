@@ -164,6 +164,8 @@ export const createProduct = async (req, res) => {
   }
 };
 
+export const createThreeDimenstion = async (req, res) => {};
+
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;

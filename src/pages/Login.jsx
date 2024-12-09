@@ -50,7 +50,7 @@ const Login = () => {
             // Display success message using SweetAlert
             Swal.fire({
               icon: "success",
-              title: "Login successful!",
+              title: "Admin Login successful!",
               showConfirmButton: false,
               timer: 1500,
             });

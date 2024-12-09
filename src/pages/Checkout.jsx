@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
-import { generateUUID, currentDate } from "../utils/helpers";
+import { currentDate } from "../utils/helpers";
 import axios from "axios";
 import styled from "styled-components";
 import Button from "../components/Button";
@@ -11,11 +11,43 @@ import Breadcrumb from "../components/Breadcrumb";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import { DashboardContext } from "../context/DashboardContext";
+import { FaCreditCard, FaMoneyBillWave } from "react-icons/fa";
 
 const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
 `;
+
+const styles = {
+  container: (isSelected) => ({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "1.5rem",
+    border: isSelected ? "2px solid #28a745" : "2px solid #ddd",
+    borderRadius: "10px",
+    backgroundColor: isSelected ? "#e8f5e9" : "#fff",
+    boxShadow: isSelected ? "0 3px 6px rgba(40, 167, 69, 0.2)" : "none",
+    cursor: "pointer",
+    marginBottom: "1rem",
+    transition: "all 0.3s ease",
+  }),
+  label: {
+    display: "flex",
+    alignItems: "center",
+    gap: "1rem",
+    fontWeight: "bold",
+    fontSize: "1rem",
+    color: "#333",
+  },
+  hiddenInput: {
+    display: "none",
+  },
+  icon: (isSelected) => ({
+    fontSize: "1.5rem",
+    color: isSelected ? "#28a745" : "#666",
+  }),
+};
 
 const Checkout = () => {
   // const isFormValid = () => {
@@ -290,12 +322,19 @@ const Checkout = () => {
                   <label htmlFor="phone" className="form-label">
                     Phone Number :
                   </label>
+
                   <input
-                    type="number"
+                    type="text"
                     className="form-control"
                     id="phone"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    // onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => {
+                      const input = e.target.value;
+                      if (/^\d{0,10}$/.test(input)) {
+                        setPhone(input);
+                      }
+                    }}
                     required
                   />
                 </div>
@@ -313,7 +352,7 @@ const Checkout = () => {
                     required
                   />
                 </div>
-                <div>
+                {/* <div>
                   <label>
                     <input
                       type="radio"
@@ -334,6 +373,49 @@ const Checkout = () => {
                     />
                     Cash on Delivery (COD)
                   </label>
+                </div> */}
+                <div>
+                  <div
+                    style={styles.container(paymentMethod === "online")}
+                    onClick={() =>
+                      handlePaymentMethodChange({ target: { value: "online" } })
+                    }
+                  >
+                    <label style={styles.label}>
+                      <input
+                        type="radio"
+                        value="online"
+                        checked={paymentMethod === "online"}
+                        onChange={handlePaymentMethodChange}
+                        style={styles.hiddenInput}
+                      />
+                      <FaCreditCard
+                        style={styles.icon(paymentMethod === "online")}
+                      />
+                      Pay Online (Razorpay)
+                    </label>
+                  </div>
+
+                  <div
+                    style={styles.container(paymentMethod === "cod")}
+                    onClick={() =>
+                      handlePaymentMethodChange({ target: { value: "cod" } })
+                    }
+                  >
+                    <label style={styles.label}>
+                      <input
+                        type="radio"
+                        value="cod"
+                        checked={paymentMethod === "cod"}
+                        onChange={handlePaymentMethodChange}
+                        style={styles.hiddenInput}
+                      />
+                      <FaMoneyBillWave
+                        style={styles.icon(paymentMethod === "cod")}
+                      />
+                      Cash on Delivery (COD)
+                    </label>
+                  </div>
                 </div>
               </div>
 

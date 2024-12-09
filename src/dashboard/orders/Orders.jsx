@@ -66,7 +66,7 @@ const UserOrders = () => {
 
   const viewOrder = [
     {
-      title: "Sno",
+      title: "S.No",
       render: (i, record, index) => (
         <div>
           <p>{1 + index}</p>

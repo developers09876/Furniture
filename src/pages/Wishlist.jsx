@@ -36,6 +36,24 @@ const Wishlist = () => {
     align-items: center;
     margin: 2rem 0;
 
+    .remove {
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background-color: #007bff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-align: center;
+      display: inline-block;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .remove:hover {
+      background-color: #0056b3;
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
     .title {
       grid-template-rows: 75px;
       display: grid;
@@ -153,7 +171,7 @@ const Wishlist = () => {
                       className="remove-btn col-4 col-md"
                       onClick={() => handleDelete(items)}
                     >
-                      <FontAwesomeIcon className="text-danger" icon={faTrash} />
+                      <h4 className="remove">Remove</h4>
                     </div>
                     <div className="addToCart d-md-block col">
                       <Button
@@ -168,9 +186,7 @@ const Wishlist = () => {
                     <button
                       className="remove-btn col-2 col-md-2"
                       onClick={() => removeItem(id)}
-                    >
-                      {/* <FontAwesomeIcon className='text-danger' icon={faTrash} /> */}
-                    </button>
+                    ></button>
                   </Wrapper>
                 );
               })
