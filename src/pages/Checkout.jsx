@@ -320,7 +320,7 @@ const Checkout = () => {
 
                 <div className="mb-3">
                   <label htmlFor="phone" className="form-label">
-                    Phone Number :
+                    Phone Number:
                   </label>
 
                   <input
@@ -443,7 +443,7 @@ const Checkout = () => {
                   ))} */}
                     {/* <hr /> */}
                     <div className="d-flex justify-content-between mb-2">
-                      <p className="card-text fw-bold">Order Sub-Total : </p>
+                      <p className="card-text fw-bold">Order Sub-Total: </p>
                       <span className="text-success">
                         <FaIndianRupeeSign />
                         {/* {subTotal.toFixed(2)} */}
@@ -453,13 +453,13 @@ const Checkout = () => {
                     <hr />
 
                     <div className="d-flex justify-content-between mb-2">
-                      <p className="card-text fw-bold">Order Total : </p>
+                      <p className="card-text fw-bold">Order Total:</p>
                       <span className="text-danger">
                         <FaIndianRupeeSign /> {totalOrder.toFixed(2)}
                       </span>
                     </div>
                     <p className="card-text">
-                      Delivered By :
+                      Delivered By: &nbsp;
                       {selectedDeliveryOption === "amana" ? "Amana" : "Ozone"}
                     </p>
                     <div className="form-check">

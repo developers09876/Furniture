@@ -112,7 +112,7 @@ const Register = () => {
           <label htmlFor="name" className="form-label">
             Name
           </label>
-          <input
+          <Input
             type="text"
             className="form-control"
             id="name"
@@ -146,12 +146,7 @@ const Register = () => {
               },
             }}
             render={({ field }) => (
-              <Input
-                {...field}
-                id="email"
-                placeholder="Email address"
-                status={errors.email ? "error" : ""}
-              />
+              <Input {...field} id="email" placeholder="Email address" />
             )}
           />
           {errors.email && (
@@ -165,13 +160,13 @@ const Register = () => {
           <label htmlFor="phone" className="form-label">
             Phone Number
           </label>
-          <input
+          <Input
             type="tel"
             className="form-control"
             id="phone"
             maxLength={10}
             {...register("phone", {
-              required: "Phone number is required",
+              required: "Phone Number is required",
               validate: (value) =>
                 /^[0-9]+$/.test(value) || "Only Numbers Are Allowed",
               pattern: {

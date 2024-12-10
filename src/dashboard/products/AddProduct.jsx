@@ -236,7 +236,7 @@ const AddProduct = () => {
         title: "Success",
         text: "Product Added Successfully",
       });
-      // navigate("/admin/products/");
+      navigate("/admin/products/");
     } catch (error) {
       console.error("Error adding product:", error);
       Swal.fire({
@@ -323,9 +323,9 @@ const AddProduct = () => {
               rules={[
                 { required: true, message: "Please enter a short description" },
                 {
-                  min: 3,
+                  min: 5,
                   message:
-                    "Short description must be at least 10 characters long",
+                    "Short description must be at least 5 characters long",
                 },
               ]}
             >
@@ -342,7 +342,7 @@ const AddProduct = () => {
                 {
                   min: 10,
                   message:
-                    "Long description must be at least 20 characters long",
+                    "Long description must be at least 10 characters long",
                 },
               ]}
             >
