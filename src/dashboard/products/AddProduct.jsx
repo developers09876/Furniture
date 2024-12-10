@@ -4,9 +4,10 @@ import { DashboardContext } from "../../context/DashboardContext";
 import Button from "../../components/Button";
 import { currentDate, generateUUID } from "../../utils/helpers";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Form, Input, Select, Upload } from "antd";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 // styled components
 
@@ -20,14 +21,7 @@ const AddProduct = () => {
   const [imageCount, setImageCount] = useState(0);
   const [animationCount, setAnimationCount] = useState(0);
   const [categoriesField, setCategoriesField] = useState([]);
-  const [threeDimenstion, setThreeDimenstion] = useState([]);
-  console.log("threeDimenstion", threeDimenstion);
-  const categories = [
-    { id: "1", cat_name: "Sofa" },
-    { id: "2", cat_name: "Chair" },
-    { id: "3", cat_name: "Table" },
-    { id: "4", cat_name: "Bench" },
-  ];
+  const [selectedImages, setSelectedImages] = useState([]);
 
   const navigate = useNavigate();
 
@@ -42,6 +36,7 @@ const AddProduct = () => {
     offer: "",
     category: "",
     images: [],
+    animation: [],
     specifications: [
       {
         product_Details: {
@@ -65,7 +60,7 @@ const AddProduct = () => {
       },
     ],
   });
-
+  console.log("formData", formData);
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_MY_API}Category/get`).then((response) => {
       setCategoriesField(response.data);
@@ -89,32 +84,6 @@ const AddProduct = () => {
       updatedSpecifications[0][section][field] = value;
       return { ...prevForm, specifications: updatedSpecifications };
     });
-  };
-
-  const uploadImages = async () => {
-    const uploadedImages = [];
-
-    for (const image of selectedImages) {
-      const data = new FormData();
-      data.append("file", image);
-      data.append("upload_preset", "Furniture"); // Replace with your Cloudinary upload preset
-
-      try {
-        const response = await fetch(
-          "https://api.cloudinary.com/v1_1/dk6vgylx3/image/upload", // Replace with your Cloudinary URL
-          {
-            method: "POST",
-            body: data,
-          }
-        );
-        const cloudinaryData = await response.json();
-        uploadedImages.push(cloudinaryData.secure_url); // Collect the URL
-      } catch (error) {
-        console.error("Error uploading image:", error);
-      }
-    }
-
-    return uploadedImages;
   };
 
   const handleDynamicInputChange = (e, index) => {
@@ -141,46 +110,135 @@ const AddProduct = () => {
   };
 
   const handleDynamicAddClick = () => {
-    // Make a deep copy of specifications to avoid mutating the state directly
     const updatedSpecifications = [...formData.specifications];
 
-    // Ensure that the dynamicFields array exists
     if (!updatedSpecifications[0].product_Details.dynamicFields) {
       updatedSpecifications[0].product_Details.dynamicFields = [];
     }
 
-    // Push new dynamic field
     updatedSpecifications[0].product_Details.dynamicFields.push({
       title: "",
       description: "",
     });
 
-    // Set the updated state without converting it to a JSON string
     setFormData({
       ...formData,
-      specifications: updatedSpecifications, // No need for JSON.stringify here
+      specifications: updatedSpecifications,
     });
   };
-  console.log("form data:", formData);
 
-  const addProduct = async () => {
-    const imageUrls = await uploadImages();
-    const updatedFormData = {
-      ...formData,
-      images: imageUrls,
-    };
+  // const uploadImages = async () => {
+  //   const uploadedImages = [];
+
+  //   for (const image of selectedImages) {
+  //     const data = new FormData();
+  //     data.append("file", image.originFileObj); // Use originFileObj for the actual file
+  //     data.append("upload_preset", "Furniture"); // Replace with your Cloudinary upload preset
+
+  //     try {
+  //       const response = await fetch(
+  //         "https://api.cloudinary.com/v1_1/dk6vgylx3/image/upload", // Replace with your Cloudinary URL
+  //         {
+  //           method: "POST",
+  //           body: data,
+  //         }
+  //       );
+  //       const cloudinaryData = await response.json();
+  //       uploadedImages.push(cloudinaryData.secure_url); // Collect the URL
+  //     } catch (error) {
+  //       console.error("Error uploading image:", error);
+  //     }
+  //   }
+
+  //   return uploadedImages;
+  // };
+
+  const uploadImages = async () => {
+    const uploadedImages = [];
+
+    for (const image of selectedImages) {
+      const data = new FormData();
+      data.append("file", image.originFileObj);
+      // data.append("file", image);
+      data.append("upload_preset", "Furniture"); // Replace with your Cloudinary upload preset
+
+      try {
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dk6vgylx3/image/upload", // Replace with your Cloudinary URL
+          {
+            method: "POST",
+            body: data,
+          }
+        );
+        const cloudinaryData = await response.json();
+        uploadedImages.push(cloudinaryData.secure_url); // Collect the URL
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+
+    return uploadedImages;
+  };
+  const upload3DAnimation = async (file) => {
+    const formData = new FormData();
+
+    formData.append("animation", file);
+    // formData.append(file.originFileObj.name, file);
 
     try {
-      axios
-        .post(`${import.meta.env.VITE_MY_API}products/create`, updatedFormData)
-        .then((res) => {
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Product Added Successfully",
-          });
-        });
+      const response = await axios.post(
+        `${import.meta.env.VITE_MY_API}products/uploadGLB`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data.fileUrl;
     } catch (error) {
+      console.error("Failed to upload 3D animation", error);
+      throw new Error("Failed to upload 3D animation");
+    }
+  };
+  const addProduct = async (data) => {
+    console.log("data", data);
+
+    try {
+      const animationFileUrl = await upload3DAnimation(formData.animation);
+      const imageUrls = await uploadImages();
+
+      if (imageUrls.length === 0) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No images were uploaded. Please try again.",
+        });
+        return;
+      }
+
+      const updatedFormData = {
+        ...data,
+        images: imageUrls,
+        threeDimenstion: animationFileUrl,
+        specifications: formData.specifications,
+      };
+
+      console.log("Updated Data:", updatedFormData);
+
+      await axios.post(
+        `${import.meta.env.VITE_MY_API}products/create`,
+        updatedFormData
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Product Added Successfully",
+      });
+      // navigate("/admin/products/");
+    } catch (error) {
+      console.error("Error adding product:", error);
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -188,17 +246,32 @@ const AddProduct = () => {
       });
     }
   };
+
   const handleImageChange = (info) => {
     const { fileList } = info;
+    setSelectedImages(fileList);
     setImageCount(fileList.length);
-    form.setFieldsValue({ images: { fileList } });
+    form.setFieldsValue({
+      images: { fileList },
+    });
   };
+
   const handleAnimationChange = (info) => {
-    setThreeDimenstion(info);
-    const { fileList } = info;
-    setAnimationCount(fileList.length);
-    form.setFieldsValue({ images: { fileList } });
+    if (info.fileList.length === 1) {
+      setFormData((prevData) => ({
+        ...prevData,
+        animation: info.fileList[0].originFileObj,
+      }));
+      setAnimationCount(info.fileList.length);
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        animation: null,
+      }));
+      setAnimationCount(0); // Reset the count if more than 1 file is selected
+    }
   };
+
   return (
     <StyledProducts style={{ width: "100%" }}>
       <h2 className="mb-5">Add Product</h2>
@@ -230,6 +303,7 @@ const AddProduct = () => {
               rules={[{ required: true, message: "Please select a category" }]}
             >
               <Select placeholder="Select a category">
+                x
                 {categoriesField.map((categoryField) => (
                   <Select.Option
                     key={categoryField.id}
@@ -352,45 +426,17 @@ const AddProduct = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please upload at least one image",
+                  message: "upload Minimum Three  image",
                 },
                 {
                   validator: (_, value) => {
-                    if (!value || value.fileList.length < 1) {
+                    if (
+                      !value ||
+                      !value.fileList ||
+                      value.fileList.length < 3
+                    ) {
                       return Promise.reject(
-                        new Error("Please upload at least one image")
-                      );
-                    }
-                    return Promise.resolve();
-                  },
-                },
-              ]}
-            >
-              <Upload
-                listType="picture"
-                multiple
-                beforeUpload={() => false} // Prevents automatic upload
-                onChange={{ handleImageChange }}
-              >
-                <Button type="button">Upload Images</Button>
-              </Upload>
-            </Form.Item>
-            <p>Total Images Selected: {imageCount}</p>
-          </div>
-          <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
-            <Form.Item
-              label="3D Animation"
-              name="images"
-              rules={[
-                {
-                  required: true,
-                  message: "Please upload  one 3D Animation",
-                },
-                {
-                  validator: (_, value) => {
-                    if (!value || value.fileList.length == 1) {
-                      return Promise.reject(
-                        new Error("Please upload one  3D Animation")
+                        new Error("upload Minimum Three  image")
                       );
                     }
                     return Promise.resolve();
@@ -402,7 +448,40 @@ const AddProduct = () => {
                 listType="picture"
                 multiple
                 beforeUpload={() => false}
+                onChange={handleImageChange}
+              >
+                <Button type="button">Upload Images</Button>
+              </Upload>
+            </Form.Item>
+            <p>Total Images Selected: {imageCount}</p>
+          </div>
+          <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
+            <Form.Item
+              label="3D Animation"
+              name="animation"
+              rules={[
+                {
+                  required: true,
+                  message: "upload Minimum Three  image",
+                },
+                {
+                  validator: (_, value) => {
+                    if (!value || value.fileList.length !== 1) {
+                      return Promise.reject(
+                        new Error("upload Minimum Three  image")
+                      );
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
+            >
+              <Upload
+                listType="picture"
+                multiple={false} // Only one file can be uploaded
+                beforeUpload={() => false}
                 onChange={handleAnimationChange}
+                accept=".glb,.gltf" // Ensure only .glb or .gltf files are allowed
               >
                 <Button type="button">Upload 3D Animation</Button>
               </Upload>
@@ -421,7 +500,7 @@ const AddProduct = () => {
             <h5>
               <b>Product Details</b>
             </h5>
-            {/* Specification fields using handleSpecificationChange */}
+
             <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
               <label htmlFor="feel">feel:</label>
               <input
@@ -429,7 +508,6 @@ const AddProduct = () => {
                 className="form-control"
                 id="feel"
                 name="feel"
-                // value={formData?.specifications[0].product_Details.feel || ""}
                 onChange={(e) =>
                   handleSpecificationChange(e, "product_Details", "feel")
                 }
@@ -437,15 +515,12 @@ const AddProduct = () => {
             </div>
 
             <div className="form-group fw-bold my-2 col-lg-4 col-md-6">
-              <label htmlFor="cover_Type">Cover / :</label>
+              <label htmlFor="cover_Type">Cover :</label>
               <input
                 type="text"
                 className="form-control"
                 id="cover_Type"
                 name="cover_Type"
-                // value={
-                //   formData?.specifications[0].product_Details.cover_Type || ""
-                // }
                 onChange={(e) =>
                   handleSpecificationChange(e, "product_Details", "cover_Type")
                 }
@@ -459,10 +534,6 @@ const AddProduct = () => {
                 className="form-control"
                 id="cover_Material"
                 name="cover_Material"
-                // value={
-                //   formData?.specifications[0].product_Details
-                //     .cover_Material || ""
-                // }
                 onChange={(e) =>
                   handleSpecificationChange(
                     e,
@@ -480,10 +551,6 @@ const AddProduct = () => {
                 className="form-control"
                 id="matress_Type"
                 name="matress_Type"
-                // value={
-                //   formData?.specifications[0].product_Details.matress_Type ||
-                //   ""
-                // }
                 onChange={(e) =>
                   handleSpecificationChange(
                     e,
@@ -501,9 +568,6 @@ const AddProduct = () => {
                 className="form-control"
                 id="Usability"
                 name="Usability"
-                // value={
-                //   formData?.specifications[0].product_Details.Usability || ""
-                // }
                 onChange={(e) =>
                   handleSpecificationChange(e, "product_Details", "Usability")
                 }
@@ -594,10 +658,6 @@ const AddProduct = () => {
                   className="form-control"
                   id="dimensions"
                   name="dimensions"
-                  // value={
-                  //   formData?.specifications[0].product_Dimension
-                  //     .dimensions || ""
-                  // }
                   onChange={(e) =>
                     handleSpecificationChange(
                       e,
@@ -619,7 +679,6 @@ const AddProduct = () => {
                   className="form-control"
                   id="Warranty"
                   name="Warranty"
-                  // value={formData.specifications[0].product_Policies.Warranty}
                   onChange={(e) =>
                     handleSpecificationChange(e, "product_Policies", "Warranty")
                   }
@@ -633,7 +692,6 @@ const AddProduct = () => {
                   className="form-control"
                   id="Shipping"
                   name="Shipping"
-                  // value={formData.specifications[0].product_Policies.Shipping}
                   onChange={(e) =>
                     handleSpecificationChange(e, "product_Policies", "Shipping")
                   }
@@ -647,10 +705,6 @@ const AddProduct = () => {
                   className="form-control"
                   id="available_Offers"
                   name="available_Offers"
-                  // value={
-                  //   formData.specifications[0].product_Policies
-                  //     .available_Offers
-                  // }
                   onChange={(e) =>
                     handleSpecificationChange(
                       e,
@@ -668,7 +722,6 @@ const AddProduct = () => {
                   className="form-control"
                   id="trial"
                   name="trial"
-                  // value={formData.specifications[0].product_Policies.trial}
                   onChange={(e) =>
                     handleSpecificationChange(e, "product_Policies", "trial")
                   }

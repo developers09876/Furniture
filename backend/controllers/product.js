@@ -35,70 +35,6 @@ export const getOneProduct = async (req, res) => {
   }
 };
 
-// export const createProduct = async (req, res) => {
-//   try {
-//     console.log("Request body:", req.body, images); // Log the request body
-//     // Log the uploaded file
-//     // Extract data from the request body
-//     const {
-//       title,
-//       price,
-//       discountPrice,
-//       collection_,
-//       color,
-//       category,
-//       description,
-//       LongDesc,
-//       feature,
-//       rating,
-//       review,
-//       offer,
-//       images,
-//       quantity_stock,
-//       specifications, // Assuming specification is part of req.body
-//     } = req.body;
-
-//     let parsedSpecifications;
-//     if (typeof specifications === "string") {
-//       try {
-//         parsedSpecifications = JSON.parse(specifications);
-//       } catch (error) {
-//         return res
-//           .status(400)
-//           .json({ message: '"specifications" is not valid JSON' });
-//       }
-//     } else {
-//       parsedSpecifications = specifications; // If it's already an object
-//     }
-//     const newProduct = new Product({
-//       title,
-//       price,
-//       discountPrice,
-//       collection_,
-//       color,
-//       category,
-//       description,
-//       LongDesc,
-//       feature,
-//       rating,
-//       review,
-//       offer,
-//       images,
-//       quantity_stock,
-//       //   images: imageUrl ? [imageUrl] : [], // Add image URL to images array
-//       specifications: parsedSpecifications ? parsedSpecifications : [], // Parse specification if necessary
-//     });
-
-//     // Save the product in the database
-//     const savedProduct = await newProduct.save();
-//     res
-//       .status(200)
-//       .json({ message: "Product added successfully", product: savedProduct });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
 export const createProduct = async (req, res) => {
   try {
     // Extract data from the request body
@@ -116,6 +52,7 @@ export const createProduct = async (req, res) => {
       review,
       offer,
       images, // Now images is defined before being used
+      threeDimenstion,
       quantity_stock,
       specifications, // Assuming specifications is part of req.body
     } = req.body;
@@ -150,6 +87,7 @@ export const createProduct = async (req, res) => {
       review,
       offer,
       images,
+      threeDimenstion,
       quantity_stock,
       specifications: parsedSpecifications ? parsedSpecifications : [], // Parse specifications if necessary
     });
@@ -164,7 +102,16 @@ export const createProduct = async (req, res) => {
   }
 };
 
-export const createThreeDimenstion = async (req, res) => {};
+export const createThreeDimenstion = async (req, res) => {
+  if (!req.file) {
+    return res
+      .status(400)
+      .json({ error: "No file uploaded or invalid file type" });
+  }
+
+  const fileUrl = `/public/${req.file.filename}`;
+  res.status(200).json({ fileUrl });
+};
 
 export const deleteProduct = async (req, res) => {
   try {

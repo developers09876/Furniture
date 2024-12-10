@@ -13,6 +13,7 @@ const productSchema = new Schema({
   color: { type: String },
   category: { type: String },
   images: { type: [String] },
+  threeDimenstion: { type: String },
   description: { type: String, required: true },
   LongDesc: { type: String },
   feature: { type: Boolean },

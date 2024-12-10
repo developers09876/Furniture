@@ -8,13 +8,11 @@ export const DashboardProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
-  console.log("productszs", products);
 
   const userID = localStorage.getItem("id");
   const [cartdata, setCartdata] = useState({ items: [] });
   console.log("cartdatah", cartdata);
   const [whishlistData, setwhishlistData] = useState({ items: [] });
-  console.log("cartdata dash", users);
   console.log("whishlistData dash", whishlistData);
 
   useEffect(() => {
@@ -249,9 +247,12 @@ export const DashboardProvider = ({ children }) => {
   const addProduct = async (newProduct) => {
     axios
       .post(`${import.meta.env.VITE_MY_API}products`, newProduct)
-      .then(() => {
-        setProducts([...products, response.data]);
+      .then((res) => {
+        console.log("res", res);
+        console.log("res", res.data);
+        setProducts(res.data);
         showAlert("success", "Product Added", "Product added successfully.");
+        fetchData();
       })
 
       .catch((error) => {
