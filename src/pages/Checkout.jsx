@@ -9,9 +9,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Breadcrumb from "../components/Breadcrumb";
 import { FaIndianRupeeSign } from "react-icons/fa6";
-import { useForm } from "react-hook-form";
 import { DashboardContext } from "../context/DashboardContext";
 import { FaCreditCard, FaMoneyBillWave } from "react-icons/fa";
+import { Form } from "antd";
+import { useForm } from "react-hook-form";
 
 const Title = styled.h1`
   font-size: 24px;
@@ -50,6 +51,8 @@ const styles = {
 };
 
 const Checkout = () => {
+  const [form] = Form.useForm();
+
   // const isFormValid = () => {
   //   return (
   //     name.trim() !== "" && phone.trim() !== "" && shippingAddress.trim() !== ""
@@ -64,24 +67,25 @@ const Checkout = () => {
 
   const isFormValid = () => {
     return (
-      name.trim() !== "" && phone.trim() !== "" && shippingAddress.trim() !== ""
+      name.trim() !== "" &&
+      String(phone).trim() !== "" &&
+      shippingAddress.trim() !== ""
     );
   };
   const onSubmit = (data) => console.log(data);
   const { clearCartPlaceOrder } = useContext(CartContext);
   const { isAuthenticated } = useContext(AuthContext);
-  const [shippingAddress, setShippingAddress] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [shippingAddress, setShippingAddress] = useState("");
   const [orderID, setOrderID] = useState("");
   const [success, setSuccess] = useState(false);
   const [selectedDeliveryOption, setSelectedDeliveryOption] = useState("amana");
   const [paymentMethod, setPaymentMethod] = useState("online");
+  const [userData, setUserData] = useState("");
   const { cartdata } = useContext(DashboardContext);
   console.log("CartdataCartdata", cartdata.items);
   const navigate = useNavigate();
-
-  let cartValue = cartdata.items[0];
   const userId = localStorage.getItem("id");
 
   useEffect(() => {
@@ -89,6 +93,21 @@ const Checkout = () => {
       navigate("/cart");
     }
   }, [isAuthenticated, cartdata]);
+
+  useEffect(() => {
+    fetchuserData();
+  }, []);
+
+  const fetchuserData = () => {
+    axios
+      .get(`${import.meta.env.VITE_MY_API}user/getUser/${userId}`)
+      .then((res) => {
+        setUserData(res.data.data);
+        setName(res.data.data.username);
+        setPhone(res.data.data.phoneNumber);
+        setShippingAddress(res.data.data.address_details[0].address);
+      });
+  };
 
   const createOrder = async () => {
     if (!isFormValid()) {
@@ -109,7 +128,7 @@ const Checkout = () => {
       shipping_address: shippingAddress,
       name: name,
       phone: phone,
-      order_status: "pending",
+      order_status: "Pending",
       created_at: currentDate(),
       description: `hiii this descrprtion `,
       order_total: totalOrder,
@@ -298,7 +317,7 @@ const Checkout = () => {
           </div>
         ) : (
           <>
-            <form
+            <Form
               className="mt-5"
               style={{ display: "flex" }}
               onSubmit={handleSubmit(onSubmit)}
@@ -324,14 +343,14 @@ const Checkout = () => {
                   </label>
 
                   <input
-                    type="text"
+                    type="tel"
                     className="form-control"
                     id="phone"
                     value={phone}
-                    // onChange={(e) => setPhone(e.target.value)}
+                    maxLength={10}
                     onChange={(e) => {
                       const input = e.target.value;
-                      if (/^\d{0,10}$/.test(input)) {
+                      if (/^\d*$/.test(input)) {
                         setPhone(input);
                       }
                     }}
@@ -352,28 +371,7 @@ const Checkout = () => {
                     required
                   />
                 </div>
-                {/* <div>
-                  <label>
-                    <input
-                      type="radio"
-                      value="online"
-                      checked={paymentMethod === "online"}
-                      onChange={handlePaymentMethodChange}
-                    />
-                    Pay Online (Razorpay)
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    <input
-                      type="radio"
-                      value="cod"
-                      checked={paymentMethod === "cod"}
-                      onChange={handlePaymentMethodChange}
-                    />
-                    Cash on Delivery (COD)
-                  </label>
-                </div> */}
+
                 <div>
                   <div
                     style={styles.container(paymentMethod === "online")}
@@ -507,7 +505,7 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
-            </form>
+            </Form>
           </>
         )}
       </div>

@@ -79,7 +79,7 @@ const UserOrders = () => {
       Swal.fire({
         icon: "success",
         title: "Updated!",
-        text: `User Order has been updated successfully.`,
+        text: `Your  Order has been Cancelled.`,
       });
     } catch (error) {
       console.error("Error updating Order:", error);

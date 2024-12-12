@@ -5,7 +5,8 @@ import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
-
+import { userData } from "three/webgpu";
+const { TextArea } = Input;
 const { confirm } = Modal;
 
 const StyledProfile = styled.div`
@@ -15,25 +16,14 @@ const StyledProfile = styled.div`
   width: 100%;
 `;
 
-const initialData = [
-  {
-    key: "1",
-    name: "",
-    email: "",
-    phonenumber: "",
-    password: "",
-  },
-];
-
 function Profile() {
   const [form] = Form.useForm();
-  const [data, setData] = useState(initialData);
-  const [name, setName] = useState("");
-  const [phonenumber, setPhonenumber] = useState("");
+  // const [data, setData] = useState(initialData);
+  // const [name, setName] = useState("");
+  // const [phonenumber, setPhonenumber] = useState("");
   const [UserData, setUserData] = useState("");
-  console.log("UserData", UserData);
+  console.log("UserDatax", UserData);
   const userId = localStorage.getItem("id");
-  console.log("userIdP", userId);
 
   const handleUpdate = () => {
     form
@@ -62,10 +52,18 @@ function Profile() {
   };
 
   const updateRecordFromAPI = async () => {
+    console.log("UserDataApi", UserData);
+
+    const details = {
+      username: UserData.username,
+      email: UserData.email,
+      phoneNumber: UserData.phoneNumber,
+      pincode: UserData?.address_details?.[0].pincode,
+      address: UserData?.address_details?.[0].address,
+    };
     axios
-      .post(`${import.meta.env.VITE_MY_API}user/update/${userId}`, UserData)
+      .post(`${import.meta.env.VITE_MY_API}user/update/${userId}`, details)
       .then((res) => {
-        setData(res.data);
         Swal.fire({
           icon: "success",
           title: "Updated!",
@@ -90,23 +88,24 @@ function Profile() {
   const fetchUser = async () => {
     axios
       .get(`${import.meta.env.VITE_MY_API}user/getUser/${userId}`)
-      .then((response) => {
-        setUserData(response.data.data);
+      .then((res) => {
+        setUserData(res.data.data);
         form.setFieldsValue({
-          name: response.data.data.username,
-          email: response.data.data.email,
-          phonenumber: response.data.data.phoneNumber,
+          name: res.data.data.username,
+          email: res.data.data.email,
+          phonenumber: res.data.data.phoneNumber,
+          pincode: res.data.data?.address_details?.[0].pincode,
+          address: res.data.data?.address_details?.[0].address,
         });
       })
-
       .catch((error) => {
-        handleOperationError("product", "adding");
+        handleOperationError("product", "adding", error);
       });
   };
 
   useEffect(() => {
     fetchUser();
-  }, []);
+  }, [userId]);
 
   return (
     <StyledProfile>
@@ -170,10 +169,71 @@ function Profile() {
               />
             </Form.Item>
           </Col>
+          <Col xs={12} sm={6}>
+            <Form.Item
+              label="Pincode"
+              name="pincode"
+              rules={[
+                {
+                  required: true,
+                  message: "Pincode is required",
+                },
+              ]}
+            >
+              <Input
+                type="tel"
+                placeholder="Pin Code"
+                maxLength={6}
+                onChange={(e) => {
+                  setUserData({
+                    ...UserData,
+                    address_details: UserData?.address_details?.map(
+                      (item, index) =>
+                        index === 0
+                          ? { ...item, pincode: e.target.value }
+                          : item
+                    ),
+                  });
+                }}
+              />
+            </Form.Item>
+          </Col>
         </Row>
 
         <Row>
-          <Col xs={12}>
+          <Col xs={12} sm={6}>
+            <Form.Item
+              label="Address"
+              name="address"
+              rules={[
+                {
+                  required: true,
+                  message: "Address is mandatory",
+                },
+                {
+                  min: 2,
+                  message: "Ensure Location Accuracy",
+                },
+              ]}
+            >
+              <TextArea
+                rows={4}
+                placeholder="Enter Your Address"
+                onChange={(e) => {
+                  setUserData({
+                    ...UserData,
+                    address_details: UserData?.address_details?.map(
+                      (item, index) =>
+                        index === 0
+                          ? { ...item, address: e.target.value }
+                          : item
+                    ),
+                  });
+                }}
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={12} sm={6}>
             <Button type="primary" onClick={(values) => handleUpdate(values)}>
               Update
             </Button>

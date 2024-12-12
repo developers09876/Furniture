@@ -112,7 +112,8 @@ const Register = () => {
           <label htmlFor="name" className="form-label">
             Name
           </label>
-          <Input
+          <input
+            placeholder="Name"
             type="text"
             className="form-control"
             id="name"
@@ -160,21 +161,23 @@ const Register = () => {
           <label htmlFor="phone" className="form-label">
             Phone Number
           </label>
-          <Input
-            type="tel"
+          <input
+            placeholder="Phone Number"
+            type="text" // Use text to avoid issues with leading zeroes
             className="form-control"
             id="phone"
-            maxLength={10}
+            maxLength="10" // Restrict input to 10 characters
             {...register("phone", {
               required: "Phone Number is required",
-              validate: (value) =>
-                /^[0-9]+$/.test(value) || "Only Numbers Are Allowed",
+              // validate: (value) =>
+              //   / `^[0-9]+$/.test(value) || "Only Numbers Are Allowed",
               pattern: {
                 value: /^[0-9]{10}$/,
                 message: "10 digits Number Only Allowed",
               },
             })}
           />
+
           {errors.phone && (
             <p style={{ color: "red" }} role="alert">
               {errors.phone.message}
@@ -189,18 +192,20 @@ const Register = () => {
             control={control}
             rules={{
               required: "Password is required",
-              validate: (value) =>
-                passwordRegex.test(value) ||
-                "Password must be at least 10 characters long and include at least one uppercase letter, one lowercase letter, one special character, and one digit",
+              validate: {
+                validFormat: (value) =>
+                  passwordRegex.test(value) ||
+                  "Password must be at least 10 characters long and include at least one uppercase letter, one lowercase letter, one special character, and one digit",
+              },
             }}
             render={({ field }) => (
+              // <Input {...field} id="email" placeholder="Email address" />
               <Input.Password
                 {...field}
                 id="password"
                 placeholder="Password"
                 onChange={(e) => {
                   field.onChange(e);
-                  trigger("password");
                 }}
                 iconRender={(visible) =>
                   visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
@@ -232,7 +237,6 @@ const Register = () => {
                 placeholder="Confirm Password"
                 onChange={(e) => {
                   field.onChange(e);
-                  trigger("confirmPassword");
                 }}
                 iconRender={(visible) =>
                   visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />

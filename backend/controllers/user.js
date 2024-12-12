@@ -344,18 +344,27 @@ export const deleteUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-  console.log("Request Body:", req.body);
+  console.log("User Request Body:", req.body);
   try {
     const { id } = req.params;
     console.log("User", id);
-    const { username, phoneNumber } = req.body;
+    const { username, phoneNumber, pincode, address } = req.body;
+    console.log("pincode", pincode);
+    console.log("address", address);
+    const updateFields = {
+      username,
+      phoneNumber,
+    };
+    if (pincode && address) {
+      updateFields.address_details = [{ pincode, address }];
+    }
 
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
-      { username: username, phoneNumber: phoneNumber },
-      { new: true, runValidators: true }
-    );
+    console.log("updateFields", updateFields);
+    const updatedUser = await User.findByIdAndUpdate(id, {
+      $set: updateFields,
+    });
 
+    // console.log("updatedUser", updatedUser);
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     } else {
