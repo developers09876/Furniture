@@ -52,13 +52,14 @@ export const createProduct = async (req, res) => {
       review,
       offer,
       images, // Now images is defined before being used
+      objectName,
       threeDimenstion,
       quantity_stock,
       specifications, // Assuming specifications is part of req.body
     } = req.body;
 
     // Log the request body after extracting images
-    console.log("Request body:", req.body, images);
+    console.log("Requestbody:", req.body, images);
 
     let parsedSpecifications;
     if (typeof specifications === "string") {
@@ -87,6 +88,7 @@ export const createProduct = async (req, res) => {
       review,
       offer,
       images,
+      objectName,
       threeDimenstion,
       quantity_stock,
       specifications: parsedSpecifications ? parsedSpecifications : [], // Parse specifications if necessary

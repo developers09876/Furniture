@@ -18,9 +18,6 @@ const StyledProfile = styled.div`
 
 function Profile() {
   const [form] = Form.useForm();
-  // const [data, setData] = useState(initialData);
-  // const [name, setName] = useState("");
-  // const [phonenumber, setPhonenumber] = useState("");
   const [UserData, setUserData] = useState("");
   console.log("UserDatax", UserData);
   const userId = localStorage.getItem("id");
@@ -181,7 +178,7 @@ function Profile() {
               ]}
             >
               <Input
-                type="tel"
+                type="number"
                 placeholder="Pin Code"
                 maxLength={6}
                 onChange={(e) => {

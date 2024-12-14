@@ -193,6 +193,9 @@ const UserOrders = () => {
       align: "center",
       key: "",
       render: (record, e) => {
+        if (record.order_status === "Cancelled") {
+          return <p>g</p>; // Do not render anything for this row
+        }
         if (
           record.order_status === "Pending" ||
           record.order_status === "Inprogress"
@@ -212,7 +215,7 @@ const UserOrders = () => {
             </div>
           );
         }
-        return null;
+        return;
       },
     },
   ];
@@ -270,9 +273,11 @@ const UserOrders = () => {
 
       <Modal
         open={isOrderModel}
+        width={800}
+        // footer={null}
         onOk={handleOk}
         onCancel={handleCancel}
-        width={800}
+        cancelButtonProps={{ style: { display: "none" } }}
       >
         <div>
           <Divider style={{ fontSize: "30px" }}>

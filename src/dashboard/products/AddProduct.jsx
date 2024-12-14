@@ -22,7 +22,8 @@ const AddProduct = () => {
   const [animationCount, setAnimationCount] = useState(0);
   const [categoriesField, setCategoriesField] = useState([]);
   const [selectedImages, setSelectedImages] = useState([]);
-
+  const [objectName, setObjectName] = useState("");
+  console.log("objectName", objectName);
   const navigate = useNavigate();
 
   // Initialize formData with specifications as an array of objects
@@ -127,32 +128,6 @@ const AddProduct = () => {
     });
   };
 
-  // const uploadImages = async () => {
-  //   const uploadedImages = [];
-
-  //   for (const image of selectedImages) {
-  //     const data = new FormData();
-  //     data.append("file", image.originFileObj); // Use originFileObj for the actual file
-  //     data.append("upload_preset", "Furniture"); // Replace with your Cloudinary upload preset
-
-  //     try {
-  //       const response = await fetch(
-  //         "https://api.cloudinary.com/v1_1/dk6vgylx3/image/upload", // Replace with your Cloudinary URL
-  //         {
-  //           method: "POST",
-  //           body: data,
-  //         }
-  //       );
-  //       const cloudinaryData = await response.json();
-  //       uploadedImages.push(cloudinaryData.secure_url); // Collect the URL
-  //     } catch (error) {
-  //       console.error("Error uploading image:", error);
-  //     }
-  //   }
-
-  //   return uploadedImages;
-  // };
-
   const uploadImages = async () => {
     const uploadedImages = [];
 
@@ -180,6 +155,10 @@ const AddProduct = () => {
     return uploadedImages;
   };
   const upload3DAnimation = async (file) => {
+    console.log("file", file.name);
+    let objectName = file.name;
+    objectName = objectName.slice(0, -4);
+    setObjectName(objectName);
     const formData = new FormData();
 
     formData.append("animation", file);
@@ -219,6 +198,7 @@ const AddProduct = () => {
 
       const updatedFormData = {
         ...data,
+        objectName: objectName,
         images: imageUrls,
         threeDimenstion: animationFileUrl,
         specifications: formData.specifications,
@@ -236,7 +216,7 @@ const AddProduct = () => {
         title: "Success",
         text: "Product Added Successfully",
       });
-      navigate("/admin/products/");
+      // navigate("/admin/products/");
     } catch (error) {
       console.error("Error adding product:", error);
       Swal.fire({

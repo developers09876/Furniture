@@ -84,7 +84,8 @@ const SingleProductPage = () => {
   const { productID } = useParams();
   const { cartdata, whishlistData } = useContext(DashboardContext);
   const [product, setProduct] = useState([]);
-  console.log("productxs", product.discountPrice);
+  console.log("products", product);
+  console.log("productxs", product.objectName);
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -133,7 +134,7 @@ const SingleProductPage = () => {
 
   const moveAr = () => {
     startTransition(() => {
-      navigate("/ortholatex", { state: product.productId });
+      navigate("/ortholatex", { state: product.objectName });
     });
   };
 

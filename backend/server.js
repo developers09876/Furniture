@@ -27,19 +27,18 @@ app.use("/Category", CategoryRouter);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter),
   // app.use('/uploads', express.static('uploads'));
-  app.use("/upload-animation", uploadImage);
-// Connect to MongoDB Atlas database
-mongoose
-  .connect(dbUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Connected to MongoDB Atlas database");
-  })
-  .catch((error) => {
-    console.log("Error connecting to MongoDB Atlas database:", error);
-  });
+  // Connect to MongoDB Atlas database
+  mongoose
+    .connect(dbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => {
+      console.log("Connected to MongoDB Atlas database");
+    })
+    .catch((error) => {
+      console.log("Error connecting to MongoDB Atlas database:", error);
+    });
 
 // connect to the server
 app.listen(port, () => {

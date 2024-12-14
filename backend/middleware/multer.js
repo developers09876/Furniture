@@ -12,9 +12,10 @@ const Storage = multer.diskStorage({
       path.extname(file.originalname)
     );
     const uniqueSuffix = ".glb";
-
+    console.log("originalName", originalName);
     // Construct the new filename
     const newFileName = `${originalName}${uniqueSuffix}`;
+
     cb(null, newFileName);
   },
 });
