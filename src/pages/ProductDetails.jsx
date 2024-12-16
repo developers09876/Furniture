@@ -134,7 +134,7 @@ const SingleProductPage = () => {
 
   const moveAr = () => {
     startTransition(() => {
-      navigate("/ortholatex", { state: product.objectName });
+      navigate(`/${product.objectName}`, { state: product.objectName });
     });
   };
 

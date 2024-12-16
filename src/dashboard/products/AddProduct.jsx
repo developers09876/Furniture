@@ -23,7 +23,7 @@ const AddProduct = () => {
   const [categoriesField, setCategoriesField] = useState([]);
   const [selectedImages, setSelectedImages] = useState([]);
   const [objectName, setObjectName] = useState("");
-  console.log("objectName", objectName);
+  console.log("setobjectName", objectName);
   const navigate = useNavigate();
 
   // Initialize formData with specifications as an array of objects
@@ -155,9 +155,10 @@ const AddProduct = () => {
     return uploadedImages;
   };
   const upload3DAnimation = async (file) => {
-    console.log("file", file.name);
+    console.log("fileName 3d", file.name);
     let objectName = file.name;
     objectName = objectName.slice(0, -4);
+    console.log("objectName", objectName);
     setObjectName(objectName);
     const formData = new FormData();
 
@@ -198,7 +199,7 @@ const AddProduct = () => {
 
       const updatedFormData = {
         ...data,
-        objectName: objectName,
+        objectName,
         images: imageUrls,
         threeDimenstion: animationFileUrl,
         specifications: formData.specifications,

@@ -111,7 +111,8 @@ export const createThreeDimenstion = async (req, res) => {
       .json({ error: "No file uploaded or invalid file type" });
   }
 
-  const fileUrl = `/public/${req.file.filename}`;
+  // const fileUrl = `/public/test/${req.file.filename}`;
+  const fileUrl = `/public/test/${req.file.filename}`;
   res.status(200).json({ fileUrl });
 };
 

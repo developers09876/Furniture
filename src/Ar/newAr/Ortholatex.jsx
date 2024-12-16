@@ -14,43 +14,14 @@ const Ortholatex = () => {
   };
 
   const { state } = useLocation();
-  const caseType = state || "";
+  const objectName = state || "";
 
-  const Latex_O_Pedic_Plus = useGLTF(
-    "/public/3D-View-GLB/Latex_O_Pedic_Plus.glb"
-  );
-  const Organic_Posture_Pedic = useGLTF(
-    "/public/3D-View-GLB/Organic_Posture_Pedic.glb"
-  );
-  const Ortho_Latex_O_Pedic = useGLTF(
-    "/public/3D-View-GLB/Ortho_Latex_O_Pedic.glb"
-  );
-  const Ortho_Organic_Posture_Pedic = useGLTF(
-    "/public/3D-View-GLB/Ortho_Organic_Posture_Pedic.glb"
-  );
-  const Ortho_Premium = useGLTF("/public/3D-View-GLB/Ortho_Premium.glb");
-  const Ortho_Premium_ET = useGLTF("/public/3D-View-GLB/Ortho_Premium_ET.glb");
-  const Ortho_Spine_Therapy_ET = useGLTF(
-    "/public/3D-View-GLB/Ortho_Spine_Therapy_ET.glb"
-  );
-  const Sleep_In_Posture = useGLTF("/public/3D-View-GLB/Sleep_In_Posture.glb");
-  const Supremo = useGLTF("/public/3D-View-GLB/Supremo.glb");
-  const Supremo_ET = useGLTF("/public/3D-View-GLB/Supremo_ET.glb");
+  // Dynamically construct the GLB file path
+  const glbPath = `/public/3D-View-GLB/${objectName}.glb`;
 
-  const models = [
-    { caseType: "33", object: Latex_O_Pedic_Plus.scene },
-    // { caseType: "34", object: Organic_Posture_Pedic.scene },
-    // { caseType: "35", object: Ortho_Latex_O_Pedic.scene },
-    // { caseType: "36", object: Ortho_Organic_Posture_Pedic.scene },
-    // { caseType: "37", object: Ortho_Premium.scene },
-    // { caseType: "38", object: Ortho_Premium_ET.scene },
-    // { caseType: "39", object: Ortho_Spine_Therapy_ET.scene },
-    // { caseType: "40", object: Sleep_In_Posture.scene },
-    // { caseType: "41", object: Supremo.scene },
-    // { caseType: "42", object: Supremo_ET.scene },
-  ];
+  // Dynamically load the GLB model
+  const model = useGLTF(glbPath, true); // `true` ensures the loader retries if the file isn't preloaded
 
-  const selectedModel = models[caseType];
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Canvas
@@ -68,19 +39,9 @@ const Ortholatex = () => {
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} />
 
-        {/* {modelToRender && (
-          <primitive
-            object={modelToRender.object}
-            scale={0.3}
-            position={[0, 0, 0]}
-          />
-        )} */}
-        {selectedModel && (
-          <primitive
-            object={selectedModel.scene}
-            scale={0.3}
-            position={[0, 0, 0]}
-          />
+        {/* Render the dynamically loaded model */}
+        {model && (
+          <primitive object={model.scene} scale={0.3} position={[0, 0, 0]} />
         )}
       </Canvas>
     </Suspense>
