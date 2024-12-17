@@ -41,21 +41,51 @@ export const getOffer = async (req, res) => {
   }
 };
 
+export const updateOfferText = async (req, res) => {
+  try {
+    const { offerText } = req.body;
+
+    if (!offerText || !offerText._id) {
+      return res.status(400).json({ message: "Invalid input data" });
+    }
+    const { offer_text, _id: offerDetailId } = offerText;
+
+    const mainOffer = await Admin.findOne({
+      "offer_Details._id": offerDetailId,
+    });
+
+    const offerDetail = mainOffer.offer_Details.id(offerDetailId);
+
+    offerDetail.offer_text = offer_text;
+    await mainOffer.save();
+
+    res
+      .status(200)
+      .json({ message: "Offer text updated successfully", mainOffer });
+  } catch (error) {
+    console.error("Error updating offer text:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 export const updateOffer = async (req, res) => {
   try {
-    const { offer } = req.body;
-    const { offer_text, _id } = offer;
+    const { precentage } = req.body;
 
-    const offers = await Admin.findOne({ "offer_Details._id": _id });
-    const sub = offers.offer_Details.id(_id);
+    const { offer, _id } = precentage;
 
-    sub.offer_text = offer_text;
+    const mainOffer = await Admin.findById(_id);
 
-    await offers.save();
+    mainOffer.offer = offer;
 
-    res.status(200).json(offers);
+    await mainOffer.save();
+
+    res
+      .status(200)
+      .json({ message: " percentage updated successfully", mainOffer });
   } catch (error) {
-    res.status(500).json({ message: "Server Error " + error.message });
+    console.error("Error updating offer:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 

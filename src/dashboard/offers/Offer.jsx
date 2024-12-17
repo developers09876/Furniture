@@ -17,20 +17,29 @@ const StyledOffer = styled.div`
 `;
 
 const Offer = () => {
-  const [textArea, setTextArea] = useState("");
-
-  const [editOfferModal, setEditOfferModal] = useState(false);
-  const [addOfferModal, setAddOfferModal] = useState(false);
-  const [editDetail, setEditDetail] = useState([]);
-  const [adminOffer, setAdminOffer] = useState([0]);
-  const offerDetails = adminOffer?.map((item) => item.offer_Details);
-  const [isEditing, setIsEditing] = useState(false);
-
   const {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm();
+
+  const [textArea, setTextArea] = useState("");
+  const [editOfferModal, setEditOfferModal] = useState(false);
+  const [addOfferModal, setAddOfferModal] = useState(false);
+  const [editDetail, setEditDetail] = useState([]);
+  const [adminOffer, setAdminOffer] = useState([0]);
+  console.log("adminOffer", adminOffer);
+  const offerDetails = adminOffer?.map((item) => item.offer_Details);
+  const offer_id = adminOffer?.map((item) => item._id);
+  console.log("tyid", offer_id);
+  useEffect(() => {
+    if (adminOffer && adminOffer.length > 0) {
+      setValue("precentagee", adminOffer[0]?.offer); // Set first item's offer
+    }
+  }, [adminOffer, setValue]);
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const columns = [
     {
@@ -109,12 +118,12 @@ const Offer = () => {
   };
 
   const updateOfferText = () => {
-    const offer = {
+    const offerText = {
       offer_text: editDetail.offer_text,
       _id: editDetail._id,
     };
     axios
-      .put(`${import.meta.env.VITE_MY_API}admin/updateOfferText`, { offer })
+      .put(`${import.meta.env.VITE_MY_API}admin/updateOfferText`, { offerText })
       .then((res) => {
         Swal.fire({
           icon: "success",
@@ -173,43 +182,52 @@ const Offer = () => {
     setTextArea(value);
   };
 
-  const onSubmit = async () => {
-    const payload = {
-      offer: textArea,
-    };
-    const editPayload = {
-      offer: textArea,
-    };
-    console.log("addpayload", payload);
-    console.log("payload", editPayload);
+  // const onSubmit = async () => {
 
-    // Decide API endpoint based on editing state
-    const apiCall = isEditing
-      ? axios.put(
-          `${import.meta.env.VITE_MY_API}admin/updateOffer`,
-          editPayload
-        )
-      : axios.post(`${import.meta.env.VITE_MY_API}admin/offer`, payload);
+  //   const editPayload = {
+  //     offer: textArea,
+  //   };
+  //   console.log("payload", editPayload);
 
-    // Handle API call
-    apiCall
-      .then((res) => {
-        console.log("Response", res.data);
-        alert(
-          isEditing
-            ? "Offer updated successfully!"
-            : "Offer added successfully!"
-        );
+  //   axios
+  //     .put(`${import.meta.env.VITE_MY_API}admin/updateOffer`, editPayload)
+
+  //     .then((res) => {
+  //       console.log("Response", res.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error", error.response?.data || error.message);
+  //     });
+  // };
+
+  const updateOffer = async (data) => {
+    const precentage = { precentage: data.precentagee, offer_id: offer_id };
+    console.log("apiprecentage", precentage);
+
+    axios
+      .put(`${import.meta.env.VITE_MY_API}admin/updateOffer`, {
+        precentage,
       })
-      .catch((error) => {
-        console.error("Error", error.response?.data || error.message);
-        alert(isEditing ? "Failed to update offer!" : "Failed to add offer!");
+      .then((res) => {
+        Swal.fire(
+          `Updated!!`,
+          `offer Has been Updated Successfully `,
+          `Success`
+        );
+        console.log("res.data", res.data);
+      })
+      .catch(() => {
+        Swal.fire(`Occur Error`, `Not Updated`, `error`);
       });
   };
 
   useEffect(() => {
     fetchOffer();
-  }, []);
+  }, [editOfferModal]);
+
+  const editOffer = () => {
+    setIsEditing(true);
+  };
 
   return (
     <StyledOffer>
@@ -221,63 +239,47 @@ const Offer = () => {
           Add Offer
         </button>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(updateOffer)}>
         <div className="d-flex flex-column align-items-center">
           <Divider style={{ fontSize: "30px" }}>Offers Section</Divider>
 
-          {adminOffer.map((items) => (
-            <>
-              {/* <Radio.Group onChange={radioChange} value={value}>
-                <Radio value={1}>On</Radio>
-                <Radio value={2}>Off</Radio>
-              </Radio.Group> */}
-              {/* <div className="d-flex">
-                <input
-                  value={editValued !== null ? editValue : items.offer}
-                  // value={items.offer}
-                  type="number"
-                  style={{ width: "18%", marginBottom: "20px" }}
-                  {...register("offer", {
-                    required: true,
-                    valueAsNumber: true,
-                    min: 1,
-                    max: 99,
-                  })}
-                />
-                {errors.offer && (
-                  <p style={{ color: "red" }}>
-                    {errors.offer?.type === "required"
-                      ? "Offer is required"
-                      : errors.offer?.type === "min"
-                      ? "Offer must be at least 1"
-                      : "Offer must be 99 or less"}
-                  </p>
-                )}
-
-                <MdEdit
-                  className="ms-3"
-                  style={{
-                    fontSize: "20px",
-                    cursor: "pointer",
-                    marginRight: "10px",
-                  }}
-                  onClick={() => editOffer(items.offer)}
-                  // onClick={() => editOffer()}
-                />
-              </div>
-              <div
-                className="form-group ms-1 mt-4 "
-                // style={{ textAlign: "end" }}
-              >
-                {!isEditing && <Button type="primary">Submit</Button>}
-                {isEditing && (
-                  <Button type="primary" onClick={() => updateOffer()}>
-                    update
-                  </Button>
-                )}
-              </div> */}
-            </>
-          ))}
+          <div className="d-flex">
+            <input
+              type="number"
+              style={{ width: "25%", marginBottom: "20px" }}
+              {...register("precentagee", {
+                required: true,
+                valueAsNumber: true,
+                min: 0,
+                max: 99,
+              })}
+            />
+            <MdEdit
+              className="ms-3"
+              style={{
+                fontSize: "20px",
+                cursor: "pointer",
+                marginRight: "10px",
+              }}
+              onClick={() => editOffer()}
+            />
+            {errors.precentagee && (
+              <p style={{ color: "red" }}>
+                {errors.precentagee?.type === "required"
+                  ? "Offer is required"
+                  : errors.precentagee?.type === "min"
+                  ? "Offer must be at least 1"
+                  : "Offer must be 99 or less"}
+              </p>
+            )}
+          </div>
+          <div className="form-group ms-1 mt-4 ">
+            {isEditing && (
+              <button className="btn btn-primary" type="primary">
+                update
+              </button>
+            )}
+          </div>
 
           <Table dataSource={offerDetails[0]} columns={columns} />
         </div>
@@ -290,19 +292,25 @@ const Offer = () => {
         footer={null}
       >
         <Input
-          placeholder="Enter Your Offer"
           value={editDetail.offer_text}
           onChange={(e) =>
             setEditDetail({ ...editDetail, offer_text: e.target.value })
           }
         />
-        <button className="btn btn-primary mt-2 modal-buttons">Cancel</button>
-        <button
-          className="btn btn-primary mt-2 ms-3 modal-buttons "
-          onClick={updateOfferText}
-        >
-          update
-        </button>
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          <button
+            className="btn btn-primary mt-4 modal-buttons"
+            onClick={handleCancel}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn btn-primary mt-4 ms-3 modal-buttons "
+            onClick={updateOfferText}
+          >
+            update
+          </button>
+        </div>
       </Modal>
       <Modal
         title="Add Offer"
@@ -316,12 +324,15 @@ const Offer = () => {
           placeholder={`Enter Your Offer Description `}
           onChange={(e) => handleTextAreaChange(e.target.value)}
         />
-        <button
-          className="btn btn-primary mt-2 modal-buttons"
-          onClick={addOffer}
-        >
-          Okay
-        </button>
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          <button
+            className="btn btn-primary mt-2 modal-buttons"
+            style={{ display: "flex", justifyContent: "end" }}
+            onClick={() => addOffer()}
+          >
+            Okay
+          </button>
+        </div>
       </Modal>
     </StyledOffer>
   );

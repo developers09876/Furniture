@@ -46,6 +46,7 @@ const Categories = () => {
   });
 
   const [categoryList, setCategoryList] = useState([]);
+  console.log("categoryList", categoryList);
 
   useEffect(() => {
     fetchCategories();
