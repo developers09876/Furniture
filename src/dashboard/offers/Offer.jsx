@@ -35,7 +35,7 @@ const Offer = () => {
   console.log("tyid", offer_id);
   useEffect(() => {
     if (adminOffer && adminOffer.length > 0) {
-      setValue("precentagee", adminOffer[0]?.offer); // Set first item's offer
+      setValue("precentagee", adminOffer[0]?.offer);
     }
   }, [adminOffer, setValue]);
 
@@ -170,7 +170,7 @@ const Offer = () => {
       okType: "danger",
       cancelText: "No",
       onOk() {
-        deleteOfferText(record._id); // Use the _id to call the API for deletion
+        deleteOfferText(record._id);
       },
       onCancel() {
         console.log("Delete cancelled");
@@ -181,24 +181,6 @@ const Offer = () => {
   const handleTextAreaChange = (value) => {
     setTextArea(value);
   };
-
-  // const onSubmit = async () => {
-
-  //   const editPayload = {
-  //     offer: textArea,
-  //   };
-  //   console.log("payload", editPayload);
-
-  //   axios
-  //     .put(`${import.meta.env.VITE_MY_API}admin/updateOffer`, editPayload)
-
-  //     .then((res) => {
-  //       console.log("Response", res.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error", error.response?.data || error.message);
-  //     });
-  // };
 
   const updateOffer = async (data) => {
     const precentage = { precentage: data.precentagee, offer_id: offer_id };
