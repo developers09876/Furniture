@@ -21,7 +21,18 @@ const StyledCarousel = styled(Carousel)`
 const Navbar = () => {
   const [offer, setOffer] = useState([]);
   console.log("offer", offer);
-
+  console.log(
+    "offer_text",
+    offer.offer_details?.[0].map((data) => {
+      return data.offer_text;
+    })
+  );
+  console.log(
+    "precentage",
+    offer.map((data) => {
+      return data.offer;
+    })
+  );
   const fetchOffer = () => {
     axios
       .get(`${import.meta.env.VITE_MY_API}admin/getoffer`)
@@ -39,40 +50,15 @@ const Navbar = () => {
   }, []);
 
   return (
-    <TopOfferBar>
-      <StyledCarousel autoplay dots={false}>
-        <p style={{ color: "black" }}>
-          {offer.offer_details?.[0].map((data) => {
-            {
-              data.offer_text;
-            }
-          })}
-        </p>
-        {/* <div>
-          <span style={{ color: "white" }}>
-            Use code
-            <span style={{ color: "red", fontWeight: "bold" }}>
-              MEGAFEST
-            </span>{" "}
-            to Get up to 75% off + Additional 10% off with bank offers
-          </span>
-        </div>
-        <div>
-          <span style={{ color: "white" }}>
-            Special Offer! Free Shipping on All Orders Above $500
-          </span>
-        </div>
-        <div>
-          <span style={{ color: "white" }}>
-            {" "}
-            9+ Restopedic Furniture Stores across India.{" "}
-          </span>{" "}
-          <span style={{ color: "red", fontWeight: "bold" }}>
-            Come, Visit Us!
-          </span>
-        </div> */}
-      </StyledCarousel>
-    </TopOfferBar>
+    <>
+      <TopOfferBar>
+        <StyledCarousel autoplay dots={false}>
+          {offer[0]?.offer_Details?.map((data) => (
+            <div>{data.offer_text}</div>
+          ))}
+        </StyledCarousel>
+      </TopOfferBar>
+    </>
   );
 };
 

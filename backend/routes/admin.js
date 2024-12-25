@@ -3,9 +3,8 @@ import {
   createOffer,
   getOffer,
   createOfferText,
-  updateOffer,
-  updateOfferText,
   deleteOfferText,
+  updateOfferDetails,
 } from "../controllers/admin.js";
 
 const router = Router();
@@ -13,7 +12,6 @@ const router = Router();
 router.post("/offer", createOffer);
 router.post("/offertext", createOfferText);
 router.get("/getoffer", getOffer);
-router.put("/updateOffer", updateOffer);
-router.put("/updateOfferText", updateOfferText);
+router.put("/updateOffer", updateOfferDetails);
 router.delete("/deleteOfferText/:id", deleteOfferText);
 export default router;

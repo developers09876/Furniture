@@ -41,50 +41,43 @@ export const getOffer = async (req, res) => {
   }
 };
 
-export const updateOfferText = async (req, res) => {
+export const updateOfferDetails = async (req, res) => {
   try {
-    const { offerText } = req.body;
+    const { offerText, percentage } = req.body;
+    let mainOffer;
 
-    if (!offerText || !offerText._id) {
-      return res.status(400).json({ message: "Invalid input data" });
+    if (offerText && offerText._id) {
+      const { offer_text, _id: offerDetailId } = offerText;
+
+      mainOffer = await Admin.findOne({
+        "offer_Details._id": offerDetailId,
+      });
+
+      const offerDetail = mainOffer.offer_Details.id(offerDetailId);
+
+      offerDetail.offer_text = offer_text;
     }
-    const { offer_text, _id: offerDetailId } = offerText;
 
-    const mainOffer = await Admin.findOne({
-      "offer_Details._id": offerDetailId,
-    });
+    if (percentage && percentage.offer_id) {
+      const { precentage, offer_id } = percentage;
 
-    const offerDetail = mainOffer.offer_Details.id(offerDetailId);
+      if (!mainOffer) {
+        mainOffer = await Admin.findById(offer_id[0]);
+      }
 
-    offerDetail.offer_text = offer_text;
-    await mainOffer.save();
+      mainOffer.offer = precentage;
+    }
 
-    res
-      .status(200)
-      .json({ message: "Offer text updated successfully", mainOffer });
+    if (mainOffer) {
+      await mainOffer.save();
+      return res
+        .status(200)
+        .json({ message: "Offer details updated successfully", mainOffer });
+    }
+
+    res.status(400).json({ message: "No valid updates provided" });
   } catch (error) {
-    console.error("Error updating offer text:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
-};
-
-export const updateOffer = async (req, res) => {
-  try {
-    const { precentage } = req.body;
-
-    const { offer, _id } = precentage;
-
-    const mainOffer = await Admin.findById(_id);
-
-    mainOffer.offer = offer;
-
-    await mainOffer.save();
-
-    res
-      .status(200)
-      .json({ message: " percentage updated successfully", mainOffer });
-  } catch (error) {
-    console.error("Error updating offer:", error);
+    console.error("Error updating offer details:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

@@ -114,17 +114,8 @@ const calculateTimeLeft = () => {
 };
 
 const Sale = () => {
-  // const { products } = useContext(DashboardContext);
-  // console.log("productz", products);
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   const [offer, setOffer] = useState([]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   const fetchOffer = () => {
     axios
@@ -206,14 +197,10 @@ const Sale = () => {
                           fontWeight: "bold",
                         }}
                       >
-                        up to{" "}
-                        <p style={{ color: "black" }}>
-                          {offer.map((data) => {
-                            {
-                              data.offer;
-                            }
-                          })}
-                        </p>
+                        up to
+                        {offer.map((item) => {
+                          return item.offer;
+                        })}
                       </Text>
                     </div>
                   </div>
@@ -235,7 +222,10 @@ const Sale = () => {
                           fontWeight: "bold",
                         }}
                       >
-                        up to 10%
+                        up to
+                        {offer.map((item) => {
+                          return item.offer;
+                        })}
                       </Text>
                     </div>
                   </div>

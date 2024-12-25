@@ -7,6 +7,7 @@ import axios from "axios";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Radio } from "antd";
 import Swal from "sweetalert2";
+import { icon } from "@fortawesome/fontawesome-svg-core";
 const { confirm } = Modal;
 const { TextArea } = Input;
 const StyledOffer = styled.div`
@@ -123,7 +124,7 @@ const Offer = () => {
       _id: editDetail._id,
     };
     axios
-      .put(`${import.meta.env.VITE_MY_API}admin/updateOfferText`, { offerText })
+      .put(`${import.meta.env.VITE_MY_API}admin/updateOffer`, { offerText })
       .then((res) => {
         Swal.fire({
           icon: "success",
@@ -183,20 +184,20 @@ const Offer = () => {
   };
 
   const updateOffer = async (data) => {
-    const precentage = { precentage: data.precentagee, offer_id: offer_id };
-    console.log("apiprecentage", precentage);
+    const percentage = { precentage: data.precentagee, offer_id: offer_id };
 
     axios
       .put(`${import.meta.env.VITE_MY_API}admin/updateOffer`, {
-        precentage,
+        percentage,
       })
       .then((res) => {
-        Swal.fire(
-          `Updated!!`,
-          `offer Has been Updated Successfully `,
-          `Success`
-        );
+        Swal.fire({
+          icon: "success",
+          title: "Updated",
+          text: "Offer has been updated successfully",
+        });
         console.log("res.data", res.data);
+        setIsEditing(false);
       })
       .catch(() => {
         Swal.fire(`Occur Error`, `Not Updated`, `error`);
@@ -226,9 +227,10 @@ const Offer = () => {
           <Divider style={{ fontSize: "30px" }}>Offers Section</Divider>
 
           <div className="d-flex">
-            <input
+            <Input
               type="number"
               style={{ width: "25%", marginBottom: "20px" }}
+              disabled={!isEditing}
               {...register("precentagee", {
                 required: true,
                 valueAsNumber: true,
@@ -255,7 +257,8 @@ const Offer = () => {
               </p>
             )}
           </div>
-          <div className="form-group ms-1 mt-4 ">
+
+          <div className="form-group mt-4 ">
             {isEditing && (
               <button className="btn btn-primary" type="primary">
                 update
