@@ -54,6 +54,7 @@ const Offer = () => {
     {
       title: "Offers",
       dataIndex: "offer_text",
+      key: "offer_text",
     },
     {
       title: "Action",
@@ -111,6 +112,13 @@ const Offer = () => {
         console.log("Added Offer Text", res);
         setTextArea("");
         setAddOfferModal(false);
+
+        Swal.fire({
+          icon: "success",
+          title: "Added ",
+          text: "Successfully Offer Added ",
+        });
+        fetchOffer();
       })
       .catch((errors) => {
         console.error({ message: errors });
@@ -126,6 +134,7 @@ const Offer = () => {
     axios
       .put(`${import.meta.env.VITE_MY_API}admin/updateOffer`, { offerText })
       .then((res) => {
+        fetchOffer();
         Swal.fire({
           icon: "success",
           title: "Updated",
@@ -149,8 +158,8 @@ const Offer = () => {
       .then((res) => {
         Swal.fire({
           icon: "success",
-          title: "Delted",
-          text: "Offer Delted Succesfully",
+          title: "Deleted",
+          text: "Offer Deleted Succesfully",
         });
         fetchOffer();
       })
@@ -223,13 +232,47 @@ const Offer = () => {
         </button>
       </div>
       <form onSubmit={handleSubmit(updateOffer)}>
-        <div className="d-flex flex-column align-items-center">
-          <Divider style={{ fontSize: "30px" }}>Offers Section</Divider>
+        <div
+          className="d-flex flex-column align-items-center"
+          style={{
+            backgroundColor: "#ffffff",
+            padding: "30px",
+            maxWidth: "900px",
+            margin: "20px auto",
+          }}
+        >
+          <Divider
+            style={{
+              fontSize: "28px",
+              fontWeight: "700",
+              color: "#ff6f61",
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              marginBottom: "25px",
+            }}
+          >
+            Offers Section
+          </Divider>
 
-          <div className="d-flex">
-            <Input
+          <div
+            className="d-flex"
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+            }}
+          >
+            <input
               type="number"
-              style={{ width: "25%", marginBottom: "20px" }}
+              style={{
+                width: "27%",
+                marginBottom: "20px",
+                padding: "12px",
+                border: "2px solid #ff6f61",
+                borderRadius: "10px",
+                fontSize: "16px",
+                boxShadow: "inset 0 2px 5px rgba(0, 0, 0, 0.1)",
+              }}
               disabled={!isEditing}
               {...register("precentagee", {
                 required: true,
@@ -241,14 +284,23 @@ const Offer = () => {
             <MdEdit
               className="ms-3"
               style={{
-                fontSize: "20px",
+                fontSize: "24px",
                 cursor: "pointer",
-                marginRight: "10px",
+                color: "#ff6f61",
+                transition: "transform 0.3s ease",
               }}
+              onMouseEnter={(e) => (e.target.style.transform = "scale(1.2)")}
+              onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
               onClick={() => editOffer()}
             />
             {errors.precentagee && (
-              <p style={{ color: "red" }}>
+              <p
+                style={{
+                  color: "#ff4d4f",
+                  fontSize: "14px",
+                  marginTop: "5px",
+                }}
+              >
                 {errors.precentagee?.type === "required"
                   ? "Offer is required"
                   : errors.precentagee?.type === "min"
@@ -258,15 +310,75 @@ const Offer = () => {
             )}
           </div>
 
-          <div className="form-group mt-4 ">
+          <div
+            className="form-group mt-4"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             {isEditing && (
-              <button className="btn btn-primary" type="primary">
-                update
+              <button
+                className="btn btn-primary"
+                type="primary"
+                style={{
+                  backgroundColor: "#ff6f61",
+                  border: "none",
+                  padding: "12px 25px",
+                  borderRadius: "20px",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  color: "#ffffff",
+                  cursor: "pointer",
+                  transition: "background-color 0.3s ease, transform 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = "#e65b54";
+                  e.target.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = "#ff6f61";
+                  e.target.style.transform = "translateY(0)";
+                }}
+              >
+                Update
               </button>
             )}
           </div>
 
-          <Table dataSource={offerDetails[0]} columns={columns} />
+          <Table
+            dataSource={offerDetails[0]}
+            columns={columns.map((col) =>
+              col.dataIndex === "offer_text"
+                ? {
+                    ...col,
+                    render: (text) => (
+                      <div
+                        style={{
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          maxWidth: "250px", // Adjust as needed
+                          cursor: "pointer",
+                          display: "inline-block",
+                        }}
+                        title={text} // Tooltip to show full text
+                      >
+                        {text}
+                      </div>
+                    ),
+                  }
+                : col
+            )}
+            style={{
+              marginTop: "20px",
+              width: "100%",
+              border: "1px solid #ececec",
+              borderRadius: "10px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            }}
+            scroll={{ x: "100%" }} // Enables horizontal scrolling
+          />
         </div>
       </form>
       <Modal
@@ -313,9 +425,16 @@ const Offer = () => {
           <button
             className="btn btn-primary mt-2 modal-buttons"
             style={{ display: "flex", justifyContent: "end" }}
+            onClick={() => handleCancel()}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn btn-primary mt-2 ms-4 modal-buttons"
+            style={{ display: "flex", justifyContent: "end" }}
             onClick={() => addOffer()}
           >
-            Okay
+            Add
           </button>
         </div>
       </Modal>

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 
 const TopOfferBar = styled.div`
-  // background-color: black;
+  background-color: black;
   text-align: center;
   font-size: 14px;
   height: 40px;
@@ -21,18 +21,7 @@ const StyledCarousel = styled(Carousel)`
 const Navbar = () => {
   const [offer, setOffer] = useState([]);
   console.log("offer", offer);
-  console.log(
-    "offer_text",
-    offer.offer_details?.[0].map((data) => {
-      return data.offer_text;
-    })
-  );
-  console.log(
-    "precentage",
-    offer.map((data) => {
-      return data.offer;
-    })
-  );
+
   const fetchOffer = () => {
     axios
       .get(`${import.meta.env.VITE_MY_API}admin/getoffer`)
@@ -49,13 +38,52 @@ const Navbar = () => {
     fetchOffer();
   }, []);
 
+  const textcolor = {
+    fontSize: "20px",
+    fontWeight: "bold",
+    color: "red",
+    textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
+    transition: "color 0.3s ease",
+  };
+
+  const nontextcolor = {
+    fontSize: "19px",
+    fontWeight: "500",
+    color: "white",
+    textShadow: "1px 1px 2px rgba(0, 0, 0, 0.1)",
+    letterSpacing: "0.5px",
+    transition: "color 0.3s ease",
+  };
+
   return (
     <>
       <TopOfferBar>
         <StyledCarousel autoplay dots={false}>
-          {offer[0]?.offer_Details?.map((data) => (
-            <div>{data.offer_text}</div>
-          ))}
+          {offer[0]?.offer_Details?.map((data, index) => {
+            const words = data.offer_text.split(" ");
+            return (
+              <div
+                key={index}
+                style={{
+                  fontSize: "16px",
+                  padding: "10px",
+                  textAlign: "center",
+                }}
+              >
+                {words.map((word, wordIndex) => (
+                  <span
+                    key={wordIndex}
+                    style={{
+                      ...(word.includes("~") ? textcolor : nontextcolor),
+                      margin: "0 3px",
+                    }}
+                  >
+                    {word.replace("~", "")}
+                  </span>
+                ))}
+              </div>
+            );
+          })}
         </StyledCarousel>
       </TopOfferBar>
     </>
