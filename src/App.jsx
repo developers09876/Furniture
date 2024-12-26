@@ -57,7 +57,7 @@ import UserOrderDetails from "./User/UserOrders/UserOrderDetails";
 import UserLogin from "./User/UserLogin";
 import Whistlist from "./User/Whistlist/Whistlist";
 import Profile from "./User/Profile/Profile";
-import Ortholatex from "./Ar/newAr/Ortholatex";
+import Ortholatex from "./Ar/newAr/3D-View-GLB/Ortholatex";
 
 //offer
 
