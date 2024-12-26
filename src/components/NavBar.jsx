@@ -87,6 +87,9 @@ const NavBar = () => {
     setFilteredProducts(filtered);
   };
 
+  useEffect(() => {
+    handleSearch();
+  }, [query]);
   const clearSearch = () => {
     setQuery("");
     setFilteredProducts([]);

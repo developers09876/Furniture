@@ -9,7 +9,7 @@ import { FaIndianRupeeSign } from "react-icons/fa6";
 import styled from "styled-components";
 import { getTodayOrders, calculateTotalSales } from "../../utils/helpers";
 import { UNSAFE_DataRouterStateContext } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const StyledCard = styled.div`
   border: 1px solid ${(props) => props.theme.borderColor};
@@ -35,18 +35,21 @@ const BottomText = styled.div`
   color: ${(props) => props.theme.textColor};
 `;
 
-const Stats = ({ orders, users, products, neworder }) => {
+const Stats = ({ orders, users, products }) => {
+  console.log("statsorders", orders);
   const [newOrder, setNewOrder] = useState([]);
-
+  console.log("neworder", newOrder.length);
   const OrdersCount = orders?.length;
   const totalUsers = users?.length;
   const totalProducts = products?.length;
   const totalSales = calculateTotalSales(orders);
   const todaySales = calculateTotalSales(getTodayOrders(orders));
-  // const pendingOrders = res.data.filter(
-  //   (order) => order.order_status === "pending"
-  // );
-  // setNewOrder(pendingOrders);
+  useEffect(() => {
+    const pendingOrders = orders.filter(
+      (order) => order.order_status === "Pending"
+    );
+    setNewOrder(pendingOrders);
+  }, [orders]);
 
   return (
     <div className="container mt-4">
@@ -56,7 +59,7 @@ const Stats = ({ orders, users, products, neworder }) => {
             <IconWrapper>
               <FontAwesomeIcon icon={faListAlt} />
             </IconWrapper>
-            {/* <NumberText>{pendingOrders.length}</NumberText> */}
+            <NumberText>{newOrder.length}</NumberText>
             <BottomText>New Orders</BottomText>
           </StyledCard>
         </div>

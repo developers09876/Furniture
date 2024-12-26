@@ -197,10 +197,11 @@ const Sale = () => {
                           fontWeight: "bold",
                         }}
                       >
-                        up to
+                        up to &nbsp;
                         {offer.map((item) => {
                           return item.offer;
-                        })}
+                        })}{" "}
+                        %
                       </Text>
                     </div>
                   </div>
@@ -222,10 +223,11 @@ const Sale = () => {
                           fontWeight: "bold",
                         }}
                       >
-                        up to
+                        up to &nbsp;
                         {offer.map((item) => {
                           return item.offer;
                         })}
+                        %
                       </Text>
                     </div>
                   </div>

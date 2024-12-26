@@ -138,7 +138,7 @@ const UserOrders = () => {
       title: "Status Update",
       dataIndex: "changeStatus",
       render: (record, e) => {
-        if (e.order_status === "cancelled") {
+        if (e.order_status === "Cancelled") {
           return (
             <span style={{ color: "red", fontWeight: "bold" }}>Canceled</span>
           );
@@ -205,12 +205,21 @@ const UserOrders = () => {
     setOrderModel(false);
   };
 
+  useEffect(() => {
+    getId();
+  }, [userID, orderId]);
+
   const getId = async (e) => {
+    console.log("e", e);
+    console.log("e.user_id", e.user_id);
+
     const userID = e.user_id;
-    setUserID(userID);
     const orderGetId = e._id;
+
+    setUserID(userID);
     setOrderId(orderGetId);
-    fetchUser();
+
+    await fetchUser(userID);
   };
   const fetchOrder = async () => {
     axios
@@ -230,7 +239,7 @@ const UserOrders = () => {
     fetchOrder();
   }, []);
 
-  const fetchUser = async () => {
+  const fetchUser = async (userID) => {
     axios
       .get(`${import.meta.env.VITE_MY_API}user/getUser/${userID}`)
       .then((response) => {
@@ -243,7 +252,7 @@ const UserOrders = () => {
       email: userData.email,
     };
     try {
-      const response = await axios.post(
+      const response = await axios.put(
         `${import.meta.env.VITE_MY_API}products/updateorder/${orderId}`,
         { order_status: status, emailDetails }
       );
@@ -256,6 +265,7 @@ const UserOrders = () => {
             : order
         )
       );
+      fetchOrder();
 
       Swal.fire({
         icon: "success",
@@ -277,6 +287,9 @@ const UserOrders = () => {
       ? data
       : data.filter((order) => order.order_status === selectedStatus);
 
+  // useEffect(() => {
+  //   fetchOrder();
+  // }, []);
   return (
     <StyledOrders>
       {/* <Button handleClick={() => fetchData()} className='me-3 my-4'>Refresh Data</Button> */}
