@@ -22,8 +22,6 @@ const AddProduct = () => {
   const [animationCount, setAnimationCount] = useState(0);
   const [categoriesField, setCategoriesField] = useState([]);
   const [selectedImages, setSelectedImages] = useState([]);
-  const [objectName, setObjectName] = useState("");
-  console.log("setobjectName", objectName);
   const navigate = useNavigate();
 
   // Initialize formData with specifications as an array of objects
@@ -159,7 +157,7 @@ const AddProduct = () => {
     let objectName = file.name;
     objectName = objectName.slice(0, -4);
     console.log("objectName", objectName);
-    setObjectName(objectName);
+
     const formData = new FormData();
 
     formData.append("animation", file);
@@ -197,6 +195,20 @@ const AddProduct = () => {
         return;
       }
 
+      // Ensure `animation` is part of `formData`
+      const animationFile = formData?.animation;
+      if (!animationFile) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "3D animation file is missing. Please upload it.",
+        });
+        return;
+      }
+
+      let objectName = animationFile.name;
+      objectName = objectName.slice(0, -4);
+      console.log("ApiobjectName", objectName);
       const updatedFormData = {
         ...data,
         objectName,
