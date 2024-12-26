@@ -18,9 +18,11 @@ const StyledProfile = styled.div`
 
 function Profile() {
   const [form] = Form.useForm();
-  const [UserData, setUserData] = useState("");
+  const [UserData, setUserData] = useState([]);
   console.log("UserDatax", UserData);
+  console.log("UserDatax", UserData.username);
   const userId = localStorage.getItem("id");
+  console.log("userdIdLo", userId);
 
   const handleUpdate = () => {
     form
@@ -87,21 +89,34 @@ function Profile() {
       .get(`${import.meta.env.VITE_MY_API}user/getUser/${userId}`)
       .then((res) => {
         setUserData(res.data.data);
-        form.setFieldsValue({
-          name: res.data.data.username,
-          email: res.data.data.email,
-          phonenumber: res.data.data.phoneNumber,
-          pincode: res.data.data?.address_details?.[0].pincode,
-          address: res.data.data?.address_details?.[0].address,
-        });
+
+        // form.setFieldsValue({
+        //   name: apiData.username,
+        //   email: apiData.email,
+        //   phonenumber: apiData.phoneNumber,
+        //   pincode: apiData?.address_details?.[0].pincode,
+        //   address: apiData?.address_details?.[0].address,
+        // });
       })
       .catch((error) => {
-        handleOperationError("product", "adding", error);
+        console.log("error", error);
       });
   };
-
   useEffect(() => {
-    fetchUser();
+    if (UserData) {
+      form.setFieldsValue({
+        name: UserData.username || "",
+        email: UserData.email || "",
+        phonenumber: UserData.phoneNumber || "",
+        pincode: UserData?.address_details?.[0]?.pincode || "",
+        address: UserData?.address_details?.[0]?.address || "",
+      });
+    }
+  }, [UserData]);
+  useEffect(() => {
+    if (userId) {
+      fetchUser();
+    }
   }, [userId]);
 
   return (
@@ -182,6 +197,8 @@ function Profile() {
                 placeholder="Pin Code"
                 maxLength={6}
                 onChange={(e) => {
+                  console.log("e", e);
+
                   setUserData({
                     ...UserData,
                     address_details: UserData?.address_details?.map(
