@@ -16,7 +16,7 @@ const StyledButton = styled.a`
     left: 0;
     display: block;
     border-radius: 28px;
-    background: rgba(255, 171, 157, 0.5);
+    background: #a68fbb;
     width: 56px;
     height: 56px;
     transition: all 0.3s ease;
@@ -47,7 +47,7 @@ const StyledButton = styled.a`
 
   &:hover:before {
     width: 100%;
-    background: #ffab9d;
+    background: #722a8ec9;
   }
 
   &:hover svg {
