@@ -18,7 +18,12 @@ const userSchema = new Schema({
     default: () => new Date().toLocaleDateString("en-GB"),
   },
   forgetPasswordCode: { type: Number },
-
+  address_details: [
+    {
+      pincode: { type: Number },
+      address: { type: String },
+    },
+  ],
   Carts: [
     {
       productId: { type: String },

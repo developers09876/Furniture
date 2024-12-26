@@ -41,21 +41,44 @@ export const getOffer = async (req, res) => {
   }
 };
 
-export const updateOffer = async (req, res) => {
+export const updateOfferDetails = async (req, res) => {
   try {
-    const { offer } = req.body;
-    const { offer_text, _id } = offer;
+    const { offerText, percentage } = req.body;
+    let mainOffer;
 
-    const offers = await Admin.findOne({ "offer_Details._id": _id });
-    const sub = offers.offer_Details.id(_id);
+    if (offerText && offerText._id) {
+      const { offer_text, _id: offerDetailId } = offerText;
 
-    sub.offer_text = offer_text;
+      mainOffer = await Admin.findOne({
+        "offer_Details._id": offerDetailId,
+      });
 
-    await offers.save();
+      const offerDetail = mainOffer.offer_Details.id(offerDetailId);
 
-    res.status(200).json(offers);
+      offerDetail.offer_text = offer_text;
+    }
+
+    if (percentage && percentage.offer_id) {
+      const { precentage, offer_id } = percentage;
+
+      if (!mainOffer) {
+        mainOffer = await Admin.findById(offer_id[0]);
+      }
+
+      mainOffer.offer = precentage;
+    }
+
+    if (mainOffer) {
+      await mainOffer.save();
+      return res
+        .status(200)
+        .json({ message: "Offer details updated successfully", mainOffer });
+    }
+
+    res.status(400).json({ message: "No valid updates provided" });
   } catch (error) {
-    res.status(500).json({ message: "Server Error " + error.message });
+    console.error("Error updating offer details:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 

@@ -11,6 +11,7 @@ import productsRouter from "./routes/product.js";
 import basketRouter from "./routes/basket.js";
 import CategoryRouter from "./routes/category.js";
 import adminRouter from "./routes/admin.js";
+import uploadImage from "./middleware/multer.js";
 const app = express();
 const port = process.env.PORT || 5000;
 const dbUrl = process.env.DB_URL;
@@ -26,7 +27,6 @@ app.use("/Category", CategoryRouter);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter),
   // app.use('/uploads', express.static('uploads'));
-
   // Connect to MongoDB Atlas database
   mongoose
     .connect(dbUrl, {

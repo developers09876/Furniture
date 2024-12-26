@@ -43,7 +43,7 @@ const ProductsList = ({ products }) => {
             fontWeight: "400",
           }}
         >
-          No relevant items were found for your search.
+          Nothing found
         </h5>
       )}
     </Wrapper>

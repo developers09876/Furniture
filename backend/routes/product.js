@@ -13,8 +13,6 @@ import {
   deleteOrder,
   getOneOrder,
   updateProduct,
-  // getAllCategory,
-  // createCategory,
   deleteProduct,
 } from "../controllers/product.js";
 
@@ -32,7 +30,7 @@ router.put("/editquantity/:id", updateQuantity);
 router.get("/order", getAllOrder);
 router.get("/getOrder/:productId", getOneOrder);
 router.post("/createorder", createOrder);
-router.post("/updateorder/:id", updateOrder);
+router.put("/updateorder/:id", updateOrder);
 router.put("/userUpdateOrder/:orderId", userUpdateOrder);
 router.delete("/deleteorder/:id", deleteOrder);
 

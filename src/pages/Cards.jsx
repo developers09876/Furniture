@@ -15,6 +15,7 @@ import image8 from "../assets/idfc-logo.png";
 import "../Css-Pages/HomeCard.css";
 import { Container } from "react-bootstrap";
 import { DashboardContext } from "../context/DashboardContext";
+import axios from "axios";
 
 const { Text } = Typography;
 
@@ -113,15 +114,23 @@ const calculateTimeLeft = () => {
 };
 
 const Sale = () => {
-  // const { products } = useContext(DashboardContext);
-  // console.log("productz", products);
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [offer, setOffer] = useState([]);
+
+  const fetchOffer = () => {
+    axios
+      .get(`${import.meta.env.VITE_MY_API}admin/getoffer`)
+      .then((res) => {
+        setOffer(res.data);
+        console.log("res", res.data);
+      })
+      .catch((error) => {
+        console.error("Error Fetching Offer", error);
+      });
+  };
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-    return () => clearInterval(timer);
+    fetchOffer();
   }, []);
 
   return (
@@ -188,7 +197,11 @@ const Sale = () => {
                           fontWeight: "bold",
                         }}
                       >
-                        up to 10%
+                        up to &nbsp;
+                        {offer.map((item) => {
+                          return item.offer;
+                        })}{" "}
+                        %
                       </Text>
                     </div>
                   </div>
@@ -210,7 +223,11 @@ const Sale = () => {
                           fontWeight: "bold",
                         }}
                       >
-                        up to 10%
+                        up to &nbsp;
+                        {offer.map((item) => {
+                          return item.offer;
+                        })}
+                        %
                       </Text>
                     </div>
                   </div>

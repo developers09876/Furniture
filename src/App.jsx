@@ -114,7 +114,7 @@ const router = createBrowserRouter(
 
       <Route path="*" exact element={<NotFound />} />
       <Route path="/" element={<Home />} />
-      <Route path="/ortholatex" element={<Ortholatex />} />
+      <Route path="/:ortholatex" element={<Ortholatex />} />
     </Route>
   )
 );

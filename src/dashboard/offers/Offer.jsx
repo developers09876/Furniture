@@ -7,6 +7,7 @@ import axios from "axios";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Radio } from "antd";
 import Swal from "sweetalert2";
+import { icon } from "@fortawesome/fontawesome-svg-core";
 const { confirm } = Modal;
 const { TextArea } = Input;
 const StyledOffer = styled.div`
@@ -17,20 +18,29 @@ const StyledOffer = styled.div`
 `;
 
 const Offer = () => {
-  const [textArea, setTextArea] = useState("");
-
-  const [editOfferModal, setEditOfferModal] = useState(false);
-  const [addOfferModal, setAddOfferModal] = useState(false);
-  const [editDetail, setEditDetail] = useState([]);
-  const [adminOffer, setAdminOffer] = useState([0]);
-  const offerDetails = adminOffer?.map((item) => item.offer_Details);
-  const [isEditing, setIsEditing] = useState(false);
-
   const {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm();
+
+  const [textArea, setTextArea] = useState("");
+  const [editOfferModal, setEditOfferModal] = useState(false);
+  const [addOfferModal, setAddOfferModal] = useState(false);
+  const [editDetail, setEditDetail] = useState([]);
+  const [adminOffer, setAdminOffer] = useState([0]);
+  console.log("adminOffer", adminOffer);
+  const offerDetails = adminOffer?.map((item) => item.offer_Details);
+  const offer_id = adminOffer?.map((item) => item._id);
+  console.log("tyid", offer_id);
+  useEffect(() => {
+    if (adminOffer && adminOffer.length > 0) {
+      setValue("precentagee", adminOffer[0]?.offer);
+    }
+  }, [adminOffer, setValue]);
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const columns = [
     {
@@ -44,6 +54,7 @@ const Offer = () => {
     {
       title: "Offers",
       dataIndex: "offer_text",
+      key: "offer_text",
     },
     {
       title: "Action",
@@ -101,6 +112,13 @@ const Offer = () => {
         console.log("Added Offer Text", res);
         setTextArea("");
         setAddOfferModal(false);
+
+        Swal.fire({
+          icon: "success",
+          title: "Added ",
+          text: "Successfully Offer Added ",
+        });
+        fetchOffer();
       })
       .catch((errors) => {
         console.error({ message: errors });
@@ -109,13 +127,14 @@ const Offer = () => {
   };
 
   const updateOfferText = () => {
-    const offer = {
+    const offerText = {
       offer_text: editDetail.offer_text,
       _id: editDetail._id,
     };
     axios
-      .put(`${import.meta.env.VITE_MY_API}admin/updateOfferText`, { offer })
+      .put(`${import.meta.env.VITE_MY_API}admin/updateOffer`, { offerText })
       .then((res) => {
+        fetchOffer();
         Swal.fire({
           icon: "success",
           title: "Updated",
@@ -139,8 +158,8 @@ const Offer = () => {
       .then((res) => {
         Swal.fire({
           icon: "success",
-          title: "Delted",
-          text: "Offer Delted Succesfully",
+          title: "Deleted",
+          text: "Offer Deleted Succesfully",
         });
         fetchOffer();
       })
@@ -161,7 +180,7 @@ const Offer = () => {
       okType: "danger",
       cancelText: "No",
       onOk() {
-        deleteOfferText(record._id); // Use the _id to call the API for deletion
+        deleteOfferText(record._id);
       },
       onCancel() {
         console.log("Delete cancelled");
@@ -173,43 +192,34 @@ const Offer = () => {
     setTextArea(value);
   };
 
-  const onSubmit = async () => {
-    const payload = {
-      offer: textArea,
-    };
-    const editPayload = {
-      offer: textArea,
-    };
-    console.log("addpayload", payload);
-    console.log("payload", editPayload);
+  const updateOffer = async (data) => {
+    const percentage = { precentage: data.precentagee, offer_id: offer_id };
 
-    // Decide API endpoint based on editing state
-    const apiCall = isEditing
-      ? axios.put(
-          `${import.meta.env.VITE_MY_API}admin/updateOffer`,
-          editPayload
-        )
-      : axios.post(`${import.meta.env.VITE_MY_API}admin/offer`, payload);
-
-    // Handle API call
-    apiCall
-      .then((res) => {
-        console.log("Response", res.data);
-        alert(
-          isEditing
-            ? "Offer updated successfully!"
-            : "Offer added successfully!"
-        );
+    axios
+      .put(`${import.meta.env.VITE_MY_API}admin/updateOffer`, {
+        percentage,
       })
-      .catch((error) => {
-        console.error("Error", error.response?.data || error.message);
-        alert(isEditing ? "Failed to update offer!" : "Failed to add offer!");
+      .then((res) => {
+        Swal.fire({
+          icon: "success",
+          title: "Updated",
+          text: "Offer has been updated successfully",
+        });
+        console.log("res.data", res.data);
+        setIsEditing(false);
+      })
+      .catch(() => {
+        Swal.fire(`Occur Error`, `Not Updated`, `error`);
       });
   };
 
   useEffect(() => {
     fetchOffer();
-  }, [adminOffer]);
+  }, [editOfferModal]);
+
+  const editOffer = () => {
+    setIsEditing(true);
+  };
 
   return (
     <StyledOffer>
@@ -221,65 +231,154 @@ const Offer = () => {
           Add Offer
         </button>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="d-flex flex-column align-items-center">
-          <Divider style={{ fontSize: "30px" }}>Offers Section</Divider>
+      <form onSubmit={handleSubmit(updateOffer)}>
+        <div
+          className="d-flex flex-column align-items-center"
+          style={{
+            backgroundColor: "#ffffff",
+            padding: "30px",
+            maxWidth: "900px",
+            margin: "20px auto",
+          }}
+        >
+          <Divider
+            style={{
+              fontSize: "28px",
+              fontWeight: "700",
+              color: "#ff6f61",
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              marginBottom: "25px",
+            }}
+          >
+            Offers Section
+          </Divider>
 
-          {adminOffer.map((items) => (
-            <>
-              {/* <Radio.Group onChange={radioChange} value={value}>
-                <Radio value={1}>On</Radio>
-                <Radio value={2}>Off</Radio>
-              </Radio.Group> */}
-              {/* <div className="d-flex">
-                <input
-                  value={editValued !== null ? editValue : items.offer}
-                  // value={items.offer}
-                  type="number"
-                  style={{ width: "18%", marginBottom: "20px" }}
-                  {...register("offer", {
-                    required: true,
-                    valueAsNumber: true,
-                    min: 1,
-                    max: 99,
-                  })}
-                />
-                {errors.offer && (
-                  <p style={{ color: "red" }}>
-                    {errors.offer?.type === "required"
-                      ? "Offer is required"
-                      : errors.offer?.type === "min"
-                      ? "Offer must be at least 1"
-                      : "Offer must be 99 or less"}
-                  </p>
-                )}
-
-                <MdEdit
-                  className="ms-3"
-                  style={{
-                    fontSize: "20px",
-                    cursor: "pointer",
-                    marginRight: "10px",
-                  }}
-                  onClick={() => editOffer(items.offer)}
-                  // onClick={() => editOffer()}
-                />
-              </div>
-              <div
-                className="form-group ms-1 mt-4 "
-                // style={{ textAlign: "end" }}
+          <div
+            className="d-flex"
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+            }}
+          >
+            <input
+              type="number"
+              style={{
+                width: "27%",
+                marginBottom: "20px",
+                padding: "12px",
+                border: "2px solid #ff6f61",
+                borderRadius: "10px",
+                fontSize: "16px",
+                boxShadow: "inset 0 2px 5px rgba(0, 0, 0, 0.1)",
+              }}
+              disabled={!isEditing}
+              {...register("precentagee", {
+                required: true,
+                valueAsNumber: true,
+                min: 0,
+                max: 99,
+              })}
+            />
+            <MdEdit
+              className="ms-3"
+              style={{
+                fontSize: "24px",
+                cursor: "pointer",
+                color: "#ff6f61",
+                transition: "transform 0.3s ease",
+              }}
+              onMouseEnter={(e) => (e.target.style.transform = "scale(1.2)")}
+              onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
+              onClick={() => editOffer()}
+            />
+            {errors.precentagee && (
+              <p
+                style={{
+                  color: "#ff4d4f",
+                  fontSize: "14px",
+                  marginTop: "5px",
+                }}
               >
-                {!isEditing && <Button type="primary">Submit</Button>}
-                {isEditing && (
-                  <Button type="primary" onClick={() => updateOffer()}>
-                    update
-                  </Button>
-                )}
-              </div> */}
-            </>
-          ))}
+                {errors.precentagee?.type === "required"
+                  ? "Offer is required"
+                  : errors.precentagee?.type === "min"
+                  ? "Offer must be at least 1"
+                  : "Offer must be 99 or less"}
+              </p>
+            )}
+          </div>
 
-          <Table dataSource={offerDetails[0]} columns={columns} />
+          <div
+            className="form-group mt-4"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            {isEditing && (
+              <button
+                className="btn btn-primary"
+                type="primary"
+                style={{
+                  backgroundColor: "#ff6f61",
+                  border: "none",
+                  padding: "12px 25px",
+                  borderRadius: "20px",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  color: "#ffffff",
+                  cursor: "pointer",
+                  transition: "background-color 0.3s ease, transform 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = "#e65b54";
+                  e.target.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = "#ff6f61";
+                  e.target.style.transform = "translateY(0)";
+                }}
+              >
+                Update
+              </button>
+            )}
+          </div>
+
+          <Table
+            dataSource={offerDetails[0]}
+            columns={columns.map((col) =>
+              col.dataIndex === "offer_text"
+                ? {
+                    ...col,
+                    render: (text) => (
+                      <div
+                        style={{
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          maxWidth: "250px", // Adjust as needed
+                          cursor: "pointer",
+                          display: "inline-block",
+                        }}
+                        title={text} // Tooltip to show full text
+                      >
+                        {text}
+                      </div>
+                    ),
+                  }
+                : col
+            )}
+            style={{
+              marginTop: "20px",
+              width: "100%",
+              border: "1px solid #ececec",
+              borderRadius: "10px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            }}
+            scroll={{ x: "100%" }} // Enables horizontal scrolling
+          />
         </div>
       </form>
       <Modal
@@ -290,19 +389,25 @@ const Offer = () => {
         footer={null}
       >
         <Input
-          placeholder="Enter Your Offer"
           value={editDetail.offer_text}
           onChange={(e) =>
             setEditDetail({ ...editDetail, offer_text: e.target.value })
           }
         />
-        <button className="btn btn-primary mt-2 modal-buttons">Cancel</button>
-        <button
-          className="btn btn-primary mt-2 ms-3 modal-buttons "
-          onClick={updateOfferText}
-        >
-          update
-        </button>
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          <button
+            className="btn btn-primary mt-4 modal-buttons"
+            onClick={handleCancel}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn btn-primary mt-4 ms-3 modal-buttons "
+            onClick={updateOfferText}
+          >
+            update
+          </button>
+        </div>
       </Modal>
       <Modal
         title="Add Offer"
@@ -316,12 +421,22 @@ const Offer = () => {
           placeholder={`Enter Your Offer Description `}
           onChange={(e) => handleTextAreaChange(e.target.value)}
         />
-        <button
-          className="btn btn-primary mt-2 modal-buttons"
-          onClick={addOffer}
-        >
-          Okay
-        </button>
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          <button
+            className="btn btn-primary mt-2 modal-buttons"
+            style={{ display: "flex", justifyContent: "end" }}
+            onClick={() => handleCancel()}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn btn-primary mt-2 ms-4 modal-buttons"
+            style={{ display: "flex", justifyContent: "end" }}
+            onClick={() => addOffer()}
+          >
+            Add
+          </button>
+        </div>
       </Modal>
     </StyledOffer>
   );

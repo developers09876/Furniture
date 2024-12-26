@@ -211,6 +211,7 @@ const Contact = () => {
                     <Input
                       {...field}
                       id="email"
+                      className="form-control"
                       placeholder="Enter Your Email"
                       status={errors.email ? "error" : ""}
                     />

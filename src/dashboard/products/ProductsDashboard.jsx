@@ -25,15 +25,21 @@ const ProductDashboard = () => {
   console.log("editingUser", editingUser);
   const [product, setProduct] = useState([]);
   console.log("editingUser", editingUser);
-  // const { products, deleteProduct, fetchData } = useContext(DashboardContext);
-  const { users, orders, products, fetchData } = useContext(DashboardContext);
+  const [products, setProducts] = useState([]);
+
+  const { productss, fetchData } = useContext(DashboardContext);
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_MY_API}products/`).then((res) => {
+      setProducts(res.data);
+    });
+  }, []);
   const deleteRecordFromAPI = async (id) => {
     try {
       await axios
         .delete(`${import.meta.env.VITE_MY_API}products/delete/${id}`)
         .then(() => {
-          fetchUsersData();
-
+          fetchData();
           Swal.fire({
             icon: "success",
             title: "Deleted!",
@@ -209,7 +215,6 @@ const ProductDashboard = () => {
       </div>
       <center>
         <Divider>
-          {" "}
           <h3>All Products</h3>
         </Divider>
       </center>
