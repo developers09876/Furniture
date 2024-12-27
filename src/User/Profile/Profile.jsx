@@ -60,15 +60,6 @@ function Profile() {
     }
   };
 
-  // const updateAddressDetails = (key, value) => {
-  //   setUserData((prev) => ({
-  //     ...prev,
-  //     address_details: prev.address_details.map((item, index) =>
-  //       index === 0 ? { ...item, [key]: value } : item
-  //     ),
-  //   }));
-  // };
-
   const handleUpdate = () => {
     form
       .validateFields()
