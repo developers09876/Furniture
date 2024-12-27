@@ -205,14 +205,22 @@ const Cart = () => {
                 </h7>
                 <div className="amount d-none d-md-block col align-content-center">
                   <div className="quantity-toggle">
-                    <button
-                      onClick={() =>
-                        handleQuantityChange(item, item.quantity - 1)
-                      }
-                      disabled={item.quantity === 1}
-                    >
-                      -
-                    </button>
+                    {item.quantity != 1 ? (
+                      <button
+                        onClick={() =>
+                          handleQuantityChange(item, item.quantity - 1)
+                        }
+                      >
+                        -
+                      </button>
+                    ) : (
+                      <button onClick={() => handleDelete(item)}>
+                        <FontAwesomeIcon
+                          icon={faTrash}
+                          style={{ width: "10px" }}
+                        />
+                      </button>
+                    )}
                     <center>
                       <span className="quantity m-2">{item.quantity}</span>
                     </center>
