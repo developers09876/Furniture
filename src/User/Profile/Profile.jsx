@@ -1,11 +1,10 @@
 import { Divider, Form, Input, Button, Modal } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useEffect } from "react";
-import { userData } from "three/webgpu";
+
 const { TextArea } = Input;
 const { confirm } = Modal;
 
@@ -18,16 +17,62 @@ const StyledProfile = styled.div`
 
 function Profile() {
   const [form] = Form.useForm();
-  const [UserData, setUserData] = useState([]);
-  console.log("UserDatax", UserData);
-  console.log("UserDatax", UserData.username);
+  const [UserData, setUserData] = useState({
+    username: "",
+    email: "",
+    phoneNumber: "",
+    address_details: [{ pincode: "", address: "" }],
+  });
+
   const userId = localStorage.getItem("id");
-  console.log("userdIdLo", userId);
+
+  useEffect(() => {
+    if (userId) fetchUser();
+  }, [userId]);
+
+  const fetchUser = async () => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_MY_API}user/getUser/${userId}`
+      );
+      const user = data.data || {};
+      const defaultAddress = { pincode: "", address: "" };
+
+      const userData = {
+        username: user.username || "",
+        email: user.email || "",
+        phoneNumber: user.phoneNumber || "",
+        address_details: user.address_details?.length
+          ? user.address_details
+          : [defaultAddress],
+      };
+
+      setUserData(userData);
+      form.setFieldsValue({
+        name: userData.username,
+        email: userData.email,
+        phonenumber: userData.phoneNumber,
+        pincode: userData.address_details[0]?.pincode,
+        address: userData.address_details[0]?.address,
+      });
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  // const updateAddressDetails = (key, value) => {
+  //   setUserData((prev) => ({
+  //     ...prev,
+  //     address_details: prev.address_details.map((item, index) =>
+  //       index === 0 ? { ...item, [key]: value } : item
+  //     ),
+  //   }));
+  // };
 
   const handleUpdate = () => {
     form
       .validateFields()
-      .then((values) => {
+      .then(() => {
         confirm({
           title: `Want to update ${UserData.username}?`,
           okText: "Yes",
@@ -35,13 +80,9 @@ function Profile() {
           onOk() {
             updateRecordFromAPI();
           },
-          onCancel() {
-            console.log("Update cancelled");
-          },
         });
       })
-      .catch((errorInfo) => {
-        console.error("Validation Failed:", errorInfo);
+      .catch(() => {
         Swal.fire({
           icon: "error",
           title: "Validation Error",
@@ -51,78 +92,37 @@ function Profile() {
   };
 
   const updateRecordFromAPI = async () => {
-    console.log("UserDataApi", UserData);
-
     const details = {
       username: UserData.username,
       email: UserData.email,
       phoneNumber: UserData.phoneNumber,
-      pincode: UserData?.address_details?.[0].pincode,
-      address: UserData?.address_details?.[0].address,
+      pincode: UserData?.address_details?.[0]?.pincode,
+      address: UserData?.address_details?.[0]?.address,
     };
-    axios
-      .post(`${import.meta.env.VITE_MY_API}user/update/${userId}`, details)
-      .then((res) => {
-        Swal.fire({
-          icon: "success",
-          title: "Updated!",
-          text: `User has been updated successfully.`,
-        });
-      })
-
-      .catch((error) => {
-        console.error("Error updating user:", error);
-        Swal.fire({
-          icon: "error",
-          title: "Error!",
-          text: "There was an error updating the user. Please try again.",
-        });
+    console.log("details", details);
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_MY_API}user/update/${userId}`,
+        details
+      );
+      Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: `User has been updated successfully.`,
       });
-  };
-
-  const handleCancel = () => {
-    form.resetFields();
-  };
-
-  const fetchUser = async () => {
-    axios
-      .get(`${import.meta.env.VITE_MY_API}user/getUser/${userId}`)
-      .then((res) => {
-        setUserData(res.data.data);
-
-        // form.setFieldsValue({
-        //   name: apiData.username,
-        //   email: apiData.email,
-        //   phonenumber: apiData.phoneNumber,
-        //   pincode: apiData?.address_details?.[0].pincode,
-        //   address: apiData?.address_details?.[0].address,
-        // });
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  };
-  useEffect(() => {
-    if (UserData) {
-      form.setFieldsValue({
-        name: UserData.username || "",
-        email: UserData.email || "",
-        phonenumber: UserData.phoneNumber || "",
-        pincode: UserData?.address_details?.[0]?.pincode || "",
-        address: UserData?.address_details?.[0]?.address || "",
+    } catch (error) {
+      console.error("Error updating user:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "There was an error updating the user. Please try again.",
       });
     }
-  }, [UserData]);
-  useEffect(() => {
-    if (userId) {
-      fetchUser();
-    }
-  }, [userId]);
+  };
 
   return (
     <StyledProfile>
       <Divider style={{ fontSize: "30px" }}>Profile</Divider>
-
       <Form
         style={{ marginLeft: "250px", width: "70%" }}
         form={form}
@@ -145,18 +145,15 @@ function Profile() {
                 onChange={(e) =>
                   setUserData({ ...UserData, username: e.target.value })
                 }
-                required
               />
             </Form.Item>
           </Col>
-
           <Col xs={12} sm={6}>
             <Form.Item label="Email" name="email">
               <Input disabled />
             </Form.Item>
           </Col>
         </Row>
-
         <Row>
           <Col xs={12} sm={6}>
             <Form.Item
@@ -171,13 +168,9 @@ function Profile() {
               ]}
             >
               <Input
-                type="number"
-                addonBefore="+91"
                 onChange={(e) =>
                   setUserData({ ...UserData, phoneNumber: e.target.value })
                 }
-                // required
-                maxLength={10} //
               />
             </Form.Item>
           </Col>
@@ -190,22 +183,21 @@ function Profile() {
                   required: true,
                   message: "Pincode is required",
                 },
+                {
+                  pattern: /^\d{6}$/,
+                  message: "Pincode must be exactly 6 digits",
+                },
               ]}
             >
               <Input
-                type="number"
-                placeholder="Pin Code"
-                maxLength={6}
+                value={UserData?.address_details?.[0]?.pincode}
                 onChange={(e) => {
-                  console.log("e", e);
-
+                  const value = e.target.value.slice(0, 6).replace(/\D/g, "");
                   setUserData({
                     ...UserData,
-                    address_details: UserData?.address_details?.map(
+                    address_details: UserData.address_details.map(
                       (item, index) =>
-                        index === 0
-                          ? { ...item, pincode: e.target.value }
-                          : item
+                        index === 0 ? { ...item, pincode: value } : item
                     ),
                   });
                 }}
@@ -213,42 +205,32 @@ function Profile() {
             </Form.Item>
           </Col>
         </Row>
-
         <Row>
           <Col xs={12} sm={6}>
             <Form.Item
               label="Address"
               name="address"
-              rules={[
-                {
-                  required: true,
-                  message: "Address is mandatory",
-                },
-                {
-                  min: 2,
-                  message: "Ensure Location Accuracy",
-                },
-              ]}
+              rules={[{ required: true, message: "Address is mandatory" }]}
             >
               <TextArea
                 rows={4}
-                placeholder="Enter Your Address"
-                onChange={(e) => {
+                value={UserData?.address_details?.[0]?.address}
+                onChange={(e) =>
                   setUserData({
                     ...UserData,
-                    address_details: UserData?.address_details?.map(
+                    address_details: UserData.address_details.map(
                       (item, index) =>
                         index === 0
                           ? { ...item, address: e.target.value }
                           : item
                     ),
-                  });
-                }}
+                  })
+                }
               />
             </Form.Item>
           </Col>
           <Col xs={12} sm={6}>
-            <Button type="primary" onClick={(values) => handleUpdate(values)}>
+            <Button type="primary" onClick={handleUpdate}>
               Update
             </Button>
           </Col>
