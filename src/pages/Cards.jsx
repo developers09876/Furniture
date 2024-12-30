@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import TimeLeft from "../components/TimeLeft";
 import image1 from "../assets/Happy_Customers.png";
 import image2 from "../assets/Free_shipping.png";
 import image3 from "../assets/Free_installation.png";
@@ -97,24 +98,8 @@ const settings = {
   arrows: false,
 };
 
-const calculateTimeLeft = () => {
-  let now = new Date();
-  let eventTime = new Date(now.getTime() + 1000 * 60 * 60 * 5);
-  let timeLeft = eventTime - now;
-
-  let hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
-  let minutes = Math.floor((timeLeft / 1000 / 60) % 60);
-  let seconds = Math.floor((timeLeft / 1000) % 60);
-
-  return {
-    hours: hours < 10 ? `0${hours}` : hours,
-    minutes: minutes < 10 ? `0${minutes}` : minutes,
-    seconds: seconds < 10 ? `0${seconds}` : seconds,
-  };
-};
-
 const Sale = () => {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  // const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   const [offer, setOffer] = useState([]);
 
   const fetchOffer = () => {
@@ -153,11 +138,13 @@ const Sale = () => {
                     <Text strong style={{ fontSize: "18px" }}>
                       Sale Ends In
                     </Text>
-                    <TimerText>{`${timeLeft.hours} : ${timeLeft.minutes} : ${timeLeft.seconds}`}</TimerText>
+                    <TimerText>
+                      <TimeLeft />
+                    </TimerText>
                     <Space size="small">
-                      <Text>Days</Text>
-                      <Text>Hrs</Text>
-                      <Text>Mins</Text>
+                      <Text>Hrs</Text>&nbsp;
+                      <Text>Min</Text> &nbsp;
+                      <Text>Sec</Text>
                     </Space>
                   </Space>
                 </SaleEndsIn>

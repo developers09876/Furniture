@@ -45,6 +45,9 @@ export const updateOfferDetails = async (req, res) => {
   try {
     const { offerText, percentage } = req.body;
     let mainOffer;
+    console.log("percentage", percentage);
+    console.log("percentageID", percentage.offer_id);
+    console.log("perc", percentage.sales_timing);
 
     if (offerText && offerText._id) {
       const { offer_text, _id: offerDetailId } = offerText;
@@ -59,13 +62,14 @@ export const updateOfferDetails = async (req, res) => {
     }
 
     if (percentage && percentage.offer_id) {
-      const { precentage, offer_id } = percentage;
-
+      const { precentage, offer_id, sales_timing } = percentage;
+      console.log("sales_timing", sales_timing);
       if (!mainOffer) {
         mainOffer = await Admin.findById(offer_id[0]);
       }
 
       mainOffer.offer = precentage;
+      mainOffer.sales_timing = sales_timing;
     }
 
     if (mainOffer) {
