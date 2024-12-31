@@ -174,7 +174,6 @@ const Checkout = () => {
   };
 
   const handleCOD = () => {
-    alert("going to COD");
     createOrder();
   };
 
