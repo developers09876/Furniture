@@ -265,6 +265,7 @@ export const createOrder = async (req, res) => {
 
 export const updateOrder = async (req, res) => {
   const orderId = req.params.id;
+  console.log("zxreq.body", req.body);
   try {
     const { order_status } = req.body;
     const { emailDetails } = req.body;
@@ -289,12 +290,12 @@ export const updateOrder = async (req, res) => {
     const mailOptions = {
       from: process.env.EMAIL,
       to: emailDetails.email,
-      subject: `Your Order has been  ${order_status}`,
+      subject: `Your Order has been Updated`,
       html: `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
         <h2 style="color: #007bff;"> status has been updated  </h2>
-        <p><strong>Status:</strong> ${emailDetails.name}</p>
-        <p><strong>Name:</strong> ${order_status}</p>
+        <p><strong>seller move to </strong> ${order_status}</p>
+        // <p><strong></strong> ${order_status}</p>
         <hr style="border: 1px solid #ddd;" />
         <p>Thank you for join with Us!</p>
         <p style="color: #007bff;">Restropedic Team</p>

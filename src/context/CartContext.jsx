@@ -19,8 +19,6 @@ export const CartProvider = ({ children }) => {
   const [totalItems, setTotalItems] = useState(0);
   const { fetchCart, cartdata } = useContext(DashboardContext);
   console.log("cartdata", cartdata);
-  const [currentCart, setCurrentCart] = useState([]);
-  console.log("currentCarzt", currentCart);
 
   const addToCart = async (item) => {
     const userID = localStorage.getItem("id");
@@ -51,19 +49,18 @@ export const CartProvider = ({ children }) => {
             ...prevCart,
             items: fetchedCart,
           }));
+          Swal.fire({
+            icon: "success",
+            title: "Item added to cart",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+
+          fetchCart();
         })
         .catch((error) => {
           console.error("Error adding item to cart:", error);
         });
-
-      Swal.fire({
-        icon: "success",
-        title: "Item added to cart",
-        showConfirmButton: false,
-        timer: 1000,
-      });
-
-      fetchCart();
     } else {
       console.error("User cart is not available");
     }
@@ -175,6 +172,9 @@ export const CartProvider = ({ children }) => {
     setTotalItems(totalItems);
   }, [cart]);
 
+  useEffect(() => {
+    addToCart();
+  }, [cart]);
   return (
     <CartContext.Provider
       value={{
