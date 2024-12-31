@@ -16,7 +16,7 @@ import "../Css-Pages/HomeCard.css";
 import { Container } from "react-bootstrap";
 import { DashboardContext } from "../context/DashboardContext";
 import axios from "axios";
-
+import TimeLeft from "../components/TimeLeft";
 const { Text } = Typography;
 
 const SaleContainer = styled.div`
@@ -153,7 +153,7 @@ const Sale = () => {
                     <Text strong style={{ fontSize: "18px" }}>
                       Sale Ends In
                     </Text>
-                    <TimerText>{`${timeLeft.hours} : ${timeLeft.minutes} : ${timeLeft.seconds}`}</TimerText>
+                    <TimeLeft />
                     <Space size="small">
                       <Text>Days</Text>
                       <Text>Hrs</Text>
