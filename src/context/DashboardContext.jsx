@@ -20,10 +20,10 @@ export const DashboardProvider = ({ children }) => {
   }, []);
   useEffect(() => {
     fetchCart();
-  }, []);
+  }, [userID]);
   useEffect(() => {
     fetchWhishlist();
-  }, []);
+  }, [userID]);
 
   const fetchData = async () => {
     //user

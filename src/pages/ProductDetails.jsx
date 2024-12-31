@@ -62,10 +62,8 @@ const SingleProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [subTotal, setSubTotal] = useState(0);
   const { addToCart, removeItem } = useContext(CartContext);
-  const [orders, setOrders] = useState([]);
   const { addToWishlist } = useContext(WishlistContext);
   const { isAuthenticated } = useContext(AuthContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const { total } = useContext(WishlistContext);
 

@@ -45,8 +45,8 @@ const UserLogin = () => {
           timer: 1500,
         });
 
-        fetchCart();
-        fetchWhishlist();
+        await fetchCart();
+        await fetchWhishlist();
 
         setTimeout(() => {
           navigate("/");

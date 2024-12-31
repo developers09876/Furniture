@@ -1,23 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
-import WishlistContent from "../components/wishlist/WishlistContent";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import CartTotal from "../components/cart/CartTotal";
 import { WishlistContext } from "../context/WishlistContext";
 import Breadcrumb from "../components/Breadcrumb";
 import { DashboardContext } from "../context/DashboardContext";
 import styled from "styled-components";
 import { FaIndianRupeeSign } from "react-icons/fa6";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "antd";
 import { MdDelete } from "react-icons/md";
 const { confirm } = Modal;
 
 const Wishlist = () => {
   const navigate = useNavigate();
-  const { total } = useContext(WishlistContext);
   const { isAuthenticated } = useContext(AuthContext);
   const { clearWishlist, removeItem } = useContext(WishlistContext);
 

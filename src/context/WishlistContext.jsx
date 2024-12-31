@@ -17,26 +17,6 @@ export const WishlistProvider = ({ children }) => {
   console.log("wishlist", wishlist);
   const { fetchWhishlist } = useContext(DashboardContext);
 
-  useEffect(() => {
-    fetchWishlist();
-  }, []);
-  const fetchWishlist = async () => {
-    try {
-      if (isAuthenticated) {
-        const response = await axios.get(
-          `${import.meta.env.VITE_MY_API}wishlists?user_id=${userID}`
-        );
-        const fetchedWishlist = response.data[0];
-        setWishlist(fetchedWishlist);
-        setTotal(fetchedWishlist.items.length);
-      }
-    } catch (error) {
-      console.error("Error fetching wishlist:", error);
-      setWishlist({ id: "", user_id: "", items: [] });
-      setTotal(0);
-    }
-  };
-
   const addToWishlist = async (item) => {
     const userID = localStorage.getItem("id");
 
