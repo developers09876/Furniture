@@ -201,7 +201,13 @@ function Profile() {
             <Form.Item
               label="Address"
               name="address"
-              rules={[{ required: true, message: "Address is mandatory" }]}
+              rules={[
+                { required: true, message: "Address is mandatory" },
+                {
+                  min: 15,
+                  message: "Address must be 15 charachter",
+                },
+              ]}
             >
               <TextArea
                 rows={4}
