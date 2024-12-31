@@ -13,14 +13,18 @@ export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState({ id: "", user_id: "", items: [] });
   const { isAuthenticated, userID } = useContext(AuthContext);
   const [total, setTotal] = useState(0);
-  const [Whistlist, setWhistlist] = useState();
+  const [Whistlist, setWhistlist] = useState(); // create
   console.log("wishlist", wishlist);
   const { fetchWhishlist } = useContext(DashboardContext);
-  const fetchWishlist = async (userId) => {
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
+  const fetchWishlist = async () => {
     try {
       if (isAuthenticated) {
         const response = await axios.get(
-          `${import.meta.env.VITE_MY_API}wishlists?user_id=${userId}`
+          `${import.meta.env.VITE_MY_API}wishlists?user_id=${userID}`
         );
         const fetchedWishlist = response.data[0];
         setWishlist(fetchedWishlist);
@@ -137,6 +141,7 @@ export const WishlistProvider = ({ children }) => {
         addToWishlist,
         clearWishlist,
         removeItem,
+        Whistlist,
       }}
     >
       {children}

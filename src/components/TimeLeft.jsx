@@ -8,6 +8,7 @@ const Time = () => {
     seconds: "00",
   });
   const [offer, setOffer] = useState([]);
+  console.log("offer", offer);
   const [eventTime, setEventTime] = useState(null);
 
   // Fetch offer data
