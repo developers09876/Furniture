@@ -266,6 +266,7 @@ const SingleProductPage = () => {
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
   };
+
   // const addItems = async (product, userId) => {
   //   try {
   //     // Increment product quantity by 1
@@ -314,6 +315,7 @@ const SingleProductPage = () => {
   //     console.error("Error updating quantity", error);
   //   }
   // };
+
   const unselectedStyless = {
     color: "red",
   };

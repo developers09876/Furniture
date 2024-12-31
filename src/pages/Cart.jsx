@@ -184,7 +184,7 @@ const Cart = () => {
             cd.map((item, index) => (
               <Wrapper className="row" key={index}>
                 <div
-                  className="title col-md-3 col-4 d-flex align-items-center"
+                  className="title col-md-3 col-4 d-flex align-items-center mb-3"
                   style={{ cursor: "pointer" }}
                   onClick={() => {
                     navigate(`/products/${item.productId}`);

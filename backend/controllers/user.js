@@ -44,6 +44,12 @@ export const registerUser = async (req, res) => {
         email,
         phoneNumber,
         password: passwordHashed,
+        address_details: [
+          {
+            pincode: " ",
+            address: " ",
+          },
+        ],
       });
 
       await newUser.save();
