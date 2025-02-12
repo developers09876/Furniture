@@ -229,7 +229,7 @@ const AddProduct = () => {
         title: "Success",
         text: "Product Added Successfully",
       });
-      // navigate("/admin/products/");
+      navigate("/admin/products/");
     } catch (error) {
       console.error("Error adding product:", error);
       Swal.fire({

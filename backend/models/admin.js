@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 
 const AdminSchema = new Schema({
   offer: { type: Number, required: true },
+  sales_timing: { type: Number, required: true },
   offer_Details: [
     {
       offer_text: { type: String },

@@ -121,6 +121,7 @@ const Products = () => {
           <h3 style={{ textAlign: "end" }} className="mt-4">
             All Products
           </h3>
+
           <div
             style={{
               display: "flex",

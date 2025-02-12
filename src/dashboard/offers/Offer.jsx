@@ -30,15 +30,19 @@ const Offer = () => {
   const [addOfferModal, setAddOfferModal] = useState(false);
   const [editDetail, setEditDetail] = useState([]);
   const [adminOffer, setAdminOffer] = useState([0]);
-  console.log("adminOffer", adminOffer);
   const offerDetails = adminOffer?.map((item) => item.offer_Details);
   const offer_id = adminOffer?.map((item) => item._id);
-  console.log("tyid", offer_id);
-  useEffect(() => {
+
+  const updateFormValues = () => {
     if (adminOffer && adminOffer.length > 0) {
       setValue("precentagee", adminOffer[0]?.offer);
+      setValue("salesOffer", adminOffer[0]?.sales_timing);
     }
-  }, [adminOffer, setValue]);
+  };
+
+  useEffect(() => {
+    updateFormValues();
+  }, [adminOffer]);
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -193,8 +197,12 @@ const Offer = () => {
   };
 
   const updateOffer = async (data) => {
-    const percentage = { precentage: data.precentagee, offer_id: offer_id };
-
+    const percentage = {
+      offer_id: offer_id,
+      precentage: data.precentagee,
+      sales_timing: data.salesOffer,
+    };
+    console.log("percentage", percentage);
     axios
       .put(`${import.meta.env.VITE_MY_API}admin/updateOffer`, {
         percentage,
@@ -221,6 +229,27 @@ const Offer = () => {
     setIsEditing(true);
   };
 
+  const inputBox = {
+    width: "27%",
+    marginBottom: "20px",
+    padding: "12px",
+    border: "2px solid #ff6f61",
+    borderRadius: "10px",
+    fontSize: "16px",
+    boxShadow: "inset 0 2px 5px rgba(0, 0, 0, 0.1)",
+  };
+
+  const buttonUpdate = {
+    backgroundColor: "#ff6f61",
+    border: "none",
+    padding: "12px ",
+    borderRadius: "20px",
+    fontSize: "16px",
+    fontWeight: "600",
+    color: "#ffffff",
+    cursor: "pointer",
+    transition: "background-color 0.3s ease, transform 0.2s ease",
+  };
   return (
     <StyledOffer>
       <div style={{ display: "flex", justifyContent: "end" }}>
@@ -231,6 +260,7 @@ const Offer = () => {
           Add Offer
         </button>
       </div>
+
       <form onSubmit={handleSubmit(updateOffer)}>
         <div
           className="d-flex flex-column align-items-center"
@@ -262,90 +292,86 @@ const Offer = () => {
               width: "100%",
             }}
           >
-            <input
-              type="number"
-              style={{
-                width: "27%",
-                marginBottom: "20px",
-                padding: "12px",
-                border: "2px solid #ff6f61",
-                borderRadius: "10px",
-                fontSize: "16px",
-                boxShadow: "inset 0 2px 5px rgba(0, 0, 0, 0.1)",
-              }}
-              disabled={!isEditing}
-              {...register("precentagee", {
-                required: true,
-                valueAsNumber: true,
-                min: 0,
-                max: 99,
-              })}
-            />
-            <MdEdit
-              className="ms-3"
-              style={{
-                fontSize: "24px",
-                cursor: "pointer",
-                color: "#ff6f61",
-                transition: "transform 0.3s ease",
-              }}
-              onMouseEnter={(e) => (e.target.style.transform = "scale(1.2)")}
-              onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
-              onClick={() => editOffer()}
-            />
-            {errors.precentagee && (
-              <p
-                style={{
-                  color: "#ff4d4f",
-                  fontSize: "14px",
-                  marginTop: "5px",
-                }}
-              >
-                {errors.precentagee?.type === "required"
-                  ? "Offer is required"
-                  : errors.precentagee?.type === "min"
-                  ? "Offer must be at least 1"
-                  : "Offer must be 99 or less"}
-              </p>
-            )}
-          </div>
+            <div>
+              <input
+                type="number"
+                style={inputBox}
+                disabled={!isEditing}
+                {...register("precentagee", {
+                  required: true,
+                  valueAsNumber: true,
+                  min: 0,
+                  max: 99,
+                })}
+              />
 
-          <div
-            className="form-group mt-4"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            {isEditing && (
-              <button
-                className="btn btn-primary"
-                type="primary"
+              {errors.precentagee && (
+                <p
+                  style={{
+                    color: "#ff4d4f",
+                    fontSize: "14px",
+                    marginTop: "5px",
+                  }}
+                >
+                  {errors.precentagee?.type === "required"
+                    ? "Offer is required"
+                    : errors.precentagee?.type === "min"
+                    ? "Offer must be at least 1"
+                    : "Offer must be 99 or less"}
+                </p>
+              )}
+            </div>
+            <div>
+              <input
+                className="ms-3"
+                type="number"
+                style={inputBox}
+                disabled={!isEditing}
+                {...register("salesOffer", {
+                  required: true,
+                  valueAsNumber: true,
+                })}
+              />
+              <MdEdit
+                className="ms-3"
                 style={{
-                  backgroundColor: "#ff6f61",
-                  border: "none",
-                  padding: "12px 25px",
-                  borderRadius: "20px",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  color: "#ffffff",
+                  fontSize: "24px",
                   cursor: "pointer",
-                  transition: "background-color 0.3s ease, transform 0.2s ease",
+                  color: "#ff6f61",
+                  transition: "transform 0.3s ease",
                 }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = "#e65b54";
-                  e.target.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = "#ff6f61";
-                  e.target.style.transform = "translateY(0)";
-                }}
-              >
-                Update
-              </button>
-            )}
-          </div>
+                onMouseEnter={(e) => (e.target.style.transform = "scale(1.2)")}
+                onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
+                onClick={() => editOffer()}
+              />
+            </div>
 
+            <div
+              className="form-group mt-4"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              {isEditing && (
+                <button
+                  className="btn btn-primary"
+                  type="primary"
+                  style={buttonUpdate}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = "#e65b54";
+                    e.target.style.transform = "translateY(-2px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = "#ff6f61";
+                    e.target.style.transform = "translateY(0)";
+                  }}
+                >
+                  Update
+                </button>
+              )}
+            </div>
+          </div>
           <Table
             dataSource={offerDetails[0]}
             columns={columns.map((col) =>
@@ -358,11 +384,11 @@ const Offer = () => {
                           whiteSpace: "nowrap",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
-                          maxWidth: "250px", // Adjust as needed
+                          maxWidth: "250px",
                           cursor: "pointer",
                           display: "inline-block",
                         }}
-                        title={text} // Tooltip to show full text
+                        title={text}
                       >
                         {text}
                       </div>
@@ -377,7 +403,7 @@ const Offer = () => {
               borderRadius: "10px",
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
             }}
-            scroll={{ x: "100%" }} // Enables horizontal scrolling
+            scroll={{ x: "100%" }}
           />
         </div>
       </form>

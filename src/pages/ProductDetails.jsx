@@ -524,7 +524,7 @@ const SingleProductPage = () => {
                     to="/cart"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
-                    In Cart &nbsp;
+                    Go to Cart &nbsp;
                     <FontAwesomeIcon icon={faCartPlus} />
                   </Link>
                 </Button>
