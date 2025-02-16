@@ -42,9 +42,7 @@ const Users = () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_MY_API}user/get`);
         setUsers(res.data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
+      } catch (error) {}
     };
 
     fetchUsersData();
@@ -64,7 +62,6 @@ const Users = () => {
           });
         });
     } catch (error) {
-      console.error("Error deleting user:", error);
       Swal.fire({
         icon: "error",
         title: "Error!",
@@ -84,9 +81,7 @@ const Users = () => {
       onOk() {
         deleteRecordFromAPI(record._id); // Use the _id to call the API for deletion
       },
-      onCancel() {
-        console.log("Delete cancelled");
-      },
+      onCancel() {},
     });
   };
 
@@ -107,9 +102,7 @@ const Users = () => {
       onOk() {
         editRecordFromAPI(selectedUser._id, record);
       },
-      onCancel() {
-        console.log("Edit cancelled");
-      },
+      onCancel() {},
     });
   };
 
@@ -132,7 +125,6 @@ const Users = () => {
           setEditUser(false);
         });
     } catch (error) {
-      console.error("Error updating user:", error);
       Swal.fire({
         icon: "error",
         title: "Error!",

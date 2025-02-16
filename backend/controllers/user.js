@@ -21,7 +21,6 @@ const createUserWithoutPass = async (user) => {
 
 // create user=============================================
 export const registerUser = async (req, res) => {
-  console.log("reqq.body", req.body);
   const { username, email, password, phoneNumber } = req.body;
 
   if (!password) {
@@ -63,18 +62,14 @@ export const registerUser = async (req, res) => {
         message: "User created Succesfully",
       });
     }
-  } catch (err) {
-    console.log("error inside register user!", err);
-  }
+  } catch (err) {}
 };
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  console.log("name", email, password);
 
   try {
     const foundUser = await User.findOne({ email });
-    console.log("foundUser", foundUser);
     if (!foundUser) {
       return res
         .status(HTTP_RESPONSE.NOT_FOUND.CODE)
@@ -99,7 +94,6 @@ export const loginUser = async (req, res) => {
       .status(HTTP_RESPONSE.OK.CODE)
       .json({ data: userWithoutPassword, token });
   } catch (err) {
-    console.log("An error inside user login.", err);
     return res
       .status(HTTP_RESPONSE.INTERNAL_ERROR.CODE)
       .json(HTTP_RESPONSE.INTERNAL_ERROR.MESSAGE);
@@ -132,8 +126,7 @@ export const verifyLoginOTP = async (req, res) => {
 
     return res.status(200).json({ data: userWithoutPassword, token });
   } catch (err) {
-    console.error("Error verifying OTP:", err);
-    return res
+         return res
       .status(500)
       .json({ message: "An error occurred during OTP verification" });
   }
@@ -146,8 +139,7 @@ export const createCart = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    console.log("caetItem", cartItem);
-
+    //  
     user.Carts.push(cartItem);
     await user.save();
 
@@ -198,16 +190,13 @@ export const updateQuantity = async (req, res) => {
       updatedCartItem: cartItem,
     });
   } catch (error) {
-    console.error("Error updating cart quantity:", error);
-    res.status(500).json({ message: "Server Error: " + error.message });
+         res.status(500).json({ message: "Server Error: " + error.message });
   }
 };
 
 export const deleteCartItem = async (req, res) => {
   const { userID, productId } = req.params;
-  console.log("UserID:", userID);
-  console.log("ProductID:", productId);
-
+  //    //  
   try {
     const user = await User.findById(userID);
 
@@ -223,8 +212,7 @@ export const deleteCartItem = async (req, res) => {
       .status(200)
       .json({ message: "Item removed from cart", cart: user.Carts });
   } catch (error) {
-    console.error("Error removing item from cart:", error);
-    return res.status(500).json({ message: "Server error" });
+         return res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -239,15 +227,13 @@ export const clearCartItem = async (req, res) => {
     await user.save();
     return res.status(200).json({ message: "Cart cleared successfully" });
   } catch (error) {
-    console.log("Error clearing cart:", error);
-    return res.status(500).json({ message: "Server error" });
+    //      return res.status(500).json({ message: "Server error" });
   }
 };
 
 export const clearWhishlist = async (req, res) => {
   const userId = req.params.userId;
-  console.log("userIdz", userId);
-  try {
+  //    try {
     const user = await User.findById(userId);
     if (!userId) {
       return res.status(404).json({ message: "user Not Found" });
@@ -258,8 +244,7 @@ export const clearWhishlist = async (req, res) => {
       .status(200)
       .json({ message: "Whishlist Cleared successfully  " });
   } catch (error) {
-    console.error("Error Clear Whishlist :", error);
-    return res.status(500).json({ message: "Server error" });
+         return res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -316,8 +301,7 @@ export const deleteWhishItem = async (req, res) => {
       Whishlist: user.Whishlist,
     });
   } catch (error) {
-    console.error("Error Removing item from wishlist:", error);
-    return res.status(500).json({ message: "Server error" });
+         return res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -334,8 +318,7 @@ export const getAllUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("id", id);
-    const deletedCategory = await User.findByIdAndDelete({ _id: id });
+    //      const deletedCategory = await User.findByIdAndDelete({ _id: id });
 
     if (!deletedCategory) {
       return res.status(404).json({ message: "User not found" }); // If the category doesn't exist
@@ -348,14 +331,10 @@ export const deleteUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-  console.log("User Request Body:", req.body);
-  try {
+  //    try {
     const { id } = req.params;
-    console.log("User", id);
-    const { username, phoneNumber, pincode, address } = req.body;
-    console.log("pincode", pincode);
-    console.log("address", address);
-    const updateFields = {
+    //      const { username, phoneNumber, pincode, address } = req.body;
+    //      //      const updateFields = {
       username,
       phoneNumber,
     };
@@ -363,26 +342,22 @@ export const updateUser = async (req, res) => {
       updateFields.address_details = [{ pincode, address }];
     }
 
-    console.log("updateFields", updateFields);
-    const updatedUser = await User.findByIdAndUpdate(id, {
+    //      const updatedUser = await User.findByIdAndUpdate(id, {
       $set: updateFields,
     });
 
-    // console.log("updatedUser", updatedUser);
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     } else {
       res.status(200).json(updatedUser);
     }
   } catch (error) {
-    console.error("Error updating user:", error);
-    res.status(500).json({ message: "Server Error: " + error.message });
+         res.status(500).json({ message: "Server Error: " + error.message });
   }
 };
 
 export async function enquiryUser(req, res) {
-  console.log("req.body", req.body);
-  try {
+  //    try {
     const { name, email, message } = req.body;
 
     // Validate input data
@@ -396,9 +371,7 @@ export async function enquiryUser(req, res) {
       message,
     };
 
-    console.log("Customer's Email (from field):", details.email);
-    console.log("Owner's Email (to field):", process.env.EMAIL);
-
+    //      //  
     if (!process.env.EMAIL || !process.env.EMAIL_PASSWORD) {
       throw new Error("EMAIL and EMAIL_PASSWORD must be set in the .env file");
     }
@@ -434,15 +407,13 @@ export async function enquiryUser(req, res) {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent: " + info.response);
-
+    //  
     res.status(200).json({
       message: "Enquiry sent successfully!",
       details,
     });
   } catch (err) {
-    console.error("Error sending enquiry:", err);
-
+     
     res.status(500).json({
       message: "Error sending enquiry",
       error: err.message,
@@ -453,8 +424,7 @@ export async function enquiryUser(req, res) {
 export async function resetUsers(req, res) {
   try {
     const { email } = req.body;
-    console.log("Email provided for reset:", email);
-
+    //      //  
     // Check if the user exists in the database
     const existUser = await User.findOne({ email });
     if (!existUser) {
@@ -466,8 +436,7 @@ export async function resetUsers(req, res) {
 
     // Generate a 4-digit OTP
     const otp = Math.floor(1000 + Math.random() * 9000);
-    console.log("Generated OTP:", otp);
-
+    //  
     // Set up the nodemailer transporter
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -490,14 +459,12 @@ export async function resetUsers(req, res) {
     // Send the email
     transporter.sendMail(mailOptions, async function (error, info) {
       if (error) {
-        console.log("Error sending OTP email:", error);
-        return res.status(500).json({
+        //          return res.status(500).json({
           message: "Failed to send OTP email",
           status: "Failed",
         });
       } else {
-        console.log("OTP email sent:", info.response);
-
+        //          //  
         // Update the user record with the OTP in the database
         await User.findByIdAndUpdate(
           existUser._id,
@@ -513,8 +480,7 @@ export async function resetUsers(req, res) {
       }
     });
   } catch (err) {
-    console.error("Error during password reset process:", err);
-    return res.status(500).json({
+         return res.status(500).json({
       message: "An error occurred during reset",
       status: "Failed",
     });
@@ -524,7 +490,6 @@ export async function resetUsers(req, res) {
 export async function checkVerifivationCode(req, res) {
   try {
     const { email, code } = req.body;
-    console.log("hello", req.body);
     // Find the user by email
     const user = await User.findOne({ email });
     if (!user) {
@@ -547,8 +512,7 @@ export async function checkVerifivationCode(req, res) {
       });
     }
   } catch (err) {
-    console.error("Error verifying code:", err);
-    return res.status(500).json({
+         return res.status(500).json({
       message: "An error occurred during verification",
       status: "Failed",
     });
@@ -561,7 +525,6 @@ export async function getOneUser(req, res) {
     const user = await User.findOne({
       _id: data.id,
     });
-    console.log("oneuser", user);
     if (!user) {
       return res.status(400).json({
         message: "User  NOt found",
@@ -575,8 +538,7 @@ export async function getOneUser(req, res) {
       status: "Successful",
     });
   } catch (err) {
-    console.error("Error during login:", err);
-  }
+       }
 }
 
 export const whistlistUser = async (req, res) => {
@@ -594,7 +556,6 @@ export async function resetUser(req, res) {
     const { email, newPassword } = req.body;
     // Find user by email
     const existUser = await User.findOne({ email });
-    console.log("existUser", existUser);
 
     // Check if the user exists
     if (!existUser) {
@@ -617,8 +578,7 @@ export async function resetUser(req, res) {
       status: "Successful",
     });
   } catch (err) {
-    console.error("Error during password reset:", err);
-    return res.status(500).json({
+         return res.status(500).json({
       message: "An error occurred during reset",
       status: "Failed",
     });

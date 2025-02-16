@@ -58,10 +58,7 @@ const UserLogin = () => {
           text: "Incorrect email or password. Please try again.",
         });
       }
-    } catch (err) {
-      console.error("Error occurred during login:", err);
-      console.error("Error fetching cart:", error);
-    }
+    } catch (err) {}
   };
 
   useEffect(() => {

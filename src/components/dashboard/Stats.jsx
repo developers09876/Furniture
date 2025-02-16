@@ -36,9 +36,7 @@ const BottomText = styled.div`
 `;
 
 const Stats = ({ orders, users, products }) => {
-  console.log("statsorders", orders);
   const [newOrder, setNewOrder] = useState([]);
-  console.log("neworder", newOrder.length);
   const OrdersCount = orders?.length;
   const totalUsers = users?.length;
   const totalProducts = products?.length;

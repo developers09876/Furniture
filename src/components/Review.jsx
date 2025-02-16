@@ -76,28 +76,28 @@ const testimonials = [
     title: "TESTIMONIALS",
     description:
       "I’m a testimonial,Click to edit me and add text that says something nice about you and your services.",
-    position: "Marketing Director",
-    additionalInfo: "Rajan",
+    position: "Teacher",
+    additionalInfo: "Aasifa",
   },
   {
     title: "TESTIMONIALS",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    position: "Product Manager",
-    additionalInfo: "Ajith",
+    position: "Doctor",
+    additionalInfo: "Aakash",
   },
   {
     title: "TESTIMONIALS",
     description:
       "Vivamus luctus urna sed urna ultricies ac tempor dui sagittis",
-    position: "CEO",
-    additionalInfo: "Gowtham",
+    position: "Sales Man",
+    additionalInfo: "Kumar",
   },
   {
     title: "TESTIMONIALS",
     description:
       "Pellentesque habitant morbi tristique senectus et netus et malesuada fames",
-    position: "Developer",
-    additionalInfo: "Ganesh",
+    position: "Driver",
+    additionalInfo: "Rithish",
   },
 ];
 

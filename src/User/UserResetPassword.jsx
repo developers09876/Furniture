@@ -92,7 +92,6 @@ const UserResetPassword = () => {
       setErrorMessage(
         "No account found with this email. Please sign up or enter the correct email."
       );
-      console.error("Error checking email:", error);
     } finally {
       setLoading(false);
     }
@@ -120,7 +119,6 @@ const UserResetPassword = () => {
       }
     } catch (error) {
       setErrorMessage("An error occurred while verifying OTP.");
-      console.error("Error verifying OTP:", error);
     } finally {
       setLoading(false);
     }
@@ -147,7 +145,6 @@ const UserResetPassword = () => {
       }
     } catch (error) {
       setErrorMessage("An error occurred while resetting the password.");
-      console.error("Error resetting password:", error);
     } finally {
       setLoading(false);
     }

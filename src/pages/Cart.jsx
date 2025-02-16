@@ -71,14 +71,11 @@ const Cart = () => {
       onOk() {
         removeItem(item.productId); // Use the _id to call the API for deletion
       },
-      onCancel() {
-        console.log("Delete cancelled");
-      },
+      onCancel() {},
     });
   };
 
   const handleClear = (item) => {
-    console.log("itemx", item);
     confirm({
       title: `Ready to Clear All Product?`,
       icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,
@@ -89,9 +86,7 @@ const Cart = () => {
       onOk() {
         clearCart();
       },
-      onCancel() {
-        console.log("Clear cancelled");
-      },
+      onCancel() {},
     });
   };
 
@@ -115,7 +110,6 @@ const Cart = () => {
           { timeout: 5000 }
         );
         fetchCart();
-        console.log("response", response);
 
         Swal.fire({
           icon: "success",
@@ -123,10 +117,7 @@ const Cart = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        console.log("Quantity updated on backend:", response.data);
-      } catch (error) {
-        console.error("Error updating quantity on backend:", error);
-      }
+      } catch (error) {}
     }
   };
   useEffect(() => {

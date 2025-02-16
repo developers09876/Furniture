@@ -40,7 +40,6 @@ const AddUser = ({ setAdduser }) => {
     e.preventDefault();
 
     const { role, name, email, phone, password, confirmPassword } = formData;
-    console.log("formData", formData);
     // Check if any field is empty
     if (!name || !email || !phone || !password || !confirmPassword || !role) {
       Swal.fire({

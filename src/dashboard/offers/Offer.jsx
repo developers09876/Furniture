@@ -101,9 +101,7 @@ const Offer = () => {
       .then((res) => {
         setAdminOffer(res.data);
       })
-      .catch((error) => {
-        console.error("Error Fetching Offer", error);
-      });
+      .catch((error) => {});
   };
 
   const addOffer = () => {
@@ -113,7 +111,6 @@ const Offer = () => {
     axios
       .post(`${import.meta.env.VITE_MY_API}admin/offertext`, offer)
       .then((res) => {
-        console.log("Added Offer Text", res);
         setTextArea("");
         setAddOfferModal(false);
 
@@ -125,7 +122,6 @@ const Offer = () => {
         fetchOffer();
       })
       .catch((errors) => {
-        console.error({ message: errors });
         alert("Failed to add offer text.");
       });
   };
@@ -147,7 +143,6 @@ const Offer = () => {
         setEditOfferModal(false);
       })
       .catch((error) => {
-        console.log("error", error);
         Swal.fire({
           icon: "error",
           title: "Error!",
@@ -186,9 +181,7 @@ const Offer = () => {
       onOk() {
         deleteOfferText(record._id);
       },
-      onCancel() {
-        console.log("Delete cancelled");
-      },
+      onCancel() {},
     });
   };
 
@@ -202,7 +195,6 @@ const Offer = () => {
       precentage: data.precentagee,
       sales_timing: data.salesOffer,
     };
-    console.log("percentage", percentage);
     axios
       .put(`${import.meta.env.VITE_MY_API}admin/updateOffer`, {
         percentage,
@@ -213,7 +205,6 @@ const Offer = () => {
           title: "Updated",
           text: "Offer has been updated successfully",
         });
-        console.log("res.data", res.data);
         setIsEditing(false);
       })
       .catch(() => {

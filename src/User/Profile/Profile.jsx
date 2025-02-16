@@ -55,9 +55,7 @@ function Profile() {
         pincode: userData.address_details[0]?.pincode,
         address: userData.address_details[0]?.address,
       });
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
+    } catch (error) {}
   };
 
   const handleUpdate = () => {
@@ -90,7 +88,6 @@ function Profile() {
       pincode: UserData?.address_details?.[0]?.pincode,
       address: UserData?.address_details?.[0]?.address,
     };
-    console.log("details", details);
     try {
       await axios.post(
         `${import.meta.env.VITE_MY_API}user/update/${userId}`,
@@ -102,7 +99,6 @@ function Profile() {
         text: `User has been updated successfully.`,
       });
     } catch (error) {
-      console.error("Error updating user:", error);
       Swal.fire({
         icon: "error",
         title: "Error!",

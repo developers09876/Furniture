@@ -12,7 +12,6 @@ const WishlistItem = ({ id, image, title, price }) => {
   const { removeItem } = useContext(WishlistContext);
   const { whishlistData } = useContext(DashboardContext);
   const [whishlist, setWhishlist] = useState(second);
-  console.log("jhg", whishlist);
   const navigate = useNavigate();
   const title1 = { ganesh };
 

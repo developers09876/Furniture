@@ -84,7 +84,6 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState("online");
   const [userData, setUserData] = useState("");
   const { cartdata } = useContext(DashboardContext);
-  console.log("CartdataCartdata", cartdata.items);
   const navigate = useNavigate();
   const userId = localStorage.getItem("id");
 
@@ -113,7 +112,6 @@ const Checkout = () => {
     if (!isFormValid()) {
       return;
     }
-    console.log("Order placed");
 
     if (cartdata.items.length === 0) {
       throw new Error(
@@ -168,7 +166,6 @@ const Checkout = () => {
           icon: "error",
           confirmButtonText: "OK",
         });
-        console.error("Error creating order:", error);
         throw error;
       });
   };
@@ -197,8 +194,6 @@ const Checkout = () => {
   } = useForm();
 
   const loadRazorpay = async (e) => {
-    console.log("ln188");
-
     // Ensure the Razorpay script is loaded
     const res = await loadScripts(
       "https://checkout.razorpay.com/v1/checkout.js"
@@ -207,7 +202,6 @@ const Checkout = () => {
       alert("Failed to load Razorpay SDK");
       return;
     }
-    console.log("ln1941");
 
     // Razorpay payment options
     const options = {
@@ -217,7 +211,6 @@ const Checkout = () => {
       name: "Furniture Delivery",
       description: "Payment for furniture",
       handler: function (response) {
-        console.log("Payment successful", response);
         PaymentHandler(response);
       },
       prefill: {
@@ -235,7 +228,6 @@ const Checkout = () => {
       alert("Razorpay SDK failed to load.");
       return;
     }
-    console.log("ln221");
     // Open Razorpay checkout modal
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
@@ -264,13 +256,9 @@ const Checkout = () => {
             }`,
             { quantity: item.quantity }
           )
-          .then((res) => {
-            console.log("Admin Quantity Updated");
-          })
+          .then((res) => {})
       )
-      .catch((error) => {
-        console.error("Error updating product stock:", error);
-      });
+      .catch((error) => {});
   };
 
   const deliveryOptions = {

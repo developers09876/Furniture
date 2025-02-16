@@ -9,12 +9,10 @@ export const WishlistContext = createContext();
 
 // Wishlist Provider component
 export const WishlistProvider = ({ children }) => {
-  console.log("children", children);
   const [wishlist, setWishlist] = useState({ id: "", user_id: "", items: [] });
   const { isAuthenticated, userID } = useContext(AuthContext);
   const [total, setTotal] = useState(0);
   const [Whistlist, setWhistlist] = useState(); // create
-  console.log("wishlist", wishlist);
   const { fetchWhishlist } = useContext(DashboardContext);
 
   const addToWishlist = async (item) => {
@@ -56,11 +54,8 @@ export const WishlistProvider = ({ children }) => {
           timer: 1500,
         });
       } else {
-        console.error("User Whishlist is not available");
       }
-    } catch (error) {
-      console.error("Error adding item to Whishlist:", error);
-    }
+    } catch (error) {}
   };
 
   const clearWishlist = async () => {
@@ -77,9 +72,7 @@ export const WishlistProvider = ({ children }) => {
         fetchWhishlist();
       })
 
-      .catch((error) => {
-        console.error("Error clearing wishlist:", error);
-      });
+      .catch((error) => {});
   };
 
   const removeItem = async (productId) => {
@@ -101,9 +94,7 @@ export const WishlistProvider = ({ children }) => {
         fetchWhishlist();
       })
 
-      .catch((error) => {
-        console.error("Error removing item from wishlist:", error);
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {

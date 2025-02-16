@@ -40,9 +40,7 @@ const EditCategory = () => {
           description: productData.description,
           created_at: productData.created_at,
         });
-      } catch (error) {
-        console.error("Error fetching product details:", error);
-      }
+      } catch (error) {}
     };
 
     fetchCategoryDetails();

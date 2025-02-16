@@ -22,9 +22,7 @@ const StyledProducts = styled.div`
 const ProductDashboard = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState([]);
-  console.log("editingUser", editingUser);
   const [product, setProduct] = useState([]);
-  console.log("editingUser", editingUser);
   const [products, setProducts] = useState([]);
 
   const { productss, fetchData } = useContext(DashboardContext);
@@ -47,7 +45,6 @@ const ProductDashboard = () => {
           });
         });
     } catch (error) {
-      console.error("Error deleting product:", error);
       Swal.fire({
         icon: "error",
         title: "Error!",
@@ -159,7 +156,6 @@ const ProductDashboard = () => {
         `${import.meta.env.VITE_MY_API}products/edit/${editingUser.productId}`,
         Data
       );
-      console.log("step1", response);
       if (response.status === 200) {
         fetchData();
         Swal.fire({
@@ -172,8 +168,6 @@ const ProductDashboard = () => {
         setEditModalVisible(false);
       }
     } catch (error) {
-      console.error("Error updating record:", error);
-
       Swal.fire({
         icon: "error",
         title: "Error!",
@@ -195,9 +189,7 @@ const ProductDashboard = () => {
       onOk() {
         deleteRecordFromAPI(record._id);
       },
-      onCancel() {
-        console.log("Deletion cancelled");
-      },
+      onCancel() {},
     });
   };
 

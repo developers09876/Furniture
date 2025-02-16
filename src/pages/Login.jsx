@@ -65,9 +65,7 @@ const Login = () => {
             });
           }
         });
-      } catch (error) {
-        console.error("Error occurred during login:", error);
-      }
+      } catch (error) {}
     } else {
       // Display error message for incomplete fields
       Swal.fire({

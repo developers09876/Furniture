@@ -18,7 +18,6 @@ const Wishlist = () => {
 
   const { whishlistData } = useContext(DashboardContext);
   const [whishlistCnt, setWhishlist] = useState([]);
-  console.log("whishlistCnt", whishlistCnt);
   useEffect(() => {
     if (whishlistData) {
       setWhishlist(whishlistData.items);
@@ -97,7 +96,6 @@ const Wishlist = () => {
   `;
 
   const handleDelete = (item) => {
-    console.log("itemx", item);
     confirm({
       title: `Ready to remove ${item.title}?`,
       icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,
@@ -107,9 +105,7 @@ const Wishlist = () => {
       onOk() {
         removeItem(item.productId); // Use the _id to call the API for deletio
       },
-      onCancel() {
-        console.log("Delete cancelled");
-      },
+      onCancel() {},
     });
   };
 
@@ -123,9 +119,7 @@ const Wishlist = () => {
       onOk() {
         clearWishlist(item.productId); // Use the _id to call the API for deletio
       },
-      onCancel() {
-        console.log("Delete cancelled");
-      },
+      onCancel() {},
     });
   };
   return (

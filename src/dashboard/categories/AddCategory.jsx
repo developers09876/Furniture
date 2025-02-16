@@ -33,7 +33,6 @@ const AddCategory = () => {
       return;
     }
 
-    console.log(formData);
     addCategory(formData);
     navigate("/admin/categories");
     setFormData({
@@ -61,9 +60,7 @@ const AddCategory = () => {
       const response = await fetch(`${import.meta.env.VITE_MY_API}Category`);
       const result = await response.json();
       setCategories(result);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
+    } catch (error) {}
   };
 
   const handleFormChange = (e) => {

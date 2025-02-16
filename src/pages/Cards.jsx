@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import TimeLeft from "../components/TimeLeft";
+// import TimeLeft from "../components/TimeLeft";
 import image1 from "../assets/Happy_Customers.png";
 import image2 from "../assets/Free_shipping.png";
 import image3 from "../assets/Free_installation.png";
@@ -107,11 +107,8 @@ const Sale = () => {
       .get(`${import.meta.env.VITE_MY_API}admin/getoffer`)
       .then((res) => {
         setOffer(res.data);
-        console.log("res", res.data);
       })
-      .catch((error) => {
-        console.error("Error Fetching Offer", error);
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {

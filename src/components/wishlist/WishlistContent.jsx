@@ -4,7 +4,6 @@ import { WishlistContext } from "../../context/WishlistContext";
 
 const WishlistContent = () => {
   const { wishlist } = useContext(WishlistContext);
-  console.log("wishlistzzzz", wishlist.items);
   return (
     <>
       {wishlist.items.map((item) => {

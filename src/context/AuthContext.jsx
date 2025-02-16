@@ -29,20 +29,17 @@ export const AuthProvider = ({ children }) => {
     }
 
     const storedUserID = Cookies.get("userID");
-    console.log("Stored userID from cookie:", storedUserID);
     if (storedUserID) {
       setUserIDState(storedUserID);
     }
   }, []);
 
   const setUserID = (id) => {
-    console.log("Setting userID:", id);
     setUserIDState(id);
     Cookies.set("userID", id, { expires: 1 });
   };
 
   const login = async (email, password) => {
-    console.log("emailzz", email, password);
     const userData = {
       email: email,
       password: password,
@@ -87,7 +84,6 @@ export const AuthProvider = ({ children }) => {
         return false;
       }
     } catch (error) {
-      console.log("Error occurred while logging in:", error);
       return false;
     }
   };
@@ -110,7 +106,6 @@ export const AuthProvider = ({ children }) => {
           }
         );
         if (res) {
-          console.log("resqwe", res);
           setIsAuthenticated(true);
           setUserID(res.data.data._id);
           Cookies.set("isLoggedIn", "true", { expires: 1 });
@@ -133,7 +128,6 @@ export const AuthProvider = ({ children }) => {
         return false;
       }
     } catch (error) {
-      console.log("Error occurred while logging in:", error);
       return false;
     }
   };
@@ -162,13 +156,9 @@ export const AuthProvider = ({ children }) => {
           showConfirmButton: false,
         });
       },
-      onCancel() {
-        console.log("Update cancelled");
-      },
+      onCancel() {},
     });
   };
-  console.log("logout check", isAdmin);
-  console.log("logout check", isUser);
 
   return (
     <AuthContext.Provider

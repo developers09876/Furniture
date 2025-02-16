@@ -59,7 +59,6 @@ const AddProduct = () => {
       },
     ],
   });
-  console.log("formData", formData);
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_MY_API}Category/get`).then((response) => {
       setCategoriesField(response.data);
@@ -145,18 +144,14 @@ const AddProduct = () => {
         );
         const cloudinaryData = await response.json();
         uploadedImages.push(cloudinaryData.secure_url); // Collect the URL
-      } catch (error) {
-        console.error("Error uploading image:", error);
-      }
+      } catch (error) {}
     }
 
     return uploadedImages;
   };
   const upload3DAnimation = async (file) => {
-    console.log("fileName 3d", file.name);
     let objectName = file.name;
     objectName = objectName.slice(0, -4);
-    console.log("objectName", objectName);
 
     const formData = new FormData();
 
@@ -175,13 +170,10 @@ const AddProduct = () => {
       );
       return response.data.fileUrl;
     } catch (error) {
-      console.error("Failed to upload 3D animation", error);
       throw new Error("Failed to upload 3D animation");
     }
   };
   const addProduct = async (data) => {
-    console.log("data", data);
-
     try {
       const animationFileUrl = await upload3DAnimation(formData.animation);
       const imageUrls = await uploadImages();
@@ -208,7 +200,6 @@ const AddProduct = () => {
 
       let objectName = animationFile.name;
       objectName = objectName.slice(0, -4);
-      console.log("ApiobjectName", objectName);
       const updatedFormData = {
         ...data,
         objectName,
@@ -216,8 +207,6 @@ const AddProduct = () => {
         threeDimenstion: animationFileUrl,
         specifications: formData.specifications,
       };
-
-      console.log("Updated Data:", updatedFormData);
 
       await axios.post(
         `${import.meta.env.VITE_MY_API}products/create`,
@@ -231,7 +220,6 @@ const AddProduct = () => {
       });
       navigate("/admin/products/");
     } catch (error) {
-      console.error("Error adding product:", error);
       Swal.fire({
         icon: "error",
         title: "Error",

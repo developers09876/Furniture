@@ -52,9 +52,7 @@ const EditProduct = () => {
           featured: productData.featured,
           created_at: productData.created_at,
         });
-      } catch (error) {
-        console.error("Error fetching product details:", error);
-      }
+      } catch (error) {}
     };
 
     fetchProductDetails();

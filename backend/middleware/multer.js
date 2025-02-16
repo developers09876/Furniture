@@ -3,7 +3,6 @@ import path from "path";
 
 const Storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    console.log("uploadImage", file);
     cb(null, "../public/3D-View-GLB");
   },
   filename: function (req, file, cb) {
@@ -12,7 +11,6 @@ const Storage = multer.diskStorage({
       path.extname(file.originalname)
     );
     const uniqueSuffix = ".glb";
-    console.log("originalName", originalName);
     // Construct the new filename
     const newFileName = `${originalName}${uniqueSuffix}`;
 

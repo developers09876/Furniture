@@ -8,7 +8,6 @@ const upload = multer({ storage });
 import nodemailer from "nodemailer";
 
 export const getAllProducts = async (req, res) => {
-  console.log("resss", req.body);
   const token = req.headers.authorization;
 
   try {
@@ -21,7 +20,6 @@ export const getAllProducts = async (req, res) => {
 };
 
 export const getOneProduct = async (req, res) => {
-  console.log("req.params.productId", req.params.productId);
   try {
     const productId = parseInt(req.params.productId, 10);
     if (isNaN(productId)) {
@@ -59,7 +57,6 @@ export const createProduct = async (req, res) => {
     } = req.body;
 
     // Log the request body after extracting images
-    console.log("Requestbody:", req.body, images);
 
     let parsedSpecifications;
     if (typeof specifications === "string") {
@@ -133,11 +130,8 @@ export const deleteProduct = async (req, res) => {
 //update api
 
 export const updateProduct = async (req, res) => {
-  console.log("req.body", req.body);
-
   try {
     const productId = req.params.id; // Retrieve custom productId from route parameters
-    console.log("Product ID:", productId);
 
     const {
       title,
@@ -235,15 +229,12 @@ export const updateQuantity = async (req, res) => {
       product,
     });
   } catch (error) {
-    console.error("Error updating cart quantity:", error);
     res.status(500).json({ message: "Server Error: " + error.message });
   }
 };
 
 //orders
 export const getAllOrder = async (req, res) => {
-  console.log("OrderDetail", req.body);
-
   try {
     const allorder = await order.find();
 
@@ -265,7 +256,6 @@ export const createOrder = async (req, res) => {
 
 export const updateOrder = async (req, res) => {
   const orderId = req.params.id;
-  console.log("zxreq.body", req.body);
   try {
     const { order_status } = req.body;
     const { emailDetails } = req.body;
@@ -304,11 +294,9 @@ export const updateOrder = async (req, res) => {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent: " + info.response);
 
     res.status(200).json(updateOrder);
   } catch (error) {
-    console.error("Error updating Order:", error);
     res.status(500).json({ message: "Server Error: " + error.message });
   }
 };
@@ -327,7 +315,6 @@ export const userUpdateOrder = async (req, res) => {
 
     res.status(200).json(updateOrder);
   } catch (error) {
-    console.error("Error updating Order:", error);
     res.status(500).json({ message: "Server Error: " + error.message });
   }
 };
@@ -335,7 +322,6 @@ export const userUpdateOrder = async (req, res) => {
 export const deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("id", id);
     const deletedCategory = await order.findByIdAndDelete({ _id: id });
 
     if (!deletedCategory) {
@@ -350,7 +336,6 @@ export const deleteOrder = async (req, res) => {
 
 export const getOneOrder = async (req, res) => {
   const { productId } = req.params;
-  console.log("req.paramsz", productId);
 
   try {
     // const parsedProductId = parseInt(productId, 10);

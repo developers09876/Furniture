@@ -14,9 +14,7 @@ export const seedProductDB = async (req, res) => {
   // delete all the images from cloudinary
   // cloudinary.api.delete_all_resources((error, result) => {
   //     if (error) {
-  //       console.log(error);
   //     } else {
-  //       console.log(result);
   //     }
   //   });
   try {
@@ -42,10 +40,8 @@ export const seedProductDB = async (req, res) => {
 
     // Insert the updated products into the database
     const products = await Product.insertMany(updatedProducts);
-    console.log("Products inserted into DB", products);
     res.status(HTTP_RESPONSE.OK.CODE).json("Database seeded successfully");
   } catch (err) {
-    console.log(err);
     res
       .status(HTTP_RESPONSE.INTERNAL_ERROR.CODE)
       .json(HTTP_RESPONSE.INTERNAL_ERROR.MESSAGE);

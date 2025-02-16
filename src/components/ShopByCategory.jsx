@@ -18,8 +18,7 @@ function ShopByCategory() {
 
   // useEffect(() => {
   //   if (category) {
-  //     console.log("Category:", category);
-  //   }
+  //        //   }
   // }, []);
 
   // const settings = {

@@ -8,7 +8,6 @@ const Time = () => {
     seconds: "00",
   });
   const [offer, setOffer] = useState([]);
-  console.log("offer", offer);
   const [eventTime, setEventTime] = useState(null);
 
   // Fetch offer data
@@ -18,9 +17,7 @@ const Time = () => {
         `${import.meta.env.VITE_MY_API}admin/getoffer`
       );
       setOffer(res.data);
-    } catch (error) {
-      console.error("Error Fetching Offer", error);
-    }
+    } catch (error) {}
   };
 
   // Calculate time left

@@ -75,8 +75,7 @@
 //           items: [],
 //         });
 //       } catch (error) {
-//         console.error("Error :", error);
-//       }
+//          //       }
 //       // Create a wishlist for the new user
 //       try {
 //         await axios.post("http://localhost:3000/wishlists", {
@@ -85,8 +84,7 @@
 //           items: [],
 //         });
 //       } catch (error) {
-//         console.error("Error :", error);
-//       }
+//          //       }
 //     } catch (error) {
 //       handleOperationError("user", "adding");
 //     }

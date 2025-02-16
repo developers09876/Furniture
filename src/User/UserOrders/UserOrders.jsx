@@ -59,15 +59,12 @@ const StyledSelect = styled.select`
 const UserOrders = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [data, setData] = useState([]);
-  console.log("dataxs", data);
   const [loading, setLoading] = useState(true);
   const [isOrderModel, setOrderModel] = useState(false);
   const [userOrder, setUserOrder] = useState([]);
-  console.log("userOrder", userOrder);
   const [orderData, setOrderData] = useState([]);
 
   const userOrderUpdate = async (id) => {
-    console.log("idcd", id._id);
     try {
       const response = await axios.put(
         `${import.meta.env.VITE_MY_API}products/userUpdateOrder/${id._id}`,
@@ -82,7 +79,6 @@ const UserOrders = () => {
         text: `Your  Order has been Cancelled.`,
       });
     } catch (error) {
-      console.error("Error updating Order:", error);
       Swal.fire({
         icon: "error",
         title: "Error!",
@@ -100,9 +96,7 @@ const UserOrders = () => {
       onOk() {
         userOrderUpdate(e);
       },
-      onCancel() {
-        console.log("order not Cancel");
-      },
+      onCancel() {},
     });
   };
 
@@ -229,7 +223,6 @@ const UserOrders = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching the order data", error);
         setLoading(false);
       });
   }, []);

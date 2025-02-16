@@ -2,7 +2,6 @@ import { message } from "antd";
 import { Admin } from "../models/admin.js";
 
 export const createOffer = async (req, res) => {
-  console.log("req.body", req.body);
   try {
     const { offer } = req.body;
     const extractedOffer = offer.offer;
@@ -19,7 +18,6 @@ export const createOffer = async (req, res) => {
 };
 
 export const createOfferText = async (req, res) => {
-  console.log("req.body", req.body);
   try {
     const { offer_text } = req.body;
 
@@ -45,9 +43,6 @@ export const updateOfferDetails = async (req, res) => {
   try {
     const { offerText, percentage } = req.body;
     let mainOffer;
-    console.log("percentage", percentage);
-    console.log("percentageID", percentage.offer_id);
-    console.log("perc", percentage.sales_timing);
 
     if (offerText && offerText._id) {
       const { offer_text, _id: offerDetailId } = offerText;
@@ -63,7 +58,6 @@ export const updateOfferDetails = async (req, res) => {
 
     if (percentage && percentage.offer_id) {
       const { precentage, offer_id, sales_timing } = percentage;
-      console.log("sales_timing", sales_timing);
       if (!mainOffer) {
         mainOffer = await Admin.findById(offer_id[0]);
       }
@@ -81,7 +75,6 @@ export const updateOfferDetails = async (req, res) => {
 
     res.status(400).json({ message: "No valid updates provided" });
   } catch (error) {
-    console.error("Error updating offer details:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

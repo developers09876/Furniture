@@ -82,8 +82,6 @@ const SingleProductPage = () => {
   const { productID } = useParams();
   const { cartdata, whishlistData } = useContext(DashboardContext);
   const [product, setProduct] = useState([]);
-  console.log("products", product);
-  console.log("productxs", product.objectName);
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -94,9 +92,7 @@ const SingleProductPage = () => {
         setImages(response.data.images);
 
         setSelectedImage(response.data.images[0]);
-      } catch (error) {
-        console.error("Error fetching product details:", error);
-      }
+      } catch (error) {}
     };
     // Ensure productID is passed here
     fetchProduct();
@@ -119,7 +115,6 @@ const SingleProductPage = () => {
     product.specification.length > 0
   ) {
   } else {
-    console.log("Specification is not available");
   }
   const handleUnitChange = (e) => {
     setUnit(e.target.value);
@@ -154,20 +149,11 @@ const SingleProductPage = () => {
 
   const handleConfirmVariant = () => {
     setShow(false);
-    console.log(
-      "choose1",
-      categorz,
-      selectedDimension,
-      thickness,
-      customLength,
-      customBreadth
-    );
 
     const selectedSize =
       categorz === "Custom Size"
         ? `${customLength} x ${customBreadth}`
         : selectedDimension;
-    console.log("Selected Size:", selectedSize);
     // handleClose();
   };
 
@@ -250,8 +236,7 @@ const SingleProductPage = () => {
   //     const response = await axios.get(`http://localhost:5000/wishlist/check/${userId}/${product.id}`);
   //     setIsInWishlist(response.data.isInWishlist);
   //   } catch (error) {
-  //     console.error("Error checking wishlist status:", error);
-  //   }
+  //        //   }
   // };
   // useEffect(() => {
   //   checkWishlist();  // Check wishlist status when component mounts
@@ -279,11 +264,9 @@ const SingleProductPage = () => {
   //       }
   //     );
 
-  //     console.log("Quantity updated successfully:", updateQuantity);
-  //     triggerCartUpdate();
+  //        //     triggerCartUpdate();
   //   } catch (error) {
-  //     console.error("Error updating quantity", error);
-  //   }
+  //        //   }
   // };
 
   // const removeItemCart = async (product, userId) => {
@@ -306,12 +289,10 @@ const SingleProductPage = () => {
   //         }
   //       );
 
-  //       console.log("Quantity updated successfully:", updateQuantity);
-  //       triggerCartUpdate();
+  //          //       triggerCartUpdate();
   //     }
   //   } catch (error) {
-  //     console.error("Error updating quantity", error);
-  //   }
+  //        //   }
   // };
 
   const unselectedStyless = {

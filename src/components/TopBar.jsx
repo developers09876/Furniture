@@ -20,18 +20,14 @@ const StyledCarousel = styled(Carousel)`
 
 const Navbar = () => {
   const [offer, setOffer] = useState([]);
-  console.log("offer", offer);
 
   const fetchOffer = () => {
     axios
       .get(`${import.meta.env.VITE_MY_API}admin/getoffer`)
       .then((res) => {
         setOffer(res.data);
-        console.log("res", res.data);
       })
-      .catch((error) => {
-        console.error("Error Fetching Offer", error);
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {

@@ -14,8 +14,6 @@ const CartTotal = ({ total }) => {
   const { isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  console.log(cart);
-
   return (
     <Wrapper>
       <div className="order-total-container">

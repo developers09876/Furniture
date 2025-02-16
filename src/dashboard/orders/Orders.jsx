@@ -58,7 +58,6 @@ const UserOrders = () => {
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [orderId, setOrderId] = useState(null);
   const [userData, setUserData] = useState("");
-  console.log("userData", userData);
   const [userID, setUserID] = useState("");
   const [data, setData] = useState([]);
   const [dataFilter, setDataFilter] = useState([]);
@@ -211,9 +210,6 @@ const UserOrders = () => {
   }, [userID, orderId]);
 
   const getId = async (e) => {
-    console.log("e", e);
-    console.log("e.user_id", e.user_id);
-
     const userID = e.user_id;
     const orderGetId = e._id;
 
@@ -232,7 +228,6 @@ const UserOrders = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching the order data", error);
         setLoading(false);
       });
   };
@@ -274,7 +269,6 @@ const UserOrders = () => {
         text: `Order has been updated successfully.`,
       });
     } catch (error) {
-      console.error("Error updating Order:", error);
       Swal.fire({
         icon: "error",
         title: "Error!",

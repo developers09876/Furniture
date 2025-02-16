@@ -86,9 +86,7 @@ const sendMessage = async (form) => {
       templateParams,
       "uR-pWmuRecgQJO4mA"
     );
-  } catch (error) {
-    console.error("Error sending email:", error);
-  }
+  } catch (error) {}
 };
 
 const Contact = () => {
@@ -117,8 +115,6 @@ const Contact = () => {
         textarea: "",
       });
     } catch (error) {
-      console.error("Error occurred:", error);
-
       Swal.fire({
         icon: "error",
         title: "Failed to send message",

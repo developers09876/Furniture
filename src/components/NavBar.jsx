@@ -43,12 +43,10 @@ const NavBar = () => {
   const [query, setQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const { products } = useContext(DashboardContext);
-  console.log("first", products);
   const { isAdmin, isUser, isAuthenticated, logout } = useContext(AuthContext);
   const { total } = useContext(WishlistContext);
   const { cartdata, whishlistData } = useContext(DashboardContext);
   const [totalItems, setTotalItems] = useState(0);
-  console.log("totalItems", totalItems);
   const [totalWhish, setTotalWhish] = useState(0);
   const [username, setUsername] = useState("");
 

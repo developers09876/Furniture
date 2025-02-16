@@ -18,7 +18,6 @@ export const CartProvider = ({ children }) => {
   const [total, setTotal] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const { fetchCart, cartdata } = useContext(DashboardContext);
-  console.log("cartdata", cartdata);
 
   const addToCart = async (item) => {
     const userID = localStorage.getItem("id");
@@ -58,11 +57,8 @@ export const CartProvider = ({ children }) => {
 
           fetchCart();
         })
-        .catch((error) => {
-          console.error("Error adding item to cart:", error);
-        });
+        .catch((error) => {});
     } else {
-      console.error("User cart is not available");
     }
   };
 
@@ -88,7 +84,6 @@ export const CartProvider = ({ children }) => {
           fetchCart();
         })
         .catch((error) => {
-          console.error("Error clearing cart:", error);
           Swal.fire({
             icon: "error",
             title: "Error",
@@ -96,7 +91,6 @@ export const CartProvider = ({ children }) => {
           });
         });
     } else {
-      console.error("User not authenticated");
     }
   };
   const clearCartPlaceOrder = async () => {
@@ -113,14 +107,11 @@ export const CartProvider = ({ children }) => {
           fetchCart();
         });
     } else {
-      console.error("User not authenticated");
     }
   };
 
   const removeItem = async (productId) => {
     const userID = localStorage.getItem("id");
-    console.log("userID:", userID);
-    console.log("productId:", productId);
 
     axios
       .delete(
@@ -138,7 +129,6 @@ export const CartProvider = ({ children }) => {
 
       // Show success alert
       .catch((error) => {
-        console.error("Error removing item from cart:", error);
         Swal.fire({
           icon: "error",
           title: "Error",

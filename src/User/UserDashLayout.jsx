@@ -8,8 +8,6 @@ const UserDashboardLayout = () => {
   const { isUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  console.log(isUser);
-
   useEffect(() => {
     !isUser && navigate("/");
   }, [isUser]);

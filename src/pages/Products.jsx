@@ -77,9 +77,7 @@ const Products = () => {
         : response.data;
 
       setFilteredProducts(productFilter);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
+    } catch (error) {}
   };
 
   // Handle search input change

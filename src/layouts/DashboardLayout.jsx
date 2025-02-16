@@ -7,8 +7,6 @@ const DashboardLayout = () => {
   const { isAdmin } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  console.log(isAdmin);
-
   useEffect(() => {
     !isAdmin && navigate("/");
   }, [isAdmin]);

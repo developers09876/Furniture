@@ -46,7 +46,6 @@ const Categories = () => {
   });
 
   const [categoryList, setCategoryList] = useState([]);
-  console.log("categoryList", categoryList);
 
   useEffect(() => {
     fetchCategories();
@@ -58,9 +57,7 @@ const Categories = () => {
         `${import.meta.env.VITE_MY_API}Category/get`
       );
       setCategoryList(response.data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
+    } catch (error) {}
   };
 
   const handleAddCategory = async () => {
@@ -94,7 +91,6 @@ const Categories = () => {
         });
       }
     } catch (error) {
-      console.error("Error deleting record:", error);
       Swal.fire({
         icon: "error",
         title: "Error!",
@@ -104,7 +100,6 @@ const Categories = () => {
   };
 
   const handleDelete = (record) => {
-    console.log("hello", record);
     confirm({
       title: "Are you sure you want to delete this category?",
       icon: <MdDelete style={{ fontSize: "20px", color: "red" }} />,
@@ -114,11 +109,8 @@ const Categories = () => {
       cancelText: "No",
       onOk() {
         deleteRecordFromAPI(record._id);
-        console.log("step1", record._id);
       },
-      onCancel() {
-        console.log("Deletion cancelled");
-      },
+      onCancel() {},
     });
   };
   const handleEdit = (record) => {
@@ -127,7 +119,6 @@ const Categories = () => {
   };
 
   const handleEditSubmit = async (editingCategory) => {
-    console.log("change", editingCategory);
     const Data = {
       name: editingCategory.name,
       description: editingCategory.description,
@@ -149,7 +140,6 @@ const Categories = () => {
         setEditModalVisible(false);
       }
     } catch (error) {
-      console.error("Error updating record:", error);
       Swal.fire({
         icon: "error",
         title: "Error!",
